@@ -593,7 +593,7 @@ fn print_struct(entity: &Entity, fields: &BTreeMap<String, StructField>, out: &m
 	}
 	else { return }
 
-	if !matches!(entity.variant, EntityVariant::Method { .. }) {
+	if !entity.serde.ser {
 		writeln!(out, "");
 		return
 	}

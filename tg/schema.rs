@@ -253,6 +253,14 @@ pub struct BotCommand {
 	Max len: 256*/
 	pub description: String,
 }
+impl BotCommand {
+	pub fn new(command: impl Into<String>, description: impl Into<String>) -> Self {
+		Self {
+			command: command.into(),
+			description: description.into(),
+		}
+	}
+}
 /**This object represents the scope to which bot commands are applied. Currently, the following 7 scopes are supported:
 
 * [BotCommandScopeDefault](https://core.telegram.org/bots/api/#botcommandscopedefault)
@@ -284,6 +292,13 @@ pub struct BotCommandScopeAllChatAdministrators {
 	Default: all_chat_administrators*/
 	pub r#type: String,
 }
+impl BotCommandScopeAllChatAdministrators {
+	pub fn new(r#type: impl Into<String>) -> Self {
+		Self {
+			r#type: r#type.into(),
+		}
+	}
+}
 /**Represents the [scope](https://core.telegram.org/bots/api/#botcommandscope) of bot commands, covering all group and supergroup chats.
 
 https://core.telegram.org/bots/api/#botcommandscopeallgroupchats*/
@@ -293,6 +308,13 @@ pub struct BotCommandScopeAllGroupChats {
 	Default: all_group_chats*/
 	pub r#type: String,
 }
+impl BotCommandScopeAllGroupChats {
+	pub fn new(r#type: impl Into<String>) -> Self {
+		Self {
+			r#type: r#type.into(),
+		}
+	}
+}
 /**Represents the [scope](https://core.telegram.org/bots/api/#botcommandscope) of bot commands, covering all private chats.
 
 https://core.telegram.org/bots/api/#botcommandscopeallprivatechats*/
@@ -301,6 +323,13 @@ pub struct BotCommandScopeAllPrivateChats {
 	/**Scope type, must be *all\_private\_chats*
 	Default: all_private_chats*/
 	pub r#type: String,
+}
+impl BotCommandScopeAllPrivateChats {
+	pub fn new(r#type: impl Into<String>) -> Self {
+		Self {
+			r#type: r#type.into(),
+		}
+	}
 }
 /**Represents the [scope](https://core.telegram.org/bots/api/#botcommandscope) of bot commands, covering a specific chat.
 
@@ -313,6 +342,14 @@ pub struct BotCommandScopeChat {
 	Default: chat*/
 	pub r#type: String,
 }
+impl BotCommandScopeChat {
+	pub fn new(chat_id: impl Into<ChatId>, r#type: impl Into<String>) -> Self {
+		Self {
+			chat_id: chat_id.into(),
+			r#type: r#type.into(),
+		}
+	}
+}
 /**Represents the [scope](https://core.telegram.org/bots/api/#botcommandscope) of bot commands, covering all administrators of a specific group or supergroup chat.
 
 https://core.telegram.org/bots/api/#botcommandscopechatadministrators*/
@@ -323,6 +360,14 @@ pub struct BotCommandScopeChatAdministrators {
 	/**Scope type, must be *chat\_administrators*
 	Default: chat_administrators*/
 	pub r#type: String,
+}
+impl BotCommandScopeChatAdministrators {
+	pub fn new(chat_id: impl Into<ChatId>, r#type: impl Into<String>) -> Self {
+		Self {
+			chat_id: chat_id.into(),
+			r#type: r#type.into(),
+		}
+	}
 }
 /**Represents the [scope](https://core.telegram.org/bots/api/#botcommandscope) of bot commands, covering a specific member of a group or supergroup chat.
 
@@ -337,6 +382,15 @@ pub struct BotCommandScopeChatMember {
 	/**Unique identifier of the target user*/
 	pub user_id: i64,
 }
+impl BotCommandScopeChatMember {
+	pub fn new(chat_id: impl Into<ChatId>, r#type: impl Into<String>, user_id: impl Into<i64>) -> Self {
+		Self {
+			chat_id: chat_id.into(),
+			r#type: r#type.into(),
+			user_id: user_id.into(),
+		}
+	}
+}
 /**Represents the default [scope](https://core.telegram.org/bots/api/#botcommandscope) of bot commands. Default commands are used if no commands with a [narrower scope](https://core.telegram.org/bots/api/#determining-list-of-commands) are specified for the user.
 
 https://core.telegram.org/bots/api/#botcommandscopedefault*/
@@ -345,6 +399,13 @@ pub struct BotCommandScopeDefault {
 	/**Scope type, must be *default*
 	Default: default*/
 	pub r#type: String,
+}
+impl BotCommandScopeDefault {
+	pub fn new(r#type: impl Into<String>) -> Self {
+		Self {
+			r#type: r#type.into(),
+		}
+	}
 }
 /**This object represents the bot's description.
 
@@ -544,6 +605,43 @@ pub struct ChatAdministratorRights {
 	pub can_restrict_members: bool,
 	/**if the user's presence in the chat is hidden*/
 	pub is_anonymous: bool,
+}
+impl ChatAdministratorRights {
+	pub fn new(can_change_info: bool, can_delete_messages: bool, can_delete_stories: bool, can_edit_stories: bool, can_invite_users: bool, can_manage_chat: bool, can_manage_video_chats: bool, can_post_stories: bool, can_promote_members: bool, can_restrict_members: bool, is_anonymous: bool) -> Self {
+		Self {
+			can_change_info: can_change_info,
+			can_delete_messages: can_delete_messages,
+			can_delete_stories: can_delete_stories,
+			can_edit_messages: None,
+			can_edit_stories: can_edit_stories,
+			can_invite_users: can_invite_users,
+			can_manage_chat: can_manage_chat,
+			can_manage_topics: None,
+			can_manage_video_chats: can_manage_video_chats,
+			can_pin_messages: None,
+			can_post_messages: None,
+			can_post_stories: can_post_stories,
+			can_promote_members: can_promote_members,
+			can_restrict_members: can_restrict_members,
+			is_anonymous: is_anonymous,
+		}
+	}
+	pub fn can_edit_messages(mut self, can_edit_messages: bool) -> Self {
+		self.can_edit_messages = Some(can_edit_messages);
+		self
+	}
+	pub fn can_manage_topics(mut self, can_manage_topics: bool) -> Self {
+		self.can_manage_topics = Some(can_manage_topics);
+		self
+	}
+	pub fn can_pin_messages(mut self, can_pin_messages: bool) -> Self {
+		self.can_pin_messages = Some(can_pin_messages);
+		self
+	}
+	pub fn can_post_messages(mut self, can_post_messages: bool) -> Self {
+		self.can_post_messages = Some(can_post_messages);
+		self
+	}
 }
 /**This object represents a chat background.
 
@@ -1068,6 +1166,82 @@ pub struct ChatPermissions {
 	/**if the user is allowed to send voice notes*/
 	pub can_send_voice_notes: Option<bool>,
 }
+impl ChatPermissions {
+	pub fn new() -> Self {
+		Self {
+			can_add_web_page_previews: None,
+			can_change_info: None,
+			can_invite_users: None,
+			can_manage_topics: None,
+			can_pin_messages: None,
+			can_send_audios: None,
+			can_send_documents: None,
+			can_send_messages: None,
+			can_send_other_messages: None,
+			can_send_photos: None,
+			can_send_polls: None,
+			can_send_video_notes: None,
+			can_send_videos: None,
+			can_send_voice_notes: None,
+		}
+	}
+	pub fn can_add_web_page_previews(mut self, can_add_web_page_previews: bool) -> Self {
+		self.can_add_web_page_previews = Some(can_add_web_page_previews);
+		self
+	}
+	pub fn can_change_info(mut self, can_change_info: bool) -> Self {
+		self.can_change_info = Some(can_change_info);
+		self
+	}
+	pub fn can_invite_users(mut self, can_invite_users: bool) -> Self {
+		self.can_invite_users = Some(can_invite_users);
+		self
+	}
+	pub fn can_manage_topics(mut self, can_manage_topics: bool) -> Self {
+		self.can_manage_topics = Some(can_manage_topics);
+		self
+	}
+	pub fn can_pin_messages(mut self, can_pin_messages: bool) -> Self {
+		self.can_pin_messages = Some(can_pin_messages);
+		self
+	}
+	pub fn can_send_audios(mut self, can_send_audios: bool) -> Self {
+		self.can_send_audios = Some(can_send_audios);
+		self
+	}
+	pub fn can_send_documents(mut self, can_send_documents: bool) -> Self {
+		self.can_send_documents = Some(can_send_documents);
+		self
+	}
+	pub fn can_send_messages(mut self, can_send_messages: bool) -> Self {
+		self.can_send_messages = Some(can_send_messages);
+		self
+	}
+	pub fn can_send_other_messages(mut self, can_send_other_messages: bool) -> Self {
+		self.can_send_other_messages = Some(can_send_other_messages);
+		self
+	}
+	pub fn can_send_photos(mut self, can_send_photos: bool) -> Self {
+		self.can_send_photos = Some(can_send_photos);
+		self
+	}
+	pub fn can_send_polls(mut self, can_send_polls: bool) -> Self {
+		self.can_send_polls = Some(can_send_polls);
+		self
+	}
+	pub fn can_send_video_notes(mut self, can_send_video_notes: bool) -> Self {
+		self.can_send_video_notes = Some(can_send_video_notes);
+		self
+	}
+	pub fn can_send_videos(mut self, can_send_videos: bool) -> Self {
+		self.can_send_videos = Some(can_send_videos);
+		self
+	}
+	pub fn can_send_voice_notes(mut self, can_send_voice_notes: bool) -> Self {
+		self.can_send_voice_notes = Some(can_send_voice_notes);
+		self
+	}
+}
 /**This object represents a chat photo.
 
 https://core.telegram.org/bots/api/#chatphoto*/
@@ -1149,6 +1323,13 @@ pub struct CopyTextButton {
 	Min len: 1
 	Max len: 256*/
 	pub text: String,
+}
+impl CopyTextButton {
+	pub fn new(text: impl Into<String>) -> Self {
+		Self {
+			text: text.into(),
+		}
+	}
 }
 /**This object represents an animated emoji that displays a random value.
 
@@ -1319,6 +1500,23 @@ pub struct ForceReply {
 	pub input_field_placeholder: Option<String>,
 	/**Use this parameter if you want to force reply from specific users only. Targets: 1) users that are @mentioned in the *text* of the [Message](https://core.telegram.org/bots/api/#message) object; 2) if the bot's message is a reply to a message in the same chat and forum topic, sender of the original message.*/
 	pub selective: Option<bool>,
+}
+impl ForceReply {
+	pub fn new(force_reply: bool) -> Self {
+		Self {
+			force_reply: force_reply,
+			input_field_placeholder: None,
+			selective: None,
+		}
+	}
+	pub fn input_field_placeholder(mut self, input_field_placeholder: impl Into<String>) -> Self {
+		self.input_field_placeholder = Some(input_field_placeholder.into());
+		self
+	}
+	pub fn selective(mut self, selective: bool) -> Self {
+		self.selective = Some(selective);
+		self
+	}
 }
 /**This object represents a forum topic.
 
@@ -1600,6 +1798,63 @@ pub struct InlineKeyboardButton {
 	/**Description of the [Web App](https://core.telegram.org/bots/webapps) that will be launched when the user presses the button. The Web App will be able to send an arbitrary message on behalf of the user using the method [answerWebAppQuery](https://core.telegram.org/bots/api/#answerwebappquery). Available only in private chats between a user and the bot. Not supported for messages sent on behalf of a Telegram Business account.*/
 	pub web_app: Option<WebAppInfo>,
 }
+impl InlineKeyboardButton {
+	pub fn new(text: impl Into<String>) -> Self {
+		Self {
+			callback_data: None,
+			callback_game: None,
+			copy_text: None,
+			login_url: None,
+			pay: None,
+			switch_inline_query: None,
+			switch_inline_query_chosen_chat: None,
+			switch_inline_query_current_chat: None,
+			text: text.into(),
+			url: None,
+			web_app: None,
+		}
+	}
+	pub fn callback_data(mut self, callback_data: impl Into<String>) -> Self {
+		self.callback_data = Some(callback_data.into());
+		self
+	}
+	pub fn callback_game(mut self, callback_game: impl Into<CallbackGame>) -> Self {
+		self.callback_game = Some(callback_game.into());
+		self
+	}
+	pub fn copy_text(mut self, copy_text: impl Into<CopyTextButton>) -> Self {
+		self.copy_text = Some(copy_text.into());
+		self
+	}
+	pub fn login_url(mut self, login_url: impl Into<LoginUrl>) -> Self {
+		self.login_url = Some(login_url.into());
+		self
+	}
+	pub fn pay(mut self, pay: bool) -> Self {
+		self.pay = Some(pay);
+		self
+	}
+	pub fn switch_inline_query(mut self, switch_inline_query: impl Into<String>) -> Self {
+		self.switch_inline_query = Some(switch_inline_query.into());
+		self
+	}
+	pub fn switch_inline_query_chosen_chat(mut self, switch_inline_query_chosen_chat: impl Into<SwitchInlineQueryChosenChat>) -> Self {
+		self.switch_inline_query_chosen_chat = Some(switch_inline_query_chosen_chat.into());
+		self
+	}
+	pub fn switch_inline_query_current_chat(mut self, switch_inline_query_current_chat: impl Into<String>) -> Self {
+		self.switch_inline_query_current_chat = Some(switch_inline_query_current_chat.into());
+		self
+	}
+	pub fn url(mut self, url: impl Into<String>) -> Self {
+		self.url = Some(url.into());
+		self
+	}
+	pub fn web_app(mut self, web_app: impl Into<WebAppInfo>) -> Self {
+		self.web_app = Some(web_app.into());
+		self
+	}
+}
 /**This object represents an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) that appears right next to the message it belongs to.
 
 https://core.telegram.org/bots/api/#inlinekeyboardmarkup*/
@@ -1610,6 +1865,13 @@ https://core.telegram.org/bots/api/#inlinekeyboardmarkup*/
 pub struct InlineKeyboardMarkup {
 	/**Array of button rows, each represented by an Array of [InlineKeyboardButton](https://core.telegram.org/bots/api/#inlinekeyboardbutton) objects*/
 	pub inline_keyboard: Vec<Vec<InlineKeyboardButton>>,
+}
+impl InlineKeyboardMarkup {
+	pub fn new(inline_keyboard: impl Into<Vec<Vec<InlineKeyboardButton>>>) -> Self {
+		Self {
+			inline_keyboard: inline_keyboard.into(),
+		}
+	}
 }
 /**This object represents an incoming inline query. When the user sends an empty query, your bot could return some default or trending results.
 
@@ -1711,6 +1973,46 @@ pub struct InlineQueryResultArticle {
 	/**URL of the result*/
 	pub url: Option<String>,
 }
+impl InlineQueryResultArticle {
+	pub fn new(id: impl Into<String>, input_message_content: impl Into<InputMessageContent>, r#type: impl Into<String>, title: impl Into<String>) -> Self {
+		Self {
+			description: None,
+			id: id.into(),
+			input_message_content: input_message_content.into(),
+			r#type: r#type.into(),
+			reply_markup: None,
+			thumbnail_height: None,
+			thumbnail_url: None,
+			thumbnail_width: None,
+			title: title.into(),
+			url: None,
+		}
+	}
+	pub fn description(mut self, description: impl Into<String>) -> Self {
+		self.description = Some(description.into());
+		self
+	}
+	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
+		self.reply_markup = Some(reply_markup.into());
+		self
+	}
+	pub fn thumbnail_height(mut self, thumbnail_height: impl Into<i64>) -> Self {
+		self.thumbnail_height = Some(thumbnail_height.into());
+		self
+	}
+	pub fn thumbnail_url(mut self, thumbnail_url: impl Into<String>) -> Self {
+		self.thumbnail_url = Some(thumbnail_url.into());
+		self
+	}
+	pub fn thumbnail_width(mut self, thumbnail_width: impl Into<i64>) -> Self {
+		self.thumbnail_width = Some(thumbnail_width.into());
+		self
+	}
+	pub fn url(mut self, url: impl Into<String>) -> Self {
+		self.url = Some(url.into());
+		self
+	}
+}
 /**Represents a link to an MP3 audio file. By default, this audio file will be sent by the user. Alternatively, you can use *input\_message\_content* to send a message with the specified content instead of the audio.
 
 https://core.telegram.org/bots/api/#inlinequeryresultaudio*/
@@ -1746,6 +2048,51 @@ pub struct InlineQueryResultAudio {
 	/**Title*/
 	pub title: String,
 }
+impl InlineQueryResultAudio {
+	pub fn new(audio_url: impl Into<String>, id: impl Into<String>, r#type: impl Into<String>, title: impl Into<String>) -> Self {
+		Self {
+			audio_duration: None,
+			audio_url: audio_url.into(),
+			caption: None,
+			caption_entities: Vec::new(),
+			id: id.into(),
+			input_message_content: None,
+			parse_mode: None,
+			performer: None,
+			r#type: r#type.into(),
+			reply_markup: None,
+			title: title.into(),
+		}
+	}
+	pub fn audio_duration(mut self, audio_duration: impl Into<i64>) -> Self {
+		self.audio_duration = Some(audio_duration.into());
+		self
+	}
+	pub fn caption(mut self, caption: impl Into<String>) -> Self {
+		self.caption = Some(caption.into());
+		self
+	}
+	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.caption_entities = caption_entities.into();
+		self
+	}
+	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
+		self.input_message_content = Some(input_message_content.into());
+		self
+	}
+	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
+		self.parse_mode = Some(parse_mode.into());
+		self
+	}
+	pub fn performer(mut self, performer: impl Into<String>) -> Self {
+		self.performer = Some(performer.into());
+		self
+	}
+	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
+		self.reply_markup = Some(reply_markup.into());
+		self
+	}
+}
 /**Represents a link to an MP3 audio file stored on the Telegram servers. By default, this audio file will be sent by the user. Alternatively, you can use *input\_message\_content* to send a message with the specified content instead of the audio.
 
 https://core.telegram.org/bots/api/#inlinequeryresultcachedaudio*/
@@ -1774,6 +2121,40 @@ pub struct InlineQueryResultCachedAudio {
 	pub r#type: String,
 	/**[Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub reply_markup: Option<InlineKeyboardMarkup>,
+}
+impl InlineQueryResultCachedAudio {
+	pub fn new(audio_file_id: impl Into<String>, id: impl Into<String>, r#type: impl Into<String>) -> Self {
+		Self {
+			audio_file_id: audio_file_id.into(),
+			caption: None,
+			caption_entities: Vec::new(),
+			id: id.into(),
+			input_message_content: None,
+			parse_mode: None,
+			r#type: r#type.into(),
+			reply_markup: None,
+		}
+	}
+	pub fn caption(mut self, caption: impl Into<String>) -> Self {
+		self.caption = Some(caption.into());
+		self
+	}
+	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.caption_entities = caption_entities.into();
+		self
+	}
+	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
+		self.input_message_content = Some(input_message_content.into());
+		self
+	}
+	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
+		self.parse_mode = Some(parse_mode.into());
+		self
+	}
+	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
+		self.reply_markup = Some(reply_markup.into());
+		self
+	}
 }
 /**Represents a link to a file stored on the Telegram servers. By default, this file will be sent by the user with an optional caption. Alternatively, you can use *input\_message\_content* to send a message with the specified content instead of the file.
 
@@ -1808,6 +2189,46 @@ pub struct InlineQueryResultCachedDocument {
 	/**Title for the result*/
 	pub title: String,
 }
+impl InlineQueryResultCachedDocument {
+	pub fn new(document_file_id: impl Into<String>, id: impl Into<String>, r#type: impl Into<String>, title: impl Into<String>) -> Self {
+		Self {
+			caption: None,
+			caption_entities: Vec::new(),
+			description: None,
+			document_file_id: document_file_id.into(),
+			id: id.into(),
+			input_message_content: None,
+			parse_mode: None,
+			r#type: r#type.into(),
+			reply_markup: None,
+			title: title.into(),
+		}
+	}
+	pub fn caption(mut self, caption: impl Into<String>) -> Self {
+		self.caption = Some(caption.into());
+		self
+	}
+	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.caption_entities = caption_entities.into();
+		self
+	}
+	pub fn description(mut self, description: impl Into<String>) -> Self {
+		self.description = Some(description.into());
+		self
+	}
+	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
+		self.input_message_content = Some(input_message_content.into());
+		self
+	}
+	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
+		self.parse_mode = Some(parse_mode.into());
+		self
+	}
+	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
+		self.reply_markup = Some(reply_markup.into());
+		self
+	}
+}
 /**Represents a link to an animated GIF file stored on the Telegram servers. By default, this animated GIF file will be sent by the user with an optional caption. Alternatively, you can use *input\_message\_content* to send a message with specified content instead of the animation.
 
 https://core.telegram.org/bots/api/#inlinequeryresultcachedgif*/
@@ -1841,6 +2262,50 @@ pub struct InlineQueryResultCachedGif {
 	/**Title for the result*/
 	pub title: Option<String>,
 }
+impl InlineQueryResultCachedGif {
+	pub fn new(gif_file_id: impl Into<String>, id: impl Into<String>, r#type: impl Into<String>) -> Self {
+		Self {
+			caption: None,
+			caption_entities: Vec::new(),
+			gif_file_id: gif_file_id.into(),
+			id: id.into(),
+			input_message_content: None,
+			parse_mode: None,
+			r#type: r#type.into(),
+			reply_markup: None,
+			show_caption_above_media: None,
+			title: None,
+		}
+	}
+	pub fn caption(mut self, caption: impl Into<String>) -> Self {
+		self.caption = Some(caption.into());
+		self
+	}
+	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.caption_entities = caption_entities.into();
+		self
+	}
+	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
+		self.input_message_content = Some(input_message_content.into());
+		self
+	}
+	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
+		self.parse_mode = Some(parse_mode.into());
+		self
+	}
+	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
+		self.reply_markup = Some(reply_markup.into());
+		self
+	}
+	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
+		self.show_caption_above_media = Some(show_caption_above_media);
+		self
+	}
+	pub fn title(mut self, title: impl Into<String>) -> Self {
+		self.title = Some(title.into());
+		self
+	}
+}
 /**Represents a link to a video animation (H.264/MPEG-4 AVC video without sound) stored on the Telegram servers. By default, this animated MPEG-4 file will be sent by the user with an optional caption. Alternatively, you can use *input\_message\_content* to send a message with the specified content instead of the animation.
 
 https://core.telegram.org/bots/api/#inlinequeryresultcachedmpeg4gif*/
@@ -1873,6 +2338,50 @@ pub struct InlineQueryResultCachedMpeg4Gif {
 	pub show_caption_above_media: Option<bool>,
 	/**Title for the result*/
 	pub title: Option<String>,
+}
+impl InlineQueryResultCachedMpeg4Gif {
+	pub fn new(id: impl Into<String>, mpeg4_file_id: impl Into<String>, r#type: impl Into<String>) -> Self {
+		Self {
+			caption: None,
+			caption_entities: Vec::new(),
+			id: id.into(),
+			input_message_content: None,
+			mpeg4_file_id: mpeg4_file_id.into(),
+			parse_mode: None,
+			r#type: r#type.into(),
+			reply_markup: None,
+			show_caption_above_media: None,
+			title: None,
+		}
+	}
+	pub fn caption(mut self, caption: impl Into<String>) -> Self {
+		self.caption = Some(caption.into());
+		self
+	}
+	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.caption_entities = caption_entities.into();
+		self
+	}
+	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
+		self.input_message_content = Some(input_message_content.into());
+		self
+	}
+	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
+		self.parse_mode = Some(parse_mode.into());
+		self
+	}
+	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
+		self.reply_markup = Some(reply_markup.into());
+		self
+	}
+	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
+		self.show_caption_above_media = Some(show_caption_above_media);
+		self
+	}
+	pub fn title(mut self, title: impl Into<String>) -> Self {
+		self.title = Some(title.into());
+		self
+	}
 }
 /**Represents a link to a photo stored on the Telegram servers. By default, this photo will be sent by the user with an optional caption. Alternatively, you can use *input\_message\_content* to send a message with the specified content instead of the photo.
 
@@ -1909,6 +2418,55 @@ pub struct InlineQueryResultCachedPhoto {
 	/**Title for the result*/
 	pub title: Option<String>,
 }
+impl InlineQueryResultCachedPhoto {
+	pub fn new(id: impl Into<String>, photo_file_id: impl Into<String>, r#type: impl Into<String>) -> Self {
+		Self {
+			caption: None,
+			caption_entities: Vec::new(),
+			description: None,
+			id: id.into(),
+			input_message_content: None,
+			parse_mode: None,
+			photo_file_id: photo_file_id.into(),
+			r#type: r#type.into(),
+			reply_markup: None,
+			show_caption_above_media: None,
+			title: None,
+		}
+	}
+	pub fn caption(mut self, caption: impl Into<String>) -> Self {
+		self.caption = Some(caption.into());
+		self
+	}
+	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.caption_entities = caption_entities.into();
+		self
+	}
+	pub fn description(mut self, description: impl Into<String>) -> Self {
+		self.description = Some(description.into());
+		self
+	}
+	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
+		self.input_message_content = Some(input_message_content.into());
+		self
+	}
+	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
+		self.parse_mode = Some(parse_mode.into());
+		self
+	}
+	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
+		self.reply_markup = Some(reply_markup.into());
+		self
+	}
+	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
+		self.show_caption_above_media = Some(show_caption_above_media);
+		self
+	}
+	pub fn title(mut self, title: impl Into<String>) -> Self {
+		self.title = Some(title.into());
+		self
+	}
+}
 /**Represents a link to a sticker stored on the Telegram servers. By default, this sticker will be sent by the user. Alternatively, you can use *input\_message\_content* to send a message with the specified content instead of the sticker.
 
 https://core.telegram.org/bots/api/#inlinequeryresultcachedsticker*/
@@ -1928,6 +2486,25 @@ pub struct InlineQueryResultCachedSticker {
 	pub reply_markup: Option<InlineKeyboardMarkup>,
 	/**A valid file identifier of the sticker*/
 	pub sticker_file_id: String,
+}
+impl InlineQueryResultCachedSticker {
+	pub fn new(id: impl Into<String>, r#type: impl Into<String>, sticker_file_id: impl Into<String>) -> Self {
+		Self {
+			id: id.into(),
+			input_message_content: None,
+			r#type: r#type.into(),
+			reply_markup: None,
+			sticker_file_id: sticker_file_id.into(),
+		}
+	}
+	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
+		self.input_message_content = Some(input_message_content.into());
+		self
+	}
+	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
+		self.reply_markup = Some(reply_markup.into());
+		self
+	}
 }
 /**Represents a link to a video file stored on the Telegram servers. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use *input\_message\_content* to send a message with the specified content instead of the video.
 
@@ -1964,6 +2541,51 @@ pub struct InlineQueryResultCachedVideo {
 	/**A valid file identifier for the video file*/
 	pub video_file_id: String,
 }
+impl InlineQueryResultCachedVideo {
+	pub fn new(id: impl Into<String>, r#type: impl Into<String>, title: impl Into<String>, video_file_id: impl Into<String>) -> Self {
+		Self {
+			caption: None,
+			caption_entities: Vec::new(),
+			description: None,
+			id: id.into(),
+			input_message_content: None,
+			parse_mode: None,
+			r#type: r#type.into(),
+			reply_markup: None,
+			show_caption_above_media: None,
+			title: title.into(),
+			video_file_id: video_file_id.into(),
+		}
+	}
+	pub fn caption(mut self, caption: impl Into<String>) -> Self {
+		self.caption = Some(caption.into());
+		self
+	}
+	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.caption_entities = caption_entities.into();
+		self
+	}
+	pub fn description(mut self, description: impl Into<String>) -> Self {
+		self.description = Some(description.into());
+		self
+	}
+	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
+		self.input_message_content = Some(input_message_content.into());
+		self
+	}
+	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
+		self.parse_mode = Some(parse_mode.into());
+		self
+	}
+	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
+		self.reply_markup = Some(reply_markup.into());
+		self
+	}
+	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
+		self.show_caption_above_media = Some(show_caption_above_media);
+		self
+	}
+}
 /**Represents a link to a voice message stored on the Telegram servers. By default, this voice message will be sent by the user. Alternatively, you can use *input\_message\_content* to send a message with the specified content instead of the voice message.
 
 https://core.telegram.org/bots/api/#inlinequeryresultcachedvoice*/
@@ -1994,6 +2616,41 @@ pub struct InlineQueryResultCachedVoice {
 	pub title: String,
 	/**A valid file identifier for the voice message*/
 	pub voice_file_id: String,
+}
+impl InlineQueryResultCachedVoice {
+	pub fn new(id: impl Into<String>, r#type: impl Into<String>, title: impl Into<String>, voice_file_id: impl Into<String>) -> Self {
+		Self {
+			caption: None,
+			caption_entities: Vec::new(),
+			id: id.into(),
+			input_message_content: None,
+			parse_mode: None,
+			r#type: r#type.into(),
+			reply_markup: None,
+			title: title.into(),
+			voice_file_id: voice_file_id.into(),
+		}
+	}
+	pub fn caption(mut self, caption: impl Into<String>) -> Self {
+		self.caption = Some(caption.into());
+		self
+	}
+	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.caption_entities = caption_entities.into();
+		self
+	}
+	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
+		self.input_message_content = Some(input_message_content.into());
+		self
+	}
+	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
+		self.parse_mode = Some(parse_mode.into());
+		self
+	}
+	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
+		self.reply_markup = Some(reply_markup.into());
+		self
+	}
 }
 /**Represents a contact with a phone number. By default, this contact will be sent by the user. Alternatively, you can use *input\_message\_content* to send a message with the specified content instead of the contact.
 
@@ -2026,6 +2683,51 @@ pub struct InlineQueryResultContact {
 	pub thumbnail_width: Option<i64>,
 	/**Additional data about the contact in the form of a [vCard](https://en.wikipedia.org/wiki/VCard), 0-2048 bytes*/
 	pub vcard: Option<String>,
+}
+impl InlineQueryResultContact {
+	pub fn new(first_name: impl Into<String>, id: impl Into<String>, phone_number: impl Into<String>, r#type: impl Into<String>) -> Self {
+		Self {
+			first_name: first_name.into(),
+			id: id.into(),
+			input_message_content: None,
+			last_name: None,
+			phone_number: phone_number.into(),
+			r#type: r#type.into(),
+			reply_markup: None,
+			thumbnail_height: None,
+			thumbnail_url: None,
+			thumbnail_width: None,
+			vcard: None,
+		}
+	}
+	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
+		self.input_message_content = Some(input_message_content.into());
+		self
+	}
+	pub fn last_name(mut self, last_name: impl Into<String>) -> Self {
+		self.last_name = Some(last_name.into());
+		self
+	}
+	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
+		self.reply_markup = Some(reply_markup.into());
+		self
+	}
+	pub fn thumbnail_height(mut self, thumbnail_height: impl Into<i64>) -> Self {
+		self.thumbnail_height = Some(thumbnail_height.into());
+		self
+	}
+	pub fn thumbnail_url(mut self, thumbnail_url: impl Into<String>) -> Self {
+		self.thumbnail_url = Some(thumbnail_url.into());
+		self
+	}
+	pub fn thumbnail_width(mut self, thumbnail_width: impl Into<i64>) -> Self {
+		self.thumbnail_width = Some(thumbnail_width.into());
+		self
+	}
+	pub fn vcard(mut self, vcard: impl Into<String>) -> Self {
+		self.vcard = Some(vcard.into());
+		self
+	}
 }
 /**Represents a link to a file. By default, this file will be sent by the user with an optional caption. Alternatively, you can use *input\_message\_content* to send a message with the specified content instead of the file. Currently, only **.PDF** and **.ZIP** files can be sent using this method.
 
@@ -2069,6 +2771,62 @@ pub struct InlineQueryResultDocument {
 	/**Title for the result*/
 	pub title: String,
 }
+impl InlineQueryResultDocument {
+	pub fn new(document_url: impl Into<String>, id: impl Into<String>, mime_type: impl Into<String>, r#type: impl Into<String>, title: impl Into<String>) -> Self {
+		Self {
+			caption: None,
+			caption_entities: Vec::new(),
+			description: None,
+			document_url: document_url.into(),
+			id: id.into(),
+			input_message_content: None,
+			mime_type: mime_type.into(),
+			parse_mode: None,
+			r#type: r#type.into(),
+			reply_markup: None,
+			thumbnail_height: None,
+			thumbnail_url: None,
+			thumbnail_width: None,
+			title: title.into(),
+		}
+	}
+	pub fn caption(mut self, caption: impl Into<String>) -> Self {
+		self.caption = Some(caption.into());
+		self
+	}
+	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.caption_entities = caption_entities.into();
+		self
+	}
+	pub fn description(mut self, description: impl Into<String>) -> Self {
+		self.description = Some(description.into());
+		self
+	}
+	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
+		self.input_message_content = Some(input_message_content.into());
+		self
+	}
+	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
+		self.parse_mode = Some(parse_mode.into());
+		self
+	}
+	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
+		self.reply_markup = Some(reply_markup.into());
+		self
+	}
+	pub fn thumbnail_height(mut self, thumbnail_height: impl Into<i64>) -> Self {
+		self.thumbnail_height = Some(thumbnail_height.into());
+		self
+	}
+	pub fn thumbnail_url(mut self, thumbnail_url: impl Into<String>) -> Self {
+		self.thumbnail_url = Some(thumbnail_url.into());
+		self
+	}
+	pub fn thumbnail_width(mut self, thumbnail_width: impl Into<i64>) -> Self {
+		self.thumbnail_width = Some(thumbnail_width.into());
+		self
+	}
+}
 /**Represents a [Game](https://core.telegram.org/bots/api/#games).
 
 https://core.telegram.org/bots/api/#inlinequeryresultgame*/
@@ -2086,6 +2844,20 @@ pub struct InlineQueryResultGame {
 	pub r#type: String,
 	/**[Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub reply_markup: Option<InlineKeyboardMarkup>,
+}
+impl InlineQueryResultGame {
+	pub fn new(game_short_name: impl Into<String>, id: impl Into<String>, r#type: impl Into<String>) -> Self {
+		Self {
+			game_short_name: game_short_name.into(),
+			id: id.into(),
+			r#type: r#type.into(),
+			reply_markup: None,
+		}
+	}
+	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
+		self.reply_markup = Some(reply_markup.into());
+		self
+	}
 }
 /**Represents a link to an animated GIF file. By default, this animated GIF file will be sent by the user with optional caption. Alternatively, you can use *input\_message\_content* to send a message with the specified content instead of the animation.
 
@@ -2132,6 +2904,71 @@ pub struct InlineQueryResultGif {
 	/**Title for the result*/
 	pub title: Option<String>,
 }
+impl InlineQueryResultGif {
+	pub fn new(gif_url: impl Into<String>, id: impl Into<String>, r#type: impl Into<String>, thumbnail_url: impl Into<String>) -> Self {
+		Self {
+			caption: None,
+			caption_entities: Vec::new(),
+			gif_duration: None,
+			gif_height: None,
+			gif_url: gif_url.into(),
+			gif_width: None,
+			id: id.into(),
+			input_message_content: None,
+			parse_mode: None,
+			r#type: r#type.into(),
+			reply_markup: None,
+			show_caption_above_media: None,
+			thumbnail_mime_type: None,
+			thumbnail_url: thumbnail_url.into(),
+			title: None,
+		}
+	}
+	pub fn caption(mut self, caption: impl Into<String>) -> Self {
+		self.caption = Some(caption.into());
+		self
+	}
+	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.caption_entities = caption_entities.into();
+		self
+	}
+	pub fn gif_duration(mut self, gif_duration: impl Into<i64>) -> Self {
+		self.gif_duration = Some(gif_duration.into());
+		self
+	}
+	pub fn gif_height(mut self, gif_height: impl Into<i64>) -> Self {
+		self.gif_height = Some(gif_height.into());
+		self
+	}
+	pub fn gif_width(mut self, gif_width: impl Into<i64>) -> Self {
+		self.gif_width = Some(gif_width.into());
+		self
+	}
+	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
+		self.input_message_content = Some(input_message_content.into());
+		self
+	}
+	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
+		self.parse_mode = Some(parse_mode.into());
+		self
+	}
+	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
+		self.reply_markup = Some(reply_markup.into());
+		self
+	}
+	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
+		self.show_caption_above_media = Some(show_caption_above_media);
+		self
+	}
+	pub fn thumbnail_mime_type(mut self, thumbnail_mime_type: impl Into<String>) -> Self {
+		self.thumbnail_mime_type = Some(thumbnail_mime_type.into());
+		self
+	}
+	pub fn title(mut self, title: impl Into<String>) -> Self {
+		self.title = Some(title.into());
+		self
+	}
+}
 /**Represents a location on a map. By default, the location will be sent by the user. Alternatively, you can use *input\_message\_content* to send a message with the specified content instead of the location.
 
 https://core.telegram.org/bots/api/#inlinequeryresultlocation*/
@@ -2169,6 +3006,62 @@ pub struct InlineQueryResultLocation {
 	pub thumbnail_width: Option<i64>,
 	/**Location title*/
 	pub title: String,
+}
+impl InlineQueryResultLocation {
+	pub fn new(id: impl Into<String>, latitude: impl Into<f32>, longitude: impl Into<f32>, r#type: impl Into<String>, title: impl Into<String>) -> Self {
+		Self {
+			heading: None,
+			horizontal_accuracy: None,
+			id: id.into(),
+			input_message_content: None,
+			latitude: latitude.into(),
+			live_period: None,
+			longitude: longitude.into(),
+			proximity_alert_radius: None,
+			r#type: r#type.into(),
+			reply_markup: None,
+			thumbnail_height: None,
+			thumbnail_url: None,
+			thumbnail_width: None,
+			title: title.into(),
+		}
+	}
+	pub fn heading(mut self, heading: impl Into<i64>) -> Self {
+		self.heading = Some(heading.into());
+		self
+	}
+	pub fn horizontal_accuracy(mut self, horizontal_accuracy: impl Into<f32>) -> Self {
+		self.horizontal_accuracy = Some(horizontal_accuracy.into());
+		self
+	}
+	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
+		self.input_message_content = Some(input_message_content.into());
+		self
+	}
+	pub fn live_period(mut self, live_period: impl Into<i64>) -> Self {
+		self.live_period = Some(live_period.into());
+		self
+	}
+	pub fn proximity_alert_radius(mut self, proximity_alert_radius: impl Into<i64>) -> Self {
+		self.proximity_alert_radius = Some(proximity_alert_radius.into());
+		self
+	}
+	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
+		self.reply_markup = Some(reply_markup.into());
+		self
+	}
+	pub fn thumbnail_height(mut self, thumbnail_height: impl Into<i64>) -> Self {
+		self.thumbnail_height = Some(thumbnail_height.into());
+		self
+	}
+	pub fn thumbnail_url(mut self, thumbnail_url: impl Into<String>) -> Self {
+		self.thumbnail_url = Some(thumbnail_url.into());
+		self
+	}
+	pub fn thumbnail_width(mut self, thumbnail_width: impl Into<i64>) -> Self {
+		self.thumbnail_width = Some(thumbnail_width.into());
+		self
+	}
 }
 /**Represents a link to a video animation (H.264/MPEG-4 AVC video without sound). By default, this animated MPEG-4 file will be sent by the user with optional caption. Alternatively, you can use *input\_message\_content* to send a message with the specified content instead of the animation.
 
@@ -2215,6 +3108,71 @@ pub struct InlineQueryResultMpeg4Gif {
 	/**Title for the result*/
 	pub title: Option<String>,
 }
+impl InlineQueryResultMpeg4Gif {
+	pub fn new(id: impl Into<String>, mpeg4_url: impl Into<String>, r#type: impl Into<String>, thumbnail_url: impl Into<String>) -> Self {
+		Self {
+			caption: None,
+			caption_entities: Vec::new(),
+			id: id.into(),
+			input_message_content: None,
+			mpeg4_duration: None,
+			mpeg4_height: None,
+			mpeg4_url: mpeg4_url.into(),
+			mpeg4_width: None,
+			parse_mode: None,
+			r#type: r#type.into(),
+			reply_markup: None,
+			show_caption_above_media: None,
+			thumbnail_mime_type: None,
+			thumbnail_url: thumbnail_url.into(),
+			title: None,
+		}
+	}
+	pub fn caption(mut self, caption: impl Into<String>) -> Self {
+		self.caption = Some(caption.into());
+		self
+	}
+	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.caption_entities = caption_entities.into();
+		self
+	}
+	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
+		self.input_message_content = Some(input_message_content.into());
+		self
+	}
+	pub fn mpeg4_duration(mut self, mpeg4_duration: impl Into<i64>) -> Self {
+		self.mpeg4_duration = Some(mpeg4_duration.into());
+		self
+	}
+	pub fn mpeg4_height(mut self, mpeg4_height: impl Into<i64>) -> Self {
+		self.mpeg4_height = Some(mpeg4_height.into());
+		self
+	}
+	pub fn mpeg4_width(mut self, mpeg4_width: impl Into<i64>) -> Self {
+		self.mpeg4_width = Some(mpeg4_width.into());
+		self
+	}
+	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
+		self.parse_mode = Some(parse_mode.into());
+		self
+	}
+	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
+		self.reply_markup = Some(reply_markup.into());
+		self
+	}
+	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
+		self.show_caption_above_media = Some(show_caption_above_media);
+		self
+	}
+	pub fn thumbnail_mime_type(mut self, thumbnail_mime_type: impl Into<String>) -> Self {
+		self.thumbnail_mime_type = Some(thumbnail_mime_type.into());
+		self
+	}
+	pub fn title(mut self, title: impl Into<String>) -> Self {
+		self.title = Some(title.into());
+		self
+	}
+}
 /**Represents a link to a photo. By default, this photo will be sent by the user with optional caption. Alternatively, you can use *input\_message\_content* to send a message with the specified content instead of the photo.
 
 https://core.telegram.org/bots/api/#inlinequeryresultphoto*/
@@ -2256,6 +3214,66 @@ pub struct InlineQueryResultPhoto {
 	/**Title for the result*/
 	pub title: Option<String>,
 }
+impl InlineQueryResultPhoto {
+	pub fn new(id: impl Into<String>, photo_url: impl Into<String>, r#type: impl Into<String>, thumbnail_url: impl Into<String>) -> Self {
+		Self {
+			caption: None,
+			caption_entities: Vec::new(),
+			description: None,
+			id: id.into(),
+			input_message_content: None,
+			parse_mode: None,
+			photo_height: None,
+			photo_url: photo_url.into(),
+			photo_width: None,
+			r#type: r#type.into(),
+			reply_markup: None,
+			show_caption_above_media: None,
+			thumbnail_url: thumbnail_url.into(),
+			title: None,
+		}
+	}
+	pub fn caption(mut self, caption: impl Into<String>) -> Self {
+		self.caption = Some(caption.into());
+		self
+	}
+	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.caption_entities = caption_entities.into();
+		self
+	}
+	pub fn description(mut self, description: impl Into<String>) -> Self {
+		self.description = Some(description.into());
+		self
+	}
+	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
+		self.input_message_content = Some(input_message_content.into());
+		self
+	}
+	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
+		self.parse_mode = Some(parse_mode.into());
+		self
+	}
+	pub fn photo_height(mut self, photo_height: impl Into<i64>) -> Self {
+		self.photo_height = Some(photo_height.into());
+		self
+	}
+	pub fn photo_width(mut self, photo_width: impl Into<i64>) -> Self {
+		self.photo_width = Some(photo_width.into());
+		self
+	}
+	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
+		self.reply_markup = Some(reply_markup.into());
+		self
+	}
+	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
+		self.show_caption_above_media = Some(show_caption_above_media);
+		self
+	}
+	pub fn title(mut self, title: impl Into<String>) -> Self {
+		self.title = Some(title.into());
+		self
+	}
+}
 /**Represents a venue. By default, the venue will be sent by the user. Alternatively, you can use *input\_message\_content* to send a message with the specified content instead of the venue.
 
 https://core.telegram.org/bots/api/#inlinequeryresultvenue*/
@@ -2295,6 +3313,63 @@ pub struct InlineQueryResultVenue {
 	pub thumbnail_width: Option<i64>,
 	/**Title of the venue*/
 	pub title: String,
+}
+impl InlineQueryResultVenue {
+	pub fn new(address: impl Into<String>, id: impl Into<String>, latitude: impl Into<f32>, longitude: impl Into<f32>, r#type: impl Into<String>, title: impl Into<String>) -> Self {
+		Self {
+			address: address.into(),
+			foursquare_id: None,
+			foursquare_type: None,
+			google_place_id: None,
+			google_place_type: None,
+			id: id.into(),
+			input_message_content: None,
+			latitude: latitude.into(),
+			longitude: longitude.into(),
+			r#type: r#type.into(),
+			reply_markup: None,
+			thumbnail_height: None,
+			thumbnail_url: None,
+			thumbnail_width: None,
+			title: title.into(),
+		}
+	}
+	pub fn foursquare_id(mut self, foursquare_id: impl Into<String>) -> Self {
+		self.foursquare_id = Some(foursquare_id.into());
+		self
+	}
+	pub fn foursquare_type(mut self, foursquare_type: impl Into<String>) -> Self {
+		self.foursquare_type = Some(foursquare_type.into());
+		self
+	}
+	pub fn google_place_id(mut self, google_place_id: impl Into<String>) -> Self {
+		self.google_place_id = Some(google_place_id.into());
+		self
+	}
+	pub fn google_place_type(mut self, google_place_type: impl Into<String>) -> Self {
+		self.google_place_type = Some(google_place_type.into());
+		self
+	}
+	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
+		self.input_message_content = Some(input_message_content.into());
+		self
+	}
+	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
+		self.reply_markup = Some(reply_markup.into());
+		self
+	}
+	pub fn thumbnail_height(mut self, thumbnail_height: impl Into<i64>) -> Self {
+		self.thumbnail_height = Some(thumbnail_height.into());
+		self
+	}
+	pub fn thumbnail_url(mut self, thumbnail_url: impl Into<String>) -> Self {
+		self.thumbnail_url = Some(thumbnail_url.into());
+		self
+	}
+	pub fn thumbnail_width(mut self, thumbnail_width: impl Into<i64>) -> Self {
+		self.thumbnail_width = Some(thumbnail_width.into());
+		self
+	}
 }
 /**Represents a link to a page containing an embedded video player or a video file. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use *input\_message\_content* to send a message with the specified content instead of the video.
 
@@ -2344,6 +3419,68 @@ pub struct InlineQueryResultVideo {
 	/**Video width*/
 	pub video_width: Option<i64>,
 }
+impl InlineQueryResultVideo {
+	pub fn new(id: impl Into<String>, mime_type: impl Into<String>, r#type: impl Into<String>, thumbnail_url: impl Into<String>, title: impl Into<String>, video_url: impl Into<String>) -> Self {
+		Self {
+			caption: None,
+			caption_entities: Vec::new(),
+			description: None,
+			id: id.into(),
+			input_message_content: None,
+			mime_type: mime_type.into(),
+			parse_mode: None,
+			r#type: r#type.into(),
+			reply_markup: None,
+			show_caption_above_media: None,
+			thumbnail_url: thumbnail_url.into(),
+			title: title.into(),
+			video_duration: None,
+			video_height: None,
+			video_url: video_url.into(),
+			video_width: None,
+		}
+	}
+	pub fn caption(mut self, caption: impl Into<String>) -> Self {
+		self.caption = Some(caption.into());
+		self
+	}
+	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.caption_entities = caption_entities.into();
+		self
+	}
+	pub fn description(mut self, description: impl Into<String>) -> Self {
+		self.description = Some(description.into());
+		self
+	}
+	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
+		self.input_message_content = Some(input_message_content.into());
+		self
+	}
+	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
+		self.parse_mode = Some(parse_mode.into());
+		self
+	}
+	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
+		self.reply_markup = Some(reply_markup.into());
+		self
+	}
+	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
+		self.show_caption_above_media = Some(show_caption_above_media);
+		self
+	}
+	pub fn video_duration(mut self, video_duration: impl Into<i64>) -> Self {
+		self.video_duration = Some(video_duration.into());
+		self
+	}
+	pub fn video_height(mut self, video_height: impl Into<i64>) -> Self {
+		self.video_height = Some(video_height.into());
+		self
+	}
+	pub fn video_width(mut self, video_width: impl Into<i64>) -> Self {
+		self.video_width = Some(video_width.into());
+		self
+	}
+}
 /**Represents a link to a voice recording in an .OGG container encoded with OPUS. By default, this voice recording will be sent by the user. Alternatively, you can use *input\_message\_content* to send a message with the specified content instead of the the voice message.
 
 https://core.telegram.org/bots/api/#inlinequeryresultvoice*/
@@ -2377,6 +3514,46 @@ pub struct InlineQueryResultVoice {
 	/**A valid URL for the voice recording*/
 	pub voice_url: String,
 }
+impl InlineQueryResultVoice {
+	pub fn new(id: impl Into<String>, r#type: impl Into<String>, title: impl Into<String>, voice_url: impl Into<String>) -> Self {
+		Self {
+			caption: None,
+			caption_entities: Vec::new(),
+			id: id.into(),
+			input_message_content: None,
+			parse_mode: None,
+			r#type: r#type.into(),
+			reply_markup: None,
+			title: title.into(),
+			voice_duration: None,
+			voice_url: voice_url.into(),
+		}
+	}
+	pub fn caption(mut self, caption: impl Into<String>) -> Self {
+		self.caption = Some(caption.into());
+		self
+	}
+	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.caption_entities = caption_entities.into();
+		self
+	}
+	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
+		self.input_message_content = Some(input_message_content.into());
+		self
+	}
+	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
+		self.parse_mode = Some(parse_mode.into());
+		self
+	}
+	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
+		self.reply_markup = Some(reply_markup.into());
+		self
+	}
+	pub fn voice_duration(mut self, voice_duration: impl Into<i64>) -> Self {
+		self.voice_duration = Some(voice_duration.into());
+		self
+	}
+}
 /**This object represents a button to be shown above inline query results. You **must** use exactly one of the optional fields.
 
 https://core.telegram.org/bots/api/#inlinequeryresultsbutton*/
@@ -2396,6 +3573,23 @@ pub struct InlineQueryResultsButton {
 	/**Description of the [Web App](https://core.telegram.org/bots/webapps) that will be launched when the user presses the button. The Web App will be able to switch back to the inline mode using the method [switchInlineQuery](https://core.telegram.org/bots/webapps#initializing-mini-apps) inside the Web App.*/
 	pub web_app: Option<WebAppInfo>,
 }
+impl InlineQueryResultsButton {
+	pub fn new(text: impl Into<String>) -> Self {
+		Self {
+			start_parameter: None,
+			text: text.into(),
+			web_app: None,
+		}
+	}
+	pub fn start_parameter(mut self, start_parameter: impl Into<String>) -> Self {
+		self.start_parameter = Some(start_parameter.into());
+		self
+	}
+	pub fn web_app(mut self, web_app: impl Into<WebAppInfo>) -> Self {
+		self.web_app = Some(web_app.into());
+		self
+	}
+}
 /**Represents the [content](https://core.telegram.org/bots/api/#inputmessagecontent) of a contact message to be sent as the result of an inline query.
 
 https://core.telegram.org/bots/api/#inputcontactmessagecontent*/
@@ -2412,6 +3606,24 @@ pub struct InputContactMessageContent {
 	pub phone_number: String,
 	/**Additional data about the contact in the form of a [vCard](https://en.wikipedia.org/wiki/VCard), 0-2048 bytes*/
 	pub vcard: Option<String>,
+}
+impl InputContactMessageContent {
+	pub fn new(first_name: impl Into<String>, phone_number: impl Into<String>) -> Self {
+		Self {
+			first_name: first_name.into(),
+			last_name: None,
+			phone_number: phone_number.into(),
+			vcard: None,
+		}
+	}
+	pub fn last_name(mut self, last_name: impl Into<String>) -> Self {
+		self.last_name = Some(last_name.into());
+		self
+	}
+	pub fn vcard(mut self, vcard: impl Into<String>) -> Self {
+		self.vcard = Some(vcard.into());
+		self
+	}
 }
 /**Represents the [content](https://core.telegram.org/bots/api/#inputmessagecontent) of an invoice message to be sent as the result of an inline query.
 
@@ -2468,6 +3680,92 @@ pub struct InputInvoiceMessageContent {
 	Max len: 32*/
 	pub title: String,
 }
+impl InputInvoiceMessageContent {
+	pub fn new(currency: impl Into<String>, description: impl Into<String>, payload: impl Into<String>, prices: impl Into<Vec<LabeledPrice>>, title: impl Into<String>) -> Self {
+		Self {
+			currency: currency.into(),
+			description: description.into(),
+			is_flexible: None,
+			max_tip_amount: None,
+			need_email: None,
+			need_name: None,
+			need_phone_number: None,
+			need_shipping_address: None,
+			payload: payload.into(),
+			photo_height: None,
+			photo_size: None,
+			photo_url: None,
+			photo_width: None,
+			prices: prices.into(),
+			provider_data: None,
+			provider_token: None,
+			send_email_to_provider: None,
+			send_phone_number_to_provider: None,
+			suggested_tip_amounts: Vec::new(),
+			title: title.into(),
+		}
+	}
+	pub fn is_flexible(mut self, is_flexible: bool) -> Self {
+		self.is_flexible = Some(is_flexible);
+		self
+	}
+	pub fn max_tip_amount(mut self, max_tip_amount: impl Into<i64>) -> Self {
+		self.max_tip_amount = Some(max_tip_amount.into());
+		self
+	}
+	pub fn need_email(mut self, need_email: bool) -> Self {
+		self.need_email = Some(need_email);
+		self
+	}
+	pub fn need_name(mut self, need_name: bool) -> Self {
+		self.need_name = Some(need_name);
+		self
+	}
+	pub fn need_phone_number(mut self, need_phone_number: bool) -> Self {
+		self.need_phone_number = Some(need_phone_number);
+		self
+	}
+	pub fn need_shipping_address(mut self, need_shipping_address: bool) -> Self {
+		self.need_shipping_address = Some(need_shipping_address);
+		self
+	}
+	pub fn photo_height(mut self, photo_height: impl Into<i64>) -> Self {
+		self.photo_height = Some(photo_height.into());
+		self
+	}
+	pub fn photo_size(mut self, photo_size: impl Into<i64>) -> Self {
+		self.photo_size = Some(photo_size.into());
+		self
+	}
+	pub fn photo_url(mut self, photo_url: impl Into<String>) -> Self {
+		self.photo_url = Some(photo_url.into());
+		self
+	}
+	pub fn photo_width(mut self, photo_width: impl Into<i64>) -> Self {
+		self.photo_width = Some(photo_width.into());
+		self
+	}
+	pub fn provider_data(mut self, provider_data: impl Into<String>) -> Self {
+		self.provider_data = Some(provider_data.into());
+		self
+	}
+	pub fn provider_token(mut self, provider_token: impl Into<String>) -> Self {
+		self.provider_token = Some(provider_token.into());
+		self
+	}
+	pub fn send_email_to_provider(mut self, send_email_to_provider: bool) -> Self {
+		self.send_email_to_provider = Some(send_email_to_provider);
+		self
+	}
+	pub fn send_phone_number_to_provider(mut self, send_phone_number_to_provider: bool) -> Self {
+		self.send_phone_number_to_provider = Some(send_phone_number_to_provider);
+		self
+	}
+	pub fn suggested_tip_amounts(mut self, suggested_tip_amounts: impl Into<Vec<i64>>) -> Self {
+		self.suggested_tip_amounts = suggested_tip_amounts.into();
+		self
+	}
+}
 /**Represents the [content](https://core.telegram.org/bots/api/#inputmessagecontent) of a location message to be sent as the result of an inline query.
 
 https://core.telegram.org/bots/api/#inputlocationmessagecontent*/
@@ -2488,6 +3786,34 @@ pub struct InputLocationMessageContent {
 	pub longitude: f32,
 	/**For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.*/
 	pub proximity_alert_radius: Option<i64>,
+}
+impl InputLocationMessageContent {
+	pub fn new(latitude: impl Into<f32>, longitude: impl Into<f32>) -> Self {
+		Self {
+			heading: None,
+			horizontal_accuracy: None,
+			latitude: latitude.into(),
+			live_period: None,
+			longitude: longitude.into(),
+			proximity_alert_radius: None,
+		}
+	}
+	pub fn heading(mut self, heading: impl Into<i64>) -> Self {
+		self.heading = Some(heading.into());
+		self
+	}
+	pub fn horizontal_accuracy(mut self, horizontal_accuracy: impl Into<f32>) -> Self {
+		self.horizontal_accuracy = Some(horizontal_accuracy.into());
+		self
+	}
+	pub fn live_period(mut self, live_period: impl Into<i64>) -> Self {
+		self.live_period = Some(live_period.into());
+		self
+	}
+	pub fn proximity_alert_radius(mut self, proximity_alert_radius: impl Into<i64>) -> Self {
+		self.proximity_alert_radius = Some(proximity_alert_radius.into());
+		self
+	}
 }
 /**This object represents the content of a media message to be sent. It should be one of
 
@@ -2542,6 +3868,59 @@ pub struct InputMediaAnimation {
 	/**Animation width*/
 	pub width: Option<i64>,
 }
+impl InputMediaAnimation {
+	pub fn new(media: impl Into<String>, r#type: impl Into<String>) -> Self {
+		Self {
+			caption: None,
+			caption_entities: Vec::new(),
+			duration: None,
+			has_spoiler: None,
+			height: None,
+			media: media.into(),
+			parse_mode: None,
+			r#type: r#type.into(),
+			show_caption_above_media: None,
+			thumbnail: None,
+			width: None,
+		}
+	}
+	pub fn caption(mut self, caption: impl Into<String>) -> Self {
+		self.caption = Some(caption.into());
+		self
+	}
+	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.caption_entities = caption_entities.into();
+		self
+	}
+	pub fn duration(mut self, duration: impl Into<i64>) -> Self {
+		self.duration = Some(duration.into());
+		self
+	}
+	pub fn has_spoiler(mut self, has_spoiler: bool) -> Self {
+		self.has_spoiler = Some(has_spoiler);
+		self
+	}
+	pub fn height(mut self, height: impl Into<i64>) -> Self {
+		self.height = Some(height.into());
+		self
+	}
+	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
+		self.parse_mode = Some(parse_mode.into());
+		self
+	}
+	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
+		self.show_caption_above_media = Some(show_caption_above_media);
+		self
+	}
+	pub fn thumbnail(mut self, thumbnail: impl Into<Asset>) -> Self {
+		self.thumbnail = Some(thumbnail.into());
+		self
+	}
+	pub fn width(mut self, width: impl Into<i64>) -> Self {
+		self.width = Some(width.into());
+		self
+	}
+}
 /**Represents an audio file to be treated as music to be sent.
 
 https://core.telegram.org/bots/api/#inputmediaaudio*/
@@ -2573,6 +3952,49 @@ pub struct InputMediaAudio {
 	/**Title of the audio*/
 	pub title: Option<String>,
 }
+impl InputMediaAudio {
+	pub fn new(media: impl Into<String>, r#type: impl Into<String>) -> Self {
+		Self {
+			caption: None,
+			caption_entities: Vec::new(),
+			duration: None,
+			media: media.into(),
+			parse_mode: None,
+			performer: None,
+			r#type: r#type.into(),
+			thumbnail: None,
+			title: None,
+		}
+	}
+	pub fn caption(mut self, caption: impl Into<String>) -> Self {
+		self.caption = Some(caption.into());
+		self
+	}
+	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.caption_entities = caption_entities.into();
+		self
+	}
+	pub fn duration(mut self, duration: impl Into<i64>) -> Self {
+		self.duration = Some(duration.into());
+		self
+	}
+	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
+		self.parse_mode = Some(parse_mode.into());
+		self
+	}
+	pub fn performer(mut self, performer: impl Into<String>) -> Self {
+		self.performer = Some(performer.into());
+		self
+	}
+	pub fn thumbnail(mut self, thumbnail: impl Into<Asset>) -> Self {
+		self.thumbnail = Some(thumbnail.into());
+		self
+	}
+	pub fn title(mut self, title: impl Into<String>) -> Self {
+		self.title = Some(title.into());
+		self
+	}
+}
 /**Represents a general file to be sent.
 
 https://core.telegram.org/bots/api/#inputmediadocument*/
@@ -2600,6 +4022,39 @@ pub struct InputMediaDocument {
 	/**Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
 	pub thumbnail: Option<Asset>,
 }
+impl InputMediaDocument {
+	pub fn new(media: impl Into<String>, r#type: impl Into<String>) -> Self {
+		Self {
+			caption: None,
+			caption_entities: Vec::new(),
+			disable_content_type_detection: None,
+			media: media.into(),
+			parse_mode: None,
+			r#type: r#type.into(),
+			thumbnail: None,
+		}
+	}
+	pub fn caption(mut self, caption: impl Into<String>) -> Self {
+		self.caption = Some(caption.into());
+		self
+	}
+	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.caption_entities = caption_entities.into();
+		self
+	}
+	pub fn disable_content_type_detection(mut self, disable_content_type_detection: bool) -> Self {
+		self.disable_content_type_detection = Some(disable_content_type_detection);
+		self
+	}
+	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
+		self.parse_mode = Some(parse_mode.into());
+		self
+	}
+	pub fn thumbnail(mut self, thumbnail: impl Into<Asset>) -> Self {
+		self.thumbnail = Some(thumbnail.into());
+		self
+	}
+}
 /**Represents a photo to be sent.
 
 https://core.telegram.org/bots/api/#inputmediaphoto*/
@@ -2626,6 +4081,39 @@ pub struct InputMediaPhoto {
 	pub r#type: String,
 	/**Pass if the caption must be shown above the message media*/
 	pub show_caption_above_media: Option<bool>,
+}
+impl InputMediaPhoto {
+	pub fn new(media: impl Into<String>, r#type: impl Into<String>) -> Self {
+		Self {
+			caption: None,
+			caption_entities: Vec::new(),
+			has_spoiler: None,
+			media: media.into(),
+			parse_mode: None,
+			r#type: r#type.into(),
+			show_caption_above_media: None,
+		}
+	}
+	pub fn caption(mut self, caption: impl Into<String>) -> Self {
+		self.caption = Some(caption.into());
+		self
+	}
+	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.caption_entities = caption_entities.into();
+		self
+	}
+	pub fn has_spoiler(mut self, has_spoiler: bool) -> Self {
+		self.has_spoiler = Some(has_spoiler);
+		self
+	}
+	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
+		self.parse_mode = Some(parse_mode.into());
+		self
+	}
+	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
+		self.show_caption_above_media = Some(show_caption_above_media);
+		self
+	}
 }
 /**Represents a video to be sent.
 
@@ -2663,6 +4151,64 @@ pub struct InputMediaVideo {
 	pub thumbnail: Option<Asset>,
 	/**Video width*/
 	pub width: Option<i64>,
+}
+impl InputMediaVideo {
+	pub fn new(media: impl Into<String>, r#type: impl Into<String>) -> Self {
+		Self {
+			caption: None,
+			caption_entities: Vec::new(),
+			duration: None,
+			has_spoiler: None,
+			height: None,
+			media: media.into(),
+			parse_mode: None,
+			r#type: r#type.into(),
+			show_caption_above_media: None,
+			supports_streaming: None,
+			thumbnail: None,
+			width: None,
+		}
+	}
+	pub fn caption(mut self, caption: impl Into<String>) -> Self {
+		self.caption = Some(caption.into());
+		self
+	}
+	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.caption_entities = caption_entities.into();
+		self
+	}
+	pub fn duration(mut self, duration: impl Into<i64>) -> Self {
+		self.duration = Some(duration.into());
+		self
+	}
+	pub fn has_spoiler(mut self, has_spoiler: bool) -> Self {
+		self.has_spoiler = Some(has_spoiler);
+		self
+	}
+	pub fn height(mut self, height: impl Into<i64>) -> Self {
+		self.height = Some(height.into());
+		self
+	}
+	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
+		self.parse_mode = Some(parse_mode.into());
+		self
+	}
+	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
+		self.show_caption_above_media = Some(show_caption_above_media);
+		self
+	}
+	pub fn supports_streaming(mut self, supports_streaming: bool) -> Self {
+		self.supports_streaming = Some(supports_streaming);
+		self
+	}
+	pub fn thumbnail(mut self, thumbnail: impl Into<Asset>) -> Self {
+		self.thumbnail = Some(thumbnail.into());
+		self
+	}
+	pub fn width(mut self, width: impl Into<i64>) -> Self {
+		self.width = Some(width.into());
+		self
+	}
 }
 /**This object represents the content of a message to be sent as a result of an inline query. Telegram clients currently support the following 5 types:
 
@@ -2705,6 +4251,14 @@ pub struct InputPaidMediaPhoto {
 	Default: photo*/
 	pub r#type: String,
 }
+impl InputPaidMediaPhoto {
+	pub fn new(media: impl Into<String>, r#type: impl Into<String>) -> Self {
+		Self {
+			media: media.into(),
+			r#type: r#type.into(),
+		}
+	}
+}
 /**The paid media to send is a video.
 
 https://core.telegram.org/bots/api/#inputpaidmediavideo*/
@@ -2729,6 +4283,39 @@ pub struct InputPaidMediaVideo {
 	/**Video width*/
 	pub width: Option<i64>,
 }
+impl InputPaidMediaVideo {
+	pub fn new(media: impl Into<String>, r#type: impl Into<String>) -> Self {
+		Self {
+			duration: None,
+			height: None,
+			media: media.into(),
+			r#type: r#type.into(),
+			supports_streaming: None,
+			thumbnail: None,
+			width: None,
+		}
+	}
+	pub fn duration(mut self, duration: impl Into<i64>) -> Self {
+		self.duration = Some(duration.into());
+		self
+	}
+	pub fn height(mut self, height: impl Into<i64>) -> Self {
+		self.height = Some(height.into());
+		self
+	}
+	pub fn supports_streaming(mut self, supports_streaming: bool) -> Self {
+		self.supports_streaming = Some(supports_streaming);
+		self
+	}
+	pub fn thumbnail(mut self, thumbnail: impl Into<Asset>) -> Self {
+		self.thumbnail = Some(thumbnail.into());
+		self
+	}
+	pub fn width(mut self, width: impl Into<i64>) -> Self {
+		self.width = Some(width.into());
+		self
+	}
+}
 /**This object contains information about one answer option in a poll to be sent.
 
 https://core.telegram.org/bots/api/#inputpolloption*/
@@ -2746,6 +4333,23 @@ pub struct InputPollOption {
 	pub text_entities: Vec<MessageEntity>,
 	/**Mode for parsing entities in the text. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details. Currently, only custom emoji entities are allowed*/
 	pub text_parse_mode: Option<String>,
+}
+impl InputPollOption {
+	pub fn new(text: impl Into<String>) -> Self {
+		Self {
+			text: text.into(),
+			text_entities: Vec::new(),
+			text_parse_mode: None,
+		}
+	}
+	pub fn text_entities(mut self, text_entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.text_entities = text_entities.into();
+		self
+	}
+	pub fn text_parse_mode(mut self, text_parse_mode: impl Into<String>) -> Self {
+		self.text_parse_mode = Some(text_parse_mode.into());
+		self
+	}
 }
 /**This object describes a sticker to be added to a sticker set.
 
@@ -2768,6 +4372,25 @@ pub struct InputSticker {
 	/**The added sticker. Pass a *file\_id* as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, upload a new one using multipart/form-data, or pass “attach://\<file\_attach\_name\>” to upload a new one using multipart/form-data under \<file\_attach\_name\> name. Animated and video stickers can't be uploaded via HTTP URL. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
 	pub sticker: Asset,
 }
+impl InputSticker {
+	pub fn new(emoji_list: impl Into<Vec<String>>, format: impl Into<String>, sticker: impl Into<Asset>) -> Self {
+		Self {
+			emoji_list: emoji_list.into(),
+			format: format.into(),
+			keywords: Vec::new(),
+			mask_position: None,
+			sticker: sticker.into(),
+		}
+	}
+	pub fn keywords(mut self, keywords: impl Into<Vec<String>>) -> Self {
+		self.keywords = keywords.into();
+		self
+	}
+	pub fn mask_position(mut self, mask_position: impl Into<MaskPosition>) -> Self {
+		self.mask_position = Some(mask_position.into());
+		self
+	}
+}
 /**Represents the [content](https://core.telegram.org/bots/api/#inputmessagecontent) of a text message to be sent as the result of an inline query.
 
 https://core.telegram.org/bots/api/#inputtextmessagecontent*/
@@ -2787,6 +4410,28 @@ pub struct InputTextMessageContent {
 	pub message_text: String,
 	/**Mode for parsing entities in the message text. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub parse_mode: Option<String>,
+}
+impl InputTextMessageContent {
+	pub fn new(message_text: impl Into<String>) -> Self {
+		Self {
+			entities: Vec::new(),
+			link_preview_options: None,
+			message_text: message_text.into(),
+			parse_mode: None,
+		}
+	}
+	pub fn entities(mut self, entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.entities = entities.into();
+		self
+	}
+	pub fn link_preview_options(mut self, link_preview_options: impl Into<LinkPreviewOptions>) -> Self {
+		self.link_preview_options = Some(link_preview_options.into());
+		self
+	}
+	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
+		self.parse_mode = Some(parse_mode.into());
+		self
+	}
 }
 /**Represents the [content](https://core.telegram.org/bots/api/#inputmessagecontent) of a venue message to be sent as the result of an inline query.
 
@@ -2812,6 +4457,36 @@ pub struct InputVenueMessageContent {
 	pub longitude: f32,
 	/**Name of the venue*/
 	pub title: String,
+}
+impl InputVenueMessageContent {
+	pub fn new(address: impl Into<String>, latitude: impl Into<f32>, longitude: impl Into<f32>, title: impl Into<String>) -> Self {
+		Self {
+			address: address.into(),
+			foursquare_id: None,
+			foursquare_type: None,
+			google_place_id: None,
+			google_place_type: None,
+			latitude: latitude.into(),
+			longitude: longitude.into(),
+			title: title.into(),
+		}
+	}
+	pub fn foursquare_id(mut self, foursquare_id: impl Into<String>) -> Self {
+		self.foursquare_id = Some(foursquare_id.into());
+		self
+	}
+	pub fn foursquare_type(mut self, foursquare_type: impl Into<String>) -> Self {
+		self.foursquare_type = Some(foursquare_type.into());
+		self
+	}
+	pub fn google_place_id(mut self, google_place_id: impl Into<String>) -> Self {
+		self.google_place_id = Some(google_place_id.into());
+		self
+	}
+	pub fn google_place_type(mut self, google_place_type: impl Into<String>) -> Self {
+		self.google_place_type = Some(google_place_type.into());
+		self
+	}
 }
 /**This object contains basic information about an invoice.
 
@@ -2852,6 +4527,43 @@ pub struct KeyboardButton {
 	/**If specified, the described [Web App](https://core.telegram.org/bots/webapps) will be launched when the button is pressed. The Web App will be able to send a “web\_app\_data” service message. Available in private chats only.*/
 	pub web_app: Option<WebAppInfo>,
 }
+impl KeyboardButton {
+	pub fn new(text: impl Into<String>) -> Self {
+		Self {
+			request_chat: None,
+			request_contact: None,
+			request_location: None,
+			request_poll: None,
+			request_users: None,
+			text: text.into(),
+			web_app: None,
+		}
+	}
+	pub fn request_chat(mut self, request_chat: impl Into<KeyboardButtonRequestChat>) -> Self {
+		self.request_chat = Some(request_chat.into());
+		self
+	}
+	pub fn request_contact(mut self, request_contact: bool) -> Self {
+		self.request_contact = Some(request_contact);
+		self
+	}
+	pub fn request_location(mut self, request_location: bool) -> Self {
+		self.request_location = Some(request_location);
+		self
+	}
+	pub fn request_poll(mut self, request_poll: impl Into<KeyboardButtonPollType>) -> Self {
+		self.request_poll = Some(request_poll.into());
+		self
+	}
+	pub fn request_users(mut self, request_users: impl Into<KeyboardButtonRequestUsers>) -> Self {
+		self.request_users = Some(request_users.into());
+		self
+	}
+	pub fn web_app(mut self, web_app: impl Into<WebAppInfo>) -> Self {
+		self.web_app = Some(web_app.into());
+		self
+	}
+}
 /**This object represents type of a poll, which is allowed to be created and sent when the corresponding button is pressed.
 
 https://core.telegram.org/bots/api/#keyboardbuttonpolltype*/
@@ -2862,6 +4574,17 @@ https://core.telegram.org/bots/api/#keyboardbuttonpolltype*/
 pub struct KeyboardButtonPollType {
 	/**If *quiz* is passed, the user will be allowed to create only polls in the quiz mode. If *regular* is passed, only regular polls will be allowed. Otherwise, the user will be allowed to create a poll of any type.*/
 	pub r#type: Option<String>,
+}
+impl KeyboardButtonPollType {
+	pub fn new() -> Self {
+		Self {
+			r#type: None,
+		}
+	}
+	pub fn r#type(mut self, r#type: impl Into<String>) -> Self {
+		self.r#type = Some(r#type.into());
+		self
+	}
 }
 /**This object defines the criteria used to request a suitable chat. Information about the selected chat will be shared with the bot when the corresponding button is pressed. The bot will be granted requested rights in the chat if appropriate. [More about requesting chats »](https://core.telegram.org/bots/features#chat-and-user-selection).
 
@@ -2894,6 +4617,59 @@ pub struct KeyboardButtonRequestChat {
 	/**A JSON-serialized object listing the required administrator rights of the user in the chat. The rights must be a superset of *bot\_administrator\_rights*. If not specified, no additional restrictions are applied.*/
 	pub user_administrator_rights: Option<ChatAdministratorRights>,
 }
+impl KeyboardButtonRequestChat {
+	pub fn new(chat_is_channel: bool, request_id: impl Into<i64>) -> Self {
+		Self {
+			bot_administrator_rights: None,
+			bot_is_member: None,
+			chat_has_username: None,
+			chat_is_channel: chat_is_channel,
+			chat_is_created: None,
+			chat_is_forum: None,
+			request_id: request_id.into(),
+			request_photo: None,
+			request_title: None,
+			request_username: None,
+			user_administrator_rights: None,
+		}
+	}
+	pub fn bot_administrator_rights(mut self, bot_administrator_rights: impl Into<ChatAdministratorRights>) -> Self {
+		self.bot_administrator_rights = Some(bot_administrator_rights.into());
+		self
+	}
+	pub fn bot_is_member(mut self, bot_is_member: bool) -> Self {
+		self.bot_is_member = Some(bot_is_member);
+		self
+	}
+	pub fn chat_has_username(mut self, chat_has_username: bool) -> Self {
+		self.chat_has_username = Some(chat_has_username);
+		self
+	}
+	pub fn chat_is_created(mut self, chat_is_created: bool) -> Self {
+		self.chat_is_created = Some(chat_is_created);
+		self
+	}
+	pub fn chat_is_forum(mut self, chat_is_forum: bool) -> Self {
+		self.chat_is_forum = Some(chat_is_forum);
+		self
+	}
+	pub fn request_photo(mut self, request_photo: bool) -> Self {
+		self.request_photo = Some(request_photo);
+		self
+	}
+	pub fn request_title(mut self, request_title: bool) -> Self {
+		self.request_title = Some(request_title);
+		self
+	}
+	pub fn request_username(mut self, request_username: bool) -> Self {
+		self.request_username = Some(request_username);
+		self
+	}
+	pub fn user_administrator_rights(mut self, user_administrator_rights: impl Into<ChatAdministratorRights>) -> Self {
+		self.user_administrator_rights = Some(user_administrator_rights.into());
+		self
+	}
+}
 /**This object defines the criteria used to request suitable users. Information about the selected users will be shared with the bot when the corresponding button is pressed. [More about requesting users »](https://core.telegram.org/bots/features#chat-and-user-selection)
 
 https://core.telegram.org/bots/api/#keyboardbuttonrequestusers*/
@@ -2918,6 +4694,43 @@ pub struct KeyboardButtonRequestUsers {
 	/**Pass *True* to request premium users, pass *False* to request non-premium users. If not specified, no additional restrictions are applied.*/
 	pub user_is_premium: Option<bool>,
 }
+impl KeyboardButtonRequestUsers {
+	pub fn new(request_id: impl Into<i64>) -> Self {
+		Self {
+			max_quantity: None,
+			request_id: request_id.into(),
+			request_name: None,
+			request_photo: None,
+			request_username: None,
+			user_is_bot: None,
+			user_is_premium: None,
+		}
+	}
+	pub fn max_quantity(mut self, max_quantity: impl Into<i64>) -> Self {
+		self.max_quantity = Some(max_quantity.into());
+		self
+	}
+	pub fn request_name(mut self, request_name: bool) -> Self {
+		self.request_name = Some(request_name);
+		self
+	}
+	pub fn request_photo(mut self, request_photo: bool) -> Self {
+		self.request_photo = Some(request_photo);
+		self
+	}
+	pub fn request_username(mut self, request_username: bool) -> Self {
+		self.request_username = Some(request_username);
+		self
+	}
+	pub fn user_is_bot(mut self, user_is_bot: bool) -> Self {
+		self.user_is_bot = Some(user_is_bot);
+		self
+	}
+	pub fn user_is_premium(mut self, user_is_premium: bool) -> Self {
+		self.user_is_premium = Some(user_is_premium);
+		self
+	}
+}
 /**This object represents a portion of the price for goods or services.
 
 https://core.telegram.org/bots/api/#labeledprice*/
@@ -2927,6 +4740,14 @@ pub struct LabeledPrice {
 	pub amount: i64,
 	/**Portion label*/
 	pub label: String,
+}
+impl LabeledPrice {
+	pub fn new(amount: impl Into<i64>, label: impl Into<String>) -> Self {
+		Self {
+			amount: amount.into(),
+			label: label.into(),
+		}
+	}
 }
 /**Describes the options used for link preview generation.
 
@@ -2946,6 +4767,37 @@ pub struct LinkPreviewOptions {
 	pub show_above_text: Option<bool>,
 	/**URL to use for the link preview. If empty, then the first URL found in the message text will be used*/
 	pub url: Option<String>,
+}
+impl LinkPreviewOptions {
+	pub fn new() -> Self {
+		Self {
+			is_disabled: None,
+			prefer_large_media: None,
+			prefer_small_media: None,
+			show_above_text: None,
+			url: None,
+		}
+	}
+	pub fn is_disabled(mut self, is_disabled: bool) -> Self {
+		self.is_disabled = Some(is_disabled);
+		self
+	}
+	pub fn prefer_large_media(mut self, prefer_large_media: bool) -> Self {
+		self.prefer_large_media = Some(prefer_large_media);
+		self
+	}
+	pub fn prefer_small_media(mut self, prefer_small_media: bool) -> Self {
+		self.prefer_small_media = Some(prefer_small_media);
+		self
+	}
+	pub fn show_above_text(mut self, show_above_text: bool) -> Self {
+		self.show_above_text = Some(show_above_text);
+		self
+	}
+	pub fn url(mut self, url: impl Into<String>) -> Self {
+		self.url = Some(url.into());
+		self
+	}
 }
 /**This object represents a point on the map.
 
@@ -2991,6 +4843,28 @@ pub struct LoginUrl {
 	**NOTE:** You **must** always check the hash of the received data to verify the authentication and the integrity of the data as described in [Checking authorization](https://core.telegram.org/widgets/login#checking-authorization).*/
 	pub url: String,
 }
+impl LoginUrl {
+	pub fn new(url: impl Into<String>) -> Self {
+		Self {
+			bot_username: None,
+			forward_text: None,
+			request_write_access: None,
+			url: url.into(),
+		}
+	}
+	pub fn bot_username(mut self, bot_username: impl Into<String>) -> Self {
+		self.bot_username = Some(bot_username.into());
+		self
+	}
+	pub fn forward_text(mut self, forward_text: impl Into<String>) -> Self {
+		self.forward_text = Some(forward_text.into());
+		self
+	}
+	pub fn request_write_access(mut self, request_write_access: bool) -> Self {
+		self.request_write_access = Some(request_write_access);
+		self
+	}
+}
 /**This object describes the position on faces where a mask should be placed by default.
 
 https://core.telegram.org/bots/api/#maskposition*/
@@ -3005,6 +4879,16 @@ pub struct MaskPosition {
 	pub x_shift: f32,
 	/**Shift by Y-axis measured in heights of the mask scaled to the face size, from top to bottom. For example, 1.0 will place the mask just below the default mask position.*/
 	pub y_shift: f32,
+}
+impl MaskPosition {
+	pub fn new(point: impl Into<String>, scale: impl Into<f32>, x_shift: impl Into<f32>, y_shift: impl Into<f32>) -> Self {
+		Self {
+			point: point.into(),
+			scale: scale.into(),
+			x_shift: x_shift.into(),
+			y_shift: y_shift.into(),
+		}
+	}
 }
 /**This object describes a message that can be inaccessible to the bot. It can be one of
 
@@ -3050,6 +4934,13 @@ pub struct MenuButtonCommands {
 	Default: commands*/
 	pub r#type: String,
 }
+impl MenuButtonCommands {
+	pub fn new(r#type: impl Into<String>) -> Self {
+		Self {
+			r#type: r#type.into(),
+		}
+	}
+}
 /**Describes that no specific value for the menu button was set.
 
 https://core.telegram.org/bots/api/#menubuttondefault*/
@@ -3058,6 +4949,13 @@ pub struct MenuButtonDefault {
 	/**Type of the button, must be *default*
 	Default: default*/
 	pub r#type: String,
+}
+impl MenuButtonDefault {
+	pub fn new(r#type: impl Into<String>) -> Self {
+		Self {
+			r#type: r#type.into(),
+		}
+	}
 }
 /**Represents a menu button, which launches a [Web App](https://core.telegram.org/bots/webapps).
 
@@ -3071,6 +4969,15 @@ pub struct MenuButtonWebApp {
 	pub text: String,
 	/**Description of the Web App that will be launched when the user presses the button. The Web App will be able to send an arbitrary message on behalf of the user using the method [answerWebAppQuery](https://core.telegram.org/bots/api/#answerwebappquery). Alternatively, a `t.me` link to a Web App of the bot can be specified in the object instead of the Web App's URL, in which case the Web App will be opened as if the user pressed the link.*/
 	pub web_app: WebAppInfo,
+}
+impl MenuButtonWebApp {
+	pub fn new(r#type: impl Into<String>, text: impl Into<String>, web_app: impl Into<WebAppInfo>) -> Self {
+		Self {
+			r#type: r#type.into(),
+			text: text.into(),
+			web_app: web_app.into(),
+		}
+	}
 }
 /**This object represents a service message about a change in auto-delete timer settings.
 
@@ -3103,6 +5010,35 @@ pub struct MessageEntity {
 	pub url: Option<String>,
 	/**For “text\_mention” only, the mentioned user*/
 	pub user: Option<User>,
+}
+impl MessageEntity {
+	pub fn new(length: impl Into<i64>, offset: impl Into<i64>, r#type: impl Into<String>) -> Self {
+		Self {
+			custom_emoji_id: None,
+			language: None,
+			length: length.into(),
+			offset: offset.into(),
+			r#type: r#type.into(),
+			url: None,
+			user: None,
+		}
+	}
+	pub fn custom_emoji_id(mut self, custom_emoji_id: impl Into<String>) -> Self {
+		self.custom_emoji_id = Some(custom_emoji_id.into());
+		self
+	}
+	pub fn language(mut self, language: impl Into<String>) -> Self {
+		self.language = Some(language.into());
+		self
+	}
+	pub fn url(mut self, url: impl Into<String>) -> Self {
+		self.url = Some(url.into());
+		self
+	}
+	pub fn user(mut self, user: impl Into<User>) -> Self {
+		self.user = Some(user.into());
+		self
+	}
 }
 /**This object represents a unique message identifier.
 
@@ -3387,6 +5323,17 @@ pub struct PassportElementErrorDataField {
 	Default: data*/
 	pub source: String,
 }
+impl PassportElementErrorDataField {
+	pub fn new(data_hash: impl Into<String>, field_name: impl Into<String>, message: impl Into<String>, r#type: impl Into<String>, source: impl Into<String>) -> Self {
+		Self {
+			data_hash: data_hash.into(),
+			field_name: field_name.into(),
+			message: message.into(),
+			r#type: r#type.into(),
+			source: source.into(),
+		}
+	}
+}
 /**Represents an issue with a document scan. The error is considered resolved when the file with the document scan changes.
 
 https://core.telegram.org/bots/api/#passportelementerrorfile*/
@@ -3402,6 +5349,16 @@ pub struct PassportElementErrorFile {
 	/**Error source, must be *file*
 	Default: file*/
 	pub source: String,
+}
+impl PassportElementErrorFile {
+	pub fn new(file_hash: impl Into<String>, message: impl Into<String>, r#type: impl Into<String>, source: impl Into<String>) -> Self {
+		Self {
+			file_hash: file_hash.into(),
+			message: message.into(),
+			r#type: r#type.into(),
+			source: source.into(),
+		}
+	}
 }
 /**Represents an issue with a list of scans. The error is considered resolved when the list of files containing the scans changes.
 
@@ -3422,6 +5379,16 @@ pub struct PassportElementErrorFiles {
 	Default: files*/
 	pub source: String,
 }
+impl PassportElementErrorFiles {
+	pub fn new(file_hashes: impl Into<Vec<String>>, message: impl Into<String>, r#type: impl Into<String>, source: impl Into<String>) -> Self {
+		Self {
+			file_hashes: file_hashes.into(),
+			message: message.into(),
+			r#type: r#type.into(),
+			source: source.into(),
+		}
+	}
+}
 /**Represents an issue with the front side of a document. The error is considered resolved when the file with the front side of the document changes.
 
 https://core.telegram.org/bots/api/#passportelementerrorfrontside*/
@@ -3437,6 +5404,16 @@ pub struct PassportElementErrorFrontSide {
 	/**Error source, must be *front\_side*
 	Default: front_side*/
 	pub source: String,
+}
+impl PassportElementErrorFrontSide {
+	pub fn new(file_hash: impl Into<String>, message: impl Into<String>, r#type: impl Into<String>, source: impl Into<String>) -> Self {
+		Self {
+			file_hash: file_hash.into(),
+			message: message.into(),
+			r#type: r#type.into(),
+			source: source.into(),
+		}
+	}
 }
 /**Represents an issue with the reverse side of a document. The error is considered resolved when the file with reverse side of the document changes.
 
@@ -3454,6 +5431,16 @@ pub struct PassportElementErrorReverseSide {
 	Default: reverse_side*/
 	pub source: String,
 }
+impl PassportElementErrorReverseSide {
+	pub fn new(file_hash: impl Into<String>, message: impl Into<String>, r#type: impl Into<String>, source: impl Into<String>) -> Self {
+		Self {
+			file_hash: file_hash.into(),
+			message: message.into(),
+			r#type: r#type.into(),
+			source: source.into(),
+		}
+	}
+}
 /**Represents an issue with the selfie with a document. The error is considered resolved when the file with the selfie changes.
 
 https://core.telegram.org/bots/api/#passportelementerrorselfie*/
@@ -3470,6 +5457,16 @@ pub struct PassportElementErrorSelfie {
 	Default: selfie*/
 	pub source: String,
 }
+impl PassportElementErrorSelfie {
+	pub fn new(file_hash: impl Into<String>, message: impl Into<String>, r#type: impl Into<String>, source: impl Into<String>) -> Self {
+		Self {
+			file_hash: file_hash.into(),
+			message: message.into(),
+			r#type: r#type.into(),
+			source: source.into(),
+		}
+	}
+}
 /**Represents an issue with one of the files that constitute the translation of a document. The error is considered resolved when the file changes.
 
 https://core.telegram.org/bots/api/#passportelementerrortranslationfile*/
@@ -3485,6 +5482,16 @@ pub struct PassportElementErrorTranslationFile {
 	/**Error source, must be *translation\_file*
 	Default: translation_file*/
 	pub source: String,
+}
+impl PassportElementErrorTranslationFile {
+	pub fn new(file_hash: impl Into<String>, message: impl Into<String>, r#type: impl Into<String>, source: impl Into<String>) -> Self {
+		Self {
+			file_hash: file_hash.into(),
+			message: message.into(),
+			r#type: r#type.into(),
+			source: source.into(),
+		}
+	}
 }
 /**Represents an issue with the translated version of a document. The error is considered resolved when a file with the document translation change.
 
@@ -3505,6 +5512,16 @@ pub struct PassportElementErrorTranslationFiles {
 	Default: translation_files*/
 	pub source: String,
 }
+impl PassportElementErrorTranslationFiles {
+	pub fn new(file_hashes: impl Into<Vec<String>>, message: impl Into<String>, r#type: impl Into<String>, source: impl Into<String>) -> Self {
+		Self {
+			file_hashes: file_hashes.into(),
+			message: message.into(),
+			r#type: r#type.into(),
+			source: source.into(),
+		}
+	}
+}
 /**Represents an issue in an unspecified place. The error is considered resolved when new data is added.
 
 https://core.telegram.org/bots/api/#passportelementerrorunspecified*/
@@ -3519,6 +5536,16 @@ pub struct PassportElementErrorUnspecified {
 	/**Error source, must be *unspecified*
 	Default: unspecified*/
 	pub source: String,
+}
+impl PassportElementErrorUnspecified {
+	pub fn new(element_hash: impl Into<String>, message: impl Into<String>, r#type: impl Into<String>, source: impl Into<String>) -> Self {
+		Self {
+			element_hash: element_hash.into(),
+			message: message.into(),
+			r#type: r#type.into(),
+			source: source.into(),
+		}
+	}
 }
 /**This object represents a file uploaded to Telegram Passport. Currently all Telegram Passport files are in JPEG format when decrypted and don't exceed 10MB.
 
@@ -3711,6 +5738,14 @@ pub struct ReactionTypeCustomEmoji {
 	Default: custom_emoji*/
 	pub r#type: String,
 }
+impl ReactionTypeCustomEmoji {
+	pub fn new(custom_emoji_id: impl Into<String>, r#type: impl Into<String>) -> Self {
+		Self {
+			custom_emoji_id: custom_emoji_id.into(),
+			r#type: r#type.into(),
+		}
+	}
+}
 /**The reaction is based on an emoji.
 
 https://core.telegram.org/bots/api/#reactiontypeemoji*/
@@ -3723,6 +5758,14 @@ pub struct ReactionTypeEmoji {
 	Default: emoji*/
 	pub r#type: String,
 }
+impl ReactionTypeEmoji {
+	pub fn new(emoji: impl Into<String>, r#type: impl Into<String>) -> Self {
+		Self {
+			emoji: emoji.into(),
+			r#type: r#type.into(),
+		}
+	}
+}
 /**The reaction is paid.
 
 https://core.telegram.org/bots/api/#reactiontypepaid*/
@@ -3731,6 +5774,13 @@ pub struct ReactionTypePaid {
 	/**Type of the reaction, always “paid”
 	Default: paid*/
 	pub r#type: String,
+}
+impl ReactionTypePaid {
+	pub fn new(r#type: impl Into<String>) -> Self {
+		Self {
+			r#type: r#type.into(),
+		}
+	}
 }
 /**This object contains basic information about a refunded payment.
 
@@ -3781,6 +5831,38 @@ pub struct ReplyKeyboardMarkup {
 	*Example:* A user requests to change the bot's language, bot replies to the request with a keyboard to select the new language. Other users in the group don't see the keyboard.*/
 	pub selective: Option<bool>,
 }
+impl ReplyKeyboardMarkup {
+	pub fn new(keyboard: impl Into<Vec<Vec<KeyboardButton>>>) -> Self {
+		Self {
+			input_field_placeholder: None,
+			is_persistent: None,
+			keyboard: keyboard.into(),
+			one_time_keyboard: None,
+			resize_keyboard: None,
+			selective: None,
+		}
+	}
+	pub fn input_field_placeholder(mut self, input_field_placeholder: impl Into<String>) -> Self {
+		self.input_field_placeholder = Some(input_field_placeholder.into());
+		self
+	}
+	pub fn is_persistent(mut self, is_persistent: bool) -> Self {
+		self.is_persistent = Some(is_persistent);
+		self
+	}
+	pub fn one_time_keyboard(mut self, one_time_keyboard: bool) -> Self {
+		self.one_time_keyboard = Some(one_time_keyboard);
+		self
+	}
+	pub fn resize_keyboard(mut self, resize_keyboard: bool) -> Self {
+		self.resize_keyboard = Some(resize_keyboard);
+		self
+	}
+	pub fn selective(mut self, selective: bool) -> Self {
+		self.selective = Some(selective);
+		self
+	}
+}
 /**Upon receiving a message with this object, Telegram clients will remove the current custom keyboard and display the default letter-keyboard. By default, custom keyboards are displayed until a new keyboard is sent by a bot. An exception is made for one-time keyboards that are hidden immediately after the user presses a button (see [ReplyKeyboardMarkup](https://core.telegram.org/bots/api/#replykeyboardmarkup)). Not supported in channels and for messages sent on behalf of a Telegram Business account.
 
 https://core.telegram.org/bots/api/#replykeyboardremove*/
@@ -3796,6 +5878,18 @@ pub struct ReplyKeyboardRemove {
 
 	*Example:* A user votes in a poll, bot returns confirmation message in reply to the vote and removes the keyboard for that user, while still showing the keyboard with poll options to users who haven't voted yet.*/
 	pub selective: Option<bool>,
+}
+impl ReplyKeyboardRemove {
+	pub fn new(remove_keyboard: bool) -> Self {
+		Self {
+			remove_keyboard: remove_keyboard,
+			selective: None,
+		}
+	}
+	pub fn selective(mut self, selective: bool) -> Self {
+		self.selective = Some(selective);
+		self
+	}
 }
 /**Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
 #[derive(Clone, Debug, Serialize, From)]
@@ -3831,6 +5925,43 @@ pub struct ReplyParameters {
 	pub quote_parse_mode: Option<String>,
 	/**Position of the quote in the original message in UTF-16 code units*/
 	pub quote_position: Option<i64>,
+}
+impl ReplyParameters {
+	pub fn new(message_id: impl Into<i64>) -> Self {
+		Self {
+			allow_sending_without_reply: None,
+			chat_id: None,
+			message_id: message_id.into(),
+			quote: None,
+			quote_entities: Vec::new(),
+			quote_parse_mode: None,
+			quote_position: None,
+		}
+	}
+	pub fn allow_sending_without_reply(mut self, allow_sending_without_reply: bool) -> Self {
+		self.allow_sending_without_reply = Some(allow_sending_without_reply);
+		self
+	}
+	pub fn chat_id(mut self, chat_id: impl Into<ChatId>) -> Self {
+		self.chat_id = Some(chat_id.into());
+		self
+	}
+	pub fn quote(mut self, quote: impl Into<String>) -> Self {
+		self.quote = Some(quote.into());
+		self
+	}
+	pub fn quote_entities(mut self, quote_entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.quote_entities = quote_entities.into();
+		self
+	}
+	pub fn quote_parse_mode(mut self, quote_parse_mode: impl Into<String>) -> Self {
+		self.quote_parse_mode = Some(quote_parse_mode.into());
+		self
+	}
+	pub fn quote_position(mut self, quote_position: impl Into<i64>) -> Self {
+		self.quote_position = Some(quote_position.into());
+		self
+	}
 }
 /**Describes why a request was unsuccessful.
 
@@ -3957,6 +6088,15 @@ pub struct ShippingOption {
 	pub prices: Vec<LabeledPrice>,
 	/**Option title*/
 	pub title: String,
+}
+impl ShippingOption {
+	pub fn new(id: impl Into<String>, prices: impl Into<Vec<LabeledPrice>>, title: impl Into<String>) -> Self {
+		Self {
+			id: id.into(),
+			prices: prices.into(),
+			title: title.into(),
+		}
+	}
 }
 /**This object contains information about an incoming shipping query.
 
@@ -4132,6 +6272,37 @@ pub struct SwitchInlineQueryChosenChat {
 	pub allow_user_chats: Option<bool>,
 	/**The default inline query to be inserted in the input field. If left empty, only the bot's username will be inserted*/
 	pub query: Option<String>,
+}
+impl SwitchInlineQueryChosenChat {
+	pub fn new() -> Self {
+		Self {
+			allow_bot_chats: None,
+			allow_channel_chats: None,
+			allow_group_chats: None,
+			allow_user_chats: None,
+			query: None,
+		}
+	}
+	pub fn allow_bot_chats(mut self, allow_bot_chats: bool) -> Self {
+		self.allow_bot_chats = Some(allow_bot_chats);
+		self
+	}
+	pub fn allow_channel_chats(mut self, allow_channel_chats: bool) -> Self {
+		self.allow_channel_chats = Some(allow_channel_chats);
+		self
+	}
+	pub fn allow_group_chats(mut self, allow_group_chats: bool) -> Self {
+		self.allow_group_chats = Some(allow_group_chats);
+		self
+	}
+	pub fn allow_user_chats(mut self, allow_user_chats: bool) -> Self {
+		self.allow_user_chats = Some(allow_user_chats);
+		self
+	}
+	pub fn query(mut self, query: impl Into<String>) -> Self {
+		self.query = Some(query.into());
+		self
+	}
 }
 /**This object contains information about the quoted part of a message that is replied to by the given message.
 
@@ -4353,6 +6524,65 @@ pub struct User {
 	/**User's or bot's username*/
 	pub username: Option<String>,
 }
+impl User {
+	pub fn new(first_name: impl Into<String>, id: impl Into<i64>, is_bot: bool) -> Self {
+		Self {
+			added_to_attachment_menu: None,
+			can_connect_to_business: None,
+			can_join_groups: None,
+			can_read_all_group_messages: None,
+			first_name: first_name.into(),
+			has_main_web_app: None,
+			id: id.into(),
+			is_bot: is_bot,
+			is_premium: None,
+			language_code: None,
+			last_name: None,
+			supports_inline_queries: None,
+			username: None,
+		}
+	}
+	pub fn added_to_attachment_menu(mut self, added_to_attachment_menu: bool) -> Self {
+		self.added_to_attachment_menu = Some(added_to_attachment_menu);
+		self
+	}
+	pub fn can_connect_to_business(mut self, can_connect_to_business: bool) -> Self {
+		self.can_connect_to_business = Some(can_connect_to_business);
+		self
+	}
+	pub fn can_join_groups(mut self, can_join_groups: bool) -> Self {
+		self.can_join_groups = Some(can_join_groups);
+		self
+	}
+	pub fn can_read_all_group_messages(mut self, can_read_all_group_messages: bool) -> Self {
+		self.can_read_all_group_messages = Some(can_read_all_group_messages);
+		self
+	}
+	pub fn has_main_web_app(mut self, has_main_web_app: bool) -> Self {
+		self.has_main_web_app = Some(has_main_web_app);
+		self
+	}
+	pub fn is_premium(mut self, is_premium: bool) -> Self {
+		self.is_premium = Some(is_premium);
+		self
+	}
+	pub fn language_code(mut self, language_code: impl Into<String>) -> Self {
+		self.language_code = Some(language_code.into());
+		self
+	}
+	pub fn last_name(mut self, last_name: impl Into<String>) -> Self {
+		self.last_name = Some(last_name.into());
+		self
+	}
+	pub fn supports_inline_queries(mut self, supports_inline_queries: bool) -> Self {
+		self.supports_inline_queries = Some(supports_inline_queries);
+		self
+	}
+	pub fn username(mut self, username: impl Into<String>) -> Self {
+		self.username = Some(username.into());
+		self
+	}
+}
 /**This object represents a list of boosts added to a chat by a user.
 
 https://core.telegram.org/bots/api/#userchatboosts*/
@@ -4528,6 +6758,13 @@ https://core.telegram.org/bots/api/#webappinfo*/
 pub struct WebAppInfo {
 	/**An HTTPS URL of a Web App to be opened with additional data as specified in [Initializing Web Apps](https://core.telegram.org/bots/webapps#initializing-mini-apps)*/
 	pub url: String,
+}
+impl WebAppInfo {
+	pub fn new(url: impl Into<String>) -> Self {
+		Self {
+			url: url.into(),
+		}
+	}
 }
 /**Describes the current status of a webhook.
 

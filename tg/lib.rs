@@ -7,20 +7,18 @@ pub use addons::*;
 pub mod custom;
 pub use custom::*;
 
-#[cfg(feature = "reqwest")]
-mod reqwest;
-#[cfg(feature = "reqwest")]
-pub use reqwest::*;
+#[cfg(feature = "client")]
+mod client;
+#[cfg(feature = "client")]
+pub use client::*;
 
-#[cfg(all(not(feature = "reqwest")))]
+#[cfg(all(not(feature = "client")))]
 mod bare;
-#[cfg(all(not(feature = "reqwest")))]
+#[cfg(all(not(feature = "client")))]
 pub use bare::*;
 
 #[cfg(feature = "serializer")]
-mod serializer;
-#[cfg(feature = "serializer")]
-pub use serializer::*;
+pub mod serializer;
 
 #[macro_export]
 macro_rules! method {
