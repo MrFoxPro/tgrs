@@ -17,9 +17,9 @@ mod bare;
 #[cfg(all(not(feature = "reqwest")))]
 pub use bare::*;
 
-#[cfg(feature = "reqwest")]
+#[cfg(feature = "serializer")]
 mod serializer;
-#[cfg(feature = "reqwest")]
+#[cfg(feature = "serializer")]
 pub use serializer::*;
 
 #[macro_export]
