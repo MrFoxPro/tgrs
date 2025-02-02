@@ -206,7 +206,7 @@ pub fn main() -> Result<()> {
 		parser::parse(extracted)?
 	};
 
-	let mut out = IndentedWriter::new(std::fs::File::create("./tg/output.rs")?, indent::IndentConfig::Tab);
+	let mut out = IndentedWriter::new(std::fs::File::create("./tg/schema.rs")?, indent::IndentConfig::Tab);
 
 	writeln!(out, "/* @generated */\n");
 	writeln!(out, "use serde::{{Serialize, Deserialize}};");

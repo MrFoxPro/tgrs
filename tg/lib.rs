@@ -1,5 +1,5 @@
-mod output;
-pub use output::*;
+mod schema;
+pub use schema::*;
 
 mod addons;
 pub use addons::*;

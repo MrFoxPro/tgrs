@@ -8,17 +8,6 @@ pub struct Command {
     pub args: Vec<String>,
     pub message: Message,
 }
-impl Command {
-    pub fn get_name(&self) -> &str {
-        &self.name
-    }
-    pub fn get_args(&self) -> &[String] {
-        &self.args
-    }
-    pub fn get_message(&self) -> &Message {
-        &self.message
-    }
-}
 impl TryFrom<Message> for Command {
     type Error = CommandError;
 
