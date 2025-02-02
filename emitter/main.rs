@@ -17,7 +17,7 @@ const RESERVED_WORDS: &[&str] = &[
 ];
 
 const BLACKLISTED_TYPES: &[&str] = &[
-	// "ChatId",
+	"Message",
 	"InputFile",
 ];
 
@@ -199,20 +199,20 @@ fn expand_typeinfo(state: &mut Registry, target: &Type, NewEnumInfo { mut name, 
 }
 
 pub fn main() -> Result<()> {
-	let source = std::fs::read_to_string("./gen/source.html").unwrap();
+	let source = std::fs::read_to_string("./emitter/source.html").unwrap();
 	let parsed = {
 		let extractor = Extractor::from_str(&source);
 		let extracted = extractor.extract()?;
 		parser::parse(extracted)?
 	};
 
-	let mut out = IndentedWriter::new(std::fs::File::create("./types/output.rs")?, indent::IndentConfig::Tab);
+	let mut out = IndentedWriter::new(std::fs::File::create("./tg/output.rs")?, indent::IndentConfig::Tab);
 
 	writeln!(out, "/* @generated */\n");
 	writeln!(out, "use serde::{{Serialize, Deserialize}};");
 	writeln!(out, "use serde_with::apply;");
 	writeln!(out, "use derive_more::From;");
-	writeln!(out, "use crate::{{custom::*, method, InputFile}};");
+	writeln!(out, "use crate::{{addons::*, custom::*, method, InputFile}};");
 	writeln!(out, "");
 
 	let mut registry = BTreeMap::new();
@@ -449,7 +449,7 @@ pub fn main() -> Result<()> {
 	// Command::new("rustfmt")
 	// 	.arg("--config-path=./rustfmt.toml")
 	// 	.arg("--emit=files")
-	// 	.arg("./types/output.rs")
+	// 	.arg("./tg/output.rs")
 	// 	.stdout(std::io::stdout())
 	// 	.stderr(std::io::stderr())
 	// 	.output()
@@ -460,12 +460,16 @@ pub fn main() -> Result<()> {
 
 fn print_entities(registry: Registry, out: &mut IndentedWriter<impl Write>) {
 	for entity in registry.values() {
+
+		if BLACKLISTED_TYPES.contains(&entity.name.as_str()) {
+			continue;
+		}
 		// let doc = format!("{} {}", match entity.variant { EntityVariant::Object { .. } => "object", EntityVariant::Method { .. } => "method", _ => "" }, entity.doc);
 		if entity.comment.len() > 0 { writeln!(out, "/**{}*/", entity.comment); }
 
 		match entity.variant.clone() {
 			EntityVariant::Unknown => {
-				writeln!(out, "type {} = ();", entity.name);
+				writeln!(out, "pub type {} = ();", entity.name);
 			}
 			EntityVariant::Object { fields } => {
 				print_struct(&entity, &fields, out);
@@ -588,6 +592,11 @@ fn print_struct(entity: &Entity, fields: &BTreeMap<String, StructField>, out: &m
 		write!(out, "}}");
 	}
 	else { return }
+
+	if !matches!(entity.variant, EntityVariant::Method { .. }) {
+		writeln!(out, "");
+		return
+	}
 
 	struct ConstructorArg {
 		into: bool

@@ -1,7 +1,10 @@
 mod output;
 pub use output::*;
 
-mod custom;
+mod addons;
+pub use addons::*;
+
+pub mod custom;
 pub use custom::*;
 
 #[cfg(feature = "reqwest")]
