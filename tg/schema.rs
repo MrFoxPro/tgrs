@@ -3,7 +3,7 @@
 use serde::{Serialize, Deserialize};
 use serde_with::apply;
 use derive_more::From;
-use crate::{addons::*, custom::*, method, InputFile};
+use crate::{addons::*, custom::*, InputFile};
 
 /**Contains information about the affiliate that received a commission via this transaction.
 

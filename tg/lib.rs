@@ -1,3 +1,15 @@
+#[macro_use]
+mod macros {
+	macro_rules! method {
+		($name:ty, $id:literal, $response:ty) => {
+			impl crate::Method for $name {
+				const NAME: &str = $id;
+				type Response = $response;
+			}
+		};
+	}
+}
+
 mod schema;
 pub use schema::*;
 
@@ -19,13 +31,3 @@ pub use bare::*;
 
 #[cfg(feature = "serializer")]
 pub mod serializer;
-
-#[macro_export]
-macro_rules! method {
-	($name:ty, $id:literal, $response:ty) => {
-		impl crate::Method for $name {
-			const NAME: &str = $id;
-			type Response = $response;
-		}
-	};
-}
