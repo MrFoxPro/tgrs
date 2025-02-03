@@ -172,7 +172,6 @@ fn expand_typeinfo(state: &mut Registry, target: &Type, NewEnumInfo { mut name, 
 				name = "Asset".to_owned();
 				comment = "".to_owned();
 			}
-
 			let def = Entity {
 				name: name.clone(),
 				serde,
@@ -192,7 +191,9 @@ fn expand_typeinfo(state: &mut Registry, target: &Type, NewEnumInfo { mut name, 
 			TypeInfo { has_ref: true, name, wrappers: Vec::new() }
 		},
 		Type::Array(t) if matches!(*t.clone(), Type::Or(..)) => {
-			expand_typeinfo(state, t, NewEnumInfo { name, parent, serde, comment })
+			let mut inner = expand_typeinfo(state, t, NewEnumInfo { name, parent, serde, comment });
+			inner.wrappers.insert(0, TypeWrapper::Vec);
+			return inner;
 		},
 		other => get_plain_typeinfo(&other)
 	}

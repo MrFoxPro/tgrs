@@ -1,22 +1,23 @@
 #![allow(unused_variables)]
 
 use core::str;
+use std::borrow::Cow;
 use serde::ser::{self, Impossible, Serialize};
 use serde_json::{Serializer as JsonSerializer, Error as JsonSerializationError, ser::{CompactFormatter, Compound}};
 
-pub type OutputMap = Vec<(&'static str, String)>;
+pub type FormParts = Vec<(Cow<'static, str>, String)>;
 
 pub struct Serializer<'a> {
-	map: &'a mut OutputMap,
+	map: &'a mut FormParts,
 }
 impl<'a> Serializer<'a> {
-	pub fn new(map: &'a mut OutputMap) -> Self { 
+	pub fn new(map: &'a mut FormParts) -> Self { 
 		Serializer { map }
 	}
 }
 
 pub type SerError = JsonSerializationError;
-pub type SerResult<T> = std::result::Result<T, SerError>;
+pub type SerResult<T> = Result<T, SerError>;
 
 impl<'a> ser::Serializer for &'a mut Serializer<'a> {
 	type Ok = (); type Error = SerError;
@@ -69,7 +70,7 @@ impl<'a> ser::SerializeStruct for &'a mut Serializer<'a> {
 	fn serialize_field<T: ?Sized + Serialize>(&mut self, key: &'static str, value: &T) -> SerResult<()> {
 		let mut buffer = Vec::with_capacity(128);
 		value.serialize(&mut FieldSerializer { buffer: &mut buffer, json: None })?;
-		self.map.push((key, unsafe { String::from_utf8_unchecked(buffer) }));
+		self.map.push((key.into(), unsafe { String::from_utf8_unchecked(buffer) }));
 		Ok(())
 	}
 	fn end(self) -> std::result::Result<Self::Ok, Self::Error> { Ok(()) }
@@ -160,8 +161,7 @@ impl<'a> ser::Serializer for &'a mut FieldSerializer<'a> {
 	}
 	#[inline] fn serialize_char(self, v: char) -> SerResult<()> {
 		let mut buf = [0; 4];
-		self.serialize_str(v.encode_utf8(&mut buf))?;
-		Ok(())
+		self.serialize_str(v.encode_utf8(&mut buf))?; Ok(())
 	}
 	#[inline] fn serialize_str(self, v: &str) -> SerResult<()> {
 		self.buffer.extend(v.as_bytes()); Ok(())

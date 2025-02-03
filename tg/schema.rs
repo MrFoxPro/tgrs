@@ -3,7 +3,7 @@
 use serde::{Serialize, Deserialize};
 use serde_with::apply;
 use derive_more::From;
-use crate::{addons::*, custom::*, InputFile};
+use crate::{addons::*, custom::*, method, InputFile};
 
 /**Contains information about the affiliate that received a commission via this transaction.
 
@@ -10344,6 +10344,7 @@ method!(SendLocation, "sendLocation", Message);
 
 https://core.telegram.org/bots/api/#sendmediagroup*/
 #[apply(
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
@@ -10357,7 +10358,7 @@ pub struct SendMediaGroup {
 	/**Sends messages [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
 	pub disable_notification: Option<bool>,
 	/**A JSON-serialized array describing messages to be sent, must include 2-10 items*/
-	pub media: Media,
+	pub media: Vec<Media>,
 	/**Unique identifier of the message effect to be added to the message; for private chats only*/
 	pub message_effect_id: Option<String>,
 	/**Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
@@ -10368,7 +10369,7 @@ pub struct SendMediaGroup {
 	pub reply_parameters: Option<ReplyParameters>,
 }
 impl SendMediaGroup {
-	pub fn new(chat_id: impl Into<ChatId>, media: impl Into<Media>) -> Self {
+	pub fn new(chat_id: impl Into<ChatId>, media: impl Into<Vec<Media>>) -> Self {
 		Self {
 			allow_paid_broadcast: None,
 			business_connection_id: None,

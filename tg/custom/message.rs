@@ -1,5 +1,6 @@
 use serde::Deserialize;
 use serde_with::apply;
+use serde_json::Value as JValue;
 use crate::*;
 use self::raw::*;
 
@@ -109,13 +110,6 @@ impl Message {
 pub enum MessageData {
 	/**Message is an animation, information about the animation. For backward compatibility, when this field is set, the *document* field will also be set*/
 	Animation(Animation),
-
-	/**Message is an audio file, information about the file*/
-	Audio {
-		audio: Audio,
-		#[serde(flatten, deserialize_with = "RawCaption::deserialize_value", serialize_with = "RawCaption::serialize_value", skip_serializing_if = "Option::is_none")]
-		caption: Option<Text>,
-	},
 
 	/**Service message: auto-delete timer settings changed in the chat*/
 	MessageAutoDeleteTimerChanged(MessageAutoDeleteTimerChanged),
@@ -277,7 +271,16 @@ pub enum MessageData {
 	/**Service message: the user allowed the bot to write messages after adding it to the attachment or side menu, launching a Web App from a link, or accepting an explicit request from a Web App sent by the method [requestWriteAccess](https://core.telegram.org/bots/webapps#initializing-mini-apps)*/
 	WriteAccessAllowed(WriteAccessAllowed),
 
+	/**Message is an audio file, information about the file*/
+	#[serde(untagged)]
+	Audio {
+		audio: Audio,
+		#[serde(flatten, deserialize_with = "RawCaption::deserialize_value", serialize_with = "RawCaption::serialize_value", skip_serializing_if = "Option::is_none")]
+		caption: Option<Text>,
+	},
+	
 	/**Message is a general file, information about the file*/
+	#[serde(untagged)]
 	Document {
 		audio: Document,
 		#[serde(
@@ -290,6 +293,7 @@ pub enum MessageData {
 	},
 
 	/**Message is a photo, available sizes of the photo*/
+	#[serde(untagged)]
 	Photo {
 		photo: Vec<PhotoSize>,
 		#[serde(
@@ -302,12 +306,14 @@ pub enum MessageData {
 	},
 
 	/**Message is a video, information about the video*/
+	#[serde(untagged)]
 	Video {
 		video: Video,
 		caption: Option<Text>,
 	},
 
 	/**Message is a voice message, information about the file*/
+	#[serde(untagged)]
 	Voice {
 		voice: Video,
 		caption: Option<Text>,
@@ -320,11 +326,13 @@ pub enum MessageData {
 		untagged
 	)]
 	Text(Text),
+
+	#[serde(untagged)]
+	Unknown(JValue),
 }
 
-
+// original type
 /*
-original type
 /**This object represents a message.
 
 https://core.telegram.org/bots/api/#message*/
