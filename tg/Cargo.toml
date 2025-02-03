@@ -12,9 +12,11 @@ serde_with = { version = "3.12" }
 
 # optional
 serde_json = { version = "1", optional = true }
+itoa = { version = "1", optional = true }
+ryu = { version = "1", optional = true }
 
 [dev-dependencies]
 
 [features]
 client = []
-serializer = ["dep:serde_json"]
+serializer = ["dep:serde_json", "dep:itoa", "dep:ryu"]

@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use std::fmt;
 use serde::{Deserialize, Deserializer, Serialize, Serializer, de::{Error, Unexpected}};
 use super::{Text, TextEntities};
