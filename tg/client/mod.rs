@@ -1,6 +1,6 @@
 pub mod serializer;
 
-use std::{borrow::Cow, error::Error, fmt, io::Read, marker::PhantomData};
+use std::{borrow::Cow, error::Error, fmt, marker::PhantomData, future::Future};
 use derive_more::derive::From;
 use serde::{de::DeserializeOwned, Deserialize};
 
@@ -14,6 +14,9 @@ pub enum Part {
 impl From<&'static str> for Part {
 	fn from(value: &'static str) -> Self { Part::Text(value.into()) }
 }
+impl From<String> for Part {
+	fn from(value: String) -> Self { Part::Text(value.into()) }
+}
 
 pub trait Executable: Sized + Send + 'static {
 	type Response: serde::de::DeserializeOwned + Send + 'static;
@@ -25,7 +28,7 @@ pub trait Executable: Sized + Send + 'static {
 		parts.inner.push((key.into(), value.into()));
 		parts
 	}
-	fn exec<C: TelegramBotClient>(self, client: &C) -> impl Future<Output = Result<Self::Response, C::Error>> {
+	fn exec<C: TelegramBotClient>(self, client: &C) -> impl Future<Output = Result<Self::Response, C::Error>> + Send {
 		client.exec(self)
 	}
 }
@@ -62,7 +65,7 @@ impl<R: DeserializeOwned + Send + 'static> Executable for Parts<R> {
 
 pub trait TelegramBotClient {
 	type Error;
-	fn exec<E: Executable>(&self, method: E) -> impl Future<Output = Result<E::Response, Self::Error>>;
+	fn exec<E: Executable>(&self, method: E) -> impl Future<Output = Result<E::Response, Self::Error>> + Send;
 }
 
 #[derive(Clone, Debug, Deserialize)]

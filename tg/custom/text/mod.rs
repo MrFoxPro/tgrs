@@ -16,32 +16,20 @@ impl Text {
 		self
 	}
 	pub fn get_bot_commands(&self) -> Option<Vec<TextEntityBotCommand>> {
-		self.entities
-			.as_ref()
-			.map(|entities| {
-				let repr = TextRepr::from(self);
-				entities
-					.into_iter()
-					.filter_map(|entity| {
-						if let TextEntity::BotCommand(position) = entity {
-							let entity_data = repr.get_entity_content(*position);
-							let parts = entity_data.as_str().splitn(2, '@').collect::<Vec<&str>>();
-							let len = parts.len();
-							assert!(len >= 1);
-							let command = parts[0].to_string();
-							let bot_name = if len == 2 {
-								Some(parts[1].to_string())
-							} else {
-								None
-							};
-							Some(TextEntityBotCommand { command, bot_name })
-						} else {
-							None
-						}
-					})
-					.collect::<Vec<TextEntityBotCommand>>()
-			})
-			.filter(|entities| !entities.is_empty())
+		self.entities.as_ref().map(|entities| {
+			let repr = TextRepr::from(self);
+			entities.into_iter().filter_map(|entity| {
+				let TextEntity::BotCommand(position) = entity else { return None };
+				let entity_data = repr.get_entity_content(*position);
+				let parts = entity_data.as_str().splitn(2, '@').collect::<Vec<&str>>();
+				let len = parts.len();
+				assert!(len >= 1);
+				let command = parts[0].to_string();
+				let bot_name = if len == 2 { Some(parts[1].to_string()) } else { None };
+				Some(TextEntityBotCommand { command, bot_name })
+			}).collect::<Vec<TextEntityBotCommand>>()
+		})
+		.filter(|entities| !entities.is_empty())
 	}
 }
 
@@ -96,13 +84,7 @@ impl<'a> From<&'a Text> for TextRepr<'a> {
 impl<'a> TextRepr<'a> {
 	fn get_entity_content(&self, position: TextEntityPosition) -> String {
 		let (offset, length) = (position.offset as usize, position.length as usize);
-		String::from_utf16_lossy(
-			&self
-				.iter
-				.clone()
-				.skip(offset)
-				.take(length)
-				.collect::<Vec<u16>>(),
-		)
+		let bytes = self.iter.clone().skip(offset).take(length).collect::<Vec<u16>>();
+		String::from_utf16_lossy(&bytes)
 	}
 }

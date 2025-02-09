@@ -37,9 +37,10 @@ struct TypeInfo {
 	name: String,
 	wrappers: Vec<TypeWrapper>,
 	has_ref: bool,
+	const_literal: Option<String>
 }
 impl TypeInfo {
-	fn array(&self) -> bool {
+	fn is_array(&self) -> bool {
 		self.wrappers.get(0).is_some_and(|w| *w == TypeWrapper::Vec)
 	}
 }
@@ -117,7 +118,7 @@ fn get_plain_typeinfo(ty: &Type) -> TypeInfo {
 		},
 		_ => panic!("{ty:?} is not a plain type")
 	};
-	TypeInfo { name, has_ref, wrappers }
+	TypeInfo { name, has_ref, wrappers, const_literal: None }
 }
 
 fn create_enum_variant(enum_name: &String, var: &Type) -> (String, StructField) {
@@ -132,7 +133,7 @@ fn create_enum_variant(enum_name: &String, var: &Type) -> (String, StructField) 
 	}
 	(var_name, StructField { 
 		name: var_ty_name.clone(), 
-		typeinfo: TypeInfo { name: var_ty_name, has_ref: true, wrappers: Vec::new() }, 
+		typeinfo: TypeInfo { name: var_ty_name, has_ref: true, wrappers: Vec::new(), const_literal: None, }, 
 		optional: false, 
 		comment: String::new()
 	}) 
@@ -151,21 +152,21 @@ fn expand_typeinfo(state: &mut Registry, target: &Type, NewEnumInfo { mut name, 
 			// assuming that it is not recursive (does not contain inner `Or`s) 
 			if BLACKLISTED_TYPES.contains(&name.as_str()) {
 				println!("skipped blacklisted type {name}");
-				return TypeInfo { name: name.clone(), has_ref: true, wrappers: Vec::new() }
+				return TypeInfo { name: name.clone(), has_ref: true, wrappers: Vec::new(), const_literal: None }
 			}
 			let mut variants = vars.iter().map(|var| create_enum_variant(&name, var)).collect::<BTreeMap<_, _>>();
 			if variants.contains_key("InputFile") && variants.contains_key("String") {
 				variants.remove_entry("InputFile");				
 				variants.insert("File".to_string(), StructField { 
 					name: "InputFile".into(), 
-					typeinfo: TypeInfo { name: "InputFile".into(), has_ref: true, wrappers: Vec::new() }, 
+					typeinfo: TypeInfo { name: "InputFile".into(), has_ref: true, wrappers: Vec::new(), const_literal: None }, 
 					optional: false, 
 					comment: String::new()
 				});
 				variants.remove_entry("String");
 				variants.insert("Url".to_string(), StructField { 
 					name: "String".into(), 
-					typeinfo: TypeInfo { name: "String".into(), has_ref: true, wrappers: Vec::new() }, 
+					typeinfo: TypeInfo { name: "String".into(), has_ref: true, wrappers: Vec::new(), const_literal: None }, 
 					optional: false, 
 					comment: String::new()
 				});
@@ -188,7 +189,7 @@ fn expand_typeinfo(state: &mut Registry, target: &Type, NewEnumInfo { mut name, 
 				// 	panic!();
 				// }
 			};
-			TypeInfo { has_ref: true, name, wrappers: Vec::new() }
+			TypeInfo { has_ref: true, name, wrappers: Vec::new(), const_literal: None }
 		},
 		Type::Array(t) if matches!(*t.clone(), Type::Or(..)) => {
 			let mut inner = expand_typeinfo(state, t, NewEnumInfo { name, parent, serde, comment });
@@ -196,6 +197,14 @@ fn expand_typeinfo(state: &mut Registry, target: &Type, NewEnumInfo { mut name, 
 			return inner;
 		},
 		other => get_plain_typeinfo(&other)
+	}
+}
+
+const CONST_FIELD_PREFIX: &str = "Type of the result, must be ";
+fn check_const_literal(ty: &mut TypeInfo, description: &String) {
+	if description.starts_with(CONST_FIELD_PREFIX) {
+		let name = description[CONST_FIELD_PREFIX.len()+1..description.len()-1].replace(r#"\"#, "").to_string();
+		ty.const_literal = name.into();
 	}
 }
 
@@ -213,7 +222,7 @@ pub fn main() -> Result<()> {
 	writeln!(out, "use serde::{{Serialize, Deserialize}};");
 	writeln!(out, "use serde_with::apply;");
 	writeln!(out, "use derive_more::From;");
-	writeln!(out, "use crate::{{addons::*, custom::*, method, InputFile}};");
+	writeln!(out, "use crate::{{addons::*, custom::*, InputFile}};");
 	writeln!(out, "");
 
 	let mut registry = BTreeMap::new();
@@ -231,7 +240,7 @@ pub fn main() -> Result<()> {
 						typename_hint = format!("{typename_hint}Input");
 					}
 
-					let typeinfo = expand_typeinfo(
+					let mut typeinfo = expand_typeinfo(
 						&mut registry, 
 						&kind, 
 						NewEnumInfo { 
@@ -241,6 +250,7 @@ pub fn main() -> Result<()> {
 							serde: SerdeInfo { ser: false, de: false }
 						}
 					);
+					check_const_literal(&mut typeinfo, &description);
 
 					let mut docs = Vec::from_iter([description]);
 					match kind.clone() {
@@ -343,7 +353,7 @@ pub fn main() -> Result<()> {
 					if ["Audio", "Thumbnail", "Document", "Video", "Animation", "Voice", "VideoNote", "Sticker"].contains(&typename_hint.as_str()) {
 						typename_hint = format!("{typename_hint}Arg");
 					}
-					let typeinfo = expand_typeinfo(
+					let mut typeinfo = expand_typeinfo(
 						&mut registry,
 						&kind,
 						NewEnumInfo { 
@@ -353,6 +363,7 @@ pub fn main() -> Result<()> {
 							serde: SerdeInfo { ser: true, de: false }
 						}
 					);
+					check_const_literal(&mut typeinfo, &description);
 					let def = StructField {
 						name: escape_field_name(name.clone()), 
 						typeinfo,
@@ -367,7 +378,7 @@ pub fn main() -> Result<()> {
 
 		let return_type_info;
 		if ["EditMessageCaption", "EditMessageLiveLocation", "EditMessageMedia", "EditMessageReplyMarkup", "EditMessageText"].contains(&method_name.as_str()) {
-			return_type_info = TypeInfo { name: "EditMessageResult".to_owned(), has_ref: true, wrappers: Vec::new() };
+			return_type_info = TypeInfo { name: "EditMessageResult".to_owned(), has_ref: true, wrappers: Vec::new(), const_literal: None };
 		}
 		else {
 			return_type_info = expand_typeinfo(
@@ -519,6 +530,9 @@ fn print_derive(entity: &Entity, out: &mut IndentedWriter<impl Write>) {
 }
 
 fn field_typename(field: &StructField, root: &Entity) -> String {
+	if field.typeinfo.const_literal.is_some() {
+		return String::from("&'static str")
+	}
     let mut typename = field.typeinfo.name.clone();
     // Workarounds
 	if root.name == "Message" && field.name == "reply_to_message" && typename == "Message" {
@@ -528,10 +542,10 @@ fn field_typename(field: &StructField, root: &Entity) -> String {
 		typename = format!("Box<{}>", field.typeinfo.name);
 	}
 
-	if !field.typeinfo.array() && field.optional { 
+	if !field.typeinfo.is_array() && field.optional { 
 		typename = format!("Option<{typename}>");
 	}
-	else if field.typeinfo.array() {
+	else if field.typeinfo.is_array() {
 		for wrapper in field.typeinfo.wrappers.iter() {
 			match wrapper {
 				TypeWrapper::Vec => {
@@ -548,8 +562,8 @@ fn field_typename(field: &StructField, root: &Entity) -> String {
 fn print_struct(entity: &Entity, fields: &BTreeMap<String, StructField>, out: &mut IndentedWriter<impl Write>) {
 	let (mut has_vecs, mut has_opts) = (false, false);
 	fields.values().for_each(|f| {
-		if f.optional && !f.typeinfo.array() { has_opts = true }
-		if f.typeinfo.array() { has_vecs = true }
+		if f.optional && !f.typeinfo.is_array() { has_opts = true }
+		if f.typeinfo.is_array() { has_vecs = true }
 	});
 
 	if (entity.serde.ser || entity.serde.de) && (has_vecs || has_opts) {
@@ -605,14 +619,14 @@ fn print_struct(entity: &Entity, fields: &BTreeMap<String, StructField>, out: &m
 	let ctor_args = fields
 		.values()
 		.map(|f| (f, ConstructorArg {
-			into: !["bool"].contains(&f.typeinfo.name.as_str())
+			into: !f.typeinfo.const_literal.is_some() && !["bool"].contains(&f.typeinfo.name.as_str())
 		}))
 		.collect::<Vec<_>>();
 
 	writeln!(out, "\nimpl {} {{", entity.name);
 	out.indent();
 		write!(out, "pub fn new(");
-		let new_args = ctor_args.iter().filter(|(f, _)| !f.optional).collect::<Vec<_>>();
+		let new_args = ctor_args.iter().filter(|(f, _)| !f.optional && f.typeinfo.const_literal.is_none()).collect::<Vec<_>>();
 		let total = new_args.len();
 		for (i, (field, arg)) in new_args.into_iter().enumerate() {
 			write!(out, "{}: ", field.name);
@@ -630,10 +644,13 @@ fn print_struct(entity: &Entity, fields: &BTreeMap<String, StructField>, out: &m
 			writeln!(out, "Self {{");
 			out.indent();
 			for (f, a) in ctor_args.iter() {
-				let mut v = String::new();
-				if !f.optional { v = f.name.clone(); }
+				let mut v: String;
+				if let Some(ref const_value) = f.typeinfo.const_literal {
+					v = format!(r#""{}""#, const_value);
+				}
+				else if !f.optional { v = f.name.clone(); }
 				else {
-					if f.typeinfo.array() { v = "Vec::new()".to_owned(); }
+					if f.typeinfo.is_array() { v = "Vec::new()".to_owned(); }
 					else { v = "None".to_owned(); }
 				}
 				if !f.optional && a.into { v = format!("{}.into()", v); }
@@ -656,10 +673,10 @@ fn print_struct(entity: &Entity, fields: &BTreeMap<String, StructField>, out: &m
 
 		out.indent();
 		write!(out, "self.{} = ", field.name);
-		if arg.into && !field.typeinfo.array() {
+		if arg.into && !field.typeinfo.is_array() {
 			write!(out, "Some({}.into())", field.name);
 		}
-		else if field.typeinfo.array() {
+		else if field.typeinfo.is_array() {
 			write!(out, "{}.into()", field.name);
 		}
 		else {

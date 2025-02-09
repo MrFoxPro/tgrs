@@ -3,7 +3,7 @@
 use serde::{Serialize, Deserialize};
 use serde_with::apply;
 use derive_more::From;
-use crate::{addons::*, custom::*, method, InputFile};
+use crate::{addons::*, custom::*, InputFile};
 
 /**Contains information about the affiliate that received a commission via this transaction.
 
@@ -1959,7 +1959,7 @@ pub struct InlineQueryResultArticle {
 	pub input_message_content: InputMessageContent,
 	/**Type of the result, must be *article*
 	Default: article*/
-	pub r#type: String,
+	pub r#type: &'static str,
 	/**[Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub reply_markup: Option<InlineKeyboardMarkup>,
 	/**Thumbnail height*/
@@ -1974,12 +1974,12 @@ pub struct InlineQueryResultArticle {
 	pub url: Option<String>,
 }
 impl InlineQueryResultArticle {
-	pub fn new(id: impl Into<String>, input_message_content: impl Into<InputMessageContent>, r#type: impl Into<String>, title: impl Into<String>) -> Self {
+	pub fn new(id: impl Into<String>, input_message_content: impl Into<InputMessageContent>, title: impl Into<String>) -> Self {
 		Self {
 			description: None,
 			id: id.into(),
 			input_message_content: input_message_content.into(),
-			r#type: r#type.into(),
+			r#type: "article",
 			reply_markup: None,
 			thumbnail_height: None,
 			thumbnail_url: None,
@@ -2042,14 +2042,14 @@ pub struct InlineQueryResultAudio {
 	pub performer: Option<String>,
 	/**Type of the result, must be *audio*
 	Default: audio*/
-	pub r#type: String,
+	pub r#type: &'static str,
 	/**[Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub reply_markup: Option<InlineKeyboardMarkup>,
 	/**Title*/
 	pub title: String,
 }
 impl InlineQueryResultAudio {
-	pub fn new(audio_url: impl Into<String>, id: impl Into<String>, r#type: impl Into<String>, title: impl Into<String>) -> Self {
+	pub fn new(audio_url: impl Into<String>, id: impl Into<String>, title: impl Into<String>) -> Self {
 		Self {
 			audio_duration: None,
 			audio_url: audio_url.into(),
@@ -2059,7 +2059,7 @@ impl InlineQueryResultAudio {
 			input_message_content: None,
 			parse_mode: None,
 			performer: None,
-			r#type: r#type.into(),
+			r#type: "audio",
 			reply_markup: None,
 			title: title.into(),
 		}
@@ -2118,12 +2118,12 @@ pub struct InlineQueryResultCachedAudio {
 	pub parse_mode: Option<String>,
 	/**Type of the result, must be *audio*
 	Default: audio*/
-	pub r#type: String,
+	pub r#type: &'static str,
 	/**[Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 impl InlineQueryResultCachedAudio {
-	pub fn new(audio_file_id: impl Into<String>, id: impl Into<String>, r#type: impl Into<String>) -> Self {
+	pub fn new(audio_file_id: impl Into<String>, id: impl Into<String>) -> Self {
 		Self {
 			audio_file_id: audio_file_id.into(),
 			caption: None,
@@ -2131,7 +2131,7 @@ impl InlineQueryResultCachedAudio {
 			id: id.into(),
 			input_message_content: None,
 			parse_mode: None,
-			r#type: r#type.into(),
+			r#type: "audio",
 			reply_markup: None,
 		}
 	}
@@ -2183,14 +2183,14 @@ pub struct InlineQueryResultCachedDocument {
 	pub parse_mode: Option<String>,
 	/**Type of the result, must be *document*
 	Default: document*/
-	pub r#type: String,
+	pub r#type: &'static str,
 	/**[Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub reply_markup: Option<InlineKeyboardMarkup>,
 	/**Title for the result*/
 	pub title: String,
 }
 impl InlineQueryResultCachedDocument {
-	pub fn new(document_file_id: impl Into<String>, id: impl Into<String>, r#type: impl Into<String>, title: impl Into<String>) -> Self {
+	pub fn new(document_file_id: impl Into<String>, id: impl Into<String>, title: impl Into<String>) -> Self {
 		Self {
 			caption: None,
 			caption_entities: Vec::new(),
@@ -2199,7 +2199,7 @@ impl InlineQueryResultCachedDocument {
 			id: id.into(),
 			input_message_content: None,
 			parse_mode: None,
-			r#type: r#type.into(),
+			r#type: "document",
 			reply_markup: None,
 			title: title.into(),
 		}
@@ -2254,7 +2254,7 @@ pub struct InlineQueryResultCachedGif {
 	pub parse_mode: Option<String>,
 	/**Type of the result, must be *gif*
 	Default: gif*/
-	pub r#type: String,
+	pub r#type: &'static str,
 	/**[Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub reply_markup: Option<InlineKeyboardMarkup>,
 	/**Pass if the caption must be shown above the message media*/
@@ -2263,7 +2263,7 @@ pub struct InlineQueryResultCachedGif {
 	pub title: Option<String>,
 }
 impl InlineQueryResultCachedGif {
-	pub fn new(gif_file_id: impl Into<String>, id: impl Into<String>, r#type: impl Into<String>) -> Self {
+	pub fn new(gif_file_id: impl Into<String>, id: impl Into<String>) -> Self {
 		Self {
 			caption: None,
 			caption_entities: Vec::new(),
@@ -2271,7 +2271,7 @@ impl InlineQueryResultCachedGif {
 			id: id.into(),
 			input_message_content: None,
 			parse_mode: None,
-			r#type: r#type.into(),
+			r#type: "gif",
 			reply_markup: None,
 			show_caption_above_media: None,
 			title: None,
@@ -2331,7 +2331,7 @@ pub struct InlineQueryResultCachedMpeg4Gif {
 	pub parse_mode: Option<String>,
 	/**Type of the result, must be *mpeg4\_gif*
 	Default: mpeg4_gif*/
-	pub r#type: String,
+	pub r#type: &'static str,
 	/**[Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub reply_markup: Option<InlineKeyboardMarkup>,
 	/**Pass if the caption must be shown above the message media*/
@@ -2340,7 +2340,7 @@ pub struct InlineQueryResultCachedMpeg4Gif {
 	pub title: Option<String>,
 }
 impl InlineQueryResultCachedMpeg4Gif {
-	pub fn new(id: impl Into<String>, mpeg4_file_id: impl Into<String>, r#type: impl Into<String>) -> Self {
+	pub fn new(id: impl Into<String>, mpeg4_file_id: impl Into<String>) -> Self {
 		Self {
 			caption: None,
 			caption_entities: Vec::new(),
@@ -2348,7 +2348,7 @@ impl InlineQueryResultCachedMpeg4Gif {
 			input_message_content: None,
 			mpeg4_file_id: mpeg4_file_id.into(),
 			parse_mode: None,
-			r#type: r#type.into(),
+			r#type: "mpeg4_gif",
 			reply_markup: None,
 			show_caption_above_media: None,
 			title: None,
@@ -2410,7 +2410,7 @@ pub struct InlineQueryResultCachedPhoto {
 	pub photo_file_id: String,
 	/**Type of the result, must be *photo*
 	Default: photo*/
-	pub r#type: String,
+	pub r#type: &'static str,
 	/**[Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub reply_markup: Option<InlineKeyboardMarkup>,
 	/**Pass if the caption must be shown above the message media*/
@@ -2419,7 +2419,7 @@ pub struct InlineQueryResultCachedPhoto {
 	pub title: Option<String>,
 }
 impl InlineQueryResultCachedPhoto {
-	pub fn new(id: impl Into<String>, photo_file_id: impl Into<String>, r#type: impl Into<String>) -> Self {
+	pub fn new(id: impl Into<String>, photo_file_id: impl Into<String>) -> Self {
 		Self {
 			caption: None,
 			caption_entities: Vec::new(),
@@ -2428,7 +2428,7 @@ impl InlineQueryResultCachedPhoto {
 			input_message_content: None,
 			parse_mode: None,
 			photo_file_id: photo_file_id.into(),
-			r#type: r#type.into(),
+			r#type: "photo",
 			reply_markup: None,
 			show_caption_above_media: None,
 			title: None,
@@ -2481,18 +2481,18 @@ pub struct InlineQueryResultCachedSticker {
 	pub input_message_content: Option<InputMessageContent>,
 	/**Type of the result, must be *sticker*
 	Default: sticker*/
-	pub r#type: String,
+	pub r#type: &'static str,
 	/**[Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub reply_markup: Option<InlineKeyboardMarkup>,
 	/**A valid file identifier of the sticker*/
 	pub sticker_file_id: String,
 }
 impl InlineQueryResultCachedSticker {
-	pub fn new(id: impl Into<String>, r#type: impl Into<String>, sticker_file_id: impl Into<String>) -> Self {
+	pub fn new(id: impl Into<String>, sticker_file_id: impl Into<String>) -> Self {
 		Self {
 			id: id.into(),
 			input_message_content: None,
-			r#type: r#type.into(),
+			r#type: "sticker",
 			reply_markup: None,
 			sticker_file_id: sticker_file_id.into(),
 		}
@@ -2531,7 +2531,7 @@ pub struct InlineQueryResultCachedVideo {
 	pub parse_mode: Option<String>,
 	/**Type of the result, must be *video*
 	Default: video*/
-	pub r#type: String,
+	pub r#type: &'static str,
 	/**[Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub reply_markup: Option<InlineKeyboardMarkup>,
 	/**Pass if the caption must be shown above the message media*/
@@ -2542,7 +2542,7 @@ pub struct InlineQueryResultCachedVideo {
 	pub video_file_id: String,
 }
 impl InlineQueryResultCachedVideo {
-	pub fn new(id: impl Into<String>, r#type: impl Into<String>, title: impl Into<String>, video_file_id: impl Into<String>) -> Self {
+	pub fn new(id: impl Into<String>, title: impl Into<String>, video_file_id: impl Into<String>) -> Self {
 		Self {
 			caption: None,
 			caption_entities: Vec::new(),
@@ -2550,7 +2550,7 @@ impl InlineQueryResultCachedVideo {
 			id: id.into(),
 			input_message_content: None,
 			parse_mode: None,
-			r#type: r#type.into(),
+			r#type: "video",
 			reply_markup: None,
 			show_caption_above_media: None,
 			title: title.into(),
@@ -2609,7 +2609,7 @@ pub struct InlineQueryResultCachedVoice {
 	pub parse_mode: Option<String>,
 	/**Type of the result, must be *voice*
 	Default: voice*/
-	pub r#type: String,
+	pub r#type: &'static str,
 	/**[Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub reply_markup: Option<InlineKeyboardMarkup>,
 	/**Voice message title*/
@@ -2618,14 +2618,14 @@ pub struct InlineQueryResultCachedVoice {
 	pub voice_file_id: String,
 }
 impl InlineQueryResultCachedVoice {
-	pub fn new(id: impl Into<String>, r#type: impl Into<String>, title: impl Into<String>, voice_file_id: impl Into<String>) -> Self {
+	pub fn new(id: impl Into<String>, title: impl Into<String>, voice_file_id: impl Into<String>) -> Self {
 		Self {
 			caption: None,
 			caption_entities: Vec::new(),
 			id: id.into(),
 			input_message_content: None,
 			parse_mode: None,
-			r#type: r#type.into(),
+			r#type: "voice",
 			reply_markup: None,
 			title: title.into(),
 			voice_file_id: voice_file_id.into(),
@@ -2672,7 +2672,7 @@ pub struct InlineQueryResultContact {
 	pub phone_number: String,
 	/**Type of the result, must be *contact*
 	Default: contact*/
-	pub r#type: String,
+	pub r#type: &'static str,
 	/**[Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub reply_markup: Option<InlineKeyboardMarkup>,
 	/**Thumbnail height*/
@@ -2685,14 +2685,14 @@ pub struct InlineQueryResultContact {
 	pub vcard: Option<String>,
 }
 impl InlineQueryResultContact {
-	pub fn new(first_name: impl Into<String>, id: impl Into<String>, phone_number: impl Into<String>, r#type: impl Into<String>) -> Self {
+	pub fn new(first_name: impl Into<String>, id: impl Into<String>, phone_number: impl Into<String>) -> Self {
 		Self {
 			first_name: first_name.into(),
 			id: id.into(),
 			input_message_content: None,
 			last_name: None,
 			phone_number: phone_number.into(),
-			r#type: r#type.into(),
+			r#type: "contact",
 			reply_markup: None,
 			thumbnail_height: None,
 			thumbnail_url: None,
@@ -2759,7 +2759,7 @@ pub struct InlineQueryResultDocument {
 	pub parse_mode: Option<String>,
 	/**Type of the result, must be *document*
 	Default: document*/
-	pub r#type: String,
+	pub r#type: &'static str,
 	/**Inline keyboard attached to the message*/
 	pub reply_markup: Option<InlineKeyboardMarkup>,
 	/**Thumbnail height*/
@@ -2772,7 +2772,7 @@ pub struct InlineQueryResultDocument {
 	pub title: String,
 }
 impl InlineQueryResultDocument {
-	pub fn new(document_url: impl Into<String>, id: impl Into<String>, mime_type: impl Into<String>, r#type: impl Into<String>, title: impl Into<String>) -> Self {
+	pub fn new(document_url: impl Into<String>, id: impl Into<String>, mime_type: impl Into<String>, title: impl Into<String>) -> Self {
 		Self {
 			caption: None,
 			caption_entities: Vec::new(),
@@ -2782,7 +2782,7 @@ impl InlineQueryResultDocument {
 			input_message_content: None,
 			mime_type: mime_type.into(),
 			parse_mode: None,
-			r#type: r#type.into(),
+			r#type: "document",
 			reply_markup: None,
 			thumbnail_height: None,
 			thumbnail_url: None,
@@ -2841,16 +2841,16 @@ pub struct InlineQueryResultGame {
 	pub id: String,
 	/**Type of the result, must be *game*
 	Default: game*/
-	pub r#type: String,
+	pub r#type: &'static str,
 	/**[Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 impl InlineQueryResultGame {
-	pub fn new(game_short_name: impl Into<String>, id: impl Into<String>, r#type: impl Into<String>) -> Self {
+	pub fn new(game_short_name: impl Into<String>, id: impl Into<String>) -> Self {
 		Self {
 			game_short_name: game_short_name.into(),
 			id: id.into(),
-			r#type: r#type.into(),
+			r#type: "game",
 			reply_markup: None,
 		}
 	}
@@ -2890,7 +2890,7 @@ pub struct InlineQueryResultGif {
 	pub parse_mode: Option<String>,
 	/**Type of the result, must be *gif*
 	Default: gif*/
-	pub r#type: String,
+	pub r#type: &'static str,
 	/**[Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub reply_markup: Option<InlineKeyboardMarkup>,
 	/**Pass if the caption must be shown above the message media*/
@@ -2905,7 +2905,7 @@ pub struct InlineQueryResultGif {
 	pub title: Option<String>,
 }
 impl InlineQueryResultGif {
-	pub fn new(gif_url: impl Into<String>, id: impl Into<String>, r#type: impl Into<String>, thumbnail_url: impl Into<String>) -> Self {
+	pub fn new(gif_url: impl Into<String>, id: impl Into<String>, thumbnail_url: impl Into<String>) -> Self {
 		Self {
 			caption: None,
 			caption_entities: Vec::new(),
@@ -2916,7 +2916,7 @@ impl InlineQueryResultGif {
 			id: id.into(),
 			input_message_content: None,
 			parse_mode: None,
-			r#type: r#type.into(),
+			r#type: "gif",
 			reply_markup: None,
 			show_caption_above_media: None,
 			thumbnail_mime_type: None,
@@ -2995,7 +2995,7 @@ pub struct InlineQueryResultLocation {
 	pub proximity_alert_radius: Option<i64>,
 	/**Type of the result, must be *location*
 	Default: location*/
-	pub r#type: String,
+	pub r#type: &'static str,
 	/**[Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub reply_markup: Option<InlineKeyboardMarkup>,
 	/**Thumbnail height*/
@@ -3008,7 +3008,7 @@ pub struct InlineQueryResultLocation {
 	pub title: String,
 }
 impl InlineQueryResultLocation {
-	pub fn new(id: impl Into<String>, latitude: impl Into<f32>, longitude: impl Into<f32>, r#type: impl Into<String>, title: impl Into<String>) -> Self {
+	pub fn new(id: impl Into<String>, latitude: impl Into<f32>, longitude: impl Into<f32>, title: impl Into<String>) -> Self {
 		Self {
 			heading: None,
 			horizontal_accuracy: None,
@@ -3018,7 +3018,7 @@ impl InlineQueryResultLocation {
 			live_period: None,
 			longitude: longitude.into(),
 			proximity_alert_radius: None,
-			r#type: r#type.into(),
+			r#type: "location",
 			reply_markup: None,
 			thumbnail_height: None,
 			thumbnail_url: None,
@@ -3094,7 +3094,7 @@ pub struct InlineQueryResultMpeg4Gif {
 	pub parse_mode: Option<String>,
 	/**Type of the result, must be *mpeg4\_gif*
 	Default: mpeg4_gif*/
-	pub r#type: String,
+	pub r#type: &'static str,
 	/**[Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub reply_markup: Option<InlineKeyboardMarkup>,
 	/**Pass if the caption must be shown above the message media*/
@@ -3109,7 +3109,7 @@ pub struct InlineQueryResultMpeg4Gif {
 	pub title: Option<String>,
 }
 impl InlineQueryResultMpeg4Gif {
-	pub fn new(id: impl Into<String>, mpeg4_url: impl Into<String>, r#type: impl Into<String>, thumbnail_url: impl Into<String>) -> Self {
+	pub fn new(id: impl Into<String>, mpeg4_url: impl Into<String>, thumbnail_url: impl Into<String>) -> Self {
 		Self {
 			caption: None,
 			caption_entities: Vec::new(),
@@ -3120,7 +3120,7 @@ impl InlineQueryResultMpeg4Gif {
 			mpeg4_url: mpeg4_url.into(),
 			mpeg4_width: None,
 			parse_mode: None,
-			r#type: r#type.into(),
+			r#type: "mpeg4_gif",
 			reply_markup: None,
 			show_caption_above_media: None,
 			thumbnail_mime_type: None,
@@ -3204,7 +3204,7 @@ pub struct InlineQueryResultPhoto {
 	pub photo_width: Option<i64>,
 	/**Type of the result, must be *photo*
 	Default: photo*/
-	pub r#type: String,
+	pub r#type: &'static str,
 	/**[Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub reply_markup: Option<InlineKeyboardMarkup>,
 	/**Pass if the caption must be shown above the message media*/
@@ -3215,7 +3215,7 @@ pub struct InlineQueryResultPhoto {
 	pub title: Option<String>,
 }
 impl InlineQueryResultPhoto {
-	pub fn new(id: impl Into<String>, photo_url: impl Into<String>, r#type: impl Into<String>, thumbnail_url: impl Into<String>) -> Self {
+	pub fn new(id: impl Into<String>, photo_url: impl Into<String>, thumbnail_url: impl Into<String>) -> Self {
 		Self {
 			caption: None,
 			caption_entities: Vec::new(),
@@ -3226,7 +3226,7 @@ impl InlineQueryResultPhoto {
 			photo_height: None,
 			photo_url: photo_url.into(),
 			photo_width: None,
-			r#type: r#type.into(),
+			r#type: "photo",
 			reply_markup: None,
 			show_caption_above_media: None,
 			thumbnail_url: thumbnail_url.into(),
@@ -3302,7 +3302,7 @@ pub struct InlineQueryResultVenue {
 	pub longitude: f32,
 	/**Type of the result, must be *venue*
 	Default: venue*/
-	pub r#type: String,
+	pub r#type: &'static str,
 	/**[Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub reply_markup: Option<InlineKeyboardMarkup>,
 	/**Thumbnail height*/
@@ -3315,7 +3315,7 @@ pub struct InlineQueryResultVenue {
 	pub title: String,
 }
 impl InlineQueryResultVenue {
-	pub fn new(address: impl Into<String>, id: impl Into<String>, latitude: impl Into<f32>, longitude: impl Into<f32>, r#type: impl Into<String>, title: impl Into<String>) -> Self {
+	pub fn new(address: impl Into<String>, id: impl Into<String>, latitude: impl Into<f32>, longitude: impl Into<f32>, title: impl Into<String>) -> Self {
 		Self {
 			address: address.into(),
 			foursquare_id: None,
@@ -3326,7 +3326,7 @@ impl InlineQueryResultVenue {
 			input_message_content: None,
 			latitude: latitude.into(),
 			longitude: longitude.into(),
-			r#type: r#type.into(),
+			r#type: "venue",
 			reply_markup: None,
 			thumbnail_height: None,
 			thumbnail_url: None,
@@ -3401,7 +3401,7 @@ pub struct InlineQueryResultVideo {
 	pub parse_mode: Option<String>,
 	/**Type of the result, must be *video*
 	Default: video*/
-	pub r#type: String,
+	pub r#type: &'static str,
 	/**[Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub reply_markup: Option<InlineKeyboardMarkup>,
 	/**Pass if the caption must be shown above the message media*/
@@ -3420,7 +3420,7 @@ pub struct InlineQueryResultVideo {
 	pub video_width: Option<i64>,
 }
 impl InlineQueryResultVideo {
-	pub fn new(id: impl Into<String>, mime_type: impl Into<String>, r#type: impl Into<String>, thumbnail_url: impl Into<String>, title: impl Into<String>, video_url: impl Into<String>) -> Self {
+	pub fn new(id: impl Into<String>, mime_type: impl Into<String>, thumbnail_url: impl Into<String>, title: impl Into<String>, video_url: impl Into<String>) -> Self {
 		Self {
 			caption: None,
 			caption_entities: Vec::new(),
@@ -3429,7 +3429,7 @@ impl InlineQueryResultVideo {
 			input_message_content: None,
 			mime_type: mime_type.into(),
 			parse_mode: None,
-			r#type: r#type.into(),
+			r#type: "video",
 			reply_markup: None,
 			show_caption_above_media: None,
 			thumbnail_url: thumbnail_url.into(),
@@ -3504,7 +3504,7 @@ pub struct InlineQueryResultVoice {
 	pub parse_mode: Option<String>,
 	/**Type of the result, must be *voice*
 	Default: voice*/
-	pub r#type: String,
+	pub r#type: &'static str,
 	/**[Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub reply_markup: Option<InlineKeyboardMarkup>,
 	/**Recording title*/
@@ -3515,14 +3515,14 @@ pub struct InlineQueryResultVoice {
 	pub voice_url: String,
 }
 impl InlineQueryResultVoice {
-	pub fn new(id: impl Into<String>, r#type: impl Into<String>, title: impl Into<String>, voice_url: impl Into<String>) -> Self {
+	pub fn new(id: impl Into<String>, title: impl Into<String>, voice_url: impl Into<String>) -> Self {
 		Self {
 			caption: None,
 			caption_entities: Vec::new(),
 			id: id.into(),
 			input_message_content: None,
 			parse_mode: None,
-			r#type: r#type.into(),
+			r#type: "voice",
 			reply_markup: None,
 			title: title.into(),
 			voice_duration: None,
@@ -3860,7 +3860,7 @@ pub struct InputMediaAnimation {
 	pub parse_mode: Option<String>,
 	/**Type of the result, must be *animation*
 	Default: animation*/
-	pub r#type: String,
+	pub r#type: &'static str,
 	/**Pass if the caption must be shown above the message media*/
 	pub show_caption_above_media: Option<bool>,
 	/**Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
@@ -3869,7 +3869,7 @@ pub struct InputMediaAnimation {
 	pub width: Option<i64>,
 }
 impl InputMediaAnimation {
-	pub fn new(media: impl Into<String>, r#type: impl Into<String>) -> Self {
+	pub fn new(media: impl Into<String>) -> Self {
 		Self {
 			caption: None,
 			caption_entities: Vec::new(),
@@ -3878,7 +3878,7 @@ impl InputMediaAnimation {
 			height: None,
 			media: media.into(),
 			parse_mode: None,
-			r#type: r#type.into(),
+			r#type: "animation",
 			show_caption_above_media: None,
 			thumbnail: None,
 			width: None,
@@ -3946,14 +3946,14 @@ pub struct InputMediaAudio {
 	pub performer: Option<String>,
 	/**Type of the result, must be *audio*
 	Default: audio*/
-	pub r#type: String,
+	pub r#type: &'static str,
 	/**Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
 	pub thumbnail: Option<Asset>,
 	/**Title of the audio*/
 	pub title: Option<String>,
 }
 impl InputMediaAudio {
-	pub fn new(media: impl Into<String>, r#type: impl Into<String>) -> Self {
+	pub fn new(media: impl Into<String>) -> Self {
 		Self {
 			caption: None,
 			caption_entities: Vec::new(),
@@ -3961,7 +3961,7 @@ impl InputMediaAudio {
 			media: media.into(),
 			parse_mode: None,
 			performer: None,
-			r#type: r#type.into(),
+			r#type: "audio",
 			thumbnail: None,
 			title: None,
 		}
@@ -4018,19 +4018,19 @@ pub struct InputMediaDocument {
 	pub parse_mode: Option<String>,
 	/**Type of the result, must be *document*
 	Default: document*/
-	pub r#type: String,
+	pub r#type: &'static str,
 	/**Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
 	pub thumbnail: Option<Asset>,
 }
 impl InputMediaDocument {
-	pub fn new(media: impl Into<String>, r#type: impl Into<String>) -> Self {
+	pub fn new(media: impl Into<String>) -> Self {
 		Self {
 			caption: None,
 			caption_entities: Vec::new(),
 			disable_content_type_detection: None,
 			media: media.into(),
 			parse_mode: None,
-			r#type: r#type.into(),
+			r#type: "document",
 			thumbnail: None,
 		}
 	}
@@ -4078,19 +4078,19 @@ pub struct InputMediaPhoto {
 	pub parse_mode: Option<String>,
 	/**Type of the result, must be *photo*
 	Default: photo*/
-	pub r#type: String,
+	pub r#type: &'static str,
 	/**Pass if the caption must be shown above the message media*/
 	pub show_caption_above_media: Option<bool>,
 }
 impl InputMediaPhoto {
-	pub fn new(media: impl Into<String>, r#type: impl Into<String>) -> Self {
+	pub fn new(media: impl Into<String>) -> Self {
 		Self {
 			caption: None,
 			caption_entities: Vec::new(),
 			has_spoiler: None,
 			media: media.into(),
 			parse_mode: None,
-			r#type: r#type.into(),
+			r#type: "photo",
 			show_caption_above_media: None,
 		}
 	}
@@ -4142,7 +4142,7 @@ pub struct InputMediaVideo {
 	pub parse_mode: Option<String>,
 	/**Type of the result, must be *video*
 	Default: video*/
-	pub r#type: String,
+	pub r#type: &'static str,
 	/**Pass if the caption must be shown above the message media*/
 	pub show_caption_above_media: Option<bool>,
 	/**Pass *True* if the uploaded video is suitable for streaming*/
@@ -4153,7 +4153,7 @@ pub struct InputMediaVideo {
 	pub width: Option<i64>,
 }
 impl InputMediaVideo {
-	pub fn new(media: impl Into<String>, r#type: impl Into<String>) -> Self {
+	pub fn new(media: impl Into<String>) -> Self {
 		Self {
 			caption: None,
 			caption_entities: Vec::new(),
@@ -4162,7 +4162,7 @@ impl InputMediaVideo {
 			height: None,
 			media: media.into(),
 			parse_mode: None,
-			r#type: r#type.into(),
+			r#type: "video",
 			show_caption_above_media: None,
 			supports_streaming: None,
 			thumbnail: None,

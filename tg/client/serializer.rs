@@ -23,7 +23,9 @@ impl<'a> ser::Serializer for &'a mut Serializer<'a> {
 	type Ok = (); type Error = SerError;
  
 	type SerializeStruct = Self;
-	fn serialize_struct(self, name: &'static str, len: usize) -> SerResult<Self::SerializeStruct> { Ok(self) }
+	fn serialize_struct(self, name: &'static str, len: usize) -> SerResult<Self::SerializeStruct> { 
+		Ok(self)
+	}
 	type SerializeMap = Impossible<(), Self::Error>;
 	fn serialize_map(self, len: Option<usize>) -> SerResult<Self::SerializeMap> { unimplemented!() }
 
@@ -174,12 +176,15 @@ impl<'a> ser::Serializer for &'a mut FieldSerializer<'a> {
 	}
 	#[inline] fn serialize_some<T: ?Sized + Serialize>(self, value: &T) -> SerResult<()> {
 		value.serialize(self)
+		// unimplemented!()
 	}
 	#[inline] fn serialize_newtype_struct<T: ?Sized + Serialize>(self, name: &'static str, value: &T) -> SerResult<()> {
 		value.serialize(self)
+		// unimplemented!()
 	}
 	#[inline] fn serialize_newtype_variant<T: ?Sized + Serialize>(self, name: &'static str, variant_index: u32, variant: &'static str, value: &T) -> SerResult<()> {
 		value.serialize(self)
+		// unimplemented!()
 	}
 	fn serialize_unit(self) -> SerResult<()> {
 		unimplemented!()

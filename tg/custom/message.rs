@@ -62,7 +62,7 @@ pub struct Message {
 	/**Inline keyboard attached to the message. `login_url` buttons are represented as ordinary `url` buttons.*/
 	pub reply_markup: Option<InlineKeyboardMarkup>,
 	/**For replies in the same chat and message thread, the original message. Note that the Message object in this field will not contain further *reply\_to\_message* fields even if it itself is a reply.*/
-	pub reply_to_message: Option<Box<Message>>,
+	// pub reply_to_message: Option<Box<Message>>,
 	/**For replies to a story, the original story*/
 	pub reply_to_story: Option<Story>,
 	/**If the sender of the message boosted the chat, the number of boosts added by the user*/
@@ -134,7 +134,7 @@ pub enum MessageData {
 	/**Message is a shared contact, information about the contact*/
 	Contact(Contact),
 
-	#[serde( deserialize_with = "RawFlag::deserialize_value", serialize_with = "RawFlag::serialize_value" )]
+	#[serde(deserialize_with = "RawFlag::deserialize_value", serialize_with = "RawFlag::serialize_value")]
 	DeleteChatPhoto,
 
 	/**Message is a dice with random value*/
