@@ -5,7 +5,7 @@ mod indent;
 
 use std::{cell::RefCell, collections::{BTreeMap, HashSet, VecDeque}, io::Write, process::Command, rc::Rc};
 use anyhow::Result;
-use heck::ToPascalCase;
+use heck::{ToPascalCase, ToSnakeCase};
 use indent::IndentedWriter;
 use tg_bot_api::{extractor::Extractor, parser, Argument, Field, MethodArgs, ObjectData, Type};
 
@@ -19,20 +19,21 @@ const RESERVED_WORDS: &[&str] = &[
 const BLACKLISTED_TYPES: &[&str] = &[
 	"Message",
 	"InputFile",
+	"Asset",
 ];
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 struct SerdeInfo { 
 	ser: bool,
 	de: bool,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq)]
 enum TypeWrapper {
 	Option,
 	Vec,
 }
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 struct TypeInfo {
 	name: String,
 	wrappers: Vec<TypeWrapper>,
@@ -45,7 +46,7 @@ impl TypeInfo {
 	}
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 struct StructField {
 	typeinfo: TypeInfo,
 	name: String,
@@ -61,15 +62,20 @@ struct Entity {
 	serde: SerdeInfo,
 	variant: EntityVariant,
 }
+impl PartialEq for Entity {
+	fn eq(&self, other: &Self) -> bool {
+	    self.parents == other.parents && self.comment == other.comment && self.serde == other.serde && self.variant == other.variant
+	}
+}
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub enum PayloadKind {
     Multipart,
     Json,
     Empty,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 enum EntityVariant {
 	Unknown,
 	Object {
@@ -122,18 +128,18 @@ fn get_plain_typeinfo(ty: &Type) -> TypeInfo {
 }
 
 fn create_enum_variant(enum_name: &String, var: &Type) -> (String, StructField) {
-	let TypeInfo { name: var_ty_name, .. } = get_plain_typeinfo(&var);
+	let TypeInfo { name: var_ty_name, has_ref, .. } = get_plain_typeinfo(&var);
 	let mut var_name = var_ty_name.to_pascal_case();
 	if enum_name == "ChatId" || enum_name == "FromChatId" {
 		if var_name == "String" { var_name = "Username".to_owned(); }
-		if var_name == "I64" { var_name = "Id".to_owned(); }
+		if var_name == "I64"    { var_name = "Id".to_owned(); }
 	}
 	else if var_name.len() > enum_name.len() && var_name.starts_with(enum_name) {
 		var_name = var_name[enum_name.len()..].to_string();
 	}
 	(var_name, StructField { 
 		name: var_ty_name.clone(), 
-		typeinfo: TypeInfo { name: var_ty_name, has_ref: true, wrappers: Vec::new(), const_literal: None, }, 
+		typeinfo: TypeInfo { name: var_ty_name, has_ref, wrappers: Vec::new(), const_literal: None, }, 
 		optional: false, 
 		comment: String::new()
 	}) 
@@ -199,7 +205,7 @@ fn expand_typeinfo(state: &mut Registry, target: &Type, NewEnumInfo { mut name, 
 		other => get_plain_typeinfo(&other)
 	}
 }
-
+	
 const CONST_FIELD_PREFIX: &str = "Type of the result, must be ";
 fn check_const_literal(ty: &mut TypeInfo, description: &String) {
 	if description.starts_with(CONST_FIELD_PREFIX) {
@@ -221,8 +227,8 @@ pub fn main() -> Result<()> {
 	writeln!(out, "/* @generated */\n");
 	writeln!(out, "use serde::{{Serialize, Deserialize}};");
 	writeln!(out, "use serde_with::apply;");
-	writeln!(out, "use derive_more::From;");
-	writeln!(out, "use crate::{{addons::*, custom::*, InputFile}};");
+	writeln!(out, "use derive_more::{{From, Display}};");
+	writeln!(out, "use crate::{{addons::*, custom::*, client::{{Executable, FormParts}}, InputFile}};");
 	writeln!(out, "");
 
 	let mut registry = BTreeMap::new();
@@ -230,7 +236,7 @@ pub fn main() -> Result<()> {
 	for object in parsed.objects.into_iter() {
 		let comment = [object.description.clone(), String::new(), object.docs_link.clone()].join("\n");
 
-		match object.data {
+		let entity = match object.data {
 			ObjectData::Fields(fields) => {
 				let mut out_fields = BTreeMap::new();
 				for Field { name, kind, required, description } in fields.into_iter() {
@@ -250,6 +256,11 @@ pub fn main() -> Result<()> {
 							serde: SerdeInfo { ser: false, de: false }
 						}
 					);
+					if description.contains("attach://") {
+						typeinfo.name = "Asset".to_owned();
+						typeinfo.wrappers = vec![];
+						typeinfo.has_ref = true;
+					}
 					check_const_literal(&mut typeinfo, &description);
 
 					let mut docs = Vec::from_iter([description]);
@@ -306,7 +317,7 @@ pub fn main() -> Result<()> {
 					serde: SerdeInfo { ser: false, de: false },
 					variant: EntityVariant::Object { fields: out_fields }
 				};
-				assert!(registry.insert(object.name.clone(), outdef).is_none());
+				outdef
 			}
 			ObjectData::Elements(vars) => {
 				let variants = vars.iter().map(|var| create_enum_variant(&object.name, var)).collect();
@@ -317,7 +328,7 @@ pub fn main() -> Result<()> {
 					serde: SerdeInfo { ser: false, de: false },
 					variant: EntityVariant::Enum { variants }
 				};
-				assert!(registry.insert(object.name.clone(), outdef).is_none());
+				outdef
 			}
 			ObjectData::Unknown => {
 				let outdef = Entity { 
@@ -327,11 +338,14 @@ pub fn main() -> Result<()> {
 					comment,
 					variant: EntityVariant::Unknown,
 				};
-				if !["InputFile"].contains(&outdef.name.as_str()) {
-					assert!(registry.insert(object.name.clone(), outdef).is_none());
-				}
+				outdef				
 			}
+		};
+		if registry.values().any(|e| e.eq(&entity)) {
+			println!("skipping duplicating {}", entity.name);
+			continue;
 		}
+		assert!(registry.insert(object.name.clone(), entity).is_none());
 	}
 
 	for method in parsed.methods.into_iter() {
@@ -360,7 +374,7 @@ pub fn main() -> Result<()> {
 							name: typename_hint,
 							comment: description.clone(),
 							parent: Some(method_name.clone()),
-							serde: SerdeInfo { ser: true, de: false }
+							serde: SerdeInfo { ser: false, de: false }
 						}
 					);
 					check_const_literal(&mut typeinfo, &description);
@@ -396,7 +410,7 @@ pub fn main() -> Result<()> {
 		let entity = Entity { 
 			name: method_name, 
 			parents: Vec::new(),
-			serde: SerdeInfo { ser: true, de: false },
+			serde: SerdeInfo { ser: false, de: false },
 			variant: EntityVariant::Method { 
 				kind: method_kind,
 				api_name: method.name.clone(),
@@ -431,6 +445,24 @@ pub fn main() -> Result<()> {
 				rtype_entity.serde.de = true;
 				rtype_entity.parents.push(entity.name.clone());
 			}
+		}
+	}
+
+	let registry_clone = registry.clone();
+	for entity in registry.values_mut() {
+		match entity.variant {
+			EntityVariant::Object { .. } | EntityVariant::Enum { .. } => {
+				'c: for centity in registry_clone.values() {
+					let EntityVariant::Method { ref args, .. } = centity.variant else { continue };
+					for (_, a) in args.iter() {
+						if a.typeinfo.name == entity.name {
+							entity.serde.ser = true;
+							break 'c;
+						}
+					}
+				}
+			},
+			_ => {}
 		}
 	}
 
@@ -488,12 +520,95 @@ fn print_entities(registry: Registry, out: &mut IndentedWriter<impl Write>) {
 			}
 			EntityVariant::Method { kind, args, return_type, api_name } => {
 				print_struct(&entity, &args, out);
+
+				writeln!(out, "impl Executable for {} {{", entity.name);
+				out.indent();
+
+				writeln!(out, "type Response = {};", return_type.name);
+				writeln!(out, r#"const METHOD_NAME: &str = "{}";"#, api_name);
+				writeln!(out, "fn into_parts(self) -> FormParts {{");
+				out.indent();
+
+				let mut capacity = 0;
+				for arg in args.values() {
+					 if ["InputFile", "Asset"].contains(&arg.name.as_str()) { capacity += 2; } 
+					 else { capacity += 1 }
+				}
+
+				if !args.is_empty() {
+					writeln!(out, "let mut parts = FormParts::new({capacity});");
+
+					for (name, sf) in args.iter() {
+						if sf.optional && sf.typeinfo.is_array() {
+							writeln!(out, r#"if self.{name}.len() > 0 {{ parts.add_object("{name}", self.{name}) }}"#);
+						}
+						else if sf.typeinfo.is_array() {
+							writeln!(out, r#"if self.{name}.len() > 0 {{ parts.add_object("{name}", self.{name}) }}"#);
+						}
+						else if ["String", "i64", "f32", "bool", "InputFile", "Asset"].contains(&sf.typeinfo.name.as_str()) {
+							if sf.typeinfo.name == "InputFile" {
+								writeln!(out, r#"parts.add_file("{name}", self.{name});"#);
+							}
+							else {
+								writeln!(out, r#"parts.add_{}("{name}", self.{name});"#, sf.typeinfo.name.to_snake_case());
+							}
+						}
+						else if let Some(e) = registry.get(&sf.typeinfo.name) && let EntityVariant::Enum { ref variants } = e.variant && variants.iter().all(|(vname, vfield)| !vfield.typeinfo.has_ref) {
+							if sf.optional {
+								writeln!(out, r#"parts.add_string("{name}", self.{name}.map(|x| x.to_string()));"#);
+							}
+							else {
+								writeln!(out, r#"parts.add_string("{name}", self.{name}.to_string());"#);
+							}
+						}
+						else {
+							if sf.optional {
+								writeln!(out, r#"if let Some({name}) = self.{name} {{ parts.add_object("{name}", {name}) }}"#);
+							}
+							else {
+								writeln!(out, r#"parts.add_object("{name}", self.{name});"#);
+							}
+						}
+
+
+						// if sf.optional && !sf.typeinfo.is_array() { 
+						// 	writeln!(out, "if let Some({name}) = self.{name} {{");
+						// 	out.indent();
+
+						// 	writeln!(out, r#"parts.push(("{name}".into(), {part}));"#); 
+
+						// 	out.unindent();
+						// 	writeln!(out, "}}");
+						// }
+						// else if sf.typeinfo.is_array() {
+						// 	writeln!(out, r#"if !self.{name}.is_empty() {{"#);
+						// 	out.indent();
+							
+						// 	writeln!(out, r#"parts.push(("{name}".into(), {part}));"#);
+							
+						// 	out.unindent();
+						// 	writeln!(out, "}}");
+						// }
+						// else { writeln!(out, r#"parts.push(("{name}".into(), {part}));"#); }
+					}
+					writeln!(out, r#"parts"#);
+				}
+				else {
+					writeln!(out, r#"FormParts::new(0)"#);
+				}
+				out.unindent();
+				writeln!(out, "}}");
+
+				out.unindent();
+				writeln!(out, "}}");
+
 				// let suffix = match kind { PayloadKind::Empty => "empty", PayloadKind::Multipart => "multipart", PayloadKind::Json => "json" };
-				writeln!(out, r#"method!({}, "{}", {});"#, entity.name, api_name, return_type.name);
+
+				// writeln!(out, r#"method!({}, "{}", {});"#, entity.name, api_name, return_type.name);
 			}
 			EntityVariant::Enum { variants } => {
 				print_derive(&entity, out);
-				writeln!(out, "#[serde(untagged)]");
+				if entity.serde.ser || entity.serde.de { writeln!(out, "#[serde(untagged)]"); }
 				writeln!(out, "pub enum {} {{", entity.name);
 				out.indent();
 				// writeln!(out, "#[default]");
@@ -523,6 +638,9 @@ fn print_derive(entity: &Entity, out: &mut IndentedWriter<impl Write>) {
 	if let EntityVariant::Enum { ref variants } = entity.variant  {
 		if !variants.contains_key("File") && !variants.contains_key("Url") {
 			derives.push("From");
+		}
+		if variants.iter().all(|(vname, vfield)| !vfield.typeinfo.has_ref) {
+			derives.push("Display");
 		}
 	}
 
@@ -582,13 +700,13 @@ fn print_struct(entity: &Entity, fields: &BTreeMap<String, StructField>, out: &m
 	print_derive(&entity, out);
 
 	write!(out, "pub struct {}", entity.name);
-	if fields.len() > 0 { 
+	// if fields.len() > 0 { 
 		writeln!(out, " {{"); 
 		out.indent();
-	} 
-	else { 
-		writeln!(out, ";");
-	}
+	// } 
+	// else { 
+		// writeln!(out, ";");
+	// }
 	for field in fields.clone().into_values() {
 		let mut comment = field.comment.clone();
 		if field.optional { 
@@ -602,24 +720,28 @@ fn print_struct(entity: &Entity, fields: &BTreeMap<String, StructField>, out: &m
 		let typename = field_typename(&field, entity);
 		writeln!(out, "pub {}: {},", field.name, typename);
 	}
-	if fields.len() > 0 {
+	// if fields.len() > 0 {
+		// if entity.serde.ser || entity.serde.de {
+		// 	write!(out, "#[serde(skip)] ");
+		// }
+		// writeln!(out, "pub parts: FormParts,");
 		out.unindent();
 		write!(out, "}}");
-	}
-	else { return }
+	// }
+	// else { return }
 
-	if !entity.serde.ser {
-		writeln!(out, "");
-		return
-	}
+	// if !entity.serde.ser {
+		// writeln!(out, "");
+		// return
+	// }
 
 	struct ConstructorArg {
 		into: bool
 	}
 	let ctor_args = fields
 		.values()
-		.map(|f| (f, ConstructorArg {
-			into: !f.typeinfo.const_literal.is_some() && !["bool"].contains(&f.typeinfo.name.as_str())
+		.map(|field| (field, ConstructorArg {
+			into: !field.typeinfo.const_literal.is_some() && !["bool"].contains(&field.typeinfo.name.as_str())
 		}))
 		.collect::<Vec<_>>();
 
@@ -656,17 +778,52 @@ fn print_struct(entity: &Entity, fields: &BTreeMap<String, StructField>, out: &m
 				if !f.optional && a.into { v = format!("{}.into()", v); }
 				writeln!(out, "{}: {},", f.name, v);
 			}
+			// writeln!(out, "parts: FormParts::new(),");
 			out.unindent();
 			writeln!(out, "}}");
 
 		out.unindent();
 		writeln!(out, "}}");
 		
-	for (field, arg) in ctor_args.iter() {
+	for (field, arg) in ctor_args.into_iter() {
+		if field.typeinfo.is_array() {
+			let pluralized_field_name = pluralizer::pluralize(&field.name, 1, false);
+			write!(out, "pub fn add_{0}(mut self, {0}: ", pluralized_field_name);
+	 		let accept_type = field_typename(&StructField { 
+	 			optional: false, 
+	 			typeinfo: TypeInfo { 
+	 				wrappers: field.typeinfo.wrappers.clone().into_iter().skip(1).collect(),
+	 				..field.typeinfo.clone() 
+	 			}, 
+	 			..field.clone() 
+	 		}, entity);
+	 		if arg.into { write!(out, "impl Into<{}>", accept_type); }
+	 		else { write!(out, "{}", accept_type); }
+			writeln!(out, ") -> Self {{");
+
+			out.indent();
+			write!(out, "self.{}.push(", field.name);
+			if arg.into && !field.typeinfo.is_array() {
+				write!(out, "Some({}.into())", pluralized_field_name);
+			}
+			else if field.typeinfo.is_array() {
+				write!(out, "{}.into()", pluralized_field_name);
+			}
+			else {
+				write!(out, "Some({})", pluralized_field_name);
+			}
+			writeln!(out, ");");
+			writeln!(out, "self");
+
+			out.unindent();
+			writeln!(out, "}}");
+		}
+
+
 		if !field.optional { continue; }
 		write!(out, "pub fn {0}(mut self, {0}: ", field.name);
 
- 		let accept_type = field_typename(&StructField { optional: false, ..field.clone().clone() }, entity);
+ 		let accept_type = field_typename(&StructField { optional: false, ..field.clone() }, entity);
  		if arg.into { write!(out, "impl Into<{}>", accept_type); }
  		else { write!(out, "{}", accept_type); }
 		writeln!(out, ") -> Self {{");
@@ -693,3 +850,19 @@ fn print_struct(entity: &Entity, fields: &BTreeMap<String, StructField>, out: &m
 	out.unindent();
 	writeln!(out, "}}");
 }
+
+// macro_rules! method {
+// 	($name:ty, $id:literal, $response:ty) => {
+// 		impl Executable for $name {
+// 			type Response = $response;
+// 			fn method_name(&self) -> &'static str { $id }
+// 			fn parts(&self) -> &FormParts { &self.parts }
+// 			fn parts_mut(&mut self) -> &mut FormParts { &mut self.parts }
+// 			fn into_parts(self) {
+// 				let mut parts = Vec::with_capacity(32);
+// 				// Serialize::serialize(&self, &mut PartsSerializer::new(&mut parts)).unwrap();
+// 				self.parts_mut().extend(parts);
+// 			}
+// 		}
+// 	};
+// }

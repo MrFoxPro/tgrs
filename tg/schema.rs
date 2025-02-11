@@ -2,8 +2,8 @@
 
 use serde::{Serialize, Deserialize};
 use serde_with::apply;
-use derive_more::From;
-use crate::{addons::*, custom::*, InputFile};
+use derive_more::{From, Display};
+use crate::{addons::*, custom::*, client::{Executable, FormParts}, InputFile};
 
 /**Contains information about the affiliate that received a commission via this transaction.
 
@@ -23,6 +23,29 @@ pub struct AffiliateInfo {
 	pub commission_per_mille: i64,
 	/**The number of 1/1000000000 shares of Telegram Stars received by the affiliate; from -999999999 to 999999999; can be negative for refunds*/
 	pub nanostar_amount: Option<i64>,
+}
+impl AffiliateInfo {
+	pub fn new(amount: impl Into<i64>, commission_per_mille: impl Into<i64>) -> Self {
+		Self {
+			affiliate_chat: None,
+			affiliate_user: None,
+			amount: amount.into(),
+			commission_per_mille: commission_per_mille.into(),
+			nanostar_amount: None,
+		}
+	}
+	pub fn affiliate_chat(mut self, affiliate_chat: impl Into<Chat>) -> Self {
+		self.affiliate_chat = Some(affiliate_chat.into());
+		self
+	}
+	pub fn affiliate_user(mut self, affiliate_user: impl Into<User>) -> Self {
+		self.affiliate_user = Some(affiliate_user.into());
+		self
+	}
+	pub fn nanostar_amount(mut self, nanostar_amount: impl Into<i64>) -> Self {
+		self.nanostar_amount = Some(nanostar_amount.into());
+		self
+	}
 }
 /**This object represents an animation file (GIF or H.264/MPEG-4 AVC video without sound).
 
@@ -51,11 +74,36 @@ pub struct Animation {
 	/**Video width as defined by the sender*/
 	pub width: i64,
 }
-#[derive(Clone, Debug, Serialize)]
-#[serde(untagged)]
-pub enum Asset {
-	File(InputFile),
-	Url(String),
+impl Animation {
+	pub fn new(duration: impl Into<i64>, file_id: impl Into<String>, file_unique_id: impl Into<String>, height: impl Into<i64>, width: impl Into<i64>) -> Self {
+		Self {
+			duration: duration.into(),
+			file_id: file_id.into(),
+			file_name: None,
+			file_size: None,
+			file_unique_id: file_unique_id.into(),
+			height: height.into(),
+			mime_type: None,
+			thumbnail: None,
+			width: width.into(),
+		}
+	}
+	pub fn file_name(mut self, file_name: impl Into<String>) -> Self {
+		self.file_name = Some(file_name.into());
+		self
+	}
+	pub fn file_size(mut self, file_size: impl Into<i64>) -> Self {
+		self.file_size = Some(file_size.into());
+		self
+	}
+	pub fn mime_type(mut self, mime_type: impl Into<String>) -> Self {
+		self.mime_type = Some(mime_type.into());
+		self
+	}
+	pub fn thumbnail(mut self, thumbnail: impl Into<PhotoSize>) -> Self {
+		self.thumbnail = Some(thumbnail.into());
+		self
+	}
 }
 /**This object represents an audio file to be treated as music by the Telegram clients.
 
@@ -83,6 +131,45 @@ pub struct Audio {
 	pub thumbnail: Option<PhotoSize>,
 	/**Title of the audio as defined by the sender or by audio tags*/
 	pub title: Option<String>,
+}
+impl Audio {
+	pub fn new(duration: impl Into<i64>, file_id: impl Into<String>, file_unique_id: impl Into<String>) -> Self {
+		Self {
+			duration: duration.into(),
+			file_id: file_id.into(),
+			file_name: None,
+			file_size: None,
+			file_unique_id: file_unique_id.into(),
+			mime_type: None,
+			performer: None,
+			thumbnail: None,
+			title: None,
+		}
+	}
+	pub fn file_name(mut self, file_name: impl Into<String>) -> Self {
+		self.file_name = Some(file_name.into());
+		self
+	}
+	pub fn file_size(mut self, file_size: impl Into<i64>) -> Self {
+		self.file_size = Some(file_size.into());
+		self
+	}
+	pub fn mime_type(mut self, mime_type: impl Into<String>) -> Self {
+		self.mime_type = Some(mime_type.into());
+		self
+	}
+	pub fn performer(mut self, performer: impl Into<String>) -> Self {
+		self.performer = Some(performer.into());
+		self
+	}
+	pub fn thumbnail(mut self, thumbnail: impl Into<PhotoSize>) -> Self {
+		self.thumbnail = Some(thumbnail.into());
+		self
+	}
+	pub fn title(mut self, title: impl Into<String>) -> Self {
+		self.title = Some(title.into());
+		self
+	}
 }
 /**This object describes the way a background is filled based on the selected colors. Currently, it can be one of
 
@@ -112,6 +199,18 @@ pub struct BackgroundFillFreeformGradient {
 	Default: freeform_gradient*/
 	pub r#type: String,
 }
+impl BackgroundFillFreeformGradient {
+	pub fn new(colors: impl Into<Vec<i64>>, r#type: impl Into<String>) -> Self {
+		Self {
+			colors: colors.into(),
+			r#type: r#type.into(),
+		}
+	}
+	pub fn add_color(mut self, color: impl Into<i64>) -> Self {
+		self.colors.push(color.into());
+		self
+	}
+}
 /**The background is a gradient fill.
 
 https://core.telegram.org/bots/api/#backgroundfillgradient*/
@@ -127,6 +226,16 @@ pub struct BackgroundFillGradient {
 	/**Top color of the gradient in the RGB24 format*/
 	pub top_color: i64,
 }
+impl BackgroundFillGradient {
+	pub fn new(bottom_color: impl Into<i64>, r#type: impl Into<String>, rotation_angle: impl Into<i64>, top_color: impl Into<i64>) -> Self {
+		Self {
+			bottom_color: bottom_color.into(),
+			r#type: r#type.into(),
+			rotation_angle: rotation_angle.into(),
+			top_color: top_color.into(),
+		}
+	}
+}
 /**The background is filled using the selected color.
 
 https://core.telegram.org/bots/api/#backgroundfillsolid*/
@@ -137,6 +246,14 @@ pub struct BackgroundFillSolid {
 	/**Type of the background fill, always “solid”
 	Default: solid*/
 	pub r#type: String,
+}
+impl BackgroundFillSolid {
+	pub fn new(color: impl Into<i64>, r#type: impl Into<String>) -> Self {
+		Self {
+			color: color.into(),
+			r#type: r#type.into(),
+		}
+	}
 }
 /**This object describes the type of a background. Currently, it can be one of
 
@@ -165,6 +282,14 @@ pub struct BackgroundTypeChatTheme {
 	/**Name of the chat theme, which is usually an emoji*/
 	pub theme_name: String,
 }
+impl BackgroundTypeChatTheme {
+	pub fn new(r#type: impl Into<String>, theme_name: impl Into<String>) -> Self {
+		Self {
+			r#type: r#type.into(),
+			theme_name: theme_name.into(),
+		}
+	}
+}
 /**The background is automatically filled based on the selected colors.
 
 https://core.telegram.org/bots/api/#backgroundtypefill*/
@@ -177,6 +302,15 @@ pub struct BackgroundTypeFill {
 	/**Type of the background, always “fill”
 	Default: fill*/
 	pub r#type: String,
+}
+impl BackgroundTypeFill {
+	pub fn new(dark_theme_dimming: impl Into<i64>, fill: impl Into<BackgroundFill>, r#type: impl Into<String>) -> Self {
+		Self {
+			dark_theme_dimming: dark_theme_dimming.into(),
+			fill: fill.into(),
+			r#type: r#type.into(),
+		}
+	}
 }
 /**The background is a .PNG or .TGV (gzipped subset of SVG with MIME type “application/x-tgwallpattern”) pattern to be combined with the background fill chosen by the user.
 
@@ -202,6 +336,26 @@ pub struct BackgroundTypePattern {
 	Default: pattern*/
 	pub r#type: String,
 }
+impl BackgroundTypePattern {
+	pub fn new(document: impl Into<Document>, fill: impl Into<BackgroundFill>, intensity: impl Into<i64>, r#type: impl Into<String>) -> Self {
+		Self {
+			document: document.into(),
+			fill: fill.into(),
+			intensity: intensity.into(),
+			is_inverted: None,
+			is_moving: None,
+			r#type: r#type.into(),
+		}
+	}
+	pub fn is_inverted(mut self, is_inverted: bool) -> Self {
+		self.is_inverted = Some(is_inverted);
+		self
+	}
+	pub fn is_moving(mut self, is_moving: bool) -> Self {
+		self.is_moving = Some(is_moving);
+		self
+	}
+}
 /**The background is a wallpaper in the JPEG format.
 
 https://core.telegram.org/bots/api/#backgroundtypewallpaper*/
@@ -224,6 +378,25 @@ pub struct BackgroundTypeWallpaper {
 	Default: wallpaper*/
 	pub r#type: String,
 }
+impl BackgroundTypeWallpaper {
+	pub fn new(dark_theme_dimming: impl Into<i64>, document: impl Into<Document>, r#type: impl Into<String>) -> Self {
+		Self {
+			dark_theme_dimming: dark_theme_dimming.into(),
+			document: document.into(),
+			is_blurred: None,
+			is_moving: None,
+			r#type: r#type.into(),
+		}
+	}
+	pub fn is_blurred(mut self, is_blurred: bool) -> Self {
+		self.is_blurred = Some(is_blurred);
+		self
+	}
+	pub fn is_moving(mut self, is_moving: bool) -> Self {
+		self.is_moving = Some(is_moving);
+		self
+	}
+}
 /**Describes the birthdate of a user.
 
 https://core.telegram.org/bots/api/#birthdate*/
@@ -238,6 +411,19 @@ pub struct Birthdate {
 	pub month: i64,
 	/**Year of the user's birth*/
 	pub year: Option<i64>,
+}
+impl Birthdate {
+	pub fn new(day: impl Into<i64>, month: impl Into<i64>) -> Self {
+		Self {
+			day: day.into(),
+			month: month.into(),
+			year: None,
+		}
+	}
+	pub fn year(mut self, year: impl Into<i64>) -> Self {
+		self.year = Some(year.into());
+		self
+	}
 }
 /**This object represents a bot command.
 
@@ -415,6 +601,13 @@ pub struct BotDescription {
 	/**The bot's description*/
 	pub description: String,
 }
+impl BotDescription {
+	pub fn new(description: impl Into<String>) -> Self {
+		Self {
+			description: description.into(),
+		}
+	}
+}
 /**This object represents the bot's name.
 
 https://core.telegram.org/bots/api/#botname*/
@@ -423,6 +616,13 @@ pub struct BotName {
 	/**The bot's name*/
 	pub name: String,
 }
+impl BotName {
+	pub fn new(name: impl Into<String>) -> Self {
+		Self {
+			name: name.into(),
+		}
+	}
+}
 /**This object represents the bot's short description.
 
 https://core.telegram.org/bots/api/#botshortdescription*/
@@ -430,6 +630,13 @@ https://core.telegram.org/bots/api/#botshortdescription*/
 pub struct BotShortDescription {
 	/**The bot's short description*/
 	pub short_description: String,
+}
+impl BotShortDescription {
+	pub fn new(short_description: impl Into<String>) -> Self {
+		Self {
+			short_description: short_description.into(),
+		}
+	}
 }
 /**Describes the connection of the bot with a business account.
 
@@ -449,6 +656,18 @@ pub struct BusinessConnection {
 	/**Identifier of a private chat with the user who created the business connection. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier.*/
 	pub user_chat_id: i64,
 }
+impl BusinessConnection {
+	pub fn new(can_reply: bool, date: impl Into<i64>, id: impl Into<String>, is_enabled: bool, user: impl Into<User>, user_chat_id: impl Into<i64>) -> Self {
+		Self {
+			can_reply: can_reply,
+			date: date.into(),
+			id: id.into(),
+			is_enabled: is_enabled,
+			user: user.into(),
+			user_chat_id: user_chat_id.into(),
+		}
+	}
+}
 /**Contains information about the start page settings of a Telegram Business account.
 
 https://core.telegram.org/bots/api/#businessintro*/
@@ -464,6 +683,27 @@ pub struct BusinessIntro {
 	/**Title text of the business intro*/
 	pub title: Option<String>,
 }
+impl BusinessIntro {
+	pub fn new() -> Self {
+		Self {
+			message: None,
+			sticker: None,
+			title: None,
+		}
+	}
+	pub fn message(mut self, message: impl Into<String>) -> Self {
+		self.message = Some(message.into());
+		self
+	}
+	pub fn sticker(mut self, sticker: impl Into<Sticker>) -> Self {
+		self.sticker = Some(sticker.into());
+		self
+	}
+	pub fn title(mut self, title: impl Into<String>) -> Self {
+		self.title = Some(title.into());
+		self
+	}
+}
 /**Contains information about the location of a Telegram Business account.
 
 https://core.telegram.org/bots/api/#businesslocation*/
@@ -476,6 +716,18 @@ pub struct BusinessLocation {
 	pub address: String,
 	/**Location of the business*/
 	pub location: Option<Location>,
+}
+impl BusinessLocation {
+	pub fn new(address: impl Into<String>) -> Self {
+		Self {
+			address: address.into(),
+			location: None,
+		}
+	}
+	pub fn location(mut self, location: impl Into<Location>) -> Self {
+		self.location = Some(location.into());
+		self
+	}
 }
 /**This object is received when messages are deleted from a connected business account.
 
@@ -492,6 +744,19 @@ pub struct BusinessMessagesDeleted {
 	/**The list of identifiers of deleted messages in the chat of the business account*/
 	pub message_ids: Vec<i64>,
 }
+impl BusinessMessagesDeleted {
+	pub fn new(business_connection_id: impl Into<String>, chat: impl Into<Chat>, message_ids: impl Into<Vec<i64>>) -> Self {
+		Self {
+			business_connection_id: business_connection_id.into(),
+			chat: chat.into(),
+			message_ids: message_ids.into(),
+		}
+	}
+	pub fn add_message_id(mut self, message_id: impl Into<i64>) -> Self {
+		self.message_ids.push(message_id.into());
+		self
+	}
+}
 /**Describes the opening hours of a business.
 
 https://core.telegram.org/bots/api/#businessopeninghours*/
@@ -505,6 +770,18 @@ pub struct BusinessOpeningHours {
 	/**Unique name of the time zone for which the opening hours are defined*/
 	pub time_zone_name: String,
 }
+impl BusinessOpeningHours {
+	pub fn new(opening_hours: impl Into<Vec<BusinessOpeningHoursInterval>>, time_zone_name: impl Into<String>) -> Self {
+		Self {
+			opening_hours: opening_hours.into(),
+			time_zone_name: time_zone_name.into(),
+		}
+	}
+	pub fn add_opening_hour(mut self, opening_hour: impl Into<BusinessOpeningHoursInterval>) -> Self {
+		self.opening_hours.push(opening_hour.into());
+		self
+	}
+}
 /**Describes an interval of time during which a business is open.
 
 https://core.telegram.org/bots/api/#businessopeninghoursinterval*/
@@ -514,6 +791,14 @@ pub struct BusinessOpeningHoursInterval {
 	pub closing_minute: i64,
 	/**The minute's sequence number in a week, starting on Monday, marking the start of the time interval during which the business is open; 0 - 7 \* 24 \* 60*/
 	pub opening_minute: i64,
+}
+impl BusinessOpeningHoursInterval {
+	pub fn new(closing_minute: impl Into<i64>, opening_minute: impl Into<i64>) -> Self {
+		Self {
+			closing_minute: closing_minute.into(),
+			opening_minute: opening_minute.into(),
+		}
+	}
 }
 /**A placeholder, currently holds no information. Use [BotFather](https://t.me/botfather) to set up your game.
 
@@ -542,6 +827,35 @@ pub struct CallbackQuery {
 	/**Message sent by the bot with the callback button that originated the query*/
 	pub message: Option<MaybeInaccessibleMessage>,
 }
+impl CallbackQuery {
+	pub fn new(chat_instance: impl Into<String>, from: impl Into<User>, id: impl Into<String>) -> Self {
+		Self {
+			chat_instance: chat_instance.into(),
+			data: None,
+			from: from.into(),
+			game_short_name: None,
+			id: id.into(),
+			inline_message_id: None,
+			message: None,
+		}
+	}
+	pub fn data(mut self, data: impl Into<String>) -> Self {
+		self.data = Some(data.into());
+		self
+	}
+	pub fn game_short_name(mut self, game_short_name: impl Into<String>) -> Self {
+		self.game_short_name = Some(game_short_name.into());
+		self
+	}
+	pub fn inline_message_id(mut self, inline_message_id: impl Into<String>) -> Self {
+		self.inline_message_id = Some(inline_message_id.into());
+		self
+	}
+	pub fn message(mut self, message: impl Into<MaybeInaccessibleMessage>) -> Self {
+		self.message = Some(message.into());
+		self
+	}
+}
 /**This object represents a chat.
 
 https://core.telegram.org/bots/api/#chat*/
@@ -566,6 +880,39 @@ pub struct Chat {
 	pub title: Option<String>,
 	/**Username, for private chats, supergroups and channels if available*/
 	pub username: Option<String>,
+}
+impl Chat {
+	pub fn new(id: impl Into<i64>, r#type: impl Into<String>) -> Self {
+		Self {
+			first_name: None,
+			id: id.into(),
+			is_forum: None,
+			last_name: None,
+			r#type: r#type.into(),
+			title: None,
+			username: None,
+		}
+	}
+	pub fn first_name(mut self, first_name: impl Into<String>) -> Self {
+		self.first_name = Some(first_name.into());
+		self
+	}
+	pub fn is_forum(mut self, is_forum: bool) -> Self {
+		self.is_forum = Some(is_forum);
+		self
+	}
+	pub fn last_name(mut self, last_name: impl Into<String>) -> Self {
+		self.last_name = Some(last_name.into());
+		self
+	}
+	pub fn title(mut self, title: impl Into<String>) -> Self {
+		self.title = Some(title.into());
+		self
+	}
+	pub fn username(mut self, username: impl Into<String>) -> Self {
+		self.username = Some(username.into());
+		self
+	}
 }
 /**Represents the rights of an administrator in a chat.
 
@@ -651,6 +998,13 @@ pub struct ChatBackground {
 	/**Type of the background*/
 	pub r#type: BackgroundType,
 }
+impl ChatBackground {
+	pub fn new(r#type: impl Into<BackgroundType>) -> Self {
+		Self {
+			r#type: r#type.into(),
+		}
+	}
+}
 /**This object contains information about a chat boost.
 
 https://core.telegram.org/bots/api/#chatboost*/
@@ -665,6 +1019,16 @@ pub struct ChatBoost {
 	/**Source of the added boost*/
 	pub source: ChatBoostSource,
 }
+impl ChatBoost {
+	pub fn new(add_date: impl Into<i64>, boost_id: impl Into<String>, expiration_date: impl Into<i64>, source: impl Into<ChatBoostSource>) -> Self {
+		Self {
+			add_date: add_date.into(),
+			boost_id: boost_id.into(),
+			expiration_date: expiration_date.into(),
+			source: source.into(),
+		}
+	}
+}
 /**This object represents a service message about a user boosting a chat.
 
 https://core.telegram.org/bots/api/#chatboostadded*/
@@ -672,6 +1036,13 @@ https://core.telegram.org/bots/api/#chatboostadded*/
 pub struct ChatBoostAdded {
 	/**Number of boosts added by the user*/
 	pub boost_count: i64,
+}
+impl ChatBoostAdded {
+	pub fn new(boost_count: impl Into<i64>) -> Self {
+		Self {
+			boost_count: boost_count.into(),
+		}
+	}
 }
 /**This object represents a boost removed from a chat.
 
@@ -686,6 +1057,16 @@ pub struct ChatBoostRemoved {
 	pub remove_date: i64,
 	/**Source of the removed boost*/
 	pub source: ChatBoostSource,
+}
+impl ChatBoostRemoved {
+	pub fn new(boost_id: impl Into<String>, chat: impl Into<Chat>, remove_date: impl Into<i64>, source: impl Into<ChatBoostSource>) -> Self {
+		Self {
+			boost_id: boost_id.into(),
+			chat: chat.into(),
+			remove_date: remove_date.into(),
+			source: source.into(),
+		}
+	}
 }
 /**This object describes the source of a chat boost. It can be one of
 
@@ -712,6 +1093,14 @@ pub struct ChatBoostSourceGiftCode {
 	/**User for which the gift code was created*/
 	pub user: User,
 }
+impl ChatBoostSourceGiftCode {
+	pub fn new(source: impl Into<String>, user: impl Into<User>) -> Self {
+		Self {
+			source: source.into(),
+			user: user.into(),
+		}
+	}
+}
 /**The boost was obtained by the creation of a Telegram Premium or a Telegram Star giveaway. This boosts the chat 4 times for the duration of the corresponding Telegram Premium subscription for Telegram Premium giveaways and *prize\_star\_count* / 500 times for one year for Telegram Star giveaways.
 
 https://core.telegram.org/bots/api/#chatboostsourcegiveaway*/
@@ -733,6 +1122,29 @@ pub struct ChatBoostSourceGiveaway {
 	/**User that won the prize in the giveaway if any; for Telegram Premium giveaways only*/
 	pub user: Option<User>,
 }
+impl ChatBoostSourceGiveaway {
+	pub fn new(giveaway_message_id: impl Into<i64>, source: impl Into<String>) -> Self {
+		Self {
+			giveaway_message_id: giveaway_message_id.into(),
+			is_unclaimed: None,
+			prize_star_count: None,
+			source: source.into(),
+			user: None,
+		}
+	}
+	pub fn is_unclaimed(mut self, is_unclaimed: bool) -> Self {
+		self.is_unclaimed = Some(is_unclaimed);
+		self
+	}
+	pub fn prize_star_count(mut self, prize_star_count: impl Into<i64>) -> Self {
+		self.prize_star_count = Some(prize_star_count.into());
+		self
+	}
+	pub fn user(mut self, user: impl Into<User>) -> Self {
+		self.user = Some(user.into());
+		self
+	}
+}
 /**The boost was obtained by subscribing to Telegram Premium or by gifting a Telegram Premium subscription to another user.
 
 https://core.telegram.org/bots/api/#chatboostsourcepremium*/
@@ -744,6 +1156,14 @@ pub struct ChatBoostSourcePremium {
 	/**User that boosted the chat*/
 	pub user: User,
 }
+impl ChatBoostSourcePremium {
+	pub fn new(source: impl Into<String>, user: impl Into<User>) -> Self {
+		Self {
+			source: source.into(),
+			user: user.into(),
+		}
+	}
+}
 /**This object represents a boost added to a chat or changed.
 
 https://core.telegram.org/bots/api/#chatboostupdated*/
@@ -753,6 +1173,14 @@ pub struct ChatBoostUpdated {
 	pub boost: ChatBoost,
 	/**Chat which was boosted*/
 	pub chat: Chat,
+}
+impl ChatBoostUpdated {
+	pub fn new(boost: impl Into<ChatBoost>, chat: impl Into<Chat>) -> Self {
+		Self {
+			boost: boost.into(),
+			chat: chat.into(),
+		}
+	}
 }
 /**This object contains full information about a chat.
 
@@ -864,8 +1292,226 @@ pub struct ChatFullInfo {
 	/**Username, for private chats, supergroups and channels if available*/
 	pub username: Option<String>,
 }
+impl ChatFullInfo {
+	pub fn new(accent_color_id: impl Into<i64>, id: impl Into<i64>, max_reaction_count: impl Into<i64>, r#type: impl Into<String>) -> Self {
+		Self {
+			accent_color_id: accent_color_id.into(),
+			active_usernames: Vec::new(),
+			available_reactions: Vec::new(),
+			background_custom_emoji_id: None,
+			bio: None,
+			birthdate: None,
+			business_intro: None,
+			business_location: None,
+			business_opening_hours: None,
+			can_send_paid_media: None,
+			can_set_sticker_set: None,
+			custom_emoji_sticker_set_name: None,
+			description: None,
+			emoji_status_custom_emoji_id: None,
+			emoji_status_expiration_date: None,
+			first_name: None,
+			has_aggressive_anti_spam_enabled: None,
+			has_hidden_members: None,
+			has_private_forwards: None,
+			has_protected_content: None,
+			has_restricted_voice_and_video_messages: None,
+			has_visible_history: None,
+			id: id.into(),
+			invite_link: None,
+			is_forum: None,
+			join_by_request: None,
+			join_to_send_messages: None,
+			last_name: None,
+			linked_chat_id: None,
+			location: None,
+			max_reaction_count: max_reaction_count.into(),
+			message_auto_delete_time: None,
+			permissions: None,
+			personal_chat: None,
+			photo: None,
+			pinned_message: None,
+			profile_accent_color_id: None,
+			profile_background_custom_emoji_id: None,
+			r#type: r#type.into(),
+			slow_mode_delay: None,
+			sticker_set_name: None,
+			title: None,
+			unrestrict_boost_count: None,
+			username: None,
+		}
+	}
+	pub fn add_active_username(mut self, active_username: impl Into<String>) -> Self {
+		self.active_usernames.push(active_username.into());
+		self
+	}
+	pub fn active_usernames(mut self, active_usernames: impl Into<Vec<String>>) -> Self {
+		self.active_usernames = active_usernames.into();
+		self
+	}
+	pub fn add_available_reaction(mut self, available_reaction: impl Into<ReactionType>) -> Self {
+		self.available_reactions.push(available_reaction.into());
+		self
+	}
+	pub fn available_reactions(mut self, available_reactions: impl Into<Vec<ReactionType>>) -> Self {
+		self.available_reactions = available_reactions.into();
+		self
+	}
+	pub fn background_custom_emoji_id(mut self, background_custom_emoji_id: impl Into<String>) -> Self {
+		self.background_custom_emoji_id = Some(background_custom_emoji_id.into());
+		self
+	}
+	pub fn bio(mut self, bio: impl Into<String>) -> Self {
+		self.bio = Some(bio.into());
+		self
+	}
+	pub fn birthdate(mut self, birthdate: impl Into<Birthdate>) -> Self {
+		self.birthdate = Some(birthdate.into());
+		self
+	}
+	pub fn business_intro(mut self, business_intro: impl Into<BusinessIntro>) -> Self {
+		self.business_intro = Some(business_intro.into());
+		self
+	}
+	pub fn business_location(mut self, business_location: impl Into<BusinessLocation>) -> Self {
+		self.business_location = Some(business_location.into());
+		self
+	}
+	pub fn business_opening_hours(mut self, business_opening_hours: impl Into<BusinessOpeningHours>) -> Self {
+		self.business_opening_hours = Some(business_opening_hours.into());
+		self
+	}
+	pub fn can_send_paid_media(mut self, can_send_paid_media: bool) -> Self {
+		self.can_send_paid_media = Some(can_send_paid_media);
+		self
+	}
+	pub fn can_set_sticker_set(mut self, can_set_sticker_set: bool) -> Self {
+		self.can_set_sticker_set = Some(can_set_sticker_set);
+		self
+	}
+	pub fn custom_emoji_sticker_set_name(mut self, custom_emoji_sticker_set_name: impl Into<String>) -> Self {
+		self.custom_emoji_sticker_set_name = Some(custom_emoji_sticker_set_name.into());
+		self
+	}
+	pub fn description(mut self, description: impl Into<String>) -> Self {
+		self.description = Some(description.into());
+		self
+	}
+	pub fn emoji_status_custom_emoji_id(mut self, emoji_status_custom_emoji_id: impl Into<String>) -> Self {
+		self.emoji_status_custom_emoji_id = Some(emoji_status_custom_emoji_id.into());
+		self
+	}
+	pub fn emoji_status_expiration_date(mut self, emoji_status_expiration_date: impl Into<i64>) -> Self {
+		self.emoji_status_expiration_date = Some(emoji_status_expiration_date.into());
+		self
+	}
+	pub fn first_name(mut self, first_name: impl Into<String>) -> Self {
+		self.first_name = Some(first_name.into());
+		self
+	}
+	pub fn has_aggressive_anti_spam_enabled(mut self, has_aggressive_anti_spam_enabled: bool) -> Self {
+		self.has_aggressive_anti_spam_enabled = Some(has_aggressive_anti_spam_enabled);
+		self
+	}
+	pub fn has_hidden_members(mut self, has_hidden_members: bool) -> Self {
+		self.has_hidden_members = Some(has_hidden_members);
+		self
+	}
+	pub fn has_private_forwards(mut self, has_private_forwards: bool) -> Self {
+		self.has_private_forwards = Some(has_private_forwards);
+		self
+	}
+	pub fn has_protected_content(mut self, has_protected_content: bool) -> Self {
+		self.has_protected_content = Some(has_protected_content);
+		self
+	}
+	pub fn has_restricted_voice_and_video_messages(mut self, has_restricted_voice_and_video_messages: bool) -> Self {
+		self.has_restricted_voice_and_video_messages = Some(has_restricted_voice_and_video_messages);
+		self
+	}
+	pub fn has_visible_history(mut self, has_visible_history: bool) -> Self {
+		self.has_visible_history = Some(has_visible_history);
+		self
+	}
+	pub fn invite_link(mut self, invite_link: impl Into<String>) -> Self {
+		self.invite_link = Some(invite_link.into());
+		self
+	}
+	pub fn is_forum(mut self, is_forum: bool) -> Self {
+		self.is_forum = Some(is_forum);
+		self
+	}
+	pub fn join_by_request(mut self, join_by_request: bool) -> Self {
+		self.join_by_request = Some(join_by_request);
+		self
+	}
+	pub fn join_to_send_messages(mut self, join_to_send_messages: bool) -> Self {
+		self.join_to_send_messages = Some(join_to_send_messages);
+		self
+	}
+	pub fn last_name(mut self, last_name: impl Into<String>) -> Self {
+		self.last_name = Some(last_name.into());
+		self
+	}
+	pub fn linked_chat_id(mut self, linked_chat_id: impl Into<i64>) -> Self {
+		self.linked_chat_id = Some(linked_chat_id.into());
+		self
+	}
+	pub fn location(mut self, location: impl Into<ChatLocation>) -> Self {
+		self.location = Some(location.into());
+		self
+	}
+	pub fn message_auto_delete_time(mut self, message_auto_delete_time: impl Into<i64>) -> Self {
+		self.message_auto_delete_time = Some(message_auto_delete_time.into());
+		self
+	}
+	pub fn permissions(mut self, permissions: impl Into<ChatPermissions>) -> Self {
+		self.permissions = Some(permissions.into());
+		self
+	}
+	pub fn personal_chat(mut self, personal_chat: impl Into<Chat>) -> Self {
+		self.personal_chat = Some(personal_chat.into());
+		self
+	}
+	pub fn photo(mut self, photo: impl Into<ChatPhoto>) -> Self {
+		self.photo = Some(photo.into());
+		self
+	}
+	pub fn pinned_message(mut self, pinned_message: impl Into<Message>) -> Self {
+		self.pinned_message = Some(pinned_message.into());
+		self
+	}
+	pub fn profile_accent_color_id(mut self, profile_accent_color_id: impl Into<i64>) -> Self {
+		self.profile_accent_color_id = Some(profile_accent_color_id.into());
+		self
+	}
+	pub fn profile_background_custom_emoji_id(mut self, profile_background_custom_emoji_id: impl Into<String>) -> Self {
+		self.profile_background_custom_emoji_id = Some(profile_background_custom_emoji_id.into());
+		self
+	}
+	pub fn slow_mode_delay(mut self, slow_mode_delay: impl Into<i64>) -> Self {
+		self.slow_mode_delay = Some(slow_mode_delay.into());
+		self
+	}
+	pub fn sticker_set_name(mut self, sticker_set_name: impl Into<String>) -> Self {
+		self.sticker_set_name = Some(sticker_set_name.into());
+		self
+	}
+	pub fn title(mut self, title: impl Into<String>) -> Self {
+		self.title = Some(title.into());
+		self
+	}
+	pub fn unrestrict_boost_count(mut self, unrestrict_boost_count: impl Into<i64>) -> Self {
+		self.unrestrict_boost_count = Some(unrestrict_boost_count.into());
+		self
+	}
+	pub fn username(mut self, username: impl Into<String>) -> Self {
+		self.username = Some(username.into());
+		self
+	}
+}
 /**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
-#[derive(Clone, Debug, Serialize, From)]
+#[derive(Clone, Debug, Serialize, From, Display)]
 #[serde(untagged)]
 pub enum ChatId {
 	Id(i64),
@@ -902,6 +1548,47 @@ pub struct ChatInviteLink {
 	/**The amount of Telegram Stars a user must pay initially and after each subsequent subscription period to be a member of the chat using the link*/
 	pub subscription_price: Option<i64>,
 }
+impl ChatInviteLink {
+	pub fn new(creates_join_request: bool, creator: impl Into<User>, invite_link: impl Into<String>, is_primary: bool, is_revoked: bool) -> Self {
+		Self {
+			creates_join_request: creates_join_request,
+			creator: creator.into(),
+			expire_date: None,
+			invite_link: invite_link.into(),
+			is_primary: is_primary,
+			is_revoked: is_revoked,
+			member_limit: None,
+			name: None,
+			pending_join_request_count: None,
+			subscription_period: None,
+			subscription_price: None,
+		}
+	}
+	pub fn expire_date(mut self, expire_date: impl Into<i64>) -> Self {
+		self.expire_date = Some(expire_date.into());
+		self
+	}
+	pub fn member_limit(mut self, member_limit: impl Into<i64>) -> Self {
+		self.member_limit = Some(member_limit.into());
+		self
+	}
+	pub fn name(mut self, name: impl Into<String>) -> Self {
+		self.name = Some(name.into());
+		self
+	}
+	pub fn pending_join_request_count(mut self, pending_join_request_count: impl Into<i64>) -> Self {
+		self.pending_join_request_count = Some(pending_join_request_count.into());
+		self
+	}
+	pub fn subscription_period(mut self, subscription_period: impl Into<i64>) -> Self {
+		self.subscription_period = Some(subscription_period.into());
+		self
+	}
+	pub fn subscription_price(mut self, subscription_price: impl Into<i64>) -> Self {
+		self.subscription_price = Some(subscription_price.into());
+		self
+	}
+}
 /**Represents a join request sent to a chat.
 
 https://core.telegram.org/bots/api/#chatjoinrequest*/
@@ -923,6 +1610,26 @@ pub struct ChatJoinRequest {
 	/**Identifier of a private chat with the user who sent the join request. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier. The bot can use this identifier for 5 minutes to send messages until the join request is processed, assuming no other administrator contacted the user.*/
 	pub user_chat_id: i64,
 }
+impl ChatJoinRequest {
+	pub fn new(chat: impl Into<Chat>, date: impl Into<i64>, from: impl Into<User>, user_chat_id: impl Into<i64>) -> Self {
+		Self {
+			bio: None,
+			chat: chat.into(),
+			date: date.into(),
+			from: from.into(),
+			invite_link: None,
+			user_chat_id: user_chat_id.into(),
+		}
+	}
+	pub fn bio(mut self, bio: impl Into<String>) -> Self {
+		self.bio = Some(bio.into());
+		self
+	}
+	pub fn invite_link(mut self, invite_link: impl Into<ChatInviteLink>) -> Self {
+		self.invite_link = Some(invite_link.into());
+		self
+	}
+}
 /**Represents a location to which a chat is connected.
 
 https://core.telegram.org/bots/api/#chatlocation*/
@@ -934,6 +1641,14 @@ pub struct ChatLocation {
 	pub address: String,
 	/**The location to which the supergroup is connected. Can't be a live location.*/
 	pub location: Location,
+}
+impl ChatLocation {
+	pub fn new(address: impl Into<String>, location: impl Into<Location>) -> Self {
+		Self {
+			address: address.into(),
+			location: location.into(),
+		}
+	}
 }
 /**This object contains information about one member of a chat. Currently, the following 6 types of chat members are supported:
 
@@ -1003,6 +1718,51 @@ pub struct ChatMemberAdministrator {
 	/**Information about the user*/
 	pub user: User,
 }
+impl ChatMemberAdministrator {
+	pub fn new(can_be_edited: bool, can_change_info: bool, can_delete_messages: bool, can_delete_stories: bool, can_edit_stories: bool, can_invite_users: bool, can_manage_chat: bool, can_manage_video_chats: bool, can_post_stories: bool, can_promote_members: bool, can_restrict_members: bool, is_anonymous: bool, status: impl Into<String>, user: impl Into<User>) -> Self {
+		Self {
+			can_be_edited: can_be_edited,
+			can_change_info: can_change_info,
+			can_delete_messages: can_delete_messages,
+			can_delete_stories: can_delete_stories,
+			can_edit_messages: None,
+			can_edit_stories: can_edit_stories,
+			can_invite_users: can_invite_users,
+			can_manage_chat: can_manage_chat,
+			can_manage_topics: None,
+			can_manage_video_chats: can_manage_video_chats,
+			can_pin_messages: None,
+			can_post_messages: None,
+			can_post_stories: can_post_stories,
+			can_promote_members: can_promote_members,
+			can_restrict_members: can_restrict_members,
+			custom_title: None,
+			is_anonymous: is_anonymous,
+			status: status.into(),
+			user: user.into(),
+		}
+	}
+	pub fn can_edit_messages(mut self, can_edit_messages: bool) -> Self {
+		self.can_edit_messages = Some(can_edit_messages);
+		self
+	}
+	pub fn can_manage_topics(mut self, can_manage_topics: bool) -> Self {
+		self.can_manage_topics = Some(can_manage_topics);
+		self
+	}
+	pub fn can_pin_messages(mut self, can_pin_messages: bool) -> Self {
+		self.can_pin_messages = Some(can_pin_messages);
+		self
+	}
+	pub fn can_post_messages(mut self, can_post_messages: bool) -> Self {
+		self.can_post_messages = Some(can_post_messages);
+		self
+	}
+	pub fn custom_title(mut self, custom_title: impl Into<String>) -> Self {
+		self.custom_title = Some(custom_title.into());
+		self
+	}
+}
 /**Represents a [chat member](https://core.telegram.org/bots/api/#chatmember) that was banned in the chat and can't return to the chat or view chat messages.
 
 https://core.telegram.org/bots/api/#chatmemberbanned*/
@@ -1016,6 +1776,15 @@ pub struct ChatMemberBanned {
 	/**Information about the user*/
 	pub user: User,
 }
+impl ChatMemberBanned {
+	pub fn new(status: impl Into<String>, until_date: impl Into<i64>, user: impl Into<User>) -> Self {
+		Self {
+			status: status.into(),
+			until_date: until_date.into(),
+			user: user.into(),
+		}
+	}
+}
 /**Represents a [chat member](https://core.telegram.org/bots/api/#chatmember) that isn't currently a member of the chat, but may join it themselves.
 
 https://core.telegram.org/bots/api/#chatmemberleft*/
@@ -1026,6 +1795,14 @@ pub struct ChatMemberLeft {
 	pub status: String,
 	/**Information about the user*/
 	pub user: User,
+}
+impl ChatMemberLeft {
+	pub fn new(status: impl Into<String>, user: impl Into<User>) -> Self {
+		Self {
+			status: status.into(),
+			user: user.into(),
+		}
+	}
 }
 /**Represents a [chat member](https://core.telegram.org/bots/api/#chatmember) that has no additional privileges or restrictions.
 
@@ -1042,6 +1819,19 @@ pub struct ChatMemberMember {
 	pub until_date: Option<i64>,
 	/**Information about the user*/
 	pub user: User,
+}
+impl ChatMemberMember {
+	pub fn new(status: impl Into<String>, user: impl Into<User>) -> Self {
+		Self {
+			status: status.into(),
+			until_date: None,
+			user: user.into(),
+		}
+	}
+	pub fn until_date(mut self, until_date: impl Into<i64>) -> Self {
+		self.until_date = Some(until_date.into());
+		self
+	}
 }
 /**Represents a [chat member](https://core.telegram.org/bots/api/#chatmember) that owns the chat and has all administrator privileges.
 
@@ -1060,6 +1850,20 @@ pub struct ChatMemberOwner {
 	pub status: String,
 	/**Information about the user*/
 	pub user: User,
+}
+impl ChatMemberOwner {
+	pub fn new(is_anonymous: bool, status: impl Into<String>, user: impl Into<User>) -> Self {
+		Self {
+			custom_title: None,
+			is_anonymous: is_anonymous,
+			status: status.into(),
+			user: user.into(),
+		}
+	}
+	pub fn custom_title(mut self, custom_title: impl Into<String>) -> Self {
+		self.custom_title = Some(custom_title.into());
+		self
+	}
 }
 /**Represents a [chat member](https://core.telegram.org/bots/api/#chatmember) that is under certain restrictions in the chat. Supergroups only.
 
@@ -1104,6 +1908,30 @@ pub struct ChatMemberRestricted {
 	/**Information about the user*/
 	pub user: User,
 }
+impl ChatMemberRestricted {
+	pub fn new(can_add_web_page_previews: bool, can_change_info: bool, can_invite_users: bool, can_manage_topics: bool, can_pin_messages: bool, can_send_audios: bool, can_send_documents: bool, can_send_messages: bool, can_send_other_messages: bool, can_send_photos: bool, can_send_polls: bool, can_send_video_notes: bool, can_send_videos: bool, can_send_voice_notes: bool, is_member: bool, status: impl Into<String>, until_date: impl Into<i64>, user: impl Into<User>) -> Self {
+		Self {
+			can_add_web_page_previews: can_add_web_page_previews,
+			can_change_info: can_change_info,
+			can_invite_users: can_invite_users,
+			can_manage_topics: can_manage_topics,
+			can_pin_messages: can_pin_messages,
+			can_send_audios: can_send_audios,
+			can_send_documents: can_send_documents,
+			can_send_messages: can_send_messages,
+			can_send_other_messages: can_send_other_messages,
+			can_send_photos: can_send_photos,
+			can_send_polls: can_send_polls,
+			can_send_video_notes: can_send_video_notes,
+			can_send_videos: can_send_videos,
+			can_send_voice_notes: can_send_voice_notes,
+			is_member: is_member,
+			status: status.into(),
+			until_date: until_date.into(),
+			user: user.into(),
+		}
+	}
+}
 /**This object represents changes in the status of a chat member.
 
 https://core.telegram.org/bots/api/#chatmemberupdated*/
@@ -1128,6 +1956,32 @@ pub struct ChatMemberUpdated {
 	pub via_chat_folder_invite_link: Option<bool>,
 	/**True, if the user joined the chat after sending a direct join request without using an invite link and being approved by an administrator*/
 	pub via_join_request: Option<bool>,
+}
+impl ChatMemberUpdated {
+	pub fn new(chat: impl Into<Chat>, date: impl Into<i64>, from: impl Into<User>, new_chat_member: impl Into<ChatMember>, old_chat_member: impl Into<ChatMember>) -> Self {
+		Self {
+			chat: chat.into(),
+			date: date.into(),
+			from: from.into(),
+			invite_link: None,
+			new_chat_member: new_chat_member.into(),
+			old_chat_member: old_chat_member.into(),
+			via_chat_folder_invite_link: None,
+			via_join_request: None,
+		}
+	}
+	pub fn invite_link(mut self, invite_link: impl Into<ChatInviteLink>) -> Self {
+		self.invite_link = Some(invite_link.into());
+		self
+	}
+	pub fn via_chat_folder_invite_link(mut self, via_chat_folder_invite_link: bool) -> Self {
+		self.via_chat_folder_invite_link = Some(via_chat_folder_invite_link);
+		self
+	}
+	pub fn via_join_request(mut self, via_join_request: bool) -> Self {
+		self.via_join_request = Some(via_join_request);
+		self
+	}
 }
 /**Describes actions that a non-administrator user is allowed to take in a chat.
 
@@ -1256,6 +2110,16 @@ pub struct ChatPhoto {
 	/**Unique file identifier of small (160x160) chat photo, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.*/
 	pub small_file_unique_id: String,
 }
+impl ChatPhoto {
+	pub fn new(big_file_id: impl Into<String>, big_file_unique_id: impl Into<String>, small_file_id: impl Into<String>, small_file_unique_id: impl Into<String>) -> Self {
+		Self {
+			big_file_id: big_file_id.into(),
+			big_file_unique_id: big_file_unique_id.into(),
+			small_file_id: small_file_id.into(),
+			small_file_unique_id: small_file_unique_id.into(),
+		}
+	}
+}
 /**This object contains information about a chat that was shared with the bot using a [KeyboardButtonRequestChat](https://core.telegram.org/bots/api/#keyboardbuttonrequestchat) button.
 
 https://core.telegram.org/bots/api/#chatshared*/
@@ -1276,6 +2140,33 @@ pub struct ChatShared {
 	/**Username of the chat, if the username was requested by the bot and available.*/
 	pub username: Option<String>,
 }
+impl ChatShared {
+	pub fn new(chat_id: impl Into<i64>, request_id: impl Into<i64>) -> Self {
+		Self {
+			chat_id: chat_id.into(),
+			photo: Vec::new(),
+			request_id: request_id.into(),
+			title: None,
+			username: None,
+		}
+	}
+	pub fn add_photo(mut self, photo: impl Into<PhotoSize>) -> Self {
+		self.photo.push(photo.into());
+		self
+	}
+	pub fn photo(mut self, photo: impl Into<Vec<PhotoSize>>) -> Self {
+		self.photo = photo.into();
+		self
+	}
+	pub fn title(mut self, title: impl Into<String>) -> Self {
+		self.title = Some(title.into());
+		self
+	}
+	pub fn username(mut self, username: impl Into<String>) -> Self {
+		self.username = Some(username.into());
+		self
+	}
+}
 /**Represents a [result](https://core.telegram.org/bots/api/#inlinequeryresult) of an inline query that was chosen by the user and sent to their chat partner.
 
 https://core.telegram.org/bots/api/#choseninlineresult*/
@@ -1295,6 +2186,25 @@ pub struct ChosenInlineResult {
 	/**The unique identifier for the result that was chosen*/
 	pub result_id: String,
 }
+impl ChosenInlineResult {
+	pub fn new(from: impl Into<User>, query: impl Into<String>, result_id: impl Into<String>) -> Self {
+		Self {
+			from: from.into(),
+			inline_message_id: None,
+			location: None,
+			query: query.into(),
+			result_id: result_id.into(),
+		}
+	}
+	pub fn inline_message_id(mut self, inline_message_id: impl Into<String>) -> Self {
+		self.inline_message_id = Some(inline_message_id.into());
+		self
+	}
+	pub fn location(mut self, location: impl Into<Location>) -> Self {
+		self.location = Some(location.into());
+		self
+	}
+}
 /**This object represents a phone contact.
 
 https://core.telegram.org/bots/api/#contact*/
@@ -1313,6 +2223,29 @@ pub struct Contact {
 	pub user_id: Option<i64>,
 	/**Additional data about the contact in the form of a [vCard](https://en.wikipedia.org/wiki/VCard)*/
 	pub vcard: Option<String>,
+}
+impl Contact {
+	pub fn new(first_name: impl Into<String>, phone_number: impl Into<String>) -> Self {
+		Self {
+			first_name: first_name.into(),
+			last_name: None,
+			phone_number: phone_number.into(),
+			user_id: None,
+			vcard: None,
+		}
+	}
+	pub fn last_name(mut self, last_name: impl Into<String>) -> Self {
+		self.last_name = Some(last_name.into());
+		self
+	}
+	pub fn user_id(mut self, user_id: impl Into<i64>) -> Self {
+		self.user_id = Some(user_id.into());
+		self
+	}
+	pub fn vcard(mut self, vcard: impl Into<String>) -> Self {
+		self.vcard = Some(vcard.into());
+		self
+	}
 }
 /**This object represents an inline keyboard button that copies specified text to the clipboard.
 
@@ -1341,6 +2274,14 @@ pub struct Dice {
 	/**Value of the dice, 1-6 for “🎲”, “🎯” and “🎳” base emoji, 1-5 for “🏀” and “⚽” base emoji, 1-64 for “🎰” base emoji*/
 	pub value: i64,
 }
+impl Dice {
+	pub fn new(emoji: impl Into<String>, value: impl Into<i64>) -> Self {
+		Self {
+			emoji: emoji.into(),
+			value: value.into(),
+		}
+	}
+}
 /**This object represents a general file (as opposed to [photos](https://core.telegram.org/bots/api/#photosize), [voice messages](https://core.telegram.org/bots/api/#voice) and [audio files](https://core.telegram.org/bots/api/#audio)).
 
 https://core.telegram.org/bots/api/#document*/
@@ -1362,6 +2303,34 @@ pub struct Document {
 	/**Document thumbnail as defined by the sender*/
 	pub thumbnail: Option<PhotoSize>,
 }
+impl Document {
+	pub fn new(file_id: impl Into<String>, file_unique_id: impl Into<String>) -> Self {
+		Self {
+			file_id: file_id.into(),
+			file_name: None,
+			file_size: None,
+			file_unique_id: file_unique_id.into(),
+			mime_type: None,
+			thumbnail: None,
+		}
+	}
+	pub fn file_name(mut self, file_name: impl Into<String>) -> Self {
+		self.file_name = Some(file_name.into());
+		self
+	}
+	pub fn file_size(mut self, file_size: impl Into<i64>) -> Self {
+		self.file_size = Some(file_size.into());
+		self
+	}
+	pub fn mime_type(mut self, mime_type: impl Into<String>) -> Self {
+		self.mime_type = Some(mime_type.into());
+		self
+	}
+	pub fn thumbnail(mut self, thumbnail: impl Into<PhotoSize>) -> Self {
+		self.thumbnail = Some(thumbnail.into());
+		self
+	}
+}
 /**Describes data required for decrypting and authenticating [EncryptedPassportElement](https://core.telegram.org/bots/api/#encryptedpassportelement). See the [Telegram Passport Documentation](https://core.telegram.org/passport#receiving-information) for a complete description of the data decryption and authentication processes.
 
 https://core.telegram.org/bots/api/#encryptedcredentials*/
@@ -1373,6 +2342,15 @@ pub struct EncryptedCredentials {
 	pub hash: String,
 	/**Base64-encoded secret, encrypted with the bot's public RSA key, required for data decryption*/
 	pub secret: String,
+}
+impl EncryptedCredentials {
+	pub fn new(data: impl Into<String>, hash: impl Into<String>, secret: impl Into<String>) -> Self {
+		Self {
+			data: data.into(),
+			hash: hash.into(),
+			secret: secret.into(),
+		}
+	}
 }
 /**Describes documents or other Telegram Passport elements shared with the bot by the user.
 
@@ -1404,6 +2382,62 @@ pub struct EncryptedPassportElement {
 	pub selfie: Option<PassportFile>,
 	/**Array of encrypted files with translated versions of documents provided by the user; available if requested for “passport”, “driver\_license”, “identity\_card”, “internal\_passport”, “utility\_bill”, “bank\_statement”, “rental\_agreement”, “passport\_registration” and “temporary\_registration” types. Files can be decrypted and verified using the accompanying [EncryptedCredentials](https://core.telegram.org/bots/api/#encryptedcredentials).*/
 	pub translation: Vec<PassportFile>,
+}
+impl EncryptedPassportElement {
+	pub fn new(hash: impl Into<String>, r#type: impl Into<String>) -> Self {
+		Self {
+			data: None,
+			email: None,
+			files: Vec::new(),
+			front_side: None,
+			hash: hash.into(),
+			phone_number: None,
+			r#type: r#type.into(),
+			reverse_side: None,
+			selfie: None,
+			translation: Vec::new(),
+		}
+	}
+	pub fn data(mut self, data: impl Into<String>) -> Self {
+		self.data = Some(data.into());
+		self
+	}
+	pub fn email(mut self, email: impl Into<String>) -> Self {
+		self.email = Some(email.into());
+		self
+	}
+	pub fn add_file(mut self, file: impl Into<PassportFile>) -> Self {
+		self.files.push(file.into());
+		self
+	}
+	pub fn files(mut self, files: impl Into<Vec<PassportFile>>) -> Self {
+		self.files = files.into();
+		self
+	}
+	pub fn front_side(mut self, front_side: impl Into<PassportFile>) -> Self {
+		self.front_side = Some(front_side.into());
+		self
+	}
+	pub fn phone_number(mut self, phone_number: impl Into<String>) -> Self {
+		self.phone_number = Some(phone_number.into());
+		self
+	}
+	pub fn reverse_side(mut self, reverse_side: impl Into<PassportFile>) -> Self {
+		self.reverse_side = Some(reverse_side.into());
+		self
+	}
+	pub fn selfie(mut self, selfie: impl Into<PassportFile>) -> Self {
+		self.selfie = Some(selfie.into());
+		self
+	}
+	pub fn add_translation(mut self, translation: impl Into<PassportFile>) -> Self {
+		self.translation.push(translation.into());
+		self
+	}
+	pub fn translation(mut self, translation: impl Into<Vec<PassportFile>>) -> Self {
+		self.translation = translation.into();
+		self
+	}
 }
 /**This object contains information about a message that is being replied to, which may come from another chat or forum topic.
 
@@ -1464,6 +2498,132 @@ pub struct ExternalReplyInfo {
 	/**Message is a voice message, information about the file*/
 	pub voice: Option<Voice>,
 }
+impl ExternalReplyInfo {
+	pub fn new(origin: impl Into<MessageOrigin>) -> Self {
+		Self {
+			animation: None,
+			audio: None,
+			chat: None,
+			contact: None,
+			dice: None,
+			document: None,
+			game: None,
+			giveaway: None,
+			giveaway_winners: None,
+			has_media_spoiler: None,
+			invoice: None,
+			link_preview_options: None,
+			location: None,
+			message_id: None,
+			origin: origin.into(),
+			paid_media: None,
+			photo: Vec::new(),
+			poll: None,
+			sticker: None,
+			story: None,
+			venue: None,
+			video: None,
+			video_note: None,
+			voice: None,
+		}
+	}
+	pub fn animation(mut self, animation: impl Into<Animation>) -> Self {
+		self.animation = Some(animation.into());
+		self
+	}
+	pub fn audio(mut self, audio: impl Into<Audio>) -> Self {
+		self.audio = Some(audio.into());
+		self
+	}
+	pub fn chat(mut self, chat: impl Into<Chat>) -> Self {
+		self.chat = Some(chat.into());
+		self
+	}
+	pub fn contact(mut self, contact: impl Into<Contact>) -> Self {
+		self.contact = Some(contact.into());
+		self
+	}
+	pub fn dice(mut self, dice: impl Into<Dice>) -> Self {
+		self.dice = Some(dice.into());
+		self
+	}
+	pub fn document(mut self, document: impl Into<Document>) -> Self {
+		self.document = Some(document.into());
+		self
+	}
+	pub fn game(mut self, game: impl Into<Game>) -> Self {
+		self.game = Some(game.into());
+		self
+	}
+	pub fn giveaway(mut self, giveaway: impl Into<Giveaway>) -> Self {
+		self.giveaway = Some(giveaway.into());
+		self
+	}
+	pub fn giveaway_winners(mut self, giveaway_winners: impl Into<GiveawayWinners>) -> Self {
+		self.giveaway_winners = Some(giveaway_winners.into());
+		self
+	}
+	pub fn has_media_spoiler(mut self, has_media_spoiler: bool) -> Self {
+		self.has_media_spoiler = Some(has_media_spoiler);
+		self
+	}
+	pub fn invoice(mut self, invoice: impl Into<Invoice>) -> Self {
+		self.invoice = Some(invoice.into());
+		self
+	}
+	pub fn link_preview_options(mut self, link_preview_options: impl Into<LinkPreviewOptions>) -> Self {
+		self.link_preview_options = Some(link_preview_options.into());
+		self
+	}
+	pub fn location(mut self, location: impl Into<Location>) -> Self {
+		self.location = Some(location.into());
+		self
+	}
+	pub fn message_id(mut self, message_id: impl Into<i64>) -> Self {
+		self.message_id = Some(message_id.into());
+		self
+	}
+	pub fn paid_media(mut self, paid_media: impl Into<PaidMediaInfo>) -> Self {
+		self.paid_media = Some(paid_media.into());
+		self
+	}
+	pub fn add_photo(mut self, photo: impl Into<PhotoSize>) -> Self {
+		self.photo.push(photo.into());
+		self
+	}
+	pub fn photo(mut self, photo: impl Into<Vec<PhotoSize>>) -> Self {
+		self.photo = photo.into();
+		self
+	}
+	pub fn poll(mut self, poll: impl Into<Poll>) -> Self {
+		self.poll = Some(poll.into());
+		self
+	}
+	pub fn sticker(mut self, sticker: impl Into<Sticker>) -> Self {
+		self.sticker = Some(sticker.into());
+		self
+	}
+	pub fn story(mut self, story: impl Into<Story>) -> Self {
+		self.story = Some(story.into());
+		self
+	}
+	pub fn venue(mut self, venue: impl Into<Venue>) -> Self {
+		self.venue = Some(venue.into());
+		self
+	}
+	pub fn video(mut self, video: impl Into<Video>) -> Self {
+		self.video = Some(video.into());
+		self
+	}
+	pub fn video_note(mut self, video_note: impl Into<VideoNote>) -> Self {
+		self.video_note = Some(video_note.into());
+		self
+	}
+	pub fn voice(mut self, voice: impl Into<Voice>) -> Self {
+		self.voice = Some(voice.into());
+		self
+	}
+}
 /**This object represents a file ready to be downloaded. The file can be downloaded via the link `https://api.telegram.org/file/bot<token>/<file_path>`. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling [getFile](https://core.telegram.org/bots/api/#getfile).
 
 The maximum file size to download is 20 MB
@@ -1482,6 +2642,24 @@ pub struct File {
 	pub file_size: Option<i64>,
 	/**Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.*/
 	pub file_unique_id: String,
+}
+impl File {
+	pub fn new(file_id: impl Into<String>, file_unique_id: impl Into<String>) -> Self {
+		Self {
+			file_id: file_id.into(),
+			file_path: None,
+			file_size: None,
+			file_unique_id: file_unique_id.into(),
+		}
+	}
+	pub fn file_path(mut self, file_path: impl Into<String>) -> Self {
+		self.file_path = Some(file_path.into());
+		self
+	}
+	pub fn file_size(mut self, file_size: impl Into<i64>) -> Self {
+		self.file_size = Some(file_size.into());
+		self
+	}
 }
 /**Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as if the user has selected the bot's message and tapped 'Reply'). This can be extremely useful if you want to create user-friendly step-by-step interfaces without having to sacrifice [privacy mode](https://core.telegram.org/bots/features#privacy-mode). Not supported in channels and for messages sent on behalf of a Telegram Business account.
 
@@ -1535,6 +2713,20 @@ pub struct ForumTopic {
 	/**Name of the topic*/
 	pub name: String,
 }
+impl ForumTopic {
+	pub fn new(icon_color: impl Into<i64>, message_thread_id: impl Into<i64>, name: impl Into<String>) -> Self {
+		Self {
+			icon_color: icon_color.into(),
+			icon_custom_emoji_id: None,
+			message_thread_id: message_thread_id.into(),
+			name: name.into(),
+		}
+	}
+	pub fn icon_custom_emoji_id(mut self, icon_custom_emoji_id: impl Into<String>) -> Self {
+		self.icon_custom_emoji_id = Some(icon_custom_emoji_id.into());
+		self
+	}
+}
 /**This object represents a service message about a forum topic closed in the chat. Currently holds no information.
 
 https://core.telegram.org/bots/api/#forumtopicclosed*/
@@ -1554,6 +2746,19 @@ pub struct ForumTopicCreated {
 	/**Name of the topic*/
 	pub name: String,
 }
+impl ForumTopicCreated {
+	pub fn new(icon_color: impl Into<i64>, name: impl Into<String>) -> Self {
+		Self {
+			icon_color: icon_color.into(),
+			icon_custom_emoji_id: None,
+			name: name.into(),
+		}
+	}
+	pub fn icon_custom_emoji_id(mut self, icon_custom_emoji_id: impl Into<String>) -> Self {
+		self.icon_custom_emoji_id = Some(icon_custom_emoji_id.into());
+		self
+	}
+}
 /**This object represents a service message about an edited forum topic.
 
 https://core.telegram.org/bots/api/#forumtopicedited*/
@@ -1567,12 +2772,28 @@ pub struct ForumTopicEdited {
 	/**New name of the topic, if it was edited*/
 	pub name: Option<String>,
 }
+impl ForumTopicEdited {
+	pub fn new() -> Self {
+		Self {
+			icon_custom_emoji_id: None,
+			name: None,
+		}
+	}
+	pub fn icon_custom_emoji_id(mut self, icon_custom_emoji_id: impl Into<String>) -> Self {
+		self.icon_custom_emoji_id = Some(icon_custom_emoji_id.into());
+		self
+	}
+	pub fn name(mut self, name: impl Into<String>) -> Self {
+		self.name = Some(name.into());
+		self
+	}
+}
 /**This object represents a service message about a forum topic reopened in the chat. Currently holds no information.
 
 https://core.telegram.org/bots/api/#forumtopicreopened*/
 pub type ForumTopicReopened = ();
 /**Unique identifier for the chat where the original messages were sent (or channel username in the format `@channelusername`)*/
-#[derive(Clone, Debug, Serialize, From)]
+#[derive(Clone, Debug, Serialize, From, Display)]
 #[serde(untagged)]
 pub enum FromChatId {
 	Id(i64),
@@ -1602,6 +2823,38 @@ pub struct Game {
 	/**Title of the game*/
 	pub title: String,
 }
+impl Game {
+	pub fn new(description: impl Into<String>, photo: impl Into<Vec<PhotoSize>>, title: impl Into<String>) -> Self {
+		Self {
+			animation: None,
+			description: description.into(),
+			photo: photo.into(),
+			text: None,
+			text_entities: Vec::new(),
+			title: title.into(),
+		}
+	}
+	pub fn animation(mut self, animation: impl Into<Animation>) -> Self {
+		self.animation = Some(animation.into());
+		self
+	}
+	pub fn add_photo(mut self, photo: impl Into<PhotoSize>) -> Self {
+		self.photo.push(photo.into());
+		self
+	}
+	pub fn text(mut self, text: impl Into<String>) -> Self {
+		self.text = Some(text.into());
+		self
+	}
+	pub fn add_text_entity(mut self, text_entity: impl Into<MessageEntity>) -> Self {
+		self.text_entities.push(text_entity.into());
+		self
+	}
+	pub fn text_entities(mut self, text_entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.text_entities = text_entities.into();
+		self
+	}
+}
 /**This object represents one row of the high scores table for a game.
 
 https://core.telegram.org/bots/api/#gamehighscore*/
@@ -1613,6 +2866,15 @@ pub struct GameHighScore {
 	pub score: i64,
 	/**User*/
 	pub user: User,
+}
+impl GameHighScore {
+	pub fn new(position: impl Into<i64>, score: impl Into<i64>, user: impl Into<User>) -> Self {
+		Self {
+			position: position.into(),
+			score: score.into(),
+			user: user.into(),
+		}
+	}
 }
 /**This object represents a service message about General forum topic hidden in the chat. Currently holds no information.
 
@@ -1643,6 +2905,30 @@ pub struct Gift {
 	/**The number of Telegram Stars that must be paid to upgrade the gift to a unique one*/
 	pub upgrade_star_count: Option<i64>,
 }
+impl Gift {
+	pub fn new(id: impl Into<String>, star_count: impl Into<i64>, sticker: impl Into<Sticker>) -> Self {
+		Self {
+			id: id.into(),
+			remaining_count: None,
+			star_count: star_count.into(),
+			sticker: sticker.into(),
+			total_count: None,
+			upgrade_star_count: None,
+		}
+	}
+	pub fn remaining_count(mut self, remaining_count: impl Into<i64>) -> Self {
+		self.remaining_count = Some(remaining_count.into());
+		self
+	}
+	pub fn total_count(mut self, total_count: impl Into<i64>) -> Self {
+		self.total_count = Some(total_count.into());
+		self
+	}
+	pub fn upgrade_star_count(mut self, upgrade_star_count: impl Into<i64>) -> Self {
+		self.upgrade_star_count = Some(upgrade_star_count.into());
+		self
+	}
+}
 /**This object represent a list of gifts.
 
 https://core.telegram.org/bots/api/#gifts*/
@@ -1653,6 +2939,17 @@ https://core.telegram.org/bots/api/#gifts*/
 pub struct Gifts {
 	/**The list of gifts*/
 	pub gifts: Vec<Gift>,
+}
+impl Gifts {
+	pub fn new(gifts: impl Into<Vec<Gift>>) -> Self {
+		Self {
+			gifts: gifts.into(),
+		}
+	}
+	pub fn add_gift(mut self, gift: impl Into<Gift>) -> Self {
+		self.gifts.push(gift.into());
+		self
+	}
 }
 /**This object represents a message about a scheduled giveaway.
 
@@ -1684,6 +2981,53 @@ pub struct Giveaway {
 	/**Point in time (Unix timestamp) when winners of the giveaway will be selected*/
 	pub winners_selection_date: i64,
 }
+impl Giveaway {
+	pub fn new(chats: impl Into<Vec<Chat>>, winner_count: impl Into<i64>, winners_selection_date: impl Into<i64>) -> Self {
+		Self {
+			chats: chats.into(),
+			country_codes: Vec::new(),
+			has_public_winners: None,
+			only_new_members: None,
+			premium_subscription_month_count: None,
+			prize_description: None,
+			prize_star_count: None,
+			winner_count: winner_count.into(),
+			winners_selection_date: winners_selection_date.into(),
+		}
+	}
+	pub fn add_chat(mut self, chat: impl Into<Chat>) -> Self {
+		self.chats.push(chat.into());
+		self
+	}
+	pub fn add_country_code(mut self, country_code: impl Into<String>) -> Self {
+		self.country_codes.push(country_code.into());
+		self
+	}
+	pub fn country_codes(mut self, country_codes: impl Into<Vec<String>>) -> Self {
+		self.country_codes = country_codes.into();
+		self
+	}
+	pub fn has_public_winners(mut self, has_public_winners: bool) -> Self {
+		self.has_public_winners = Some(has_public_winners);
+		self
+	}
+	pub fn only_new_members(mut self, only_new_members: bool) -> Self {
+		self.only_new_members = Some(only_new_members);
+		self
+	}
+	pub fn premium_subscription_month_count(mut self, premium_subscription_month_count: impl Into<i64>) -> Self {
+		self.premium_subscription_month_count = Some(premium_subscription_month_count.into());
+		self
+	}
+	pub fn prize_description(mut self, prize_description: impl Into<String>) -> Self {
+		self.prize_description = Some(prize_description.into());
+		self
+	}
+	pub fn prize_star_count(mut self, prize_star_count: impl Into<i64>) -> Self {
+		self.prize_star_count = Some(prize_star_count.into());
+		self
+	}
+}
 /**This object represents a service message about the completion of a giveaway without public winners.
 
 https://core.telegram.org/bots/api/#giveawaycompleted*/
@@ -1702,6 +3046,28 @@ pub struct GiveawayCompleted {
 	/**Number of winners in the giveaway*/
 	pub winner_count: i64,
 }
+impl GiveawayCompleted {
+	pub fn new(winner_count: impl Into<i64>) -> Self {
+		Self {
+			giveaway_message: None,
+			is_star_giveaway: None,
+			unclaimed_prize_count: None,
+			winner_count: winner_count.into(),
+		}
+	}
+	pub fn giveaway_message(mut self, giveaway_message: impl Into<Box<Message>>) -> Self {
+		self.giveaway_message = Some(giveaway_message.into());
+		self
+	}
+	pub fn is_star_giveaway(mut self, is_star_giveaway: bool) -> Self {
+		self.is_star_giveaway = Some(is_star_giveaway);
+		self
+	}
+	pub fn unclaimed_prize_count(mut self, unclaimed_prize_count: impl Into<i64>) -> Self {
+		self.unclaimed_prize_count = Some(unclaimed_prize_count.into());
+		self
+	}
+}
 /**This object represents a service message about the creation of a scheduled giveaway.
 
 https://core.telegram.org/bots/api/#giveawaycreated*/
@@ -1712,6 +3078,17 @@ https://core.telegram.org/bots/api/#giveawaycreated*/
 pub struct GiveawayCreated {
 	/**The number of Telegram Stars to be split between giveaway winners; for Telegram Star giveaways only*/
 	pub prize_star_count: Option<i64>,
+}
+impl GiveawayCreated {
+	pub fn new() -> Self {
+		Self {
+			prize_star_count: None,
+		}
+	}
+	pub fn prize_star_count(mut self, prize_star_count: impl Into<i64>) -> Self {
+		self.prize_star_count = Some(prize_star_count.into());
+		self
+	}
 }
 /**This object represents a message about the completion of a giveaway with public winners.
 
@@ -1749,6 +3126,56 @@ pub struct GiveawayWinners {
 	/**Point in time (Unix timestamp) when winners of the giveaway were selected*/
 	pub winners_selection_date: i64,
 }
+impl GiveawayWinners {
+	pub fn new(chat: impl Into<Chat>, giveaway_message_id: impl Into<i64>, winner_count: impl Into<i64>, winners: impl Into<Vec<User>>, winners_selection_date: impl Into<i64>) -> Self {
+		Self {
+			additional_chat_count: None,
+			chat: chat.into(),
+			giveaway_message_id: giveaway_message_id.into(),
+			only_new_members: None,
+			premium_subscription_month_count: None,
+			prize_description: None,
+			prize_star_count: None,
+			unclaimed_prize_count: None,
+			was_refunded: None,
+			winner_count: winner_count.into(),
+			winners: winners.into(),
+			winners_selection_date: winners_selection_date.into(),
+		}
+	}
+	pub fn additional_chat_count(mut self, additional_chat_count: impl Into<i64>) -> Self {
+		self.additional_chat_count = Some(additional_chat_count.into());
+		self
+	}
+	pub fn only_new_members(mut self, only_new_members: bool) -> Self {
+		self.only_new_members = Some(only_new_members);
+		self
+	}
+	pub fn premium_subscription_month_count(mut self, premium_subscription_month_count: impl Into<i64>) -> Self {
+		self.premium_subscription_month_count = Some(premium_subscription_month_count.into());
+		self
+	}
+	pub fn prize_description(mut self, prize_description: impl Into<String>) -> Self {
+		self.prize_description = Some(prize_description.into());
+		self
+	}
+	pub fn prize_star_count(mut self, prize_star_count: impl Into<i64>) -> Self {
+		self.prize_star_count = Some(prize_star_count.into());
+		self
+	}
+	pub fn unclaimed_prize_count(mut self, unclaimed_prize_count: impl Into<i64>) -> Self {
+		self.unclaimed_prize_count = Some(unclaimed_prize_count.into());
+		self
+	}
+	pub fn was_refunded(mut self, was_refunded: bool) -> Self {
+		self.was_refunded = Some(was_refunded);
+		self
+	}
+	pub fn add_winner(mut self, winner: impl Into<User>) -> Self {
+		self.winners.push(winner.into());
+		self
+	}
+}
 /**This object describes a message that was deleted or is otherwise inaccessible to the bot.
 
 https://core.telegram.org/bots/api/#inaccessiblemessage*/
@@ -1760,6 +3187,15 @@ pub struct InaccessibleMessage {
 	pub date: i64,
 	/**Unique message identifier inside the chat*/
 	pub message_id: i64,
+}
+impl InaccessibleMessage {
+	pub fn new(chat: impl Into<Chat>, date: impl Into<i64>, message_id: impl Into<i64>) -> Self {
+		Self {
+			chat: chat.into(),
+			date: date.into(),
+			message_id: message_id.into(),
+		}
+	}
 }
 /**This object represents one button of an inline keyboard. Exactly one of the optional fields must be used to specify type of the button.
 
@@ -1872,6 +3308,10 @@ impl InlineKeyboardMarkup {
 			inline_keyboard: inline_keyboard.into(),
 		}
 	}
+	pub fn add_inline_keyboard(mut self, inline_keyboard: impl Into<Vec<InlineKeyboardButton>>) -> Self {
+		self.inline_keyboard.push(inline_keyboard.into());
+		self
+	}
 }
 /**This object represents an incoming inline query. When the user sends an empty query, your bot could return some default or trending results.
 
@@ -1894,6 +3334,26 @@ pub struct InlineQuery {
 	pub offset: String,
 	/**Text of the query (up to 256 characters)*/
 	pub query: String,
+}
+impl InlineQuery {
+	pub fn new(from: impl Into<User>, id: impl Into<String>, offset: impl Into<String>, query: impl Into<String>) -> Self {
+		Self {
+			chat_type: None,
+			from: from.into(),
+			id: id.into(),
+			location: None,
+			offset: offset.into(),
+			query: query.into(),
+		}
+	}
+	pub fn chat_type(mut self, chat_type: impl Into<String>) -> Self {
+		self.chat_type = Some(chat_type.into());
+		self
+	}
+	pub fn location(mut self, location: impl Into<Location>) -> Self {
+		self.location = Some(location.into());
+		self
+	}
 }
 /**This object represents one result of an inline query. Telegram clients currently support results of the following 20 types:
 
@@ -2072,6 +3532,10 @@ impl InlineQueryResultAudio {
 		self.caption = Some(caption.into());
 		self
 	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
+		self
+	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
@@ -2137,6 +3601,10 @@ impl InlineQueryResultCachedAudio {
 	}
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
 		self.caption = Some(caption.into());
+		self
+	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
 		self
 	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
@@ -2206,6 +3674,10 @@ impl InlineQueryResultCachedDocument {
 	}
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
 		self.caption = Some(caption.into());
+		self
+	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
 		self
 	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
@@ -2279,6 +3751,10 @@ impl InlineQueryResultCachedGif {
 	}
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
 		self.caption = Some(caption.into());
+		self
+	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
 		self
 	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
@@ -2356,6 +3832,10 @@ impl InlineQueryResultCachedMpeg4Gif {
 	}
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
 		self.caption = Some(caption.into());
+		self
+	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
 		self
 	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
@@ -2436,6 +3916,10 @@ impl InlineQueryResultCachedPhoto {
 	}
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
 		self.caption = Some(caption.into());
+		self
+	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
 		self
 	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
@@ -2561,6 +4045,10 @@ impl InlineQueryResultCachedVideo {
 		self.caption = Some(caption.into());
 		self
 	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
+		self
+	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
@@ -2633,6 +4121,10 @@ impl InlineQueryResultCachedVoice {
 	}
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
 		self.caption = Some(caption.into());
+		self
+	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
 		self
 	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
@@ -2794,6 +4286,10 @@ impl InlineQueryResultDocument {
 		self.caption = Some(caption.into());
 		self
 	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
+		self
+	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
@@ -2926,6 +4422,10 @@ impl InlineQueryResultGif {
 	}
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
 		self.caption = Some(caption.into());
+		self
+	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
 		self
 	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
@@ -3132,6 +4632,10 @@ impl InlineQueryResultMpeg4Gif {
 		self.caption = Some(caption.into());
 		self
 	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
+		self
+	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
@@ -3235,6 +4739,10 @@ impl InlineQueryResultPhoto {
 	}
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
 		self.caption = Some(caption.into());
+		self
+	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
 		self
 	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
@@ -3444,6 +4952,10 @@ impl InlineQueryResultVideo {
 		self.caption = Some(caption.into());
 		self
 	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
+		self
+	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
@@ -3531,6 +5043,10 @@ impl InlineQueryResultVoice {
 	}
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
 		self.caption = Some(caption.into());
+		self
+	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
 		self
 	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
@@ -3745,6 +5261,10 @@ impl InputInvoiceMessageContent {
 		self.photo_width = Some(photo_width.into());
 		self
 	}
+	pub fn add_price(mut self, price: impl Into<LabeledPrice>) -> Self {
+		self.prices.push(price.into());
+		self
+	}
 	pub fn provider_data(mut self, provider_data: impl Into<String>) -> Self {
 		self.provider_data = Some(provider_data.into());
 		self
@@ -3759,6 +5279,10 @@ impl InputInvoiceMessageContent {
 	}
 	pub fn send_phone_number_to_provider(mut self, send_phone_number_to_provider: bool) -> Self {
 		self.send_phone_number_to_provider = Some(send_phone_number_to_provider);
+		self
+	}
+	pub fn add_suggested_tip_amount(mut self, suggested_tip_amount: impl Into<i64>) -> Self {
+		self.suggested_tip_amounts.push(suggested_tip_amount.into());
 		self
 	}
 	pub fn suggested_tip_amounts(mut self, suggested_tip_amounts: impl Into<Vec<i64>>) -> Self {
@@ -3855,7 +5379,7 @@ pub struct InputMediaAnimation {
 	/**Animation height*/
 	pub height: Option<i64>,
 	/**File to send. Pass a file\_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://\<file\_attach\_name\>” to upload a new one using multipart/form-data under \<file\_attach\_name\> name. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
-	pub media: String,
+	pub media: Asset,
 	/**Mode for parsing entities in the animation caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub parse_mode: Option<String>,
 	/**Type of the result, must be *animation*
@@ -3869,7 +5393,7 @@ pub struct InputMediaAnimation {
 	pub width: Option<i64>,
 }
 impl InputMediaAnimation {
-	pub fn new(media: impl Into<String>) -> Self {
+	pub fn new(media: impl Into<Asset>) -> Self {
 		Self {
 			caption: None,
 			caption_entities: Vec::new(),
@@ -3886,6 +5410,10 @@ impl InputMediaAnimation {
 	}
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
 		self.caption = Some(caption.into());
+		self
+	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
 		self
 	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
@@ -3939,7 +5467,7 @@ pub struct InputMediaAudio {
 	/**Duration of the audio in seconds*/
 	pub duration: Option<i64>,
 	/**File to send. Pass a file\_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://\<file\_attach\_name\>” to upload a new one using multipart/form-data under \<file\_attach\_name\> name. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
-	pub media: String,
+	pub media: Asset,
 	/**Mode for parsing entities in the audio caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub parse_mode: Option<String>,
 	/**Performer of the audio*/
@@ -3953,7 +5481,7 @@ pub struct InputMediaAudio {
 	pub title: Option<String>,
 }
 impl InputMediaAudio {
-	pub fn new(media: impl Into<String>) -> Self {
+	pub fn new(media: impl Into<Asset>) -> Self {
 		Self {
 			caption: None,
 			caption_entities: Vec::new(),
@@ -3968,6 +5496,10 @@ impl InputMediaAudio {
 	}
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
 		self.caption = Some(caption.into());
+		self
+	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
 		self
 	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
@@ -4013,7 +5545,7 @@ pub struct InputMediaDocument {
 	/**Disables automatic server-side content type detection for files uploaded using multipart/form-data. Always if the document is sent as part of an album.*/
 	pub disable_content_type_detection: Option<bool>,
 	/**File to send. Pass a file\_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://\<file\_attach\_name\>” to upload a new one using multipart/form-data under \<file\_attach\_name\> name. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
-	pub media: String,
+	pub media: Asset,
 	/**Mode for parsing entities in the document caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub parse_mode: Option<String>,
 	/**Type of the result, must be *document*
@@ -4023,7 +5555,7 @@ pub struct InputMediaDocument {
 	pub thumbnail: Option<Asset>,
 }
 impl InputMediaDocument {
-	pub fn new(media: impl Into<String>) -> Self {
+	pub fn new(media: impl Into<Asset>) -> Self {
 		Self {
 			caption: None,
 			caption_entities: Vec::new(),
@@ -4036,6 +5568,10 @@ impl InputMediaDocument {
 	}
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
 		self.caption = Some(caption.into());
+		self
+	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
 		self
 	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
@@ -4073,7 +5609,7 @@ pub struct InputMediaPhoto {
 	/**Pass *True* if the photo needs to be covered with a spoiler animation*/
 	pub has_spoiler: Option<bool>,
 	/**File to send. Pass a file\_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://\<file\_attach\_name\>” to upload a new one using multipart/form-data under \<file\_attach\_name\> name. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
-	pub media: String,
+	pub media: Asset,
 	/**Mode for parsing entities in the photo caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub parse_mode: Option<String>,
 	/**Type of the result, must be *photo*
@@ -4083,7 +5619,7 @@ pub struct InputMediaPhoto {
 	pub show_caption_above_media: Option<bool>,
 }
 impl InputMediaPhoto {
-	pub fn new(media: impl Into<String>) -> Self {
+	pub fn new(media: impl Into<Asset>) -> Self {
 		Self {
 			caption: None,
 			caption_entities: Vec::new(),
@@ -4096,6 +5632,10 @@ impl InputMediaPhoto {
 	}
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
 		self.caption = Some(caption.into());
+		self
+	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
 		self
 	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
@@ -4137,7 +5677,7 @@ pub struct InputMediaVideo {
 	/**Video height*/
 	pub height: Option<i64>,
 	/**File to send. Pass a file\_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://\<file\_attach\_name\>” to upload a new one using multipart/form-data under \<file\_attach\_name\> name. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
-	pub media: String,
+	pub media: Asset,
 	/**Mode for parsing entities in the video caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub parse_mode: Option<String>,
 	/**Type of the result, must be *video*
@@ -4153,7 +5693,7 @@ pub struct InputMediaVideo {
 	pub width: Option<i64>,
 }
 impl InputMediaVideo {
-	pub fn new(media: impl Into<String>) -> Self {
+	pub fn new(media: impl Into<Asset>) -> Self {
 		Self {
 			caption: None,
 			caption_entities: Vec::new(),
@@ -4171,6 +5711,10 @@ impl InputMediaVideo {
 	}
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
 		self.caption = Some(caption.into());
+		self
+	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
 		self
 	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
@@ -4246,13 +5790,13 @@ https://core.telegram.org/bots/api/#inputpaidmediaphoto*/
 #[derive(Clone, Debug, Serialize)]
 pub struct InputPaidMediaPhoto {
 	/**File to send. Pass a file\_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://\<file\_attach\_name\>” to upload a new one using multipart/form-data under \<file\_attach\_name\> name. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
-	pub media: String,
+	pub media: Asset,
 	/**Type of the media, must be *photo*
 	Default: photo*/
 	pub r#type: String,
 }
 impl InputPaidMediaPhoto {
-	pub fn new(media: impl Into<String>, r#type: impl Into<String>) -> Self {
+	pub fn new(media: impl Into<Asset>, r#type: impl Into<String>) -> Self {
 		Self {
 			media: media.into(),
 			r#type: r#type.into(),
@@ -4272,7 +5816,7 @@ pub struct InputPaidMediaVideo {
 	/**Video height*/
 	pub height: Option<i64>,
 	/**File to send. Pass a file\_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://\<file\_attach\_name\>” to upload a new one using multipart/form-data under \<file\_attach\_name\> name. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
-	pub media: String,
+	pub media: Asset,
 	/**Type of the media, must be *video*
 	Default: video*/
 	pub r#type: String,
@@ -4284,7 +5828,7 @@ pub struct InputPaidMediaVideo {
 	pub width: Option<i64>,
 }
 impl InputPaidMediaVideo {
-	pub fn new(media: impl Into<String>, r#type: impl Into<String>) -> Self {
+	pub fn new(media: impl Into<Asset>, r#type: impl Into<String>) -> Self {
 		Self {
 			duration: None,
 			height: None,
@@ -4342,6 +5886,10 @@ impl InputPollOption {
 			text_parse_mode: None,
 		}
 	}
+	pub fn add_text_entity(mut self, text_entity: impl Into<MessageEntity>) -> Self {
+		self.text_entities.push(text_entity.into());
+		self
+	}
 	pub fn text_entities(mut self, text_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.text_entities = text_entities.into();
 		self
@@ -4382,6 +5930,14 @@ impl InputSticker {
 			sticker: sticker.into(),
 		}
 	}
+	pub fn add_emoji_list(mut self, emoji_list: impl Into<String>) -> Self {
+		self.emoji_list.push(emoji_list.into());
+		self
+	}
+	pub fn add_keyword(mut self, keyword: impl Into<String>) -> Self {
+		self.keywords.push(keyword.into());
+		self
+	}
 	pub fn keywords(mut self, keywords: impl Into<Vec<String>>) -> Self {
 		self.keywords = keywords.into();
 		self
@@ -4419,6 +5975,10 @@ impl InputTextMessageContent {
 			message_text: message_text.into(),
 			parse_mode: None,
 		}
+	}
+	pub fn add_entity(mut self, entity: impl Into<MessageEntity>) -> Self {
+		self.entities.push(entity.into());
+		self
 	}
 	pub fn entities(mut self, entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.entities = entities.into();
@@ -4503,6 +6063,17 @@ pub struct Invoice {
 	pub title: String,
 	/**Total price in the *smallest units* of the currency (integer, **not** float/double). For example, for a price of `US$ 1.45` pass `amount = 145`. See the *exp* parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).*/
 	pub total_amount: i64,
+}
+impl Invoice {
+	pub fn new(currency: impl Into<String>, description: impl Into<String>, start_parameter: impl Into<String>, title: impl Into<String>, total_amount: impl Into<i64>) -> Self {
+		Self {
+			currency: currency.into(),
+			description: description.into(),
+			start_parameter: start_parameter.into(),
+			title: title.into(),
+			total_amount: total_amount.into(),
+		}
+	}
 }
 /**This object represents one button of the reply keyboard. At most one of the optional fields must be used to specify type of the button. For simple text buttons, *String* can be used instead of this object to specify the button text.
 
@@ -4820,6 +6391,34 @@ pub struct Location {
 	/**The maximum distance for proximity alerts about approaching another chat member, in meters. For sent live locations only.*/
 	pub proximity_alert_radius: Option<i64>,
 }
+impl Location {
+	pub fn new(latitude: impl Into<f32>, longitude: impl Into<f32>) -> Self {
+		Self {
+			heading: None,
+			horizontal_accuracy: None,
+			latitude: latitude.into(),
+			live_period: None,
+			longitude: longitude.into(),
+			proximity_alert_radius: None,
+		}
+	}
+	pub fn heading(mut self, heading: impl Into<i64>) -> Self {
+		self.heading = Some(heading.into());
+		self
+	}
+	pub fn horizontal_accuracy(mut self, horizontal_accuracy: impl Into<f32>) -> Self {
+		self.horizontal_accuracy = Some(horizontal_accuracy.into());
+		self
+	}
+	pub fn live_period(mut self, live_period: impl Into<i64>) -> Self {
+		self.live_period = Some(live_period.into());
+		self
+	}
+	pub fn proximity_alert_radius(mut self, proximity_alert_radius: impl Into<i64>) -> Self {
+		self.proximity_alert_radius = Some(proximity_alert_radius.into());
+		self
+	}
+}
 /**This object represents a parameter of the inline keyboard button used to automatically authorize a user. Serves as a great replacement for the [Telegram Login Widget](https://core.telegram.org/widgets/login) when the user is coming from Telegram. All the user needs to do is tap/click a button and confirm that they want to log in:
 
 Telegram apps support these buttons as of [version 5.7](https://telegram.org/blog/privacy-discussions-web-bots#meet-seamless-web-bots).
@@ -4987,6 +6586,13 @@ pub struct MessageAutoDeleteTimerChanged {
 	/**New auto-delete time for messages in the chat; in seconds*/
 	pub message_auto_delete_time: i64,
 }
+impl MessageAutoDeleteTimerChanged {
+	pub fn new(message_auto_delete_time: impl Into<i64>) -> Self {
+		Self {
+			message_auto_delete_time: message_auto_delete_time.into(),
+		}
+	}
+}
 /**This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.
 
 https://core.telegram.org/bots/api/#messageentity*/
@@ -5048,6 +6654,13 @@ pub struct MessageId {
 	/**Unique message identifier. In specific instances (e.g., message containing a video sent to a big chat), the server might automatically schedule a message instead of sending it immediately. In such cases, this field will be 0 and the relevant message will be unusable until it is actually sent*/
 	pub message_id: i64,
 }
+impl MessageId {
+	pub fn new(message_id: impl Into<i64>) -> Self {
+		Self {
+			message_id: message_id.into(),
+		}
+	}
+}
 /**This object describes the origin of a message. It can be one of
 
 * [MessageOriginUser](https://core.telegram.org/bots/api/#messageoriginuser)
@@ -5084,6 +6697,21 @@ pub struct MessageOriginChannel {
 	Default: channel*/
 	pub r#type: String,
 }
+impl MessageOriginChannel {
+	pub fn new(chat: impl Into<Chat>, date: impl Into<i64>, message_id: impl Into<i64>, r#type: impl Into<String>) -> Self {
+		Self {
+			author_signature: None,
+			chat: chat.into(),
+			date: date.into(),
+			message_id: message_id.into(),
+			r#type: r#type.into(),
+		}
+	}
+	pub fn author_signature(mut self, author_signature: impl Into<String>) -> Self {
+		self.author_signature = Some(author_signature.into());
+		self
+	}
+}
 /**The message was originally sent on behalf of a chat to a group chat.
 
 https://core.telegram.org/bots/api/#messageoriginchat*/
@@ -5102,6 +6730,20 @@ pub struct MessageOriginChat {
 	/**Chat that sent the message originally*/
 	pub sender_chat: Chat,
 }
+impl MessageOriginChat {
+	pub fn new(date: impl Into<i64>, r#type: impl Into<String>, sender_chat: impl Into<Chat>) -> Self {
+		Self {
+			author_signature: None,
+			date: date.into(),
+			r#type: r#type.into(),
+			sender_chat: sender_chat.into(),
+		}
+	}
+	pub fn author_signature(mut self, author_signature: impl Into<String>) -> Self {
+		self.author_signature = Some(author_signature.into());
+		self
+	}
+}
 /**The message was originally sent by an unknown user.
 
 https://core.telegram.org/bots/api/#messageoriginhiddenuser*/
@@ -5115,6 +6757,15 @@ pub struct MessageOriginHiddenUser {
 	/**Name of the user that sent the message originally*/
 	pub sender_user_name: String,
 }
+impl MessageOriginHiddenUser {
+	pub fn new(date: impl Into<i64>, r#type: impl Into<String>, sender_user_name: impl Into<String>) -> Self {
+		Self {
+			date: date.into(),
+			r#type: r#type.into(),
+			sender_user_name: sender_user_name.into(),
+		}
+	}
+}
 /**The message was originally sent by a known user.
 
 https://core.telegram.org/bots/api/#messageoriginuser*/
@@ -5127,6 +6778,15 @@ pub struct MessageOriginUser {
 	pub r#type: String,
 	/**User that sent the message originally*/
 	pub sender_user: User,
+}
+impl MessageOriginUser {
+	pub fn new(date: impl Into<i64>, r#type: impl Into<String>, sender_user: impl Into<User>) -> Self {
+		Self {
+			date: date.into(),
+			r#type: r#type.into(),
+			sender_user: sender_user.into(),
+		}
+	}
 }
 /**This object represents reaction changes on a message with anonymous reactions.
 
@@ -5144,6 +6804,20 @@ pub struct MessageReactionCountUpdated {
 	pub message_id: i64,
 	/**List of reactions that are present on the message*/
 	pub reactions: Vec<ReactionCount>,
+}
+impl MessageReactionCountUpdated {
+	pub fn new(chat: impl Into<Chat>, date: impl Into<i64>, message_id: impl Into<i64>, reactions: impl Into<Vec<ReactionCount>>) -> Self {
+		Self {
+			chat: chat.into(),
+			date: date.into(),
+			message_id: message_id.into(),
+			reactions: reactions.into(),
+		}
+	}
+	pub fn add_reaction(mut self, reaction: impl Into<ReactionCount>) -> Self {
+		self.reactions.push(reaction.into());
+		self
+	}
 }
 /**This object represents a change of a reaction on a message performed by a user.
 
@@ -5169,6 +6843,35 @@ pub struct MessageReactionUpdated {
 	/**The user that changed the reaction, if the user isn't anonymous*/
 	pub user: Option<User>,
 }
+impl MessageReactionUpdated {
+	pub fn new(chat: impl Into<Chat>, date: impl Into<i64>, message_id: impl Into<i64>, new_reaction: impl Into<Vec<ReactionType>>, old_reaction: impl Into<Vec<ReactionType>>) -> Self {
+		Self {
+			actor_chat: None,
+			chat: chat.into(),
+			date: date.into(),
+			message_id: message_id.into(),
+			new_reaction: new_reaction.into(),
+			old_reaction: old_reaction.into(),
+			user: None,
+		}
+	}
+	pub fn actor_chat(mut self, actor_chat: impl Into<Chat>) -> Self {
+		self.actor_chat = Some(actor_chat.into());
+		self
+	}
+	pub fn add_new_reaction(mut self, new_reaction: impl Into<ReactionType>) -> Self {
+		self.new_reaction.push(new_reaction.into());
+		self
+	}
+	pub fn add_old_reaction(mut self, old_reaction: impl Into<ReactionType>) -> Self {
+		self.old_reaction.push(old_reaction.into());
+		self
+	}
+	pub fn user(mut self, user: impl Into<User>) -> Self {
+		self.user = Some(user.into());
+		self
+	}
+}
 /**This object represents information about an order.
 
 https://core.telegram.org/bots/api/#orderinfo*/
@@ -5185,6 +6888,32 @@ pub struct OrderInfo {
 	pub phone_number: Option<String>,
 	/**User shipping address*/
 	pub shipping_address: Option<ShippingAddress>,
+}
+impl OrderInfo {
+	pub fn new() -> Self {
+		Self {
+			email: None,
+			name: None,
+			phone_number: None,
+			shipping_address: None,
+		}
+	}
+	pub fn email(mut self, email: impl Into<String>) -> Self {
+		self.email = Some(email.into());
+		self
+	}
+	pub fn name(mut self, name: impl Into<String>) -> Self {
+		self.name = Some(name.into());
+		self
+	}
+	pub fn phone_number(mut self, phone_number: impl Into<String>) -> Self {
+		self.phone_number = Some(phone_number.into());
+		self
+	}
+	pub fn shipping_address(mut self, shipping_address: impl Into<ShippingAddress>) -> Self {
+		self.shipping_address = Some(shipping_address.into());
+		self
+	}
 }
 /**This object describes paid media. Currently, it can be one of
 
@@ -5213,6 +6942,18 @@ pub struct PaidMediaInfo {
 	/**The number of Telegram Stars that must be paid to buy access to the media*/
 	pub star_count: i64,
 }
+impl PaidMediaInfo {
+	pub fn new(paid_media: impl Into<Vec<PaidMedia>>, star_count: impl Into<i64>) -> Self {
+		Self {
+			paid_media: paid_media.into(),
+			star_count: star_count.into(),
+		}
+	}
+	pub fn add_paid_media(mut self, paid_media: impl Into<PaidMedia>) -> Self {
+		self.paid_media.push(paid_media.into());
+		self
+	}
+}
 /**The paid media is a photo.
 
 https://core.telegram.org/bots/api/#paidmediaphoto*/
@@ -5226,6 +6967,18 @@ pub struct PaidMediaPhoto {
 	/**Type of the paid media, always “photo”
 	Default: photo*/
 	pub r#type: String,
+}
+impl PaidMediaPhoto {
+	pub fn new(photo: impl Into<Vec<PhotoSize>>, r#type: impl Into<String>) -> Self {
+		Self {
+			photo: photo.into(),
+			r#type: r#type.into(),
+		}
+	}
+	pub fn add_photo(mut self, photo: impl Into<PhotoSize>) -> Self {
+		self.photo.push(photo.into());
+		self
+	}
 }
 /**The paid media isn't available before the payment.
 
@@ -5245,6 +6998,28 @@ pub struct PaidMediaPreview {
 	/**Media width as defined by the sender*/
 	pub width: Option<i64>,
 }
+impl PaidMediaPreview {
+	pub fn new(r#type: impl Into<String>) -> Self {
+		Self {
+			duration: None,
+			height: None,
+			r#type: r#type.into(),
+			width: None,
+		}
+	}
+	pub fn duration(mut self, duration: impl Into<i64>) -> Self {
+		self.duration = Some(duration.into());
+		self
+	}
+	pub fn height(mut self, height: impl Into<i64>) -> Self {
+		self.height = Some(height.into());
+		self
+	}
+	pub fn width(mut self, width: impl Into<i64>) -> Self {
+		self.width = Some(width.into());
+		self
+	}
+}
 /**This object contains information about a paid media purchase.
 
 https://core.telegram.org/bots/api/#paidmediapurchased*/
@@ -5254,6 +7029,14 @@ pub struct PaidMediaPurchased {
 	pub from: User,
 	/**Bot-specified paid media payload*/
 	pub paid_media_payload: String,
+}
+impl PaidMediaPurchased {
+	pub fn new(from: impl Into<User>, paid_media_payload: impl Into<String>) -> Self {
+		Self {
+			from: from.into(),
+			paid_media_payload: paid_media_payload.into(),
+		}
+	}
 }
 /**The paid media is a video.
 
@@ -5265,6 +7048,14 @@ pub struct PaidMediaVideo {
 	pub r#type: String,
 	/**The video*/
 	pub video: Video,
+}
+impl PaidMediaVideo {
+	pub fn new(r#type: impl Into<String>, video: impl Into<Video>) -> Self {
+		Self {
+			r#type: r#type.into(),
+			video: video.into(),
+		}
+	}
 }
 /**Describes Telegram Passport data shared with the bot by the user.
 
@@ -5278,6 +7069,18 @@ pub struct PassportData {
 	pub credentials: EncryptedCredentials,
 	/**Array with information about documents and other Telegram Passport elements that was shared with the bot*/
 	pub data: Vec<EncryptedPassportElement>,
+}
+impl PassportData {
+	pub fn new(credentials: impl Into<EncryptedCredentials>, data: impl Into<Vec<EncryptedPassportElement>>) -> Self {
+		Self {
+			credentials: credentials.into(),
+			data: data.into(),
+		}
+	}
+	pub fn add_datum(mut self, datum: impl Into<EncryptedPassportElement>) -> Self {
+		self.data.push(datum.into());
+		self
+	}
 }
 /**This object represents an error in the Telegram Passport element which was submitted that should be resolved by the user. It should be one of:
 
@@ -5387,6 +7190,10 @@ impl PassportElementErrorFiles {
 			r#type: r#type.into(),
 			source: source.into(),
 		}
+	}
+	pub fn add_file_hash(mut self, file_hash: impl Into<String>) -> Self {
+		self.file_hashes.push(file_hash.into());
+		self
 	}
 }
 /**Represents an issue with the front side of a document. The error is considered resolved when the file with the front side of the document changes.
@@ -5521,6 +7328,10 @@ impl PassportElementErrorTranslationFiles {
 			source: source.into(),
 		}
 	}
+	pub fn add_file_hash(mut self, file_hash: impl Into<String>) -> Self {
+		self.file_hashes.push(file_hash.into());
+		self
+	}
 }
 /**Represents an issue in an unspecified place. The error is considered resolved when new data is added.
 
@@ -5561,6 +7372,16 @@ pub struct PassportFile {
 	/**Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.*/
 	pub file_unique_id: String,
 }
+impl PassportFile {
+	pub fn new(file_date: impl Into<i64>, file_id: impl Into<String>, file_size: impl Into<i64>, file_unique_id: impl Into<String>) -> Self {
+		Self {
+			file_date: file_date.into(),
+			file_id: file_id.into(),
+			file_size: file_size.into(),
+			file_unique_id: file_unique_id.into(),
+		}
+	}
+}
 /**This object represents one size of a photo or a [file](https://core.telegram.org/bots/api/#document) / [sticker](https://core.telegram.org/bots/api/#sticker) thumbnail.
 
 https://core.telegram.org/bots/api/#photosize*/
@@ -5579,6 +7400,21 @@ pub struct PhotoSize {
 	pub height: i64,
 	/**Photo width*/
 	pub width: i64,
+}
+impl PhotoSize {
+	pub fn new(file_id: impl Into<String>, file_unique_id: impl Into<String>, height: impl Into<i64>, width: impl Into<i64>) -> Self {
+		Self {
+			file_id: file_id.into(),
+			file_size: None,
+			file_unique_id: file_unique_id.into(),
+			height: height.into(),
+			width: width.into(),
+		}
+	}
+	pub fn file_size(mut self, file_size: impl Into<i64>) -> Self {
+		self.file_size = Some(file_size.into());
+		self
+	}
 }
 /**This object contains information about a poll.
 
@@ -5623,6 +7459,62 @@ pub struct Poll {
 	/**Total number of users that voted in the poll*/
 	pub total_voter_count: i64,
 }
+impl Poll {
+	pub fn new(allows_multiple_answers: bool, id: impl Into<String>, is_anonymous: bool, is_closed: bool, options: impl Into<Vec<PollOption>>, question: impl Into<String>, r#type: impl Into<String>, total_voter_count: impl Into<i64>) -> Self {
+		Self {
+			allows_multiple_answers: allows_multiple_answers,
+			close_date: None,
+			correct_option_id: None,
+			explanation: None,
+			explanation_entities: Vec::new(),
+			id: id.into(),
+			is_anonymous: is_anonymous,
+			is_closed: is_closed,
+			open_period: None,
+			options: options.into(),
+			question: question.into(),
+			question_entities: Vec::new(),
+			r#type: r#type.into(),
+			total_voter_count: total_voter_count.into(),
+		}
+	}
+	pub fn close_date(mut self, close_date: impl Into<i64>) -> Self {
+		self.close_date = Some(close_date.into());
+		self
+	}
+	pub fn correct_option_id(mut self, correct_option_id: impl Into<i64>) -> Self {
+		self.correct_option_id = Some(correct_option_id.into());
+		self
+	}
+	pub fn explanation(mut self, explanation: impl Into<String>) -> Self {
+		self.explanation = Some(explanation.into());
+		self
+	}
+	pub fn add_explanation_entity(mut self, explanation_entity: impl Into<MessageEntity>) -> Self {
+		self.explanation_entities.push(explanation_entity.into());
+		self
+	}
+	pub fn explanation_entities(mut self, explanation_entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.explanation_entities = explanation_entities.into();
+		self
+	}
+	pub fn open_period(mut self, open_period: impl Into<i64>) -> Self {
+		self.open_period = Some(open_period.into());
+		self
+	}
+	pub fn add_option(mut self, option: impl Into<PollOption>) -> Self {
+		self.options.push(option.into());
+		self
+	}
+	pub fn add_question_entity(mut self, question_entity: impl Into<MessageEntity>) -> Self {
+		self.question_entities.push(question_entity.into());
+		self
+	}
+	pub fn question_entities(mut self, question_entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.question_entities = question_entities.into();
+		self
+	}
+}
 /**This object represents an answer of a user in a non-anonymous poll.
 
 https://core.telegram.org/bots/api/#pollanswer*/
@@ -5641,6 +7533,28 @@ pub struct PollAnswer {
 	/**The chat that changed the answer to the poll, if the voter is anonymous*/
 	pub voter_chat: Option<Chat>,
 }
+impl PollAnswer {
+	pub fn new(option_ids: impl Into<Vec<i64>>, poll_id: impl Into<String>) -> Self {
+		Self {
+			option_ids: option_ids.into(),
+			poll_id: poll_id.into(),
+			user: None,
+			voter_chat: None,
+		}
+	}
+	pub fn add_option_id(mut self, option_id: impl Into<i64>) -> Self {
+		self.option_ids.push(option_id.into());
+		self
+	}
+	pub fn user(mut self, user: impl Into<User>) -> Self {
+		self.user = Some(user.into());
+		self
+	}
+	pub fn voter_chat(mut self, voter_chat: impl Into<Chat>) -> Self {
+		self.voter_chat = Some(voter_chat.into());
+		self
+	}
+}
 /**This object contains information about one answer option in a poll.
 
 https://core.telegram.org/bots/api/#polloption*/
@@ -5657,6 +7571,23 @@ pub struct PollOption {
 	pub text_entities: Vec<MessageEntity>,
 	/**Number of users that voted for this option*/
 	pub voter_count: i64,
+}
+impl PollOption {
+	pub fn new(text: impl Into<String>, voter_count: impl Into<i64>) -> Self {
+		Self {
+			text: text.into(),
+			text_entities: Vec::new(),
+			voter_count: voter_count.into(),
+		}
+	}
+	pub fn add_text_entity(mut self, text_entity: impl Into<MessageEntity>) -> Self {
+		self.text_entities.push(text_entity.into());
+		self
+	}
+	pub fn text_entities(mut self, text_entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.text_entities = text_entities.into();
+		self
+	}
 }
 /**This object contains information about an incoming pre-checkout query.
 
@@ -5681,6 +7612,27 @@ pub struct PreCheckoutQuery {
 	/**Total price in the *smallest units* of the currency (integer, **not** float/double). For example, for a price of `US$ 1.45` pass `amount = 145`. See the *exp* parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).*/
 	pub total_amount: i64,
 }
+impl PreCheckoutQuery {
+	pub fn new(currency: impl Into<String>, from: impl Into<User>, id: impl Into<String>, invoice_payload: impl Into<String>, total_amount: impl Into<i64>) -> Self {
+		Self {
+			currency: currency.into(),
+			from: from.into(),
+			id: id.into(),
+			invoice_payload: invoice_payload.into(),
+			order_info: None,
+			shipping_option_id: None,
+			total_amount: total_amount.into(),
+		}
+	}
+	pub fn order_info(mut self, order_info: impl Into<OrderInfo>) -> Self {
+		self.order_info = Some(order_info.into());
+		self
+	}
+	pub fn shipping_option_id(mut self, shipping_option_id: impl Into<String>) -> Self {
+		self.shipping_option_id = Some(shipping_option_id.into());
+		self
+	}
+}
 /**Describes an inline message to be sent by a user of a Mini App.
 
 https://core.telegram.org/bots/api/#preparedinlinemessage*/
@@ -5690,6 +7642,14 @@ pub struct PreparedInlineMessage {
 	pub expiration_date: i64,
 	/**Unique identifier of the prepared message*/
 	pub id: String,
+}
+impl PreparedInlineMessage {
+	pub fn new(expiration_date: impl Into<i64>, id: impl Into<String>) -> Self {
+		Self {
+			expiration_date: expiration_date.into(),
+			id: id.into(),
+		}
+	}
 }
 /**This object represents the content of a service message, sent whenever a user in the chat triggers a proximity alert set by another user.
 
@@ -5703,6 +7663,15 @@ pub struct ProximityAlertTriggered {
 	/**User that set the alert*/
 	pub watcher: User,
 }
+impl ProximityAlertTriggered {
+	pub fn new(distance: impl Into<i64>, traveler: impl Into<User>, watcher: impl Into<User>) -> Self {
+		Self {
+			distance: distance.into(),
+			traveler: traveler.into(),
+			watcher: watcher.into(),
+		}
+	}
+}
 /**Represents a reaction added to a message along with the number of times it was added.
 
 https://core.telegram.org/bots/api/#reactioncount*/
@@ -5712,6 +7681,14 @@ pub struct ReactionCount {
 	pub r#type: ReactionType,
 	/**Number of times the reaction was added*/
 	pub total_count: i64,
+}
+impl ReactionCount {
+	pub fn new(r#type: impl Into<ReactionType>, total_count: impl Into<i64>) -> Self {
+		Self {
+			r#type: r#type.into(),
+			total_count: total_count.into(),
+		}
+	}
 }
 /**This object describes the type of a reaction. Currently, it can be one of
 
@@ -5802,6 +7779,21 @@ pub struct RefundedPayment {
 	/**Total refunded price in the *smallest units* of the currency (integer, **not** float/double). For example, for a price of `US$ 1.45`, `total_amount = 145`. See the *exp* parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).*/
 	pub total_amount: i64,
 }
+impl RefundedPayment {
+	pub fn new(currency: impl Into<String>, invoice_payload: impl Into<String>, telegram_payment_charge_id: impl Into<String>, total_amount: impl Into<i64>) -> Self {
+		Self {
+			currency: currency.into(),
+			invoice_payload: invoice_payload.into(),
+			provider_payment_charge_id: None,
+			telegram_payment_charge_id: telegram_payment_charge_id.into(),
+			total_amount: total_amount.into(),
+		}
+	}
+	pub fn provider_payment_charge_id(mut self, provider_payment_charge_id: impl Into<String>) -> Self {
+		self.provider_payment_charge_id = Some(provider_payment_charge_id.into());
+		self
+	}
+}
 /**This object represents a [custom keyboard](https://core.telegram.org/bots/features#keyboards) with reply options (see [Introduction to bots](https://core.telegram.org/bots/features#keyboards) for details and examples). Not supported in channels and for messages sent on behalf of a Telegram Business account.
 
 https://core.telegram.org/bots/api/#replykeyboardmarkup*/
@@ -5848,6 +7840,10 @@ impl ReplyKeyboardMarkup {
 	}
 	pub fn is_persistent(mut self, is_persistent: bool) -> Self {
 		self.is_persistent = Some(is_persistent);
+		self
+	}
+	pub fn add_keyboard(mut self, keyboard: impl Into<Vec<KeyboardButton>>) -> Self {
+		self.keyboard.push(keyboard.into());
 		self
 	}
 	pub fn one_time_keyboard(mut self, one_time_keyboard: bool) -> Self {
@@ -5950,6 +7946,10 @@ impl ReplyParameters {
 		self.quote = Some(quote.into());
 		self
 	}
+	pub fn add_quote_entity(mut self, quote_entity: impl Into<MessageEntity>) -> Self {
+		self.quote_entities.push(quote_entity.into());
+		self
+	}
 	pub fn quote_entities(mut self, quote_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.quote_entities = quote_entities.into();
 		self
@@ -5972,6 +7972,22 @@ pub struct ResponseParameters {
 	pub migrate_to_chat_id: Option<i64>,
 	/**In case of exceeding flood control, the number of seconds left to wait before the request can be repeated*/
 	pub retry_after: Option<i64>,
+}
+impl ResponseParameters {
+	pub fn new() -> Self {
+		Self {
+			migrate_to_chat_id: None,
+			retry_after: None,
+		}
+	}
+	pub fn migrate_to_chat_id(mut self, migrate_to_chat_id: impl Into<i64>) -> Self {
+		self.migrate_to_chat_id = Some(migrate_to_chat_id.into());
+		self
+	}
+	pub fn retry_after(mut self, retry_after: impl Into<i64>) -> Self {
+		self.retry_after = Some(retry_after.into());
+		self
+	}
 }
 /**This object describes the state of a revenue withdrawal operation. Currently, it can be one of
 
@@ -5996,6 +8012,13 @@ pub struct RevenueWithdrawalStateFailed {
 	Default: failed*/
 	pub r#type: String,
 }
+impl RevenueWithdrawalStateFailed {
+	pub fn new(r#type: impl Into<String>) -> Self {
+		Self {
+			r#type: r#type.into(),
+		}
+	}
+}
 /**The withdrawal is in progress.
 
 https://core.telegram.org/bots/api/#revenuewithdrawalstatepending*/
@@ -6004,6 +8027,13 @@ pub struct RevenueWithdrawalStatePending {
 	/**Type of the state, always “pending”
 	Default: pending*/
 	pub r#type: String,
+}
+impl RevenueWithdrawalStatePending {
+	pub fn new(r#type: impl Into<String>) -> Self {
+		Self {
+			r#type: r#type.into(),
+		}
+	}
 }
 /**The withdrawal succeeded.
 
@@ -6018,6 +8048,15 @@ pub struct RevenueWithdrawalStateSucceeded {
 	/**An HTTPS URL that can be used to see transaction details*/
 	pub url: String,
 }
+impl RevenueWithdrawalStateSucceeded {
+	pub fn new(date: impl Into<i64>, r#type: impl Into<String>, url: impl Into<String>) -> Self {
+		Self {
+			date: date.into(),
+			r#type: r#type.into(),
+			url: url.into(),
+		}
+	}
+}
 /**Describes an inline message sent by a [Web App](https://core.telegram.org/bots/webapps) on behalf of a user.
 
 https://core.telegram.org/bots/api/#sentwebappmessage*/
@@ -6028,6 +8067,17 @@ https://core.telegram.org/bots/api/#sentwebappmessage*/
 pub struct SentWebAppMessage {
 	/**Identifier of the sent inline message. Available only if there is an [inline keyboard](https://core.telegram.org/bots/api/#inlinekeyboardmarkup) attached to the message.*/
 	pub inline_message_id: Option<String>,
+}
+impl SentWebAppMessage {
+	pub fn new() -> Self {
+		Self {
+			inline_message_id: None,
+		}
+	}
+	pub fn inline_message_id(mut self, inline_message_id: impl Into<String>) -> Self {
+		self.inline_message_id = Some(inline_message_id.into());
+		self
+	}
 }
 /**setGameScore return value*/
 #[derive(Clone, Debug, Deserialize, From)]
@@ -6056,6 +8106,37 @@ pub struct SharedUser {
 	/**Username of the user, if the username was requested by the bot*/
 	pub username: Option<String>,
 }
+impl SharedUser {
+	pub fn new(user_id: impl Into<i64>) -> Self {
+		Self {
+			first_name: None,
+			last_name: None,
+			photo: Vec::new(),
+			user_id: user_id.into(),
+			username: None,
+		}
+	}
+	pub fn first_name(mut self, first_name: impl Into<String>) -> Self {
+		self.first_name = Some(first_name.into());
+		self
+	}
+	pub fn last_name(mut self, last_name: impl Into<String>) -> Self {
+		self.last_name = Some(last_name.into());
+		self
+	}
+	pub fn add_photo(mut self, photo: impl Into<PhotoSize>) -> Self {
+		self.photo.push(photo.into());
+		self
+	}
+	pub fn photo(mut self, photo: impl Into<Vec<PhotoSize>>) -> Self {
+		self.photo = photo.into();
+		self
+	}
+	pub fn username(mut self, username: impl Into<String>) -> Self {
+		self.username = Some(username.into());
+		self
+	}
+}
 /**This object represents a shipping address.
 
 https://core.telegram.org/bots/api/#shippingaddress*/
@@ -6073,6 +8154,18 @@ pub struct ShippingAddress {
 	pub street_line1: String,
 	/**Second line for the address*/
 	pub street_line2: String,
+}
+impl ShippingAddress {
+	pub fn new(city: impl Into<String>, country_code: impl Into<String>, post_code: impl Into<String>, state: impl Into<String>, street_line1: impl Into<String>, street_line2: impl Into<String>) -> Self {
+		Self {
+			city: city.into(),
+			country_code: country_code.into(),
+			post_code: post_code.into(),
+			state: state.into(),
+			street_line1: street_line1.into(),
+			street_line2: street_line2.into(),
+		}
+	}
 }
 /**This object represents one shipping option.
 
@@ -6097,6 +8190,10 @@ impl ShippingOption {
 			title: title.into(),
 		}
 	}
+	pub fn add_price(mut self, price: impl Into<LabeledPrice>) -> Self {
+		self.prices.push(price.into());
+		self
+	}
 }
 /**This object contains information about an incoming shipping query.
 
@@ -6111,6 +8208,16 @@ pub struct ShippingQuery {
 	pub invoice_payload: String,
 	/**User specified shipping address*/
 	pub shipping_address: ShippingAddress,
+}
+impl ShippingQuery {
+	pub fn new(from: impl Into<User>, id: impl Into<String>, invoice_payload: impl Into<String>, shipping_address: impl Into<ShippingAddress>) -> Self {
+		Self {
+			from: from.into(),
+			id: id.into(),
+			invoice_payload: invoice_payload.into(),
+			shipping_address: shipping_address.into(),
+		}
+	}
 }
 /**Describes a Telegram Star transaction. Note that if the buyer initiates a chargeback with the payment provider from whom they acquired Stars (e.g., Apple, Google) following this transaction, the refunded Stars will be deducted from the bot's balance. This is outside of Telegram's control.
 
@@ -6133,6 +8240,30 @@ pub struct StarTransaction {
 	/**Source of an incoming transaction (e.g., a user purchasing goods or services, Fragment refunding a failed withdrawal). Only for incoming transactions*/
 	pub source: Option<TransactionPartner>,
 }
+impl StarTransaction {
+	pub fn new(amount: impl Into<i64>, date: impl Into<i64>, id: impl Into<String>) -> Self {
+		Self {
+			amount: amount.into(),
+			date: date.into(),
+			id: id.into(),
+			nanostar_amount: None,
+			receiver: None,
+			source: None,
+		}
+	}
+	pub fn nanostar_amount(mut self, nanostar_amount: impl Into<i64>) -> Self {
+		self.nanostar_amount = Some(nanostar_amount.into());
+		self
+	}
+	pub fn receiver(mut self, receiver: impl Into<TransactionPartner>) -> Self {
+		self.receiver = Some(receiver.into());
+		self
+	}
+	pub fn source(mut self, source: impl Into<TransactionPartner>) -> Self {
+		self.source = Some(source.into());
+		self
+	}
+}
 /**Contains a list of Telegram Star transactions.
 
 https://core.telegram.org/bots/api/#startransactions*/
@@ -6143,6 +8274,17 @@ https://core.telegram.org/bots/api/#startransactions*/
 pub struct StarTransactions {
 	/**The list of transactions*/
 	pub transactions: Vec<StarTransaction>,
+}
+impl StarTransactions {
+	pub fn new(transactions: impl Into<Vec<StarTransaction>>) -> Self {
+		Self {
+			transactions: transactions.into(),
+		}
+	}
+	pub fn add_transaction(mut self, transaction: impl Into<StarTransaction>) -> Self {
+		self.transactions.push(transaction.into());
+		self
+	}
 }
 /**This object represents a sticker.
 
@@ -6185,6 +8327,59 @@ pub struct Sticker {
 	/**Sticker width*/
 	pub width: i64,
 }
+impl Sticker {
+	pub fn new(file_id: impl Into<String>, file_unique_id: impl Into<String>, height: impl Into<i64>, is_animated: bool, is_video: bool, r#type: impl Into<String>, width: impl Into<i64>) -> Self {
+		Self {
+			custom_emoji_id: None,
+			emoji: None,
+			file_id: file_id.into(),
+			file_size: None,
+			file_unique_id: file_unique_id.into(),
+			height: height.into(),
+			is_animated: is_animated,
+			is_video: is_video,
+			mask_position: None,
+			needs_repainting: None,
+			premium_animation: None,
+			r#type: r#type.into(),
+			set_name: None,
+			thumbnail: None,
+			width: width.into(),
+		}
+	}
+	pub fn custom_emoji_id(mut self, custom_emoji_id: impl Into<String>) -> Self {
+		self.custom_emoji_id = Some(custom_emoji_id.into());
+		self
+	}
+	pub fn emoji(mut self, emoji: impl Into<String>) -> Self {
+		self.emoji = Some(emoji.into());
+		self
+	}
+	pub fn file_size(mut self, file_size: impl Into<i64>) -> Self {
+		self.file_size = Some(file_size.into());
+		self
+	}
+	pub fn mask_position(mut self, mask_position: impl Into<MaskPosition>) -> Self {
+		self.mask_position = Some(mask_position.into());
+		self
+	}
+	pub fn needs_repainting(mut self, needs_repainting: bool) -> Self {
+		self.needs_repainting = Some(needs_repainting);
+		self
+	}
+	pub fn premium_animation(mut self, premium_animation: impl Into<File>) -> Self {
+		self.premium_animation = Some(premium_animation.into());
+		self
+	}
+	pub fn set_name(mut self, set_name: impl Into<String>) -> Self {
+		self.set_name = Some(set_name.into());
+		self
+	}
+	pub fn thumbnail(mut self, thumbnail: impl Into<PhotoSize>) -> Self {
+		self.thumbnail = Some(thumbnail.into());
+		self
+	}
+}
 /**This object represents a sticker set.
 
 https://core.telegram.org/bots/api/#stickerset*/
@@ -6206,6 +8401,25 @@ pub struct StickerSet {
 	/**Sticker set title*/
 	pub title: String,
 }
+impl StickerSet {
+	pub fn new(name: impl Into<String>, sticker_type: impl Into<String>, stickers: impl Into<Vec<Sticker>>, title: impl Into<String>) -> Self {
+		Self {
+			name: name.into(),
+			sticker_type: sticker_type.into(),
+			stickers: stickers.into(),
+			thumbnail: None,
+			title: title.into(),
+		}
+	}
+	pub fn add_sticker(mut self, sticker: impl Into<Sticker>) -> Self {
+		self.stickers.push(sticker.into());
+		self
+	}
+	pub fn thumbnail(mut self, thumbnail: impl Into<PhotoSize>) -> Self {
+		self.thumbnail = Some(thumbnail.into());
+		self
+	}
+}
 /**stopMessageLiveLocation return value*/
 #[derive(Clone, Debug, Deserialize, From)]
 #[serde(untagged)]
@@ -6222,6 +8436,14 @@ pub struct Story {
 	pub chat: Chat,
 	/**Unique identifier for the story in the chat*/
 	pub id: i64,
+}
+impl Story {
+	pub fn new(chat: impl Into<Chat>, id: impl Into<i64>) -> Self {
+		Self {
+			chat: chat.into(),
+			id: id.into(),
+		}
+	}
 }
 /**This object contains basic information about a successful payment. Note that if the buyer initiates a chargeback with the relevant payment provider following this transaction, the funds may be debited from your balance. This is outside of Telegram's control.
 
@@ -6253,6 +8475,42 @@ pub struct SuccessfulPayment {
 	pub telegram_payment_charge_id: String,
 	/**Total price in the *smallest units* of the currency (integer, **not** float/double). For example, for a price of `US$ 1.45` pass `amount = 145`. See the *exp* parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).*/
 	pub total_amount: i64,
+}
+impl SuccessfulPayment {
+	pub fn new(currency: impl Into<String>, invoice_payload: impl Into<String>, provider_payment_charge_id: impl Into<String>, telegram_payment_charge_id: impl Into<String>, total_amount: impl Into<i64>) -> Self {
+		Self {
+			currency: currency.into(),
+			invoice_payload: invoice_payload.into(),
+			is_first_recurring: None,
+			is_recurring: None,
+			order_info: None,
+			provider_payment_charge_id: provider_payment_charge_id.into(),
+			shipping_option_id: None,
+			subscription_expiration_date: None,
+			telegram_payment_charge_id: telegram_payment_charge_id.into(),
+			total_amount: total_amount.into(),
+		}
+	}
+	pub fn is_first_recurring(mut self, is_first_recurring: bool) -> Self {
+		self.is_first_recurring = Some(is_first_recurring);
+		self
+	}
+	pub fn is_recurring(mut self, is_recurring: bool) -> Self {
+		self.is_recurring = Some(is_recurring);
+		self
+	}
+	pub fn order_info(mut self, order_info: impl Into<OrderInfo>) -> Self {
+		self.order_info = Some(order_info.into());
+		self
+	}
+	pub fn shipping_option_id(mut self, shipping_option_id: impl Into<String>) -> Self {
+		self.shipping_option_id = Some(shipping_option_id.into());
+		self
+	}
+	pub fn subscription_expiration_date(mut self, subscription_expiration_date: impl Into<i64>) -> Self {
+		self.subscription_expiration_date = Some(subscription_expiration_date.into());
+		self
+	}
 }
 /**This object represents an inline button that switches the current user to inline mode in a chosen chat, with an optional default inline query.
 
@@ -6323,6 +8581,28 @@ pub struct TextQuote {
 	/**Text of the quoted part of a message that is replied to by the given message*/
 	pub text: String,
 }
+impl TextQuote {
+	pub fn new(position: impl Into<i64>, text: impl Into<String>) -> Self {
+		Self {
+			entities: Vec::new(),
+			is_manual: None,
+			position: position.into(),
+			text: text.into(),
+		}
+	}
+	pub fn add_entity(mut self, entity: impl Into<MessageEntity>) -> Self {
+		self.entities.push(entity.into());
+		self
+	}
+	pub fn entities(mut self, entities: impl Into<Vec<MessageEntity>>) -> Self {
+		self.entities = entities.into();
+		self
+	}
+	pub fn is_manual(mut self, is_manual: bool) -> Self {
+		self.is_manual = Some(is_manual);
+		self
+	}
+}
 /**This object describes the source of a transaction, or its recipient for outgoing transactions. Currently, it can be one of
 
 * [TransactionPartnerUser](https://core.telegram.org/bots/api/#transactionpartneruser)
@@ -6359,6 +8639,19 @@ pub struct TransactionPartnerAffiliateProgram {
 	/**Information about the bot that sponsored the affiliate program*/
 	pub sponsor_user: Option<User>,
 }
+impl TransactionPartnerAffiliateProgram {
+	pub fn new(commission_per_mille: impl Into<i64>, r#type: impl Into<String>) -> Self {
+		Self {
+			commission_per_mille: commission_per_mille.into(),
+			r#type: r#type.into(),
+			sponsor_user: None,
+		}
+	}
+	pub fn sponsor_user(mut self, sponsor_user: impl Into<User>) -> Self {
+		self.sponsor_user = Some(sponsor_user.into());
+		self
+	}
+}
 /**Describes a withdrawal transaction with Fragment.
 
 https://core.telegram.org/bots/api/#transactionpartnerfragment*/
@@ -6373,6 +8666,18 @@ pub struct TransactionPartnerFragment {
 	/**State of the transaction if the transaction is outgoing*/
 	pub withdrawal_state: Option<RevenueWithdrawalState>,
 }
+impl TransactionPartnerFragment {
+	pub fn new(r#type: impl Into<String>) -> Self {
+		Self {
+			r#type: r#type.into(),
+			withdrawal_state: None,
+		}
+	}
+	pub fn withdrawal_state(mut self, withdrawal_state: impl Into<RevenueWithdrawalState>) -> Self {
+		self.withdrawal_state = Some(withdrawal_state.into());
+		self
+	}
+}
 /**Describes a transaction with an unknown source or recipient.
 
 https://core.telegram.org/bots/api/#transactionpartnerother*/
@@ -6382,6 +8687,13 @@ pub struct TransactionPartnerOther {
 	Default: other*/
 	pub r#type: String,
 }
+impl TransactionPartnerOther {
+	pub fn new(r#type: impl Into<String>) -> Self {
+		Self {
+			r#type: r#type.into(),
+		}
+	}
+}
 /**Describes a withdrawal transaction to the Telegram Ads platform.
 
 https://core.telegram.org/bots/api/#transactionpartnertelegramads*/
@@ -6390,6 +8702,13 @@ pub struct TransactionPartnerTelegramAds {
 	/**Type of the transaction partner, always “telegram\_ads”
 	Default: telegram_ads*/
 	pub r#type: String,
+}
+impl TransactionPartnerTelegramAds {
+	pub fn new(r#type: impl Into<String>) -> Self {
+		Self {
+			r#type: r#type.into(),
+		}
+	}
 }
 /**Describes a transaction with payment for [paid broadcasting](https://core.telegram.org/bots/api/#paid-broadcasts).
 
@@ -6401,6 +8720,14 @@ pub struct TransactionPartnerTelegramApi {
 	pub r#type: String,
 	/**The number of successful requests that exceeded regular limits and were therefore billed*/
 	pub request_count: i64,
+}
+impl TransactionPartnerTelegramApi {
+	pub fn new(r#type: impl Into<String>, request_count: impl Into<i64>) -> Self {
+		Self {
+			r#type: r#type.into(),
+			request_count: request_count.into(),
+		}
+	}
 }
 /**Describes a transaction with a user.
 
@@ -6428,6 +8755,48 @@ pub struct TransactionPartnerUser {
 	pub subscription_period: Option<i64>,
 	/**Information about the user*/
 	pub user: User,
+}
+impl TransactionPartnerUser {
+	pub fn new(r#type: impl Into<String>, user: impl Into<User>) -> Self {
+		Self {
+			affiliate: None,
+			gift: None,
+			invoice_payload: None,
+			paid_media: Vec::new(),
+			paid_media_payload: None,
+			r#type: r#type.into(),
+			subscription_period: None,
+			user: user.into(),
+		}
+	}
+	pub fn affiliate(mut self, affiliate: impl Into<AffiliateInfo>) -> Self {
+		self.affiliate = Some(affiliate.into());
+		self
+	}
+	pub fn gift(mut self, gift: impl Into<Gift>) -> Self {
+		self.gift = Some(gift.into());
+		self
+	}
+	pub fn invoice_payload(mut self, invoice_payload: impl Into<String>) -> Self {
+		self.invoice_payload = Some(invoice_payload.into());
+		self
+	}
+	pub fn add_paid_media(mut self, paid_media: impl Into<PaidMedia>) -> Self {
+		self.paid_media.push(paid_media.into());
+		self
+	}
+	pub fn paid_media(mut self, paid_media: impl Into<Vec<PaidMedia>>) -> Self {
+		self.paid_media = paid_media.into();
+		self
+	}
+	pub fn paid_media_payload(mut self, paid_media_payload: impl Into<String>) -> Self {
+		self.paid_media_payload = Some(paid_media_payload.into());
+		self
+	}
+	pub fn subscription_period(mut self, subscription_period: impl Into<i64>) -> Self {
+		self.subscription_period = Some(subscription_period.into());
+		self
+	}
 }
 /**This [object](https://core.telegram.org/bots/api/#available-types) represents an incoming update.  
 At most **one** of the optional parameters can be present in any given update.
@@ -6486,6 +8855,128 @@ pub struct Update {
 	pub shipping_query: Option<ShippingQuery>,
 	/**The update's unique identifier. Update identifiers start from a certain positive number and increase sequentially. This identifier becomes especially handy if you're using [webhooks](https://core.telegram.org/bots/api/#setwebhook), since it allows you to ignore repeated updates or to restore the correct update sequence, should they get out of order. If there are no new updates for at least a week, then identifier of the next update will be chosen randomly instead of sequentially.*/
 	pub update_id: i64,
+}
+impl Update {
+	pub fn new(update_id: impl Into<i64>) -> Self {
+		Self {
+			business_connection: None,
+			business_message: None,
+			callback_query: None,
+			channel_post: None,
+			chat_boost: None,
+			chat_join_request: None,
+			chat_member: None,
+			chosen_inline_result: None,
+			deleted_business_messages: None,
+			edited_business_message: None,
+			edited_channel_post: None,
+			edited_message: None,
+			inline_query: None,
+			message: None,
+			message_reaction: None,
+			message_reaction_count: None,
+			my_chat_member: None,
+			poll: None,
+			poll_answer: None,
+			pre_checkout_query: None,
+			purchased_paid_media: None,
+			removed_chat_boost: None,
+			shipping_query: None,
+			update_id: update_id.into(),
+		}
+	}
+	pub fn business_connection(mut self, business_connection: impl Into<BusinessConnection>) -> Self {
+		self.business_connection = Some(business_connection.into());
+		self
+	}
+	pub fn business_message(mut self, business_message: impl Into<Message>) -> Self {
+		self.business_message = Some(business_message.into());
+		self
+	}
+	pub fn callback_query(mut self, callback_query: impl Into<CallbackQuery>) -> Self {
+		self.callback_query = Some(callback_query.into());
+		self
+	}
+	pub fn channel_post(mut self, channel_post: impl Into<Message>) -> Self {
+		self.channel_post = Some(channel_post.into());
+		self
+	}
+	pub fn chat_boost(mut self, chat_boost: impl Into<ChatBoostUpdated>) -> Self {
+		self.chat_boost = Some(chat_boost.into());
+		self
+	}
+	pub fn chat_join_request(mut self, chat_join_request: impl Into<ChatJoinRequest>) -> Self {
+		self.chat_join_request = Some(chat_join_request.into());
+		self
+	}
+	pub fn chat_member(mut self, chat_member: impl Into<ChatMemberUpdated>) -> Self {
+		self.chat_member = Some(chat_member.into());
+		self
+	}
+	pub fn chosen_inline_result(mut self, chosen_inline_result: impl Into<ChosenInlineResult>) -> Self {
+		self.chosen_inline_result = Some(chosen_inline_result.into());
+		self
+	}
+	pub fn deleted_business_messages(mut self, deleted_business_messages: impl Into<BusinessMessagesDeleted>) -> Self {
+		self.deleted_business_messages = Some(deleted_business_messages.into());
+		self
+	}
+	pub fn edited_business_message(mut self, edited_business_message: impl Into<Message>) -> Self {
+		self.edited_business_message = Some(edited_business_message.into());
+		self
+	}
+	pub fn edited_channel_post(mut self, edited_channel_post: impl Into<Message>) -> Self {
+		self.edited_channel_post = Some(edited_channel_post.into());
+		self
+	}
+	pub fn edited_message(mut self, edited_message: impl Into<Message>) -> Self {
+		self.edited_message = Some(edited_message.into());
+		self
+	}
+	pub fn inline_query(mut self, inline_query: impl Into<InlineQuery>) -> Self {
+		self.inline_query = Some(inline_query.into());
+		self
+	}
+	pub fn message(mut self, message: impl Into<Message>) -> Self {
+		self.message = Some(message.into());
+		self
+	}
+	pub fn message_reaction(mut self, message_reaction: impl Into<MessageReactionUpdated>) -> Self {
+		self.message_reaction = Some(message_reaction.into());
+		self
+	}
+	pub fn message_reaction_count(mut self, message_reaction_count: impl Into<MessageReactionCountUpdated>) -> Self {
+		self.message_reaction_count = Some(message_reaction_count.into());
+		self
+	}
+	pub fn my_chat_member(mut self, my_chat_member: impl Into<ChatMemberUpdated>) -> Self {
+		self.my_chat_member = Some(my_chat_member.into());
+		self
+	}
+	pub fn poll(mut self, poll: impl Into<Poll>) -> Self {
+		self.poll = Some(poll.into());
+		self
+	}
+	pub fn poll_answer(mut self, poll_answer: impl Into<PollAnswer>) -> Self {
+		self.poll_answer = Some(poll_answer.into());
+		self
+	}
+	pub fn pre_checkout_query(mut self, pre_checkout_query: impl Into<PreCheckoutQuery>) -> Self {
+		self.pre_checkout_query = Some(pre_checkout_query.into());
+		self
+	}
+	pub fn purchased_paid_media(mut self, purchased_paid_media: impl Into<PaidMediaPurchased>) -> Self {
+		self.purchased_paid_media = Some(purchased_paid_media.into());
+		self
+	}
+	pub fn removed_chat_boost(mut self, removed_chat_boost: impl Into<ChatBoostRemoved>) -> Self {
+		self.removed_chat_boost = Some(removed_chat_boost.into());
+		self
+	}
+	pub fn shipping_query(mut self, shipping_query: impl Into<ShippingQuery>) -> Self {
+		self.shipping_query = Some(shipping_query.into());
+		self
+	}
 }
 /**This object represents a Telegram user or bot.
 
@@ -6594,6 +9085,17 @@ pub struct UserChatBoosts {
 	/**The list of boosts added to the chat by the user*/
 	pub boosts: Vec<ChatBoost>,
 }
+impl UserChatBoosts {
+	pub fn new(boosts: impl Into<Vec<ChatBoost>>) -> Self {
+		Self {
+			boosts: boosts.into(),
+		}
+	}
+	pub fn add_boost(mut self, boost: impl Into<ChatBoost>) -> Self {
+		self.boosts.push(boost.into());
+		self
+	}
+}
 /**This object represent a user's profile pictures.
 
 https://core.telegram.org/bots/api/#userprofilephotos*/
@@ -6607,6 +9109,18 @@ pub struct UserProfilePhotos {
 	/**Total number of profile pictures the target user has*/
 	pub total_count: i64,
 }
+impl UserProfilePhotos {
+	pub fn new(photos: impl Into<Vec<Vec<PhotoSize>>>, total_count: impl Into<i64>) -> Self {
+		Self {
+			photos: photos.into(),
+			total_count: total_count.into(),
+		}
+	}
+	pub fn add_photo(mut self, photo: impl Into<Vec<PhotoSize>>) -> Self {
+		self.photos.push(photo.into());
+		self
+	}
+}
 /**This object contains information about the users whose identifiers were shared with the bot using a [KeyboardButtonRequestUsers](https://core.telegram.org/bots/api/#keyboardbuttonrequestusers) button.
 
 https://core.telegram.org/bots/api/#usersshared*/
@@ -6619,6 +9133,18 @@ pub struct UsersShared {
 	pub request_id: i64,
 	/**Information about users shared with the bot.*/
 	pub users: Vec<SharedUser>,
+}
+impl UsersShared {
+	pub fn new(request_id: impl Into<i64>, users: impl Into<Vec<SharedUser>>) -> Self {
+		Self {
+			request_id: request_id.into(),
+			users: users.into(),
+		}
+	}
+	pub fn add_user(mut self, user: impl Into<SharedUser>) -> Self {
+		self.users.push(user.into());
+		self
+	}
 }
 /**This object represents a venue.
 
@@ -6642,6 +9168,35 @@ pub struct Venue {
 	pub location: Location,
 	/**Name of the venue*/
 	pub title: String,
+}
+impl Venue {
+	pub fn new(address: impl Into<String>, location: impl Into<Location>, title: impl Into<String>) -> Self {
+		Self {
+			address: address.into(),
+			foursquare_id: None,
+			foursquare_type: None,
+			google_place_id: None,
+			google_place_type: None,
+			location: location.into(),
+			title: title.into(),
+		}
+	}
+	pub fn foursquare_id(mut self, foursquare_id: impl Into<String>) -> Self {
+		self.foursquare_id = Some(foursquare_id.into());
+		self
+	}
+	pub fn foursquare_type(mut self, foursquare_type: impl Into<String>) -> Self {
+		self.foursquare_type = Some(foursquare_type.into());
+		self
+	}
+	pub fn google_place_id(mut self, google_place_id: impl Into<String>) -> Self {
+		self.google_place_id = Some(google_place_id.into());
+		self
+	}
+	pub fn google_place_type(mut self, google_place_type: impl Into<String>) -> Self {
+		self.google_place_type = Some(google_place_type.into());
+		self
+	}
 }
 /**This object represents a video file.
 
@@ -6670,6 +9225,37 @@ pub struct Video {
 	/**Video width as defined by the sender*/
 	pub width: i64,
 }
+impl Video {
+	pub fn new(duration: impl Into<i64>, file_id: impl Into<String>, file_unique_id: impl Into<String>, height: impl Into<i64>, width: impl Into<i64>) -> Self {
+		Self {
+			duration: duration.into(),
+			file_id: file_id.into(),
+			file_name: None,
+			file_size: None,
+			file_unique_id: file_unique_id.into(),
+			height: height.into(),
+			mime_type: None,
+			thumbnail: None,
+			width: width.into(),
+		}
+	}
+	pub fn file_name(mut self, file_name: impl Into<String>) -> Self {
+		self.file_name = Some(file_name.into());
+		self
+	}
+	pub fn file_size(mut self, file_size: impl Into<i64>) -> Self {
+		self.file_size = Some(file_size.into());
+		self
+	}
+	pub fn mime_type(mut self, mime_type: impl Into<String>) -> Self {
+		self.mime_type = Some(mime_type.into());
+		self
+	}
+	pub fn thumbnail(mut self, thumbnail: impl Into<PhotoSize>) -> Self {
+		self.thumbnail = Some(thumbnail.into());
+		self
+	}
+}
 /**This object represents a service message about a video chat ended in the chat.
 
 https://core.telegram.org/bots/api/#videochatended*/
@@ -6677,6 +9263,13 @@ https://core.telegram.org/bots/api/#videochatended*/
 pub struct VideoChatEnded {
 	/**Video chat duration in seconds*/
 	pub duration: i64,
+}
+impl VideoChatEnded {
+	pub fn new(duration: impl Into<i64>) -> Self {
+		Self {
+			duration: duration.into(),
+		}
+	}
 }
 /**This object represents a service message about new members invited to a video chat.
 
@@ -6689,6 +9282,17 @@ pub struct VideoChatParticipantsInvited {
 	/**New members that were invited to the video chat*/
 	pub users: Vec<User>,
 }
+impl VideoChatParticipantsInvited {
+	pub fn new(users: impl Into<Vec<User>>) -> Self {
+		Self {
+			users: users.into(),
+		}
+	}
+	pub fn add_user(mut self, user: impl Into<User>) -> Self {
+		self.users.push(user.into());
+		self
+	}
+}
 /**This object represents a service message about a video chat scheduled in the chat.
 
 https://core.telegram.org/bots/api/#videochatscheduled*/
@@ -6696,6 +9300,13 @@ https://core.telegram.org/bots/api/#videochatscheduled*/
 pub struct VideoChatScheduled {
 	/**Point in time (Unix timestamp) when the video chat is supposed to be started by a chat administrator*/
 	pub start_date: i64,
+}
+impl VideoChatScheduled {
+	pub fn new(start_date: impl Into<i64>) -> Self {
+		Self {
+			start_date: start_date.into(),
+		}
+	}
 }
 /**This object represents a service message about a video chat started in the chat. Currently holds no information.
 
@@ -6722,6 +9333,26 @@ pub struct VideoNote {
 	/**Video thumbnail*/
 	pub thumbnail: Option<PhotoSize>,
 }
+impl VideoNote {
+	pub fn new(duration: impl Into<i64>, file_id: impl Into<String>, file_unique_id: impl Into<String>, length: impl Into<i64>) -> Self {
+		Self {
+			duration: duration.into(),
+			file_id: file_id.into(),
+			file_size: None,
+			file_unique_id: file_unique_id.into(),
+			length: length.into(),
+			thumbnail: None,
+		}
+	}
+	pub fn file_size(mut self, file_size: impl Into<i64>) -> Self {
+		self.file_size = Some(file_size.into());
+		self
+	}
+	pub fn thumbnail(mut self, thumbnail: impl Into<PhotoSize>) -> Self {
+		self.thumbnail = Some(thumbnail.into());
+		self
+	}
+}
 /**This object represents a voice note.
 
 https://core.telegram.org/bots/api/#voice*/
@@ -6741,6 +9372,25 @@ pub struct Voice {
 	/**MIME type of the file as defined by the sender*/
 	pub mime_type: Option<String>,
 }
+impl Voice {
+	pub fn new(duration: impl Into<i64>, file_id: impl Into<String>, file_unique_id: impl Into<String>) -> Self {
+		Self {
+			duration: duration.into(),
+			file_id: file_id.into(),
+			file_size: None,
+			file_unique_id: file_unique_id.into(),
+			mime_type: None,
+		}
+	}
+	pub fn file_size(mut self, file_size: impl Into<i64>) -> Self {
+		self.file_size = Some(file_size.into());
+		self
+	}
+	pub fn mime_type(mut self, mime_type: impl Into<String>) -> Self {
+		self.mime_type = Some(mime_type.into());
+		self
+	}
+}
 /**Describes data sent from a [Web App](https://core.telegram.org/bots/webapps) to the bot.
 
 https://core.telegram.org/bots/api/#webappdata*/
@@ -6750,6 +9400,14 @@ pub struct WebAppData {
 	pub button_text: String,
 	/**The data. Be aware that a bad client can send arbitrary data in this field.*/
 	pub data: String,
+}
+impl WebAppData {
+	pub fn new(button_text: impl Into<String>, data: impl Into<String>) -> Self {
+		Self {
+			button_text: button_text.into(),
+			data: data.into(),
+		}
+	}
 }
 /**Describes a [Web App](https://core.telegram.org/bots/webapps).
 
@@ -6794,6 +9452,49 @@ pub struct WebhookInfo {
 	/**Webhook URL, may be empty if webhook is not set up*/
 	pub url: String,
 }
+impl WebhookInfo {
+	pub fn new(has_custom_certificate: bool, pending_update_count: impl Into<i64>, url: impl Into<String>) -> Self {
+		Self {
+			allowed_updates: Vec::new(),
+			has_custom_certificate: has_custom_certificate,
+			ip_address: None,
+			last_error_date: None,
+			last_error_message: None,
+			last_synchronization_error_date: None,
+			max_connections: None,
+			pending_update_count: pending_update_count.into(),
+			url: url.into(),
+		}
+	}
+	pub fn add_allowed_update(mut self, allowed_update: impl Into<String>) -> Self {
+		self.allowed_updates.push(allowed_update.into());
+		self
+	}
+	pub fn allowed_updates(mut self, allowed_updates: impl Into<Vec<String>>) -> Self {
+		self.allowed_updates = allowed_updates.into();
+		self
+	}
+	pub fn ip_address(mut self, ip_address: impl Into<String>) -> Self {
+		self.ip_address = Some(ip_address.into());
+		self
+	}
+	pub fn last_error_date(mut self, last_error_date: impl Into<i64>) -> Self {
+		self.last_error_date = Some(last_error_date.into());
+		self
+	}
+	pub fn last_error_message(mut self, last_error_message: impl Into<String>) -> Self {
+		self.last_error_message = Some(last_error_message.into());
+		self
+	}
+	pub fn last_synchronization_error_date(mut self, last_synchronization_error_date: impl Into<i64>) -> Self {
+		self.last_synchronization_error_date = Some(last_synchronization_error_date.into());
+		self
+	}
+	pub fn max_connections(mut self, max_connections: impl Into<i64>) -> Self {
+		self.max_connections = Some(max_connections.into());
+		self
+	}
+}
 /**This object represents a service message about a user allowing a bot to write messages after adding it to the attachment menu, launching a Web App from a link, or accepting an explicit request from a Web App sent by the method [requestWriteAccess](https://core.telegram.org/bots/webapps#initializing-mini-apps).
 
 https://core.telegram.org/bots/api/#writeaccessallowed*/
@@ -6809,10 +9510,31 @@ pub struct WriteAccessAllowed {
 	/**Name of the Web App, if the access was granted when the Web App was launched from a link*/
 	pub web_app_name: Option<String>,
 }
+impl WriteAccessAllowed {
+	pub fn new() -> Self {
+		Self {
+			from_attachment_menu: None,
+			from_request: None,
+			web_app_name: None,
+		}
+	}
+	pub fn from_attachment_menu(mut self, from_attachment_menu: bool) -> Self {
+		self.from_attachment_menu = Some(from_attachment_menu);
+		self
+	}
+	pub fn from_request(mut self, from_request: bool) -> Self {
+		self.from_request = Some(from_request);
+		self
+	}
+	pub fn web_app_name(mut self, web_app_name: impl Into<String>) -> Self {
+		self.web_app_name = Some(web_app_name.into());
+		self
+	}
+}
 /**Use this method to add a new sticker to a set created by the bot. Emoji sticker sets can have up to 200 stickers. Other sticker sets can have up to 120 stickers. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#addstickertoset*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct AddStickerToSet {
 	/**Sticker set name*/
 	pub name: String,
@@ -6830,16 +9552,23 @@ impl AddStickerToSet {
 		}
 	}
 }
-method!(AddStickerToSet, "addStickerToSet", bool);
+impl Executable for AddStickerToSet {
+	type Response = bool;
+	const METHOD_NAME: &str = "addStickerToSet";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(3);
+		parts.add_string("name", self.name);
+		parts.add_object("sticker", self.sticker);
+		parts.add_i64("user_id", self.user_id);
+		parts
+	}
+}
 /**Use this method to send answers to callback queries sent from [inline keyboards](https://core.telegram.org/bots/features#inline-keyboards). The answer will be displayed to the user as a notification at the top of the chat screen or as an alert. On success, *True* is returned.
 
 Alternatively, the user can be redirected to the specified Game URL. For this option to work, you must first create a game for your bot via [@BotFather](https://t.me/botfather) and accept the terms. Otherwise, you may use links like `t.me/your_bot?start=XXXX` that open your bot with a parameter.
 
 https://core.telegram.org/bots/api/#answercallbackquery*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct AnswerCallbackQuery {
 	/**The maximum amount of time in seconds that the result of the callback query may be cached client-side. Telegram apps will support caching starting in version 3.14. Defaults to 0.*/
 	pub cache_time: Option<i64>,
@@ -6881,16 +9610,24 @@ impl AnswerCallbackQuery {
 		self
 	}
 }
-method!(AnswerCallbackQuery, "answerCallbackQuery", bool);
+impl Executable for AnswerCallbackQuery {
+	type Response = bool;
+	const METHOD_NAME: &str = "answerCallbackQuery";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(5);
+		parts.add_i64("cache_time", self.cache_time);
+		parts.add_string("callback_query_id", self.callback_query_id);
+		parts.add_bool("show_alert", self.show_alert);
+		parts.add_string("text", self.text);
+		parts.add_string("url", self.url);
+		parts
+	}
+}
 /**Use this method to send answers to an inline query. On success, *True* is returned.  
 No more than **50** results per query are allowed.
 
 https://core.telegram.org/bots/api/#answerinlinequery*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct AnswerInlineQuery {
 	/**A JSON-serialized object describing a button to be shown above inline query results*/
 	pub button: Option<InlineQueryResultsButton>,
@@ -6932,15 +9669,29 @@ impl AnswerInlineQuery {
 		self.next_offset = Some(next_offset.into());
 		self
 	}
+	pub fn add_result(mut self, result: impl Into<InlineQueryResult>) -> Self {
+		self.results.push(result.into());
+		self
+	}
 }
-method!(AnswerInlineQuery, "answerInlineQuery", bool);
+impl Executable for AnswerInlineQuery {
+	type Response = bool;
+	const METHOD_NAME: &str = "answerInlineQuery";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(6);
+		if let Some(button) = self.button { parts.add_object("button", button) }
+		parts.add_i64("cache_time", self.cache_time);
+		parts.add_string("inline_query_id", self.inline_query_id);
+		parts.add_bool("is_personal", self.is_personal);
+		parts.add_string("next_offset", self.next_offset);
+		if self.results.len() > 0 { parts.add_object("results", self.results) }
+		parts
+	}
+}
 /**Once the user has confirmed their payment and shipping details, the Bot API sends the final confirmation in the form of an [Update](https://core.telegram.org/bots/api/#update) with the field *pre\_checkout\_query*. Use this method to respond to such pre-checkout queries. On success, *True* is returned. **Note:** The Bot API must receive an answer within 10 seconds after the pre-checkout query was sent.
 
 https://core.telegram.org/bots/api/#answerprecheckoutquery*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct AnswerPreCheckoutQuery {
 	/**Required if *ok* is *False*. Error message in human readable form that explains the reason for failure to proceed with the checkout (e.g. "Sorry, somebody just bought the last of our amazing black T-shirts while you were busy filling out your payment details. Please choose a different color or garment!"). Telegram will display this message to the user.*/
 	pub error_message: Option<String>,
@@ -6962,15 +9713,21 @@ impl AnswerPreCheckoutQuery {
 		self
 	}
 }
-method!(AnswerPreCheckoutQuery, "answerPreCheckoutQuery", bool);
+impl Executable for AnswerPreCheckoutQuery {
+	type Response = bool;
+	const METHOD_NAME: &str = "answerPreCheckoutQuery";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(3);
+		parts.add_string("error_message", self.error_message);
+		parts.add_bool("ok", self.ok);
+		parts.add_string("pre_checkout_query_id", self.pre_checkout_query_id);
+		parts
+	}
+}
 /**If you sent an invoice requesting a shipping address and the parameter *is\_flexible* was specified, the Bot API will send an [Update](https://core.telegram.org/bots/api/#update) with a *shipping\_query* field to the bot. Use this method to reply to shipping queries. On success, *True* is returned.
 
 https://core.telegram.org/bots/api/#answershippingquery*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct AnswerShippingQuery {
 	/**Required if *ok* is *False*. Error message in human readable form that explains why it is impossible to complete the order (e.g. “Sorry, delivery to your desired address is unavailable”). Telegram will display this message to the user.*/
 	pub error_message: Option<String>,
@@ -6994,16 +9751,31 @@ impl AnswerShippingQuery {
 		self.error_message = Some(error_message.into());
 		self
 	}
+	pub fn add_shipping_option(mut self, shipping_option: impl Into<ShippingOption>) -> Self {
+		self.shipping_options.push(shipping_option.into());
+		self
+	}
 	pub fn shipping_options(mut self, shipping_options: impl Into<Vec<ShippingOption>>) -> Self {
 		self.shipping_options = shipping_options.into();
 		self
 	}
 }
-method!(AnswerShippingQuery, "answerShippingQuery", bool);
+impl Executable for AnswerShippingQuery {
+	type Response = bool;
+	const METHOD_NAME: &str = "answerShippingQuery";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(4);
+		parts.add_string("error_message", self.error_message);
+		parts.add_bool("ok", self.ok);
+		if self.shipping_options.len() > 0 { parts.add_object("shipping_options", self.shipping_options) }
+		parts.add_string("shipping_query_id", self.shipping_query_id);
+		parts
+	}
+}
 /**Use this method to set the result of an interaction with a [Web App](https://core.telegram.org/bots/webapps) and send a corresponding message on behalf of the user to the chat from which the query originated. On success, a [SentWebAppMessage](https://core.telegram.org/bots/api/#sentwebappmessage) object is returned.
 
 https://core.telegram.org/bots/api/#answerwebappquery*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct AnswerWebAppQuery {
 	/**A JSON-serialized object describing the message to be sent*/
 	pub result: InlineQueryResult,
@@ -7018,11 +9790,20 @@ impl AnswerWebAppQuery {
 		}
 	}
 }
-method!(AnswerWebAppQuery, "answerWebAppQuery", SentWebAppMessage);
+impl Executable for AnswerWebAppQuery {
+	type Response = SentWebAppMessage;
+	const METHOD_NAME: &str = "answerWebAppQuery";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_object("result", self.result);
+		parts.add_string("web_app_query_id", self.web_app_query_id);
+		parts
+	}
+}
 /**Use this method to approve a chat join request. The bot must be an administrator in the chat for this to work and must have the *can\_invite\_users* administrator right. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#approvechatjoinrequest*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct ApproveChatJoinRequest {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -7037,14 +9818,20 @@ impl ApproveChatJoinRequest {
 		}
 	}
 }
-method!(ApproveChatJoinRequest, "approveChatJoinRequest", bool);
+impl Executable for ApproveChatJoinRequest {
+	type Response = bool;
+	const METHOD_NAME: &str = "approveChatJoinRequest";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_i64("user_id", self.user_id);
+		parts
+	}
+}
 /**Use this method to ban a user in a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the chat on their own using invite links, etc., unless [unbanned](https://core.telegram.org/bots/api/#unbanchatmember) first. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#banchatmember*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct BanChatMember {
 	/**Unique identifier for the target group or username of the target supergroup or channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -7073,11 +9860,22 @@ impl BanChatMember {
 		self
 	}
 }
-method!(BanChatMember, "banChatMember", bool);
+impl Executable for BanChatMember {
+	type Response = bool;
+	const METHOD_NAME: &str = "banChatMember";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(4);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_bool("revoke_messages", self.revoke_messages);
+		parts.add_i64("until_date", self.until_date);
+		parts.add_i64("user_id", self.user_id);
+		parts
+	}
+}
 /**Use this method to ban a channel chat in a supergroup or a channel. Until the chat is [unbanned](https://core.telegram.org/bots/api/#unbanchatsenderchat), the owner of the banned chat won't be able to send messages on behalf of **any of their channels**. The bot must be an administrator in the supergroup or channel for this to work and must have the appropriate administrator rights. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#banchatsenderchat*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct BanChatSenderChat {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -7092,17 +9890,39 @@ impl BanChatSenderChat {
 		}
 	}
 }
-method!(BanChatSenderChat, "banChatSenderChat", bool);
+impl Executable for BanChatSenderChat {
+	type Response = bool;
+	const METHOD_NAME: &str = "banChatSenderChat";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_i64("sender_chat_id", self.sender_chat_id);
+		parts
+	}
+}
 /**Use this method to close the bot instance before moving it from one local server to another. You need to delete the webhook before calling this method to ensure that the bot isn't launched again after server restart. The method will return error 429 in the first 10 minutes after the bot is launched. Returns *True* on success. Requires no parameters.
 
 https://core.telegram.org/bots/api/#close*/
-#[derive(Clone, Debug, Serialize)]
-pub struct Close;
-method!(Close, "close", bool);
+#[derive(Clone, Debug)]
+pub struct Close {
+}
+impl Close {
+	pub fn new() -> Self {
+		Self {
+		}
+	}
+}
+impl Executable for Close {
+	type Response = bool;
+	const METHOD_NAME: &str = "close";
+	fn into_parts(self) -> FormParts {
+		FormParts::new(0)
+	}
+}
 /**Use this method to close an open topic in a forum supergroup chat. The bot must be an administrator in the chat for this to work and must have the *can\_manage\_topics* administrator rights, unless it is the creator of the topic. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#closeforumtopic*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct CloseForumTopic {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -7117,11 +9937,20 @@ impl CloseForumTopic {
 		}
 	}
 }
-method!(CloseForumTopic, "closeForumTopic", bool);
+impl Executable for CloseForumTopic {
+	type Response = bool;
+	const METHOD_NAME: &str = "closeForumTopic";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts
+	}
+}
 /**Use this method to close an open 'General' topic in a forum supergroup chat. The bot must be an administrator in the chat for this to work and must have the *can\_manage\_topics* administrator rights. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#closegeneralforumtopic*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct CloseGeneralForumTopic {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -7133,15 +9962,19 @@ impl CloseGeneralForumTopic {
 		}
 	}
 }
-method!(CloseGeneralForumTopic, "closeGeneralForumTopic", bool);
+impl Executable for CloseGeneralForumTopic {
+	type Response = bool;
+	const METHOD_NAME: &str = "closeGeneralForumTopic";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts
+	}
+}
 /**Use this method to copy messages of any kind. Service messages, paid media messages, giveaway messages, giveaway winners messages, and invoice messages can't be copied. A quiz [poll](https://core.telegram.org/bots/api/#poll) can be copied only if the value of the field *correct\_option\_id* is known to the bot. The method is analogous to the method [forwardMessage](https://core.telegram.org/bots/api/#forwardmessage), but the copied message doesn't have a link to the original message. Returns the [MessageId](https://core.telegram.org/bots/api/#messageid) of the sent message on success.
 
 https://core.telegram.org/bots/api/#copymessage*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct CopyMessage {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -7196,6 +10029,10 @@ impl CopyMessage {
 		self.caption = Some(caption.into());
 		self
 	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
+		self
+	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
@@ -7229,15 +10066,31 @@ impl CopyMessage {
 		self
 	}
 }
-method!(CopyMessage, "copyMessage", MessageId);
+impl Executable for CopyMessage {
+	type Response = MessageId;
+	const METHOD_NAME: &str = "copyMessage";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(13);
+		parts.add_bool("allow_paid_broadcast", self.allow_paid_broadcast);
+		parts.add_string("caption", self.caption);
+		if self.caption_entities.len() > 0 { parts.add_object("caption_entities", self.caption_entities) }
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_bool("disable_notification", self.disable_notification);
+		parts.add_string("from_chat_id", self.from_chat_id.to_string());
+		parts.add_i64("message_id", self.message_id);
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts.add_string("parse_mode", self.parse_mode);
+		parts.add_bool("protect_content", self.protect_content);
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		parts.add_bool("show_caption_above_media", self.show_caption_above_media);
+		parts
+	}
+}
 /**Use this method to copy messages of any kind. If some of the specified messages can't be found or copied, they are skipped. Service messages, paid media messages, giveaway messages, giveaway winners messages, and invoice messages can't be copied. A quiz [poll](https://core.telegram.org/bots/api/#poll) can be copied only if the value of the field *correct\_option\_id* is known to the bot. The method is analogous to the method [forwardMessages](https://core.telegram.org/bots/api/#forwardmessages), but the copied messages don't have a link to the original message. Album grouping is kept for copied messages. On success, an array of [MessageId](https://core.telegram.org/bots/api/#messageid) of the sent messages is returned.
 
 https://core.telegram.org/bots/api/#copymessages*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct CopyMessages {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -7270,6 +10123,10 @@ impl CopyMessages {
 		self.disable_notification = Some(disable_notification);
 		self
 	}
+	pub fn add_message_id(mut self, message_id: impl Into<i64>) -> Self {
+		self.message_ids.push(message_id.into());
+		self
+	}
 	pub fn message_thread_id(mut self, message_thread_id: impl Into<i64>) -> Self {
 		self.message_thread_id = Some(message_thread_id.into());
 		self
@@ -7283,14 +10140,25 @@ impl CopyMessages {
 		self
 	}
 }
-method!(CopyMessages, "copyMessages", MessageId);
+impl Executable for CopyMessages {
+	type Response = MessageId;
+	const METHOD_NAME: &str = "copyMessages";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(7);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_bool("disable_notification", self.disable_notification);
+		parts.add_string("from_chat_id", self.from_chat_id.to_string());
+		if self.message_ids.len() > 0 { parts.add_object("message_ids", self.message_ids) }
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts.add_bool("protect_content", self.protect_content);
+		parts.add_bool("remove_caption", self.remove_caption);
+		parts
+	}
+}
 /**Use this method to create an additional invite link for a chat. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. The link can be revoked using the method [revokeChatInviteLink](https://core.telegram.org/bots/api/#revokechatinvitelink). Returns the new invite link as [ChatInviteLink](https://core.telegram.org/bots/api/#chatinvitelink) object.
 
 https://core.telegram.org/bots/api/#createchatinvitelink*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct CreateChatInviteLink {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -7330,14 +10198,23 @@ impl CreateChatInviteLink {
 		self
 	}
 }
-method!(CreateChatInviteLink, "createChatInviteLink", ChatInviteLink);
+impl Executable for CreateChatInviteLink {
+	type Response = ChatInviteLink;
+	const METHOD_NAME: &str = "createChatInviteLink";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(5);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_bool("creates_join_request", self.creates_join_request);
+		parts.add_i64("expire_date", self.expire_date);
+		parts.add_i64("member_limit", self.member_limit);
+		parts.add_string("name", self.name);
+		parts
+	}
+}
 /**Use this method to create a [subscription invite link](https://telegram.org/blog/superchannels-star-reactions-subscriptions#star-subscriptions) for a channel chat. The bot must have the *can\_invite\_users* administrator rights. The link can be edited using the method [editChatSubscriptionInviteLink](https://core.telegram.org/bots/api/#editchatsubscriptioninvitelink) or revoked using the method [revokeChatInviteLink](https://core.telegram.org/bots/api/#revokechatinvitelink). Returns the new invite link as a [ChatInviteLink](https://core.telegram.org/bots/api/#chatinvitelink) object.
 
 https://core.telegram.org/bots/api/#createchatsubscriptioninvitelink*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct CreateChatSubscriptionInviteLink {
 	/**Unique identifier for the target channel chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -7362,14 +10239,22 @@ impl CreateChatSubscriptionInviteLink {
 		self
 	}
 }
-method!(CreateChatSubscriptionInviteLink, "createChatSubscriptionInviteLink", ChatInviteLink);
+impl Executable for CreateChatSubscriptionInviteLink {
+	type Response = ChatInviteLink;
+	const METHOD_NAME: &str = "createChatSubscriptionInviteLink";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(4);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_string("name", self.name);
+		parts.add_i64("subscription_period", self.subscription_period);
+		parts.add_i64("subscription_price", self.subscription_price);
+		parts
+	}
+}
 /**Use this method to create a topic in a forum supergroup chat. The bot must be an administrator in the chat for this to work and must have the *can\_manage\_topics* administrator rights. Returns information about the created topic as a [ForumTopic](https://core.telegram.org/bots/api/#forumtopic) object.
 
 https://core.telegram.org/bots/api/#createforumtopic*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct CreateForumTopic {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -7398,15 +10283,22 @@ impl CreateForumTopic {
 		self
 	}
 }
-method!(CreateForumTopic, "createForumTopic", ForumTopic);
+impl Executable for CreateForumTopic {
+	type Response = ForumTopic;
+	const METHOD_NAME: &str = "createForumTopic";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(4);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_i64("icon_color", self.icon_color);
+		parts.add_string("icon_custom_emoji_id", self.icon_custom_emoji_id);
+		parts.add_string("name", self.name);
+		parts
+	}
+}
 /**Use this method to create a link for an invoice. Returns the created invoice link as *String* on success.
 
 https://core.telegram.org/bots/api/#createinvoicelink*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct CreateInvoiceLink {
 	/**Unique identifier of the business connection on behalf of which the link will be created. For payments in [Telegram Stars](https://t.me/BotNews/90) only.*/
 	pub business_connection_id: Option<String>,
@@ -7524,6 +10416,10 @@ impl CreateInvoiceLink {
 		self.photo_width = Some(photo_width.into());
 		self
 	}
+	pub fn add_price(mut self, price: impl Into<LabeledPrice>) -> Self {
+		self.prices.push(price.into());
+		self
+	}
 	pub fn provider_data(mut self, provider_data: impl Into<String>) -> Self {
 		self.provider_data = Some(provider_data.into());
 		self
@@ -7544,20 +10440,49 @@ impl CreateInvoiceLink {
 		self.subscription_period = Some(subscription_period.into());
 		self
 	}
+	pub fn add_suggested_tip_amount(mut self, suggested_tip_amount: impl Into<i64>) -> Self {
+		self.suggested_tip_amounts.push(suggested_tip_amount.into());
+		self
+	}
 	pub fn suggested_tip_amounts(mut self, suggested_tip_amounts: impl Into<Vec<i64>>) -> Self {
 		self.suggested_tip_amounts = suggested_tip_amounts.into();
 		self
 	}
 }
-method!(CreateInvoiceLink, "createInvoiceLink", String);
+impl Executable for CreateInvoiceLink {
+	type Response = String;
+	const METHOD_NAME: &str = "createInvoiceLink";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(22);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("currency", self.currency);
+		parts.add_string("description", self.description);
+		parts.add_bool("is_flexible", self.is_flexible);
+		parts.add_i64("max_tip_amount", self.max_tip_amount);
+		parts.add_bool("need_email", self.need_email);
+		parts.add_bool("need_name", self.need_name);
+		parts.add_bool("need_phone_number", self.need_phone_number);
+		parts.add_bool("need_shipping_address", self.need_shipping_address);
+		parts.add_string("payload", self.payload);
+		parts.add_i64("photo_height", self.photo_height);
+		parts.add_i64("photo_size", self.photo_size);
+		parts.add_string("photo_url", self.photo_url);
+		parts.add_i64("photo_width", self.photo_width);
+		if self.prices.len() > 0 { parts.add_object("prices", self.prices) }
+		parts.add_string("provider_data", self.provider_data);
+		parts.add_string("provider_token", self.provider_token);
+		parts.add_bool("send_email_to_provider", self.send_email_to_provider);
+		parts.add_bool("send_phone_number_to_provider", self.send_phone_number_to_provider);
+		parts.add_i64("subscription_period", self.subscription_period);
+		if self.suggested_tip_amounts.len() > 0 { parts.add_object("suggested_tip_amounts", self.suggested_tip_amounts) }
+		parts.add_string("title", self.title);
+		parts
+	}
+}
 /**Use this method to create a new sticker set owned by a user. The bot will be able to edit the sticker set thus created. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#createnewstickerset*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct CreateNewStickerSet {
 	/**Short name of sticker set, to be used in `t.me/addstickers/` URLs (e.g., *animals*). Can contain only English letters, digits and underscores. Must begin with a letter, can't contain consecutive underscores and must end in `"_by_<bot_username>"`. `<bot_username>` is case insensitive. 1-64 characters.*/
 	pub name: String,
@@ -7591,12 +10516,29 @@ impl CreateNewStickerSet {
 		self.sticker_type = Some(sticker_type.into());
 		self
 	}
+	pub fn add_sticker(mut self, sticker: impl Into<InputSticker>) -> Self {
+		self.stickers.push(sticker.into());
+		self
+	}
 }
-method!(CreateNewStickerSet, "createNewStickerSet", bool);
+impl Executable for CreateNewStickerSet {
+	type Response = bool;
+	const METHOD_NAME: &str = "createNewStickerSet";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(6);
+		parts.add_string("name", self.name);
+		parts.add_bool("needs_repainting", self.needs_repainting);
+		parts.add_string("sticker_type", self.sticker_type);
+		if self.stickers.len() > 0 { parts.add_object("stickers", self.stickers) }
+		parts.add_string("title", self.title);
+		parts.add_i64("user_id", self.user_id);
+		parts
+	}
+}
 /**Use this method to decline a chat join request. The bot must be an administrator in the chat for this to work and must have the *can\_invite\_users* administrator right. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#declinechatjoinrequest*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct DeclineChatJoinRequest {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -7611,11 +10553,20 @@ impl DeclineChatJoinRequest {
 		}
 	}
 }
-method!(DeclineChatJoinRequest, "declineChatJoinRequest", bool);
+impl Executable for DeclineChatJoinRequest {
+	type Response = bool;
+	const METHOD_NAME: &str = "declineChatJoinRequest";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_i64("user_id", self.user_id);
+		parts
+	}
+}
 /**Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#deletechatphoto*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct DeleteChatPhoto {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -7627,11 +10578,19 @@ impl DeleteChatPhoto {
 		}
 	}
 }
-method!(DeleteChatPhoto, "deleteChatPhoto", bool);
+impl Executable for DeleteChatPhoto {
+	type Response = bool;
+	const METHOD_NAME: &str = "deleteChatPhoto";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts
+	}
+}
 /**Use this method to delete a group sticker set from a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Use the field *can\_set\_sticker\_set* optionally returned in [getChat](https://core.telegram.org/bots/api/#getchat) requests to check if the bot can use this method. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#deletechatstickerset*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct DeleteChatStickerSet {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -7643,11 +10602,19 @@ impl DeleteChatStickerSet {
 		}
 	}
 }
-method!(DeleteChatStickerSet, "deleteChatStickerSet", bool);
+impl Executable for DeleteChatStickerSet {
+	type Response = bool;
+	const METHOD_NAME: &str = "deleteChatStickerSet";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts
+	}
+}
 /**Use this method to delete a forum topic along with all its messages in a forum supergroup chat. The bot must be an administrator in the chat for this to work and must have the *can\_delete\_messages* administrator rights. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#deleteforumtopic*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct DeleteForumTopic {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -7662,7 +10629,16 @@ impl DeleteForumTopic {
 		}
 	}
 }
-method!(DeleteForumTopic, "deleteForumTopic", bool);
+impl Executable for DeleteForumTopic {
+	type Response = bool;
+	const METHOD_NAME: &str = "deleteForumTopic";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts
+	}
+}
 /**Use this method to delete a message, including service messages, with the following limitations:  
 \- A message can only be deleted if it was sent less than 48 hours ago.  
 \- Service messages about a supergroup, channel, or forum topic creation can't be deleted.  
@@ -7675,7 +10651,7 @@ method!(DeleteForumTopic, "deleteForumTopic", bool);
 Returns *True* on success.
 
 https://core.telegram.org/bots/api/#deletemessage*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct DeleteMessage {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -7690,14 +10666,20 @@ impl DeleteMessage {
 		}
 	}
 }
-method!(DeleteMessage, "deleteMessage", bool);
+impl Executable for DeleteMessage {
+	type Response = bool;
+	const METHOD_NAME: &str = "deleteMessage";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_i64("message_id", self.message_id);
+		parts
+	}
+}
 /**Use this method to delete multiple messages simultaneously. If some of the specified messages can't be found, they are skipped. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#deletemessages*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct DeleteMessages {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -7711,15 +10693,25 @@ impl DeleteMessages {
 			message_ids: message_ids.into(),
 		}
 	}
+	pub fn add_message_id(mut self, message_id: impl Into<i64>) -> Self {
+		self.message_ids.push(message_id.into());
+		self
+	}
 }
-method!(DeleteMessages, "deleteMessages", bool);
+impl Executable for DeleteMessages {
+	type Response = bool;
+	const METHOD_NAME: &str = "deleteMessages";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		if self.message_ids.len() > 0 { parts.add_object("message_ids", self.message_ids) }
+		parts
+	}
+}
 /**Use this method to delete the list of the bot's commands for the given scope and user language. After deletion, [higher level commands](https://core.telegram.org/bots/api/#determining-list-of-commands) will be shown to affected users. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#deletemycommands*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct DeleteMyCommands {
 	/**A two-letter ISO 639-1 language code. If empty, commands will be applied to all users from the given scope, for whose language there are no dedicated commands*/
 	pub language_code: Option<String>,
@@ -7742,11 +10734,20 @@ impl DeleteMyCommands {
 		self
 	}
 }
-method!(DeleteMyCommands, "deleteMyCommands", bool);
+impl Executable for DeleteMyCommands {
+	type Response = bool;
+	const METHOD_NAME: &str = "deleteMyCommands";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("language_code", self.language_code);
+		if let Some(scope) = self.scope { parts.add_object("scope", scope) }
+		parts
+	}
+}
 /**Use this method to delete a sticker from a set created by the bot. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#deletestickerfromset*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct DeleteStickerFromSet {
 	/**File identifier of the sticker*/
 	pub sticker: String,
@@ -7758,11 +10759,19 @@ impl DeleteStickerFromSet {
 		}
 	}
 }
-method!(DeleteStickerFromSet, "deleteStickerFromSet", bool);
+impl Executable for DeleteStickerFromSet {
+	type Response = bool;
+	const METHOD_NAME: &str = "deleteStickerFromSet";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		parts.add_string("sticker", self.sticker);
+		parts
+	}
+}
 /**Use this method to delete a sticker set that was created by the bot. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#deletestickerset*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct DeleteStickerSet {
 	/**Sticker set name*/
 	pub name: String,
@@ -7774,14 +10783,19 @@ impl DeleteStickerSet {
 		}
 	}
 }
-method!(DeleteStickerSet, "deleteStickerSet", bool);
+impl Executable for DeleteStickerSet {
+	type Response = bool;
+	const METHOD_NAME: &str = "deleteStickerSet";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		parts.add_string("name", self.name);
+		parts
+	}
+}
 /**Use this method to remove webhook integration if you decide to switch back to [getUpdates](https://core.telegram.org/bots/api/#getupdates). Returns *True* on success.
 
 https://core.telegram.org/bots/api/#deletewebhook*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct DeleteWebhook {
 	/**Pass *True* to drop all pending updates*/
 	pub drop_pending_updates: Option<bool>,
@@ -7797,14 +10811,19 @@ impl DeleteWebhook {
 		self
 	}
 }
-method!(DeleteWebhook, "deleteWebhook", bool);
+impl Executable for DeleteWebhook {
+	type Response = bool;
+	const METHOD_NAME: &str = "deleteWebhook";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		parts.add_bool("drop_pending_updates", self.drop_pending_updates);
+		parts
+	}
+}
 /**Use this method to edit a non-primary invite link created by the bot. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns the edited invite link as a [ChatInviteLink](https://core.telegram.org/bots/api/#chatinvitelink) object.
 
 https://core.telegram.org/bots/api/#editchatinvitelink*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct EditChatInviteLink {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -7847,14 +10866,24 @@ impl EditChatInviteLink {
 		self
 	}
 }
-method!(EditChatInviteLink, "editChatInviteLink", ChatInviteLink);
+impl Executable for EditChatInviteLink {
+	type Response = ChatInviteLink;
+	const METHOD_NAME: &str = "editChatInviteLink";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(6);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_bool("creates_join_request", self.creates_join_request);
+		parts.add_i64("expire_date", self.expire_date);
+		parts.add_string("invite_link", self.invite_link);
+		parts.add_i64("member_limit", self.member_limit);
+		parts.add_string("name", self.name);
+		parts
+	}
+}
 /**Use this method to edit a subscription invite link created by the bot. The bot must have the *can\_invite\_users* administrator rights. Returns the edited invite link as a [ChatInviteLink](https://core.telegram.org/bots/api/#chatinvitelink) object.
 
 https://core.telegram.org/bots/api/#editchatsubscriptioninvitelink*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct EditChatSubscriptionInviteLink {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -7876,14 +10905,21 @@ impl EditChatSubscriptionInviteLink {
 		self
 	}
 }
-method!(EditChatSubscriptionInviteLink, "editChatSubscriptionInviteLink", ChatInviteLink);
+impl Executable for EditChatSubscriptionInviteLink {
+	type Response = ChatInviteLink;
+	const METHOD_NAME: &str = "editChatSubscriptionInviteLink";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(3);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_string("invite_link", self.invite_link);
+		parts.add_string("name", self.name);
+		parts
+	}
+}
 /**Use this method to edit name and icon of a topic in a forum supergroup chat. The bot must be an administrator in the chat for this to work and must have the *can\_manage\_topics* administrator rights, unless it is the creator of the topic. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#editforumtopic*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct EditForumTopic {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -7912,11 +10948,22 @@ impl EditForumTopic {
 		self
 	}
 }
-method!(EditForumTopic, "editForumTopic", bool);
+impl Executable for EditForumTopic {
+	type Response = bool;
+	const METHOD_NAME: &str = "editForumTopic";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(4);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_string("icon_custom_emoji_id", self.icon_custom_emoji_id);
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts.add_string("name", self.name);
+		parts
+	}
+}
 /**Use this method to edit the name of the 'General' topic in a forum supergroup chat. The bot must be an administrator in the chat for this to work and must have the *can\_manage\_topics* administrator rights. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#editgeneralforumtopic*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct EditGeneralForumTopic {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -7931,15 +10978,20 @@ impl EditGeneralForumTopic {
 		}
 	}
 }
-method!(EditGeneralForumTopic, "editGeneralForumTopic", bool);
+impl Executable for EditGeneralForumTopic {
+	type Response = bool;
+	const METHOD_NAME: &str = "editGeneralForumTopic";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_string("name", self.name);
+		parts
+	}
+}
 /**Use this method to edit captions of messages. On success, if the edited message is not an inline message, the edited [Message](https://core.telegram.org/bots/api/#message) is returned, otherwise *True* is returned. Note that business messages that were not sent by the bot and do not contain an inline keyboard can only be edited within **48 hours** from the time they were sent.
 
 https://core.telegram.org/bots/api/#editmessagecaption*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct EditMessageCaption {
 	/**Unique identifier of the business connection on behalf of which the message to be edited was sent*/
 	pub business_connection_id: Option<String>,
@@ -7982,6 +11034,10 @@ impl EditMessageCaption {
 		self.caption = Some(caption.into());
 		self
 	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
+		self
+	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
@@ -8011,14 +11067,27 @@ impl EditMessageCaption {
 		self
 	}
 }
-method!(EditMessageCaption, "editMessageCaption", EditMessageResult);
+impl Executable for EditMessageCaption {
+	type Response = EditMessageResult;
+	const METHOD_NAME: &str = "editMessageCaption";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(9);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("caption", self.caption);
+		if self.caption_entities.len() > 0 { parts.add_object("caption_entities", self.caption_entities) }
+		parts.add_string("chat_id", self.chat_id.map(|x| x.to_string()));
+		parts.add_string("inline_message_id", self.inline_message_id);
+		parts.add_i64("message_id", self.message_id);
+		parts.add_string("parse_mode", self.parse_mode);
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		parts.add_bool("show_caption_above_media", self.show_caption_above_media);
+		parts
+	}
+}
 /**Use this method to edit live location messages. A location can be edited until its *live\_period* expires or editing is explicitly disabled by a call to [stopMessageLiveLocation](https://core.telegram.org/bots/api/#stopmessagelivelocation). On success, if the edited message is not an inline message, the edited [Message](https://core.telegram.org/bots/api/#message) is returned, otherwise *True* is returned.
 
 https://core.telegram.org/bots/api/#editmessagelivelocation*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct EditMessageLiveLocation {
 	/**Unique identifier of the business connection on behalf of which the message to be edited was sent*/
 	pub business_connection_id: Option<String>,
@@ -8096,14 +11165,29 @@ impl EditMessageLiveLocation {
 		self
 	}
 }
-method!(EditMessageLiveLocation, "editMessageLiveLocation", EditMessageResult);
+impl Executable for EditMessageLiveLocation {
+	type Response = EditMessageResult;
+	const METHOD_NAME: &str = "editMessageLiveLocation";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(11);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("chat_id", self.chat_id.map(|x| x.to_string()));
+		parts.add_i64("heading", self.heading);
+		parts.add_f32("horizontal_accuracy", self.horizontal_accuracy);
+		parts.add_string("inline_message_id", self.inline_message_id);
+		parts.add_f32("latitude", self.latitude);
+		parts.add_i64("live_period", self.live_period);
+		parts.add_f32("longitude", self.longitude);
+		parts.add_i64("message_id", self.message_id);
+		parts.add_i64("proximity_alert_radius", self.proximity_alert_radius);
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		parts
+	}
+}
 /**Use this method to edit animation, audio, document, photo, or video messages, or to add media to text messages. If a message is part of a message album, then it can be edited only to an audio for audio albums, only to a document for document albums and to a photo or a video otherwise. When an inline message is edited, a new file can't be uploaded; use a previously uploaded file via its file\_id or specify a URL. On success, if the edited message is not an inline message, the edited [Message](https://core.telegram.org/bots/api/#message) is returned, otherwise *True* is returned. Note that business messages that were not sent by the bot and do not contain an inline keyboard can only be edited within **48 hours** from the time they were sent.
 
 https://core.telegram.org/bots/api/#editmessagemedia*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct EditMessageMedia {
 	/**Unique identifier of the business connection on behalf of which the message to be edited was sent*/
 	pub business_connection_id: Option<String>,
@@ -8150,14 +11234,24 @@ impl EditMessageMedia {
 		self
 	}
 }
-method!(EditMessageMedia, "editMessageMedia", EditMessageResult);
+impl Executable for EditMessageMedia {
+	type Response = EditMessageResult;
+	const METHOD_NAME: &str = "editMessageMedia";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(6);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("chat_id", self.chat_id.map(|x| x.to_string()));
+		parts.add_string("inline_message_id", self.inline_message_id);
+		parts.add_object("media", self.media);
+		parts.add_i64("message_id", self.message_id);
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		parts
+	}
+}
 /**Use this method to edit only the reply markup of messages. On success, if the edited message is not an inline message, the edited [Message](https://core.telegram.org/bots/api/#message) is returned, otherwise *True* is returned. Note that business messages that were not sent by the bot and do not contain an inline keyboard can only be edited within **48 hours** from the time they were sent.
 
 https://core.telegram.org/bots/api/#editmessagereplymarkup*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct EditMessageReplyMarkup {
 	/**Unique identifier of the business connection on behalf of which the message to be edited was sent*/
 	pub business_connection_id: Option<String>,
@@ -8201,15 +11295,23 @@ impl EditMessageReplyMarkup {
 		self
 	}
 }
-method!(EditMessageReplyMarkup, "editMessageReplyMarkup", EditMessageResult);
+impl Executable for EditMessageReplyMarkup {
+	type Response = EditMessageResult;
+	const METHOD_NAME: &str = "editMessageReplyMarkup";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(5);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("chat_id", self.chat_id.map(|x| x.to_string()));
+		parts.add_string("inline_message_id", self.inline_message_id);
+		parts.add_i64("message_id", self.message_id);
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		parts
+	}
+}
 /**Use this method to edit text and [game](https://core.telegram.org/bots/api/#games) messages. On success, if the edited message is not an inline message, the edited [Message](https://core.telegram.org/bots/api/#message) is returned, otherwise *True* is returned. Note that business messages that were not sent by the bot and do not contain an inline keyboard can only be edited within **48 hours** from the time they were sent.
 
 https://core.telegram.org/bots/api/#editmessagetext*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct EditMessageText {
 	/**Unique identifier of the business connection on behalf of which the message to be edited was sent*/
 	pub business_connection_id: Option<String>,
@@ -8252,6 +11354,10 @@ impl EditMessageText {
 		self.chat_id = Some(chat_id.into());
 		self
 	}
+	pub fn add_entity(mut self, entity: impl Into<MessageEntity>) -> Self {
+		self.entities.push(entity.into());
+		self
+	}
 	pub fn entities(mut self, entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.entities = entities.into();
 		self
@@ -8277,11 +11383,27 @@ impl EditMessageText {
 		self
 	}
 }
-method!(EditMessageText, "editMessageText", EditMessageResult);
+impl Executable for EditMessageText {
+	type Response = EditMessageResult;
+	const METHOD_NAME: &str = "editMessageText";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(9);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("chat_id", self.chat_id.map(|x| x.to_string()));
+		if self.entities.len() > 0 { parts.add_object("entities", self.entities) }
+		parts.add_string("inline_message_id", self.inline_message_id);
+		if let Some(link_preview_options) = self.link_preview_options { parts.add_object("link_preview_options", link_preview_options) }
+		parts.add_i64("message_id", self.message_id);
+		parts.add_string("parse_mode", self.parse_mode);
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		parts.add_string("text", self.text);
+		parts
+	}
+}
 /**Allows the bot to cancel or re-enable extension of a subscription paid in Telegram Stars. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#edituserstarsubscription*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct EditUserStarSubscription {
 	/**Pass *True* to cancel extension of the user subscription; the subscription must be active up to the end of the current subscription period. Pass *False* to allow the user to re-enable a subscription that was previously canceled by the bot.*/
 	pub is_canceled: bool,
@@ -8299,11 +11421,21 @@ impl EditUserStarSubscription {
 		}
 	}
 }
-method!(EditUserStarSubscription, "editUserStarSubscription", bool);
+impl Executable for EditUserStarSubscription {
+	type Response = bool;
+	const METHOD_NAME: &str = "editUserStarSubscription";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(3);
+		parts.add_bool("is_canceled", self.is_canceled);
+		parts.add_string("telegram_payment_charge_id", self.telegram_payment_charge_id);
+		parts.add_i64("user_id", self.user_id);
+		parts
+	}
+}
 /**Use this method to generate a new primary invite link for a chat; any previously generated primary link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns the new invite link as *String* on success.
 
 https://core.telegram.org/bots/api/#exportchatinvitelink*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct ExportChatInviteLink {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -8315,14 +11447,19 @@ impl ExportChatInviteLink {
 		}
 	}
 }
-method!(ExportChatInviteLink, "exportChatInviteLink", String);
+impl Executable for ExportChatInviteLink {
+	type Response = String;
+	const METHOD_NAME: &str = "exportChatInviteLink";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts
+	}
+}
 /**Use this method to forward messages of any kind. Service messages and messages with protected content can't be forwarded. On success, the sent [Message](https://core.telegram.org/bots/api/#message) is returned.
 
 https://core.telegram.org/bots/api/#forwardmessage*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct ForwardMessage {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -8361,15 +11498,24 @@ impl ForwardMessage {
 		self
 	}
 }
-method!(ForwardMessage, "forwardMessage", Message);
+impl Executable for ForwardMessage {
+	type Response = Message;
+	const METHOD_NAME: &str = "forwardMessage";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(6);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_bool("disable_notification", self.disable_notification);
+		parts.add_string("from_chat_id", self.from_chat_id.to_string());
+		parts.add_i64("message_id", self.message_id);
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts.add_bool("protect_content", self.protect_content);
+		parts
+	}
+}
 /**Use this method to forward multiple messages of any kind. If some of the specified messages can't be found or forwarded, they are skipped. Service messages and messages with protected content can't be forwarded. Album grouping is kept for forwarded messages. On success, an array of [MessageId](https://core.telegram.org/bots/api/#messageid) of the sent messages is returned.
 
 https://core.telegram.org/bots/api/#forwardmessages*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct ForwardMessages {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -8399,6 +11545,10 @@ impl ForwardMessages {
 		self.disable_notification = Some(disable_notification);
 		self
 	}
+	pub fn add_message_id(mut self, message_id: impl Into<i64>) -> Self {
+		self.message_ids.push(message_id.into());
+		self
+	}
 	pub fn message_thread_id(mut self, message_thread_id: impl Into<i64>) -> Self {
 		self.message_thread_id = Some(message_thread_id.into());
 		self
@@ -8408,17 +11558,43 @@ impl ForwardMessages {
 		self
 	}
 }
-method!(ForwardMessages, "forwardMessages", MessageId);
+impl Executable for ForwardMessages {
+	type Response = MessageId;
+	const METHOD_NAME: &str = "forwardMessages";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(6);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_bool("disable_notification", self.disable_notification);
+		parts.add_string("from_chat_id", self.from_chat_id.to_string());
+		if self.message_ids.len() > 0 { parts.add_object("message_ids", self.message_ids) }
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts.add_bool("protect_content", self.protect_content);
+		parts
+	}
+}
 /**Returns the list of gifts that can be sent by the bot to users. Requires no parameters. Returns a [Gifts](https://core.telegram.org/bots/api/#gifts) object.
 
 https://core.telegram.org/bots/api/#getavailablegifts*/
-#[derive(Clone, Debug, Serialize)]
-pub struct GetAvailableGifts;
-method!(GetAvailableGifts, "getAvailableGifts", Gifts);
+#[derive(Clone, Debug)]
+pub struct GetAvailableGifts {
+}
+impl GetAvailableGifts {
+	pub fn new() -> Self {
+		Self {
+		}
+	}
+}
+impl Executable for GetAvailableGifts {
+	type Response = Gifts;
+	const METHOD_NAME: &str = "getAvailableGifts";
+	fn into_parts(self) -> FormParts {
+		FormParts::new(0)
+	}
+}
 /**Use this method to get information about the connection of the bot with a business account. Returns a [BusinessConnection](https://core.telegram.org/bots/api/#businessconnection) object on success.
 
 https://core.telegram.org/bots/api/#getbusinessconnection*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct GetBusinessConnection {
 	/**Unique identifier of the business connection*/
 	pub business_connection_id: String,
@@ -8430,11 +11606,19 @@ impl GetBusinessConnection {
 		}
 	}
 }
-method!(GetBusinessConnection, "getBusinessConnection", BusinessConnection);
+impl Executable for GetBusinessConnection {
+	type Response = BusinessConnection;
+	const METHOD_NAME: &str = "getBusinessConnection";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts
+	}
+}
 /**Use this method to get up-to-date information about the chat. Returns a [ChatFullInfo](https://core.telegram.org/bots/api/#chatfullinfo) object on success.
 
 https://core.telegram.org/bots/api/#getchat*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct GetChat {
 	/**Unique identifier for the target chat or username of the target supergroup or channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -8446,11 +11630,19 @@ impl GetChat {
 		}
 	}
 }
-method!(GetChat, "getChat", ChatFullInfo);
+impl Executable for GetChat {
+	type Response = ChatFullInfo;
+	const METHOD_NAME: &str = "getChat";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts
+	}
+}
 /**Use this method to get a list of administrators in a chat, which aren't bots. Returns an Array of [ChatMember](https://core.telegram.org/bots/api/#chatmember) objects.
 
 https://core.telegram.org/bots/api/#getchatadministrators*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct GetChatAdministrators {
 	/**Unique identifier for the target chat or username of the target supergroup or channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -8462,11 +11654,19 @@ impl GetChatAdministrators {
 		}
 	}
 }
-method!(GetChatAdministrators, "getChatAdministrators", ChatMember);
+impl Executable for GetChatAdministrators {
+	type Response = ChatMember;
+	const METHOD_NAME: &str = "getChatAdministrators";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts
+	}
+}
 /**Use this method to get information about a member of a chat. The method is only guaranteed to work for other users if the bot is an administrator in the chat. Returns a [ChatMember](https://core.telegram.org/bots/api/#chatmember) object on success.
 
 https://core.telegram.org/bots/api/#getchatmember*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct GetChatMember {
 	/**Unique identifier for the target chat or username of the target supergroup or channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -8481,11 +11681,20 @@ impl GetChatMember {
 		}
 	}
 }
-method!(GetChatMember, "getChatMember", ChatMember);
+impl Executable for GetChatMember {
+	type Response = ChatMember;
+	const METHOD_NAME: &str = "getChatMember";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_i64("user_id", self.user_id);
+		parts
+	}
+}
 /**Use this method to get the number of members in a chat. Returns *Int* on success.
 
 https://core.telegram.org/bots/api/#getchatmembercount*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct GetChatMemberCount {
 	/**Unique identifier for the target chat or username of the target supergroup or channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -8497,14 +11706,19 @@ impl GetChatMemberCount {
 		}
 	}
 }
-method!(GetChatMemberCount, "getChatMemberCount", i64);
+impl Executable for GetChatMemberCount {
+	type Response = i64;
+	const METHOD_NAME: &str = "getChatMemberCount";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts
+	}
+}
 /**Use this method to get the current value of the bot's menu button in a private chat, or the default menu button. Returns [MenuButton](https://core.telegram.org/bots/api/#menubutton) on success.
 
 https://core.telegram.org/bots/api/#getchatmenubutton*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct GetChatMenuButton {
 	/**Unique identifier for the target private chat. If not specified, default bot's menu button will be returned*/
 	pub chat_id: Option<i64>,
@@ -8520,14 +11734,19 @@ impl GetChatMenuButton {
 		self
 	}
 }
-method!(GetChatMenuButton, "getChatMenuButton", MenuButton);
+impl Executable for GetChatMenuButton {
+	type Response = MenuButton;
+	const METHOD_NAME: &str = "getChatMenuButton";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		parts.add_i64("chat_id", self.chat_id);
+		parts
+	}
+}
 /**Use this method to get information about custom emoji stickers by their identifiers. Returns an Array of [Sticker](https://core.telegram.org/bots/api/#sticker) objects.
 
 https://core.telegram.org/bots/api/#getcustomemojistickers*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct GetCustomEmojiStickers {
 	/**A JSON-serialized list of custom emoji identifiers. At most 200 custom emoji identifiers can be specified.*/
 	pub custom_emoji_ids: Vec<String>,
@@ -8538,12 +11757,24 @@ impl GetCustomEmojiStickers {
 			custom_emoji_ids: custom_emoji_ids.into(),
 		}
 	}
+	pub fn add_custom_emoji_id(mut self, custom_emoji_id: impl Into<String>) -> Self {
+		self.custom_emoji_ids.push(custom_emoji_id.into());
+		self
+	}
 }
-method!(GetCustomEmojiStickers, "getCustomEmojiStickers", Sticker);
+impl Executable for GetCustomEmojiStickers {
+	type Response = Sticker;
+	const METHOD_NAME: &str = "getCustomEmojiStickers";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		if self.custom_emoji_ids.len() > 0 { parts.add_object("custom_emoji_ids", self.custom_emoji_ids) }
+		parts
+	}
+}
 /**Use this method to get basic information about a file and prepare it for downloading. For the moment, bots can download files of up to 20MB in size. On success, a [File](https://core.telegram.org/bots/api/#file) object is returned. The file can then be downloaded via the link `https://api.telegram.org/file/bot<token>/<file_path>`, where `<file_path>` is taken from the response. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling [getFile](https://core.telegram.org/bots/api/#getfile) again.
 
 https://core.telegram.org/bots/api/#getfile*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct GetFile {
 	/**File identifier to get information about*/
 	pub file_id: String,
@@ -8555,22 +11786,40 @@ impl GetFile {
 		}
 	}
 }
-method!(GetFile, "getFile", File);
+impl Executable for GetFile {
+	type Response = File;
+	const METHOD_NAME: &str = "getFile";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		parts.add_string("file_id", self.file_id);
+		parts
+	}
+}
 /**Use this method to get custom emoji stickers, which can be used as a forum topic icon by any user. Requires no parameters. Returns an Array of [Sticker](https://core.telegram.org/bots/api/#sticker) objects.
 
 https://core.telegram.org/bots/api/#getforumtopiciconstickers*/
-#[derive(Clone, Debug, Serialize)]
-pub struct GetForumTopicIconStickers;
-method!(GetForumTopicIconStickers, "getForumTopicIconStickers", Sticker);
+#[derive(Clone, Debug)]
+pub struct GetForumTopicIconStickers {
+}
+impl GetForumTopicIconStickers {
+	pub fn new() -> Self {
+		Self {
+		}
+	}
+}
+impl Executable for GetForumTopicIconStickers {
+	type Response = Sticker;
+	const METHOD_NAME: &str = "getForumTopicIconStickers";
+	fn into_parts(self) -> FormParts {
+		FormParts::new(0)
+	}
+}
 /**Use this method to get data for high score tables. Will return the score of the specified user and several of their neighbors in a game. Returns an Array of [GameHighScore](https://core.telegram.org/bots/api/#gamehighscore) objects.
 
 This method will currently return scores for the target user, plus two of their closest neighbors on each side. Will also return the top three users if the user and their neighbors are not among them. Please note that this behavior is subject to change.
 
 https://core.telegram.org/bots/api/#getgamehighscores*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct GetGameHighScores {
 	/**Required if *inline\_message\_id* is not specified. Unique identifier for the target chat*/
 	pub chat_id: Option<i64>,
@@ -8603,20 +11852,41 @@ impl GetGameHighScores {
 		self
 	}
 }
-method!(GetGameHighScores, "getGameHighScores", GameHighScore);
+impl Executable for GetGameHighScores {
+	type Response = GameHighScore;
+	const METHOD_NAME: &str = "getGameHighScores";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(4);
+		parts.add_i64("chat_id", self.chat_id);
+		parts.add_string("inline_message_id", self.inline_message_id);
+		parts.add_i64("message_id", self.message_id);
+		parts.add_i64("user_id", self.user_id);
+		parts
+	}
+}
 /**A simple method for testing your bot's authentication token. Requires no parameters. Returns basic information about the bot in form of a [User](https://core.telegram.org/bots/api/#user) object.
 
 https://core.telegram.org/bots/api/#getme*/
-#[derive(Clone, Debug, Serialize)]
-pub struct GetMe;
-method!(GetMe, "getMe", User);
+#[derive(Clone, Debug)]
+pub struct GetMe {
+}
+impl GetMe {
+	pub fn new() -> Self {
+		Self {
+		}
+	}
+}
+impl Executable for GetMe {
+	type Response = User;
+	const METHOD_NAME: &str = "getMe";
+	fn into_parts(self) -> FormParts {
+		FormParts::new(0)
+	}
+}
 /**Use this method to get the current list of the bot's commands for the given scope and user language. Returns an Array of [BotCommand](https://core.telegram.org/bots/api/#botcommand) objects. If commands aren't set, an empty list is returned.
 
 https://core.telegram.org/bots/api/#getmycommands*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct GetMyCommands {
 	/**A two-letter ISO 639-1 language code or an empty string*/
 	pub language_code: Option<String>,
@@ -8639,14 +11909,20 @@ impl GetMyCommands {
 		self
 	}
 }
-method!(GetMyCommands, "getMyCommands", BotCommand);
+impl Executable for GetMyCommands {
+	type Response = BotCommand;
+	const METHOD_NAME: &str = "getMyCommands";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("language_code", self.language_code);
+		if let Some(scope) = self.scope { parts.add_object("scope", scope) }
+		parts
+	}
+}
 /**Use this method to get the current default administrator rights of the bot. Returns [ChatAdministratorRights](https://core.telegram.org/bots/api/#chatadministratorrights) on success.
 
 https://core.telegram.org/bots/api/#getmydefaultadministratorrights*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct GetMyDefaultAdministratorRights {
 	/**Pass *True* to get default administrator rights of the bot in channels. Otherwise, default administrator rights of the bot for groups and supergroups will be returned.*/
 	pub for_channels: Option<bool>,
@@ -8662,14 +11938,19 @@ impl GetMyDefaultAdministratorRights {
 		self
 	}
 }
-method!(GetMyDefaultAdministratorRights, "getMyDefaultAdministratorRights", ChatAdministratorRights);
+impl Executable for GetMyDefaultAdministratorRights {
+	type Response = ChatAdministratorRights;
+	const METHOD_NAME: &str = "getMyDefaultAdministratorRights";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		parts.add_bool("for_channels", self.for_channels);
+		parts
+	}
+}
 /**Use this method to get the current bot description for the given user language. Returns [BotDescription](https://core.telegram.org/bots/api/#botdescription) on success.
 
 https://core.telegram.org/bots/api/#getmydescription*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct GetMyDescription {
 	/**A two-letter ISO 639-1 language code or an empty string*/
 	pub language_code: Option<String>,
@@ -8685,14 +11966,19 @@ impl GetMyDescription {
 		self
 	}
 }
-method!(GetMyDescription, "getMyDescription", BotDescription);
+impl Executable for GetMyDescription {
+	type Response = BotDescription;
+	const METHOD_NAME: &str = "getMyDescription";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		parts.add_string("language_code", self.language_code);
+		parts
+	}
+}
 /**Use this method to get the current bot name for the given user language. Returns [BotName](https://core.telegram.org/bots/api/#botname) on success.
 
 https://core.telegram.org/bots/api/#getmyname*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct GetMyName {
 	/**A two-letter ISO 639-1 language code or an empty string*/
 	pub language_code: Option<String>,
@@ -8708,14 +11994,19 @@ impl GetMyName {
 		self
 	}
 }
-method!(GetMyName, "getMyName", BotName);
+impl Executable for GetMyName {
+	type Response = BotName;
+	const METHOD_NAME: &str = "getMyName";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		parts.add_string("language_code", self.language_code);
+		parts
+	}
+}
 /**Use this method to get the current bot short description for the given user language. Returns [BotShortDescription](https://core.telegram.org/bots/api/#botshortdescription) on success.
 
 https://core.telegram.org/bots/api/#getmyshortdescription*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct GetMyShortDescription {
 	/**A two-letter ISO 639-1 language code or an empty string*/
 	pub language_code: Option<String>,
@@ -8731,14 +12022,19 @@ impl GetMyShortDescription {
 		self
 	}
 }
-method!(GetMyShortDescription, "getMyShortDescription", BotShortDescription);
+impl Executable for GetMyShortDescription {
+	type Response = BotShortDescription;
+	const METHOD_NAME: &str = "getMyShortDescription";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		parts.add_string("language_code", self.language_code);
+		parts
+	}
+}
 /**Returns the bot's Telegram Star transactions in chronological order. On success, returns a [StarTransactions](https://core.telegram.org/bots/api/#startransactions) object.
 
 https://core.telegram.org/bots/api/#getstartransactions*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct GetStarTransactions {
 	/**The maximum number of transactions to be retrieved. Values between 1-100 are accepted. Defaults to 100.*/
 	pub limit: Option<i64>,
@@ -8761,11 +12057,20 @@ impl GetStarTransactions {
 		self
 	}
 }
-method!(GetStarTransactions, "getStarTransactions", StarTransactions);
+impl Executable for GetStarTransactions {
+	type Response = StarTransactions;
+	const METHOD_NAME: &str = "getStarTransactions";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_i64("limit", self.limit);
+		parts.add_i64("offset", self.offset);
+		parts
+	}
+}
 /**Use this method to get a sticker set. On success, a [StickerSet](https://core.telegram.org/bots/api/#stickerset) object is returned.
 
 https://core.telegram.org/bots/api/#getstickerset*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct GetStickerSet {
 	/**Name of the sticker set*/
 	pub name: String,
@@ -8777,15 +12082,19 @@ impl GetStickerSet {
 		}
 	}
 }
-method!(GetStickerSet, "getStickerSet", StickerSet);
+impl Executable for GetStickerSet {
+	type Response = StickerSet;
+	const METHOD_NAME: &str = "getStickerSet";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		parts.add_string("name", self.name);
+		parts
+	}
+}
 /**Use this method to receive incoming updates using long polling ([wiki](https://en.wikipedia.org/wiki/Push_technology#Long_polling)). Returns an Array of [Update](https://core.telegram.org/bots/api/#update) objects.
 
 https://core.telegram.org/bots/api/#getupdates*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct GetUpdates {
 	/**A JSON-serialized list of the update types you want your bot to receive. For example, specify `["message", "edited_channel_post", "callback_query"]` to only receive updates of these types. See [Update](https://core.telegram.org/bots/api/#update) for a complete list of available update types. Specify an empty list to receive all update types except *chat\_member*, *message\_reaction*, and *message\_reaction\_count* (default). If not specified, the previous setting will be used.  
 
@@ -8807,6 +12116,10 @@ impl GetUpdates {
 			timeout: None,
 		}
 	}
+	pub fn add_allowed_update(mut self, allowed_update: impl Into<String>) -> Self {
+		self.allowed_updates.push(allowed_update.into());
+		self
+	}
 	pub fn allowed_updates(mut self, allowed_updates: impl Into<Vec<String>>) -> Self {
 		self.allowed_updates = allowed_updates.into();
 		self
@@ -8824,11 +12137,22 @@ impl GetUpdates {
 		self
 	}
 }
-method!(GetUpdates, "getUpdates", Update);
+impl Executable for GetUpdates {
+	type Response = Update;
+	const METHOD_NAME: &str = "getUpdates";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(4);
+		if self.allowed_updates.len() > 0 { parts.add_object("allowed_updates", self.allowed_updates) }
+		parts.add_i64("limit", self.limit);
+		parts.add_i64("offset", self.offset);
+		parts.add_i64("timeout", self.timeout);
+		parts
+	}
+}
 /**Use this method to get the list of boosts added to a chat by a user. Requires administrator rights in the chat. Returns a [UserChatBoosts](https://core.telegram.org/bots/api/#userchatboosts) object.
 
 https://core.telegram.org/bots/api/#getuserchatboosts*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct GetUserChatBoosts {
 	/**Unique identifier for the chat or username of the channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -8843,14 +12167,20 @@ impl GetUserChatBoosts {
 		}
 	}
 }
-method!(GetUserChatBoosts, "getUserChatBoosts", UserChatBoosts);
+impl Executable for GetUserChatBoosts {
+	type Response = UserChatBoosts;
+	const METHOD_NAME: &str = "getUserChatBoosts";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_i64("user_id", self.user_id);
+		parts
+	}
+}
 /**Use this method to get a list of profile pictures for a user. Returns a [UserProfilePhotos](https://core.telegram.org/bots/api/#userprofilephotos) object.
 
 https://core.telegram.org/bots/api/#getuserprofilephotos*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct GetUserProfilePhotos {
 	/**Limits the number of photos to be retrieved. Values between 1-100 are accepted. Defaults to 100.*/
 	pub limit: Option<i64>,
@@ -8876,17 +12206,40 @@ impl GetUserProfilePhotos {
 		self
 	}
 }
-method!(GetUserProfilePhotos, "getUserProfilePhotos", UserProfilePhotos);
+impl Executable for GetUserProfilePhotos {
+	type Response = UserProfilePhotos;
+	const METHOD_NAME: &str = "getUserProfilePhotos";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(3);
+		parts.add_i64("limit", self.limit);
+		parts.add_i64("offset", self.offset);
+		parts.add_i64("user_id", self.user_id);
+		parts
+	}
+}
 /**Use this method to get current webhook status. Requires no parameters. On success, returns a [WebhookInfo](https://core.telegram.org/bots/api/#webhookinfo) object. If the bot is using [getUpdates](https://core.telegram.org/bots/api/#getupdates), will return an object with the *url* field empty.
 
 https://core.telegram.org/bots/api/#getwebhookinfo*/
-#[derive(Clone, Debug, Serialize)]
-pub struct GetWebhookInfo;
-method!(GetWebhookInfo, "getWebhookInfo", WebhookInfo);
+#[derive(Clone, Debug)]
+pub struct GetWebhookInfo {
+}
+impl GetWebhookInfo {
+	pub fn new() -> Self {
+		Self {
+		}
+	}
+}
+impl Executable for GetWebhookInfo {
+	type Response = WebhookInfo;
+	const METHOD_NAME: &str = "getWebhookInfo";
+	fn into_parts(self) -> FormParts {
+		FormParts::new(0)
+	}
+}
 /**Use this method to hide the 'General' topic in a forum supergroup chat. The bot must be an administrator in the chat for this to work and must have the *can\_manage\_topics* administrator rights. The topic will be automatically closed if it was open. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#hidegeneralforumtopic*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct HideGeneralForumTopic {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -8898,11 +12251,19 @@ impl HideGeneralForumTopic {
 		}
 	}
 }
-method!(HideGeneralForumTopic, "hideGeneralForumTopic", bool);
+impl Executable for HideGeneralForumTopic {
+	type Response = bool;
+	const METHOD_NAME: &str = "hideGeneralForumTopic";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts
+	}
+}
 /**Use this method for your bot to leave a group, supergroup or channel. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#leavechat*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct LeaveChat {
 	/**Unique identifier for the target chat or username of the target supergroup or channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -8914,20 +12275,38 @@ impl LeaveChat {
 		}
 	}
 }
-method!(LeaveChat, "leaveChat", bool);
+impl Executable for LeaveChat {
+	type Response = bool;
+	const METHOD_NAME: &str = "leaveChat";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts
+	}
+}
 /**Use this method to log out from the cloud Bot API server before launching the bot locally. You **must** log out the bot before running it locally, otherwise there is no guarantee that the bot will receive updates. After a successful call, you can immediately log in on a local server, but will not be able to log in back to the cloud Bot API server for 10 minutes. Returns *True* on success. Requires no parameters.
 
 https://core.telegram.org/bots/api/#logout*/
-#[derive(Clone, Debug, Serialize)]
-pub struct LogOut;
-method!(LogOut, "logOut", bool);
+#[derive(Clone, Debug)]
+pub struct LogOut {
+}
+impl LogOut {
+	pub fn new() -> Self {
+		Self {
+		}
+	}
+}
+impl Executable for LogOut {
+	type Response = bool;
+	const METHOD_NAME: &str = "logOut";
+	fn into_parts(self) -> FormParts {
+		FormParts::new(0)
+	}
+}
 /**Use this method to add a message to the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can\_pin\_messages' administrator right in a supergroup or 'can\_edit\_messages' administrator right in a channel. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#pinchatmessage*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct PinChatMessage {
 	/**Unique identifier of the business connection on behalf of which the message will be pinned*/
 	pub business_connection_id: Option<String>,
@@ -8956,14 +12335,22 @@ impl PinChatMessage {
 		self
 	}
 }
-method!(PinChatMessage, "pinChatMessage", bool);
+impl Executable for PinChatMessage {
+	type Response = bool;
+	const METHOD_NAME: &str = "pinChatMessage";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(4);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_bool("disable_notification", self.disable_notification);
+		parts.add_i64("message_id", self.message_id);
+		parts
+	}
+}
 /**Use this method to promote or demote a user in a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Pass *False* for all boolean parameters to demote a user. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#promotechatmember*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct PromoteChatMember {
 	/**Pass *True* if the administrator can change chat title, photo and other settings*/
 	pub can_change_info: Option<bool>,
@@ -9083,11 +12470,35 @@ impl PromoteChatMember {
 		self
 	}
 }
-method!(PromoteChatMember, "promoteChatMember", bool);
+impl Executable for PromoteChatMember {
+	type Response = bool;
+	const METHOD_NAME: &str = "promoteChatMember";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(17);
+		parts.add_bool("can_change_info", self.can_change_info);
+		parts.add_bool("can_delete_messages", self.can_delete_messages);
+		parts.add_bool("can_delete_stories", self.can_delete_stories);
+		parts.add_bool("can_edit_messages", self.can_edit_messages);
+		parts.add_bool("can_edit_stories", self.can_edit_stories);
+		parts.add_bool("can_invite_users", self.can_invite_users);
+		parts.add_bool("can_manage_chat", self.can_manage_chat);
+		parts.add_bool("can_manage_topics", self.can_manage_topics);
+		parts.add_bool("can_manage_video_chats", self.can_manage_video_chats);
+		parts.add_bool("can_pin_messages", self.can_pin_messages);
+		parts.add_bool("can_post_messages", self.can_post_messages);
+		parts.add_bool("can_post_stories", self.can_post_stories);
+		parts.add_bool("can_promote_members", self.can_promote_members);
+		parts.add_bool("can_restrict_members", self.can_restrict_members);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_bool("is_anonymous", self.is_anonymous);
+		parts.add_i64("user_id", self.user_id);
+		parts
+	}
+}
 /**Refunds a successful payment in [Telegram Stars](https://t.me/BotNews/90). Returns *True* on success.
 
 https://core.telegram.org/bots/api/#refundstarpayment*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct RefundStarPayment {
 	/**Telegram payment identifier*/
 	pub telegram_payment_charge_id: String,
@@ -9102,11 +12513,20 @@ impl RefundStarPayment {
 		}
 	}
 }
-method!(RefundStarPayment, "refundStarPayment", bool);
+impl Executable for RefundStarPayment {
+	type Response = bool;
+	const METHOD_NAME: &str = "refundStarPayment";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("telegram_payment_charge_id", self.telegram_payment_charge_id);
+		parts.add_i64("user_id", self.user_id);
+		parts
+	}
+}
 /**Removes verification from a chat that is currently verified [on behalf of the organization](https://telegram.org/verify#third-party-verification) represented by the bot. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#removechatverification*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct RemoveChatVerification {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -9118,11 +12538,19 @@ impl RemoveChatVerification {
 		}
 	}
 }
-method!(RemoveChatVerification, "removeChatVerification", bool);
+impl Executable for RemoveChatVerification {
+	type Response = bool;
+	const METHOD_NAME: &str = "removeChatVerification";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts
+	}
+}
 /**Removes verification from a user who is currently verified [on behalf of the organization](https://telegram.org/verify#third-party-verification) represented by the bot. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#removeuserverification*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct RemoveUserVerification {
 	/**Unique identifier of the target user*/
 	pub user_id: i64,
@@ -9134,11 +12562,19 @@ impl RemoveUserVerification {
 		}
 	}
 }
-method!(RemoveUserVerification, "removeUserVerification", bool);
+impl Executable for RemoveUserVerification {
+	type Response = bool;
+	const METHOD_NAME: &str = "removeUserVerification";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		parts.add_i64("user_id", self.user_id);
+		parts
+	}
+}
 /**Use this method to reopen a closed topic in a forum supergroup chat. The bot must be an administrator in the chat for this to work and must have the *can\_manage\_topics* administrator rights, unless it is the creator of the topic. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#reopenforumtopic*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct ReopenForumTopic {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -9153,11 +12589,20 @@ impl ReopenForumTopic {
 		}
 	}
 }
-method!(ReopenForumTopic, "reopenForumTopic", bool);
+impl Executable for ReopenForumTopic {
+	type Response = bool;
+	const METHOD_NAME: &str = "reopenForumTopic";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts
+	}
+}
 /**Use this method to reopen a closed 'General' topic in a forum supergroup chat. The bot must be an administrator in the chat for this to work and must have the *can\_manage\_topics* administrator rights. The topic will be automatically unhidden if it was hidden. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#reopengeneralforumtopic*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct ReopenGeneralForumTopic {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -9169,11 +12614,19 @@ impl ReopenGeneralForumTopic {
 		}
 	}
 }
-method!(ReopenGeneralForumTopic, "reopenGeneralForumTopic", bool);
+impl Executable for ReopenGeneralForumTopic {
+	type Response = bool;
+	const METHOD_NAME: &str = "reopenGeneralForumTopic";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts
+	}
+}
 /**Use this method to replace an existing sticker in a sticker set with a new one. The method is equivalent to calling [deleteStickerFromSet](https://core.telegram.org/bots/api/#deletestickerfromset), then [addStickerToSet](https://core.telegram.org/bots/api/#addstickertoset), then [setStickerPositionInSet](https://core.telegram.org/bots/api/#setstickerpositioninset). Returns *True* on success.
 
 https://core.telegram.org/bots/api/#replacestickerinset*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct ReplaceStickerInSet {
 	/**Sticker set name*/
 	pub name: String,
@@ -9194,14 +12647,22 @@ impl ReplaceStickerInSet {
 		}
 	}
 }
-method!(ReplaceStickerInSet, "replaceStickerInSet", bool);
+impl Executable for ReplaceStickerInSet {
+	type Response = bool;
+	const METHOD_NAME: &str = "replaceStickerInSet";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(4);
+		parts.add_string("name", self.name);
+		parts.add_string("old_sticker", self.old_sticker);
+		parts.add_object("sticker", self.sticker);
+		parts.add_i64("user_id", self.user_id);
+		parts
+	}
+}
 /**Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this to work and must have the appropriate administrator rights. Pass *True* for all permissions to lift restrictions from a user. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#restrictchatmember*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct RestrictChatMember {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -9233,11 +12694,23 @@ impl RestrictChatMember {
 		self
 	}
 }
-method!(RestrictChatMember, "restrictChatMember", bool);
+impl Executable for RestrictChatMember {
+	type Response = bool;
+	const METHOD_NAME: &str = "restrictChatMember";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(5);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_object("permissions", self.permissions);
+		parts.add_i64("until_date", self.until_date);
+		parts.add_bool("use_independent_chat_permissions", self.use_independent_chat_permissions);
+		parts.add_i64("user_id", self.user_id);
+		parts
+	}
+}
 /**Use this method to revoke an invite link created by the bot. If the primary link is revoked, a new link is automatically generated. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns the revoked invite link as [ChatInviteLink](https://core.telegram.org/bots/api/#chatinvitelink) object.
 
 https://core.telegram.org/bots/api/#revokechatinvitelink*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct RevokeChatInviteLink {
 	/**Unique identifier of the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -9252,14 +12725,20 @@ impl RevokeChatInviteLink {
 		}
 	}
 }
-method!(RevokeChatInviteLink, "revokeChatInviteLink", ChatInviteLink);
+impl Executable for RevokeChatInviteLink {
+	type Response = ChatInviteLink;
+	const METHOD_NAME: &str = "revokeChatInviteLink";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_string("invite_link", self.invite_link);
+		parts
+	}
+}
 /**Stores a message that can be sent by a user of a Mini App. Returns a [PreparedInlineMessage](https://core.telegram.org/bots/api/#preparedinlinemessage) object.
 
 https://core.telegram.org/bots/api/#savepreparedinlinemessage*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SavePreparedInlineMessage {
 	/**Pass *True* if the message can be sent to private chats with bots*/
 	pub allow_bot_chats: Option<bool>,
@@ -9302,15 +12781,24 @@ impl SavePreparedInlineMessage {
 		self
 	}
 }
-method!(SavePreparedInlineMessage, "savePreparedInlineMessage", PreparedInlineMessage);
+impl Executable for SavePreparedInlineMessage {
+	type Response = PreparedInlineMessage;
+	const METHOD_NAME: &str = "savePreparedInlineMessage";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(6);
+		parts.add_bool("allow_bot_chats", self.allow_bot_chats);
+		parts.add_bool("allow_channel_chats", self.allow_channel_chats);
+		parts.add_bool("allow_group_chats", self.allow_group_chats);
+		parts.add_bool("allow_user_chats", self.allow_user_chats);
+		parts.add_object("result", self.result);
+		parts.add_i64("user_id", self.user_id);
+		parts
+	}
+}
 /**Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound). On success, the sent [Message](https://core.telegram.org/bots/api/#message) is returned. Bots can currently send animation files of up to 50 MB in size, this limit may be changed in the future.
 
 https://core.telegram.org/bots/api/#sendanimation*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SendAnimation {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -9387,6 +12875,10 @@ impl SendAnimation {
 		self.caption = Some(caption.into());
 		self
 	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
+		self
+	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
@@ -9444,17 +12936,39 @@ impl SendAnimation {
 		self
 	}
 }
-method!(SendAnimation, "sendAnimation", Message);
+impl Executable for SendAnimation {
+	type Response = Message;
+	const METHOD_NAME: &str = "sendAnimation";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(19);
+		parts.add_bool("allow_paid_broadcast", self.allow_paid_broadcast);
+		parts.add_asset("animation", self.animation);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("caption", self.caption);
+		if self.caption_entities.len() > 0 { parts.add_object("caption_entities", self.caption_entities) }
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_bool("disable_notification", self.disable_notification);
+		parts.add_i64("duration", self.duration);
+		parts.add_bool("has_spoiler", self.has_spoiler);
+		parts.add_i64("height", self.height);
+		parts.add_string("message_effect_id", self.message_effect_id);
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts.add_string("parse_mode", self.parse_mode);
+		parts.add_bool("protect_content", self.protect_content);
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		parts.add_bool("show_caption_above_media", self.show_caption_above_media);
+		parts.add_asset("thumbnail", self.thumbnail);
+		parts.add_i64("width", self.width);
+		parts
+	}
+}
 /**Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .MP3 or .M4A format. On success, the sent [Message](https://core.telegram.org/bots/api/#message) is returned. Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the future.
 
 For sending voice messages, use the [sendVoice](https://core.telegram.org/bots/api/#sendvoice) method instead.
 
 https://core.telegram.org/bots/api/#sendaudio*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SendAudio {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -9525,6 +13039,10 @@ impl SendAudio {
 		self.caption = Some(caption.into());
 		self
 	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
+		self
+	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
@@ -9574,7 +13092,31 @@ impl SendAudio {
 		self
 	}
 }
-method!(SendAudio, "sendAudio", Message);
+impl Executable for SendAudio {
+	type Response = Message;
+	const METHOD_NAME: &str = "sendAudio";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(17);
+		parts.add_bool("allow_paid_broadcast", self.allow_paid_broadcast);
+		parts.add_asset("audio", self.audio);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("caption", self.caption);
+		if self.caption_entities.len() > 0 { parts.add_object("caption_entities", self.caption_entities) }
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_bool("disable_notification", self.disable_notification);
+		parts.add_i64("duration", self.duration);
+		parts.add_string("message_effect_id", self.message_effect_id);
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts.add_string("parse_mode", self.parse_mode);
+		parts.add_string("performer", self.performer);
+		parts.add_bool("protect_content", self.protect_content);
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		parts.add_asset("thumbnail", self.thumbnail);
+		parts.add_string("title", self.title);
+		parts
+	}
+}
 /**Use this method when you need to tell the user that something is happening on the bot's side. The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients clear its typing status). Returns *True* on success.
 
 Example: The [ImageBot](https://t.me/imagebot) needs some time to process a request and upload the image. Instead of sending a text message along the lines of “Retrieving image, please wait…”, the bot may use [sendChatAction](https://core.telegram.org/bots/api/#sendchataction) with *action* = *upload\_photo*. The user will see a “sending photo” status for the bot.
@@ -9582,10 +13124,7 @@ Example: The [ImageBot](https://t.me/imagebot) needs some time to process a requ
 We only recommend using this method when a response from the bot will take a **noticeable** amount of time to arrive.
 
 https://core.telegram.org/bots/api/#sendchataction*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SendChatAction {
 	/**Type of action to broadcast. Choose one, depending on what the user is about to receive: *typing* for [text messages](https://core.telegram.org/bots/api/#sendmessage), *upload\_photo* for [photos](https://core.telegram.org/bots/api/#sendphoto), *record\_video* or *upload\_video* for [videos](https://core.telegram.org/bots/api/#sendvideo), *record\_voice* or *upload\_voice* for [voice notes](https://core.telegram.org/bots/api/#sendvoice), *upload\_document* for [general files](https://core.telegram.org/bots/api/#senddocument), *choose\_sticker* for [stickers](https://core.telegram.org/bots/api/#sendsticker), *find\_location* for [location data](https://core.telegram.org/bots/api/#sendlocation), *record\_video\_note* or *upload\_video\_note* for [video notes](https://core.telegram.org/bots/api/#sendvideonote).*/
 	pub action: String,
@@ -9614,14 +13153,22 @@ impl SendChatAction {
 		self
 	}
 }
-method!(SendChatAction, "sendChatAction", bool);
+impl Executable for SendChatAction {
+	type Response = bool;
+	const METHOD_NAME: &str = "sendChatAction";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(4);
+		parts.add_string("action", self.action);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts
+	}
+}
 /**Use this method to send phone contacts. On success, the sent [Message](https://core.telegram.org/bots/api/#message) is returned.
 
 https://core.telegram.org/bots/api/#sendcontact*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SendContact {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -9709,14 +13256,31 @@ impl SendContact {
 		self
 	}
 }
-method!(SendContact, "sendContact", Message);
+impl Executable for SendContact {
+	type Response = Message;
+	const METHOD_NAME: &str = "sendContact";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(13);
+		parts.add_bool("allow_paid_broadcast", self.allow_paid_broadcast);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_bool("disable_notification", self.disable_notification);
+		parts.add_string("first_name", self.first_name);
+		parts.add_string("last_name", self.last_name);
+		parts.add_string("message_effect_id", self.message_effect_id);
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts.add_string("phone_number", self.phone_number);
+		parts.add_bool("protect_content", self.protect_content);
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		parts.add_string("vcard", self.vcard);
+		parts
+	}
+}
 /**Use this method to send an animated emoji that will display a random value. On success, the sent [Message](https://core.telegram.org/bots/api/#message) is returned.
 
 https://core.telegram.org/bots/api/#senddice*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SendDice {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -9791,15 +13355,28 @@ impl SendDice {
 		self
 	}
 }
-method!(SendDice, "sendDice", Message);
+impl Executable for SendDice {
+	type Response = Message;
+	const METHOD_NAME: &str = "sendDice";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(10);
+		parts.add_bool("allow_paid_broadcast", self.allow_paid_broadcast);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_bool("disable_notification", self.disable_notification);
+		parts.add_string("emoji", self.emoji);
+		parts.add_string("message_effect_id", self.message_effect_id);
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts.add_bool("protect_content", self.protect_content);
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		parts
+	}
+}
 /**Use this method to send general files. On success, the sent [Message](https://core.telegram.org/bots/api/#message) is returned. Bots can currently send files of any type of up to 50 MB in size, this limit may be changed in the future.
 
 https://core.telegram.org/bots/api/#senddocument*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SendDocument {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -9864,6 +13441,10 @@ impl SendDocument {
 		self.caption = Some(caption.into());
 		self
 	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
+		self
+	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
@@ -9905,14 +13486,33 @@ impl SendDocument {
 		self
 	}
 }
-method!(SendDocument, "sendDocument", Message);
+impl Executable for SendDocument {
+	type Response = Message;
+	const METHOD_NAME: &str = "sendDocument";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(15);
+		parts.add_bool("allow_paid_broadcast", self.allow_paid_broadcast);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("caption", self.caption);
+		if self.caption_entities.len() > 0 { parts.add_object("caption_entities", self.caption_entities) }
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_bool("disable_content_type_detection", self.disable_content_type_detection);
+		parts.add_bool("disable_notification", self.disable_notification);
+		parts.add_asset("document", self.document);
+		parts.add_string("message_effect_id", self.message_effect_id);
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts.add_string("parse_mode", self.parse_mode);
+		parts.add_bool("protect_content", self.protect_content);
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		parts.add_asset("thumbnail", self.thumbnail);
+		parts
+	}
+}
 /**Use this method to send a game. On success, the sent [Message](https://core.telegram.org/bots/api/#message) is returned.
 
 https://core.telegram.org/bots/api/#sendgame*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SendGame {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -9983,15 +13583,28 @@ impl SendGame {
 		self
 	}
 }
-method!(SendGame, "sendGame", Message);
+impl Executable for SendGame {
+	type Response = Message;
+	const METHOD_NAME: &str = "sendGame";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(10);
+		parts.add_bool("allow_paid_broadcast", self.allow_paid_broadcast);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_i64("chat_id", self.chat_id);
+		parts.add_bool("disable_notification", self.disable_notification);
+		parts.add_string("game_short_name", self.game_short_name);
+		parts.add_string("message_effect_id", self.message_effect_id);
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts.add_bool("protect_content", self.protect_content);
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		parts
+	}
+}
 /**Sends a gift to the given user. The gift can't be converted to Telegram Stars by the user. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#sendgift*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SendGift {
 	/**Identifier of the gift*/
 	pub gift_id: String,
@@ -10025,6 +13638,10 @@ impl SendGift {
 		self.text = Some(text.into());
 		self
 	}
+	pub fn add_text_entity(mut self, text_entity: impl Into<MessageEntity>) -> Self {
+		self.text_entities.push(text_entity.into());
+		self
+	}
 	pub fn text_entities(mut self, text_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.text_entities = text_entities.into();
 		self
@@ -10034,15 +13651,24 @@ impl SendGift {
 		self
 	}
 }
-method!(SendGift, "sendGift", bool);
+impl Executable for SendGift {
+	type Response = bool;
+	const METHOD_NAME: &str = "sendGift";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(6);
+		parts.add_string("gift_id", self.gift_id);
+		parts.add_bool("pay_for_upgrade", self.pay_for_upgrade);
+		parts.add_string("text", self.text);
+		if self.text_entities.len() > 0 { parts.add_object("text_entities", self.text_entities) }
+		parts.add_string("text_parse_mode", self.text_parse_mode);
+		parts.add_i64("user_id", self.user_id);
+		parts
+	}
+}
 /**Use this method to send invoices. On success, the sent [Message](https://core.telegram.org/bots/api/#message) is returned.
 
 https://core.telegram.org/bots/api/#sendinvoice*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SendInvoice {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -10193,6 +13819,10 @@ impl SendInvoice {
 		self.photo_width = Some(photo_width.into());
 		self
 	}
+	pub fn add_price(mut self, price: impl Into<LabeledPrice>) -> Self {
+		self.prices.push(price.into());
+		self
+	}
 	pub fn protect_content(mut self, protect_content: bool) -> Self {
 		self.protect_content = Some(protect_content);
 		self
@@ -10225,19 +13855,56 @@ impl SendInvoice {
 		self.start_parameter = Some(start_parameter.into());
 		self
 	}
+	pub fn add_suggested_tip_amount(mut self, suggested_tip_amount: impl Into<i64>) -> Self {
+		self.suggested_tip_amounts.push(suggested_tip_amount.into());
+		self
+	}
 	pub fn suggested_tip_amounts(mut self, suggested_tip_amounts: impl Into<Vec<i64>>) -> Self {
 		self.suggested_tip_amounts = suggested_tip_amounts.into();
 		self
 	}
 }
-method!(SendInvoice, "sendInvoice", Message);
+impl Executable for SendInvoice {
+	type Response = Message;
+	const METHOD_NAME: &str = "sendInvoice";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(29);
+		parts.add_bool("allow_paid_broadcast", self.allow_paid_broadcast);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_string("currency", self.currency);
+		parts.add_string("description", self.description);
+		parts.add_bool("disable_notification", self.disable_notification);
+		parts.add_bool("is_flexible", self.is_flexible);
+		parts.add_i64("max_tip_amount", self.max_tip_amount);
+		parts.add_string("message_effect_id", self.message_effect_id);
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts.add_bool("need_email", self.need_email);
+		parts.add_bool("need_name", self.need_name);
+		parts.add_bool("need_phone_number", self.need_phone_number);
+		parts.add_bool("need_shipping_address", self.need_shipping_address);
+		parts.add_string("payload", self.payload);
+		parts.add_i64("photo_height", self.photo_height);
+		parts.add_i64("photo_size", self.photo_size);
+		parts.add_string("photo_url", self.photo_url);
+		parts.add_i64("photo_width", self.photo_width);
+		if self.prices.len() > 0 { parts.add_object("prices", self.prices) }
+		parts.add_bool("protect_content", self.protect_content);
+		parts.add_string("provider_data", self.provider_data);
+		parts.add_string("provider_token", self.provider_token);
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		parts.add_bool("send_email_to_provider", self.send_email_to_provider);
+		parts.add_bool("send_phone_number_to_provider", self.send_phone_number_to_provider);
+		parts.add_string("start_parameter", self.start_parameter);
+		if self.suggested_tip_amounts.len() > 0 { parts.add_object("suggested_tip_amounts", self.suggested_tip_amounts) }
+		parts.add_string("title", self.title);
+		parts
+	}
+}
 /**Use this method to send point on the map. On success, the sent [Message](https://core.telegram.org/bots/api/#message) is returned.
 
 https://core.telegram.org/bots/api/#sendlocation*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SendLocation {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -10339,15 +14006,33 @@ impl SendLocation {
 		self
 	}
 }
-method!(SendLocation, "sendLocation", Message);
+impl Executable for SendLocation {
+	type Response = Message;
+	const METHOD_NAME: &str = "sendLocation";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(15);
+		parts.add_bool("allow_paid_broadcast", self.allow_paid_broadcast);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_bool("disable_notification", self.disable_notification);
+		parts.add_i64("heading", self.heading);
+		parts.add_f32("horizontal_accuracy", self.horizontal_accuracy);
+		parts.add_f32("latitude", self.latitude);
+		parts.add_i64("live_period", self.live_period);
+		parts.add_f32("longitude", self.longitude);
+		parts.add_string("message_effect_id", self.message_effect_id);
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts.add_bool("protect_content", self.protect_content);
+		parts.add_i64("proximity_alert_radius", self.proximity_alert_radius);
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		parts
+	}
+}
 /**Use this method to send a group of photos, videos, documents or audios as an album. Documents and audio files can be only grouped in an album with messages of the same type. On success, an array of [Messages](https://core.telegram.org/bots/api/#message) that were sent is returned.
 
 https://core.telegram.org/bots/api/#sendmediagroup*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SendMediaGroup {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -10394,6 +14079,10 @@ impl SendMediaGroup {
 		self.disable_notification = Some(disable_notification);
 		self
 	}
+	pub fn add_media(mut self, media: impl Into<Media>) -> Self {
+		self.media.push(media.into());
+		self
+	}
 	pub fn message_effect_id(mut self, message_effect_id: impl Into<String>) -> Self {
 		self.message_effect_id = Some(message_effect_id.into());
 		self
@@ -10411,15 +14100,27 @@ impl SendMediaGroup {
 		self
 	}
 }
-method!(SendMediaGroup, "sendMediaGroup", Message);
+impl Executable for SendMediaGroup {
+	type Response = Message;
+	const METHOD_NAME: &str = "sendMediaGroup";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(9);
+		parts.add_bool("allow_paid_broadcast", self.allow_paid_broadcast);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_bool("disable_notification", self.disable_notification);
+		if self.media.len() > 0 { parts.add_object("media", self.media) }
+		parts.add_string("message_effect_id", self.message_effect_id);
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts.add_bool("protect_content", self.protect_content);
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		parts
+	}
+}
 /**Use this method to send text messages. On success, the sent [Message](https://core.telegram.org/bots/api/#message) is returned.
 
 https://core.telegram.org/bots/api/#sendmessage*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SendMessage {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -10478,6 +14179,10 @@ impl SendMessage {
 		self.disable_notification = Some(disable_notification);
 		self
 	}
+	pub fn add_entity(mut self, entity: impl Into<MessageEntity>) -> Self {
+		self.entities.push(entity.into());
+		self
+	}
 	pub fn entities(mut self, entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.entities = entities.into();
 		self
@@ -10511,15 +14216,31 @@ impl SendMessage {
 		self
 	}
 }
-method!(SendMessage, "sendMessage", Message);
+impl Executable for SendMessage {
+	type Response = Message;
+	const METHOD_NAME: &str = "sendMessage";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(13);
+		parts.add_bool("allow_paid_broadcast", self.allow_paid_broadcast);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_bool("disable_notification", self.disable_notification);
+		if self.entities.len() > 0 { parts.add_object("entities", self.entities) }
+		if let Some(link_preview_options) = self.link_preview_options { parts.add_object("link_preview_options", link_preview_options) }
+		parts.add_string("message_effect_id", self.message_effect_id);
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts.add_string("parse_mode", self.parse_mode);
+		parts.add_bool("protect_content", self.protect_content);
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		parts.add_string("text", self.text);
+		parts
+	}
+}
 /**Use this method to send paid media. On success, the sent [Message](https://core.telegram.org/bots/api/#message) is returned.
 
 https://core.telegram.org/bots/api/#sendpaidmedia*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SendPaidMedia {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -10581,12 +14302,20 @@ impl SendPaidMedia {
 		self.caption = Some(caption.into());
 		self
 	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
+		self
+	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
 	pub fn disable_notification(mut self, disable_notification: bool) -> Self {
 		self.disable_notification = Some(disable_notification);
+		self
+	}
+	pub fn add_media(mut self, media: impl Into<InputPaidMedia>) -> Self {
+		self.media.push(media.into());
 		self
 	}
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
@@ -10614,15 +14343,32 @@ impl SendPaidMedia {
 		self
 	}
 }
-method!(SendPaidMedia, "sendPaidMedia", Message);
+impl Executable for SendPaidMedia {
+	type Response = Message;
+	const METHOD_NAME: &str = "sendPaidMedia";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(14);
+		parts.add_bool("allow_paid_broadcast", self.allow_paid_broadcast);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("caption", self.caption);
+		if self.caption_entities.len() > 0 { parts.add_object("caption_entities", self.caption_entities) }
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_bool("disable_notification", self.disable_notification);
+		if self.media.len() > 0 { parts.add_object("media", self.media) }
+		parts.add_string("parse_mode", self.parse_mode);
+		parts.add_string("payload", self.payload);
+		parts.add_bool("protect_content", self.protect_content);
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		parts.add_bool("show_caption_above_media", self.show_caption_above_media);
+		parts.add_i64("star_count", self.star_count);
+		parts
+	}
+}
 /**Use this method to send photos. On success, the sent [Message](https://core.telegram.org/bots/api/#message) is returned.
 
 https://core.telegram.org/bots/api/#sendphoto*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SendPhoto {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -10687,6 +14433,10 @@ impl SendPhoto {
 		self.caption = Some(caption.into());
 		self
 	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
+		self
+	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
@@ -10728,15 +14478,33 @@ impl SendPhoto {
 		self
 	}
 }
-method!(SendPhoto, "sendPhoto", Message);
+impl Executable for SendPhoto {
+	type Response = Message;
+	const METHOD_NAME: &str = "sendPhoto";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(15);
+		parts.add_bool("allow_paid_broadcast", self.allow_paid_broadcast);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("caption", self.caption);
+		if self.caption_entities.len() > 0 { parts.add_object("caption_entities", self.caption_entities) }
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_bool("disable_notification", self.disable_notification);
+		parts.add_bool("has_spoiler", self.has_spoiler);
+		parts.add_string("message_effect_id", self.message_effect_id);
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts.add_string("parse_mode", self.parse_mode);
+		parts.add_asset("photo", self.photo);
+		parts.add_bool("protect_content", self.protect_content);
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		parts.add_bool("show_caption_above_media", self.show_caption_above_media);
+		parts
+	}
+}
 /**Use this method to send a native poll. On success, the sent [Message](https://core.telegram.org/bots/api/#message) is returned.
 
 https://core.telegram.org/bots/api/#sendpoll*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SendPoll {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -10841,6 +14609,10 @@ impl SendPoll {
 		self.explanation = Some(explanation.into());
 		self
 	}
+	pub fn add_explanation_entity(mut self, explanation_entity: impl Into<MessageEntity>) -> Self {
+		self.explanation_entities.push(explanation_entity.into());
+		self
+	}
 	pub fn explanation_entities(mut self, explanation_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.explanation_entities = explanation_entities.into();
 		self
@@ -10869,8 +14641,16 @@ impl SendPoll {
 		self.open_period = Some(open_period.into());
 		self
 	}
+	pub fn add_option(mut self, option: impl Into<InputPollOption>) -> Self {
+		self.options.push(option.into());
+		self
+	}
 	pub fn protect_content(mut self, protect_content: bool) -> Self {
 		self.protect_content = Some(protect_content);
+		self
+	}
+	pub fn add_question_entity(mut self, question_entity: impl Into<MessageEntity>) -> Self {
+		self.question_entities.push(question_entity.into());
 		self
 	}
 	pub fn question_entities(mut self, question_entities: impl Into<Vec<MessageEntity>>) -> Self {
@@ -10894,14 +14674,41 @@ impl SendPoll {
 		self
 	}
 }
-method!(SendPoll, "sendPoll", Message);
+impl Executable for SendPoll {
+	type Response = Message;
+	const METHOD_NAME: &str = "sendPoll";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(23);
+		parts.add_bool("allow_paid_broadcast", self.allow_paid_broadcast);
+		parts.add_bool("allows_multiple_answers", self.allows_multiple_answers);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_i64("close_date", self.close_date);
+		parts.add_i64("correct_option_id", self.correct_option_id);
+		parts.add_bool("disable_notification", self.disable_notification);
+		parts.add_string("explanation", self.explanation);
+		if self.explanation_entities.len() > 0 { parts.add_object("explanation_entities", self.explanation_entities) }
+		parts.add_string("explanation_parse_mode", self.explanation_parse_mode);
+		parts.add_bool("is_anonymous", self.is_anonymous);
+		parts.add_bool("is_closed", self.is_closed);
+		parts.add_string("message_effect_id", self.message_effect_id);
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts.add_i64("open_period", self.open_period);
+		if self.options.len() > 0 { parts.add_object("options", self.options) }
+		parts.add_bool("protect_content", self.protect_content);
+		parts.add_string("question", self.question);
+		if self.question_entities.len() > 0 { parts.add_object("question_entities", self.question_entities) }
+		parts.add_string("question_parse_mode", self.question_parse_mode);
+		parts.add_string("r#type", self.r#type);
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		parts
+	}
+}
 /**Use this method to send static .WEBP, [animated](https://telegram.org/blog/animated-stickers) .TGS, or [video](https://telegram.org/blog/video-stickers-better-reactions) .WEBM stickers. On success, the sent [Message](https://core.telegram.org/bots/api/#message) is returned.
 
 https://core.telegram.org/bots/api/#sendsticker*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SendSticker {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -10979,14 +14786,29 @@ impl SendSticker {
 		self
 	}
 }
-method!(SendSticker, "sendSticker", Message);
+impl Executable for SendSticker {
+	type Response = Message;
+	const METHOD_NAME: &str = "sendSticker";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(11);
+		parts.add_bool("allow_paid_broadcast", self.allow_paid_broadcast);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_bool("disable_notification", self.disable_notification);
+		parts.add_string("emoji", self.emoji);
+		parts.add_string("message_effect_id", self.message_effect_id);
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts.add_bool("protect_content", self.protect_content);
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		parts.add_asset("sticker", self.sticker);
+		parts
+	}
+}
 /**Use this method to send information about a venue. On success, the sent [Message](https://core.telegram.org/bots/api/#message) is returned.
 
 https://core.telegram.org/bots/api/#sendvenue*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SendVenue {
 	/**Address of the venue*/
 	pub address: String,
@@ -11094,15 +14916,35 @@ impl SendVenue {
 		self
 	}
 }
-method!(SendVenue, "sendVenue", Message);
+impl Executable for SendVenue {
+	type Response = Message;
+	const METHOD_NAME: &str = "sendVenue";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(17);
+		parts.add_string("address", self.address);
+		parts.add_bool("allow_paid_broadcast", self.allow_paid_broadcast);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_bool("disable_notification", self.disable_notification);
+		parts.add_string("foursquare_id", self.foursquare_id);
+		parts.add_string("foursquare_type", self.foursquare_type);
+		parts.add_string("google_place_id", self.google_place_id);
+		parts.add_string("google_place_type", self.google_place_type);
+		parts.add_f32("latitude", self.latitude);
+		parts.add_f32("longitude", self.longitude);
+		parts.add_string("message_effect_id", self.message_effect_id);
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts.add_bool("protect_content", self.protect_content);
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		parts.add_string("title", self.title);
+		parts
+	}
+}
 /**Use this method to send video files, Telegram clients support MPEG4 videos (other formats may be sent as [Document](https://core.telegram.org/bots/api/#document)). On success, the sent [Message](https://core.telegram.org/bots/api/#message) is returned. Bots can currently send video files of up to 50 MB in size, this limit may be changed in the future.
 
 https://core.telegram.org/bots/api/#sendvideo*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SendVideo {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -11182,6 +15024,10 @@ impl SendVideo {
 		self.caption = Some(caption.into());
 		self
 	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
+		self
+	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
@@ -11243,14 +15089,38 @@ impl SendVideo {
 		self
 	}
 }
-method!(SendVideo, "sendVideo", Message);
+impl Executable for SendVideo {
+	type Response = Message;
+	const METHOD_NAME: &str = "sendVideo";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(20);
+		parts.add_bool("allow_paid_broadcast", self.allow_paid_broadcast);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("caption", self.caption);
+		if self.caption_entities.len() > 0 { parts.add_object("caption_entities", self.caption_entities) }
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_bool("disable_notification", self.disable_notification);
+		parts.add_i64("duration", self.duration);
+		parts.add_bool("has_spoiler", self.has_spoiler);
+		parts.add_i64("height", self.height);
+		parts.add_string("message_effect_id", self.message_effect_id);
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts.add_string("parse_mode", self.parse_mode);
+		parts.add_bool("protect_content", self.protect_content);
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		parts.add_bool("show_caption_above_media", self.show_caption_above_media);
+		parts.add_bool("supports_streaming", self.supports_streaming);
+		parts.add_asset("thumbnail", self.thumbnail);
+		parts.add_asset("video", self.video);
+		parts.add_i64("width", self.width);
+		parts
+	}
+}
 /**As of [v.4.0](https://telegram.org/blog/video-messages-and-telescope), Telegram clients support rounded square MPEG4 videos of up to 1 minute long. Use this method to send video messages. On success, the sent [Message](https://core.telegram.org/bots/api/#message) is returned.
 
 https://core.telegram.org/bots/api/#sendvideonote*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SendVideoNote {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -11342,15 +15212,31 @@ impl SendVideoNote {
 		self
 	}
 }
-method!(SendVideoNote, "sendVideoNote", Message);
+impl Executable for SendVideoNote {
+	type Response = Message;
+	const METHOD_NAME: &str = "sendVideoNote";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(13);
+		parts.add_bool("allow_paid_broadcast", self.allow_paid_broadcast);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_bool("disable_notification", self.disable_notification);
+		parts.add_i64("duration", self.duration);
+		parts.add_i64("length", self.length);
+		parts.add_string("message_effect_id", self.message_effect_id);
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts.add_bool("protect_content", self.protect_content);
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		parts.add_asset("thumbnail", self.thumbnail);
+		parts.add_asset("video_note", self.video_note);
+		parts
+	}
+}
 /**Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .OGG file encoded with OPUS, or in .MP3 format, or in .M4A format (other formats may be sent as [Audio](https://core.telegram.org/bots/api/#audio) or [Document](https://core.telegram.org/bots/api/#document)). On success, the sent [Message](https://core.telegram.org/bots/api/#message) is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
 
 https://core.telegram.org/bots/api/#sendvoice*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SendVoice {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -11412,6 +15298,10 @@ impl SendVoice {
 		self.caption = Some(caption.into());
 		self
 	}
+	pub fn add_caption_entity(mut self, caption_entity: impl Into<MessageEntity>) -> Self {
+		self.caption_entities.push(caption_entity.into());
+		self
+	}
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
@@ -11449,11 +15339,32 @@ impl SendVoice {
 		self
 	}
 }
-method!(SendVoice, "sendVoice", Message);
+impl Executable for SendVoice {
+	type Response = Message;
+	const METHOD_NAME: &str = "sendVoice";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(14);
+		parts.add_bool("allow_paid_broadcast", self.allow_paid_broadcast);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("caption", self.caption);
+		if self.caption_entities.len() > 0 { parts.add_object("caption_entities", self.caption_entities) }
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_bool("disable_notification", self.disable_notification);
+		parts.add_i64("duration", self.duration);
+		parts.add_string("message_effect_id", self.message_effect_id);
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts.add_string("parse_mode", self.parse_mode);
+		parts.add_bool("protect_content", self.protect_content);
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		parts.add_asset("voice", self.voice);
+		parts
+	}
+}
 /**Use this method to set a custom title for an administrator in a supergroup promoted by the bot. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#setchatadministratorcustomtitle*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SetChatAdministratorCustomTitle {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -11471,14 +15382,21 @@ impl SetChatAdministratorCustomTitle {
 		}
 	}
 }
-method!(SetChatAdministratorCustomTitle, "setChatAdministratorCustomTitle", bool);
+impl Executable for SetChatAdministratorCustomTitle {
+	type Response = bool;
+	const METHOD_NAME: &str = "setChatAdministratorCustomTitle";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(3);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_string("custom_title", self.custom_title);
+		parts.add_i64("user_id", self.user_id);
+		parts
+	}
+}
 /**Use this method to change the description of a group, a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#setchatdescription*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SetChatDescription {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -11497,14 +15415,20 @@ impl SetChatDescription {
 		self
 	}
 }
-method!(SetChatDescription, "setChatDescription", bool);
+impl Executable for SetChatDescription {
+	type Response = bool;
+	const METHOD_NAME: &str = "setChatDescription";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_string("description", self.description);
+		parts
+	}
+}
 /**Use this method to change the bot's menu button in a private chat, or the default menu button. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#setchatmenubutton*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SetChatMenuButton {
 	/**Unique identifier for the target private chat. If not specified, default bot's menu button will be changed*/
 	pub chat_id: Option<i64>,
@@ -11527,14 +15451,20 @@ impl SetChatMenuButton {
 		self
 	}
 }
-method!(SetChatMenuButton, "setChatMenuButton", bool);
+impl Executable for SetChatMenuButton {
+	type Response = bool;
+	const METHOD_NAME: &str = "setChatMenuButton";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_i64("chat_id", self.chat_id);
+		if let Some(menu_button) = self.menu_button { parts.add_object("menu_button", menu_button) }
+		parts
+	}
+}
 /**Use this method to set default chat permissions for all members. The bot must be an administrator in the group or a supergroup for this to work and must have the *can\_restrict\_members* administrator rights. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#setchatpermissions*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SetChatPermissions {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -11556,11 +15486,21 @@ impl SetChatPermissions {
 		self
 	}
 }
-method!(SetChatPermissions, "setChatPermissions", bool);
+impl Executable for SetChatPermissions {
+	type Response = bool;
+	const METHOD_NAME: &str = "setChatPermissions";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(3);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_object("permissions", self.permissions);
+		parts.add_bool("use_independent_chat_permissions", self.use_independent_chat_permissions);
+		parts
+	}
+}
 /**Use this method to set a new profile photo for the chat. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#setchatphoto*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SetChatPhoto {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -11575,11 +15515,20 @@ impl SetChatPhoto {
 		}
 	}
 }
-method!(SetChatPhoto, "setChatPhoto", bool);
+impl Executable for SetChatPhoto {
+	type Response = bool;
+	const METHOD_NAME: &str = "setChatPhoto";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_file("photo", self.photo);
+		parts
+	}
+}
 /**Use this method to set a new group sticker set for a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Use the field *can\_set\_sticker\_set* optionally returned in [getChat](https://core.telegram.org/bots/api/#getchat) requests to check if the bot can use this method. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#setchatstickerset*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SetChatStickerSet {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -11594,11 +15543,20 @@ impl SetChatStickerSet {
 		}
 	}
 }
-method!(SetChatStickerSet, "setChatStickerSet", bool);
+impl Executable for SetChatStickerSet {
+	type Response = bool;
+	const METHOD_NAME: &str = "setChatStickerSet";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_string("sticker_set_name", self.sticker_set_name);
+		parts
+	}
+}
 /**Use this method to change the title of a chat. Titles can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#setchattitle*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SetChatTitle {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -11613,14 +15571,20 @@ impl SetChatTitle {
 		}
 	}
 }
-method!(SetChatTitle, "setChatTitle", bool);
+impl Executable for SetChatTitle {
+	type Response = bool;
+	const METHOD_NAME: &str = "setChatTitle";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_string("title", self.title);
+		parts
+	}
+}
 /**Use this method to set the thumbnail of a custom emoji sticker set. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#setcustomemojistickersetthumbnail*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SetCustomEmojiStickerSetThumbnail {
 	/**Custom emoji identifier of a sticker from the sticker set; pass an empty string to drop the thumbnail and use the first sticker as the thumbnail.*/
 	pub custom_emoji_id: Option<String>,
@@ -11639,14 +15603,20 @@ impl SetCustomEmojiStickerSetThumbnail {
 		self
 	}
 }
-method!(SetCustomEmojiStickerSetThumbnail, "setCustomEmojiStickerSetThumbnail", bool);
+impl Executable for SetCustomEmojiStickerSetThumbnail {
+	type Response = bool;
+	const METHOD_NAME: &str = "setCustomEmojiStickerSetThumbnail";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("custom_emoji_id", self.custom_emoji_id);
+		parts.add_string("name", self.name);
+		parts
+	}
+}
 /**Use this method to set the score of the specified user in a game message. On success, if the message is not an inline message, the [Message](https://core.telegram.org/bots/api/#message) is returned, otherwise *True* is returned. Returns an error, if the new score is not greater than the user's current score in the chat and *force* is *False*.
 
 https://core.telegram.org/bots/api/#setgamescore*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SetGameScore {
 	/**Required if *inline\_message\_id* is not specified. Unique identifier for the target chat*/
 	pub chat_id: Option<i64>,
@@ -11696,15 +15666,25 @@ impl SetGameScore {
 		self
 	}
 }
-method!(SetGameScore, "setGameScore", SetGameScoreResult);
+impl Executable for SetGameScore {
+	type Response = SetGameScoreResult;
+	const METHOD_NAME: &str = "setGameScore";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(7);
+		parts.add_i64("chat_id", self.chat_id);
+		parts.add_bool("disable_edit_message", self.disable_edit_message);
+		parts.add_bool("force", self.force);
+		parts.add_string("inline_message_id", self.inline_message_id);
+		parts.add_i64("message_id", self.message_id);
+		parts.add_i64("score", self.score);
+		parts.add_i64("user_id", self.user_id);
+		parts
+	}
+}
 /**Use this method to change the chosen reactions on a message. Service messages can't be reacted to. Automatically forwarded messages from a channel to its discussion group have the same available reactions as messages in the channel. Bots can't use paid reactions. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#setmessagereaction*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SetMessageReaction {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -11728,20 +15708,31 @@ impl SetMessageReaction {
 		self.is_big = Some(is_big);
 		self
 	}
+	pub fn add_reaction(mut self, reaction: impl Into<ReactionType>) -> Self {
+		self.reaction.push(reaction.into());
+		self
+	}
 	pub fn reaction(mut self, reaction: impl Into<Vec<ReactionType>>) -> Self {
 		self.reaction = reaction.into();
 		self
 	}
 }
-method!(SetMessageReaction, "setMessageReaction", bool);
+impl Executable for SetMessageReaction {
+	type Response = bool;
+	const METHOD_NAME: &str = "setMessageReaction";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(4);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_bool("is_big", self.is_big);
+		parts.add_i64("message_id", self.message_id);
+		if self.reaction.len() > 0 { parts.add_object("reaction", self.reaction) }
+		parts
+	}
+}
 /**Use this method to change the list of the bot's commands. See [this manual](https://core.telegram.org/bots/features#commands) for more details about bot commands. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#setmycommands*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SetMyCommands {
 	/**A JSON-serialized list of bot commands to be set as the list of the bot's commands. At most 100 commands can be specified.*/
 	pub commands: Vec<BotCommand>,
@@ -11758,6 +15749,10 @@ impl SetMyCommands {
 			scope: None,
 		}
 	}
+	pub fn add_command(mut self, command: impl Into<BotCommand>) -> Self {
+		self.commands.push(command.into());
+		self
+	}
 	pub fn language_code(mut self, language_code: impl Into<String>) -> Self {
 		self.language_code = Some(language_code.into());
 		self
@@ -11767,14 +15762,21 @@ impl SetMyCommands {
 		self
 	}
 }
-method!(SetMyCommands, "setMyCommands", bool);
+impl Executable for SetMyCommands {
+	type Response = bool;
+	const METHOD_NAME: &str = "setMyCommands";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(3);
+		if self.commands.len() > 0 { parts.add_object("commands", self.commands) }
+		parts.add_string("language_code", self.language_code);
+		if let Some(scope) = self.scope { parts.add_object("scope", scope) }
+		parts
+	}
+}
 /**Use this method to change the default administrator rights requested by the bot when it's added as an administrator to groups or channels. These rights will be suggested to users, but they are free to modify the list before adding the bot. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#setmydefaultadministratorrights*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SetMyDefaultAdministratorRights {
 	/**Pass *True* to change the default administrator rights of the bot in channels. Otherwise, the default administrator rights of the bot for groups and supergroups will be changed.*/
 	pub for_channels: Option<bool>,
@@ -11797,14 +15799,20 @@ impl SetMyDefaultAdministratorRights {
 		self
 	}
 }
-method!(SetMyDefaultAdministratorRights, "setMyDefaultAdministratorRights", bool);
+impl Executable for SetMyDefaultAdministratorRights {
+	type Response = bool;
+	const METHOD_NAME: &str = "setMyDefaultAdministratorRights";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_bool("for_channels", self.for_channels);
+		if let Some(rights) = self.rights { parts.add_object("rights", rights) }
+		parts
+	}
+}
 /**Use this method to change the bot's description, which is shown in the chat with the bot if the chat is empty. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#setmydescription*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SetMyDescription {
 	/**New bot description; 0-512 characters. Pass an empty string to remove the dedicated description for the given language.*/
 	pub description: Option<String>,
@@ -11827,14 +15835,20 @@ impl SetMyDescription {
 		self
 	}
 }
-method!(SetMyDescription, "setMyDescription", bool);
+impl Executable for SetMyDescription {
+	type Response = bool;
+	const METHOD_NAME: &str = "setMyDescription";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("description", self.description);
+		parts.add_string("language_code", self.language_code);
+		parts
+	}
+}
 /**Use this method to change the bot's name. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#setmyname*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SetMyName {
 	/**A two-letter ISO 639-1 language code. If empty, the name will be shown to all users for whose language there is no dedicated name.*/
 	pub language_code: Option<String>,
@@ -11857,14 +15871,20 @@ impl SetMyName {
 		self
 	}
 }
-method!(SetMyName, "setMyName", bool);
+impl Executable for SetMyName {
+	type Response = bool;
+	const METHOD_NAME: &str = "setMyName";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("language_code", self.language_code);
+		parts.add_string("name", self.name);
+		parts
+	}
+}
 /**Use this method to change the bot's short description, which is shown on the bot's profile page and is sent together with the link when users share the bot. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#setmyshortdescription*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SetMyShortDescription {
 	/**A two-letter ISO 639-1 language code. If empty, the short description will be applied to all users for whose language there is no dedicated short description.*/
 	pub language_code: Option<String>,
@@ -11887,16 +15907,22 @@ impl SetMyShortDescription {
 		self
 	}
 }
-method!(SetMyShortDescription, "setMyShortDescription", bool);
+impl Executable for SetMyShortDescription {
+	type Response = bool;
+	const METHOD_NAME: &str = "setMyShortDescription";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("language_code", self.language_code);
+		parts.add_string("short_description", self.short_description);
+		parts
+	}
+}
 /**Informs a user that some of the Telegram Passport elements they provided contains errors. The user will not be able to re-submit their Passport to you until the errors are fixed (the contents of the field for which you returned the error must change). Returns *True* on success.
 
 Use this if the data submitted by the user doesn't satisfy the standards your service requires for any reason. For example, if a birthday date seems invalid, a submitted document is blurry, a scan shows evidence of tampering, etc. Supply some details in the error message to make sure the user knows how to correct the issues.
 
 https://core.telegram.org/bots/api/#setpassportdataerrors*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SetPassportDataErrors {
 	/**A JSON-serialized array describing the errors*/
 	pub errors: Vec<PassportElementError>,
@@ -11910,15 +15936,25 @@ impl SetPassportDataErrors {
 			user_id: user_id.into(),
 		}
 	}
+	pub fn add_error(mut self, error: impl Into<PassportElementError>) -> Self {
+		self.errors.push(error.into());
+		self
+	}
 }
-method!(SetPassportDataErrors, "setPassportDataErrors", bool);
+impl Executable for SetPassportDataErrors {
+	type Response = bool;
+	const METHOD_NAME: &str = "setPassportDataErrors";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		if self.errors.len() > 0 { parts.add_object("errors", self.errors) }
+		parts.add_i64("user_id", self.user_id);
+		parts
+	}
+}
 /**Use this method to change the list of emoji assigned to a regular or custom emoji sticker. The sticker must belong to a sticker set created by the bot. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#setstickeremojilist*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SetStickerEmojiList {
 	/**A JSON-serialized list of 1-20 emoji associated with the sticker*/
 	pub emoji_list: Vec<String>,
@@ -11932,15 +15968,25 @@ impl SetStickerEmojiList {
 			sticker: sticker.into(),
 		}
 	}
+	pub fn add_emoji_list(mut self, emoji_list: impl Into<String>) -> Self {
+		self.emoji_list.push(emoji_list.into());
+		self
+	}
 }
-method!(SetStickerEmojiList, "setStickerEmojiList", bool);
+impl Executable for SetStickerEmojiList {
+	type Response = bool;
+	const METHOD_NAME: &str = "setStickerEmojiList";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		if self.emoji_list.len() > 0 { parts.add_object("emoji_list", self.emoji_list) }
+		parts.add_string("sticker", self.sticker);
+		parts
+	}
+}
 /**Use this method to change search keywords assigned to a regular or custom emoji sticker. The sticker must belong to a sticker set created by the bot. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#setstickerkeywords*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SetStickerKeywords {
 	/**A JSON-serialized list of 0-20 search keywords for the sticker with total length of up to 64 characters*/
 	pub keywords: Vec<String>,
@@ -11954,19 +16000,29 @@ impl SetStickerKeywords {
 			sticker: sticker.into(),
 		}
 	}
+	pub fn add_keyword(mut self, keyword: impl Into<String>) -> Self {
+		self.keywords.push(keyword.into());
+		self
+	}
 	pub fn keywords(mut self, keywords: impl Into<Vec<String>>) -> Self {
 		self.keywords = keywords.into();
 		self
 	}
 }
-method!(SetStickerKeywords, "setStickerKeywords", bool);
+impl Executable for SetStickerKeywords {
+	type Response = bool;
+	const METHOD_NAME: &str = "setStickerKeywords";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		if self.keywords.len() > 0 { parts.add_object("keywords", self.keywords) }
+		parts.add_string("sticker", self.sticker);
+		parts
+	}
+}
 /**Use this method to change the [mask position](https://core.telegram.org/bots/api/#maskposition) of a mask sticker. The sticker must belong to a sticker set that was created by the bot. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#setstickermaskposition*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SetStickerMaskPosition {
 	/**A JSON-serialized object with the position where the mask should be placed on faces. Omit the parameter to remove the mask position.*/
 	pub mask_position: Option<MaskPosition>,
@@ -11985,11 +16041,20 @@ impl SetStickerMaskPosition {
 		self
 	}
 }
-method!(SetStickerMaskPosition, "setStickerMaskPosition", bool);
+impl Executable for SetStickerMaskPosition {
+	type Response = bool;
+	const METHOD_NAME: &str = "setStickerMaskPosition";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		if let Some(mask_position) = self.mask_position { parts.add_object("mask_position", mask_position) }
+		parts.add_string("sticker", self.sticker);
+		parts
+	}
+}
 /**Use this method to move a sticker in a set created by the bot to a specific position. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#setstickerpositioninset*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SetStickerPositionInSet {
 	/**New sticker position in the set, zero-based*/
 	pub position: i64,
@@ -12004,14 +16069,20 @@ impl SetStickerPositionInSet {
 		}
 	}
 }
-method!(SetStickerPositionInSet, "setStickerPositionInSet", bool);
+impl Executable for SetStickerPositionInSet {
+	type Response = bool;
+	const METHOD_NAME: &str = "setStickerPositionInSet";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_i64("position", self.position);
+		parts.add_string("sticker", self.sticker);
+		parts
+	}
+}
 /**Use this method to set the thumbnail of a regular or mask sticker set. The format of the thumbnail file must match the format of the stickers in the set. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#setstickersetthumbnail*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SetStickerSetThumbnail {
 	/**Format of the thumbnail, must be one of “static” for a **.WEBP** or **.PNG** image, “animated” for a **.TGS** animation, or “video” for a **.WEBM** video*/
 	pub format: String,
@@ -12036,11 +16107,22 @@ impl SetStickerSetThumbnail {
 		self
 	}
 }
-method!(SetStickerSetThumbnail, "setStickerSetThumbnail", bool);
+impl Executable for SetStickerSetThumbnail {
+	type Response = bool;
+	const METHOD_NAME: &str = "setStickerSetThumbnail";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(4);
+		parts.add_string("format", self.format);
+		parts.add_string("name", self.name);
+		parts.add_asset("thumbnail", self.thumbnail);
+		parts.add_i64("user_id", self.user_id);
+		parts
+	}
+}
 /**Use this method to set the title of a created sticker set. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#setstickersettitle*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SetStickerSetTitle {
 	/**Sticker set name*/
 	pub name: String,
@@ -12055,14 +16137,20 @@ impl SetStickerSetTitle {
 		}
 	}
 }
-method!(SetStickerSetTitle, "setStickerSetTitle", bool);
+impl Executable for SetStickerSetTitle {
+	type Response = bool;
+	const METHOD_NAME: &str = "setStickerSetTitle";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("name", self.name);
+		parts.add_string("title", self.title);
+		parts
+	}
+}
 /**Changes the emoji status for a given user that previously allowed the bot to manage their emoji status via the Mini App method [requestEmojiStatusAccess](https://core.telegram.org/bots/webapps#initializing-mini-apps). Returns *True* on success.
 
 https://core.telegram.org/bots/api/#setuseremojistatus*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SetUserEmojiStatus {
 	/**Custom emoji identifier of the emoji status to set. Pass an empty string to remove the status.*/
 	pub emoji_status_custom_emoji_id: Option<String>,
@@ -12088,17 +16176,23 @@ impl SetUserEmojiStatus {
 		self
 	}
 }
-method!(SetUserEmojiStatus, "setUserEmojiStatus", bool);
+impl Executable for SetUserEmojiStatus {
+	type Response = bool;
+	const METHOD_NAME: &str = "setUserEmojiStatus";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(3);
+		parts.add_string("emoji_status_custom_emoji_id", self.emoji_status_custom_emoji_id);
+		parts.add_i64("emoji_status_expiration_date", self.emoji_status_expiration_date);
+		parts.add_i64("user_id", self.user_id);
+		parts
+	}
+}
 /**Use this method to specify a URL and receive incoming updates via an outgoing webhook. Whenever there is an update for the bot, we will send an HTTPS POST request to the specified URL, containing a JSON-serialized [Update](https://core.telegram.org/bots/api/#update). In case of an unsuccessful request (a request with response [HTTP status code](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes) different from `2XY`), we will repeat the request and give up after a reasonable amount of attempts. Returns *True* on success.
 
 If you'd like to make sure that the webhook was set by you, you can specify secret data in the parameter *secret\_token*. If specified, the request will contain a header “X-Telegram-Bot-Api-Secret-Token” with the secret token as content.
 
 https://core.telegram.org/bots/api/#setwebhook*/
-#[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct SetWebhook {
 	/**A JSON-serialized list of the update types you want your bot to receive. For example, specify `["message", "edited_channel_post", "callback_query"]` to only receive updates of these types. See [Update](https://core.telegram.org/bots/api/#update) for a complete list of available update types. Specify an empty list to receive all update types except *chat\_member*, *message\_reaction*, and *message\_reaction\_count* (default). If not specified, the previous setting will be used.  
 	Please note that this parameter doesn't affect updates created before the call to the setWebhook, so unwanted updates may be received for a short period of time.*/
@@ -12128,6 +16222,10 @@ impl SetWebhook {
 			url: url.into(),
 		}
 	}
+	pub fn add_allowed_update(mut self, allowed_update: impl Into<String>) -> Self {
+		self.allowed_updates.push(allowed_update.into());
+		self
+	}
 	pub fn allowed_updates(mut self, allowed_updates: impl Into<Vec<String>>) -> Self {
 		self.allowed_updates = allowed_updates.into();
 		self
@@ -12153,14 +16251,25 @@ impl SetWebhook {
 		self
 	}
 }
-method!(SetWebhook, "setWebhook", bool);
+impl Executable for SetWebhook {
+	type Response = bool;
+	const METHOD_NAME: &str = "setWebhook";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(7);
+		if self.allowed_updates.len() > 0 { parts.add_object("allowed_updates", self.allowed_updates) }
+		parts.add_file("certificate", self.certificate);
+		parts.add_bool("drop_pending_updates", self.drop_pending_updates);
+		parts.add_string("ip_address", self.ip_address);
+		parts.add_i64("max_connections", self.max_connections);
+		parts.add_string("secret_token", self.secret_token);
+		parts.add_string("url", self.url);
+		parts
+	}
+}
 /**Use this method to stop updating a live location message before *live\_period* expires. On success, if the message is not an inline message, the edited [Message](https://core.telegram.org/bots/api/#message) is returned, otherwise *True* is returned.
 
 https://core.telegram.org/bots/api/#stopmessagelivelocation*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct StopMessageLiveLocation {
 	/**Unique identifier of the business connection on behalf of which the message to be edited was sent*/
 	pub business_connection_id: Option<String>,
@@ -12204,14 +16313,23 @@ impl StopMessageLiveLocation {
 		self
 	}
 }
-method!(StopMessageLiveLocation, "stopMessageLiveLocation", StopMessageLiveLocationResult);
+impl Executable for StopMessageLiveLocation {
+	type Response = StopMessageLiveLocationResult;
+	const METHOD_NAME: &str = "stopMessageLiveLocation";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(5);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("chat_id", self.chat_id.map(|x| x.to_string()));
+		parts.add_string("inline_message_id", self.inline_message_id);
+		parts.add_i64("message_id", self.message_id);
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		parts
+	}
+}
 /**Use this method to stop a poll which was sent by the bot. On success, the stopped [Poll](https://core.telegram.org/bots/api/#poll) is returned.
 
 https://core.telegram.org/bots/api/#stoppoll*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct StopPoll {
 	/**Unique identifier of the business connection on behalf of which the message to be edited was sent*/
 	pub business_connection_id: Option<String>,
@@ -12240,14 +16358,22 @@ impl StopPoll {
 		self
 	}
 }
-method!(StopPoll, "stopPoll", Poll);
+impl Executable for StopPoll {
+	type Response = Poll;
+	const METHOD_NAME: &str = "stopPoll";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(4);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_i64("message_id", self.message_id);
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		parts
+	}
+}
 /**Use this method to unban a previously banned user in a supergroup or channel. The user will **not** return to the group or channel automatically, but will be able to join via link, etc. The bot must be an administrator for this to work. By default, this method guarantees that after the call the user is not a member of the chat, but will be able to join it. So if the user is a member of the chat they will also be **removed** from the chat. If you don't want this, use the parameter *only\_if\_banned*. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#unbanchatmember*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct UnbanChatMember {
 	/**Unique identifier for the target group or username of the target supergroup or channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -12269,11 +16395,21 @@ impl UnbanChatMember {
 		self
 	}
 }
-method!(UnbanChatMember, "unbanChatMember", bool);
+impl Executable for UnbanChatMember {
+	type Response = bool;
+	const METHOD_NAME: &str = "unbanChatMember";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(3);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_bool("only_if_banned", self.only_if_banned);
+		parts.add_i64("user_id", self.user_id);
+		parts
+	}
+}
 /**Use this method to unban a previously banned channel chat in a supergroup or channel. The bot must be an administrator for this to work and must have the appropriate administrator rights. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#unbanchatsenderchat*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct UnbanChatSenderChat {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -12288,11 +16424,20 @@ impl UnbanChatSenderChat {
 		}
 	}
 }
-method!(UnbanChatSenderChat, "unbanChatSenderChat", bool);
+impl Executable for UnbanChatSenderChat {
+	type Response = bool;
+	const METHOD_NAME: &str = "unbanChatSenderChat";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_i64("sender_chat_id", self.sender_chat_id);
+		parts
+	}
+}
 /**Use this method to unhide the 'General' topic in a forum supergroup chat. The bot must be an administrator in the chat for this to work and must have the *can\_manage\_topics* administrator rights. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#unhidegeneralforumtopic*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct UnhideGeneralForumTopic {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -12304,11 +16449,19 @@ impl UnhideGeneralForumTopic {
 		}
 	}
 }
-method!(UnhideGeneralForumTopic, "unhideGeneralForumTopic", bool);
+impl Executable for UnhideGeneralForumTopic {
+	type Response = bool;
+	const METHOD_NAME: &str = "unhideGeneralForumTopic";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts
+	}
+}
 /**Use this method to clear the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can\_pin\_messages' administrator right in a supergroup or 'can\_edit\_messages' administrator right in a channel. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#unpinallchatmessages*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct UnpinAllChatMessages {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -12320,11 +16473,19 @@ impl UnpinAllChatMessages {
 		}
 	}
 }
-method!(UnpinAllChatMessages, "unpinAllChatMessages", bool);
+impl Executable for UnpinAllChatMessages {
+	type Response = bool;
+	const METHOD_NAME: &str = "unpinAllChatMessages";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts
+	}
+}
 /**Use this method to clear the list of pinned messages in a forum topic. The bot must be an administrator in the chat for this to work and must have the *can\_pin\_messages* administrator right in the supergroup. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#unpinallforumtopicmessages*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct UnpinAllForumTopicMessages {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -12339,11 +16500,20 @@ impl UnpinAllForumTopicMessages {
 		}
 	}
 }
-method!(UnpinAllForumTopicMessages, "unpinAllForumTopicMessages", bool);
+impl Executable for UnpinAllForumTopicMessages {
+	type Response = bool;
+	const METHOD_NAME: &str = "unpinAllForumTopicMessages";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_i64("message_thread_id", self.message_thread_id);
+		parts
+	}
+}
 /**Use this method to clear the list of pinned messages in a General forum topic. The bot must be an administrator in the chat for this to work and must have the *can\_pin\_messages* administrator right in the supergroup. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#unpinallgeneralforumtopicmessages*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct UnpinAllGeneralForumTopicMessages {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -12355,14 +16525,19 @@ impl UnpinAllGeneralForumTopicMessages {
 		}
 	}
 }
-method!(UnpinAllGeneralForumTopicMessages, "unpinAllGeneralForumTopicMessages", bool);
+impl Executable for UnpinAllGeneralForumTopicMessages {
+	type Response = bool;
+	const METHOD_NAME: &str = "unpinAllGeneralForumTopicMessages";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(1);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts
+	}
+}
 /**Use this method to remove a message from the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can\_pin\_messages' administrator right in a supergroup or 'can\_edit\_messages' administrator right in a channel. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#unpinchatmessage*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct UnpinChatMessage {
 	/**Unique identifier of the business connection on behalf of which the message will be unpinned*/
 	pub business_connection_id: Option<String>,
@@ -12388,11 +16563,21 @@ impl UnpinChatMessage {
 		self
 	}
 }
-method!(UnpinChatMessage, "unpinChatMessage", bool);
+impl Executable for UnpinChatMessage {
+	type Response = bool;
+	const METHOD_NAME: &str = "unpinChatMessage";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(3);
+		parts.add_string("business_connection_id", self.business_connection_id);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_i64("message_id", self.message_id);
+		parts
+	}
+}
 /**Use this method to upload a file with a sticker for later use in the [createNewStickerSet](https://core.telegram.org/bots/api/#createnewstickerset), [addStickerToSet](https://core.telegram.org/bots/api/#addstickertoset), or [replaceStickerInSet](https://core.telegram.org/bots/api/#replacestickerinset) methods (the file can be used multiple times). Returns the uploaded [File](https://core.telegram.org/bots/api/#file) on success.
 
 https://core.telegram.org/bots/api/#uploadstickerfile*/
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct UploadStickerFile {
 	/**A file with the sticker in .WEBP, .PNG, .TGS, or .WEBM format. See [https://core.telegram.org/stickers](https://core.telegram.org/stickers) for technical requirements. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
 	pub sticker: InputFile,
@@ -12410,14 +16595,21 @@ impl UploadStickerFile {
 		}
 	}
 }
-method!(UploadStickerFile, "uploadStickerFile", File);
+impl Executable for UploadStickerFile {
+	type Response = File;
+	const METHOD_NAME: &str = "uploadStickerFile";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(3);
+		parts.add_file("sticker", self.sticker);
+		parts.add_string("sticker_format", self.sticker_format);
+		parts.add_i64("user_id", self.user_id);
+		parts
+	}
+}
 /**Verifies a chat [on behalf of the organization](https://telegram.org/verify#third-party-verification) which is represented by the bot. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#verifychat*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct VerifyChat {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -12436,14 +16628,20 @@ impl VerifyChat {
 		self
 	}
 }
-method!(VerifyChat, "verifyChat", bool);
+impl Executable for VerifyChat {
+	type Response = bool;
+	const METHOD_NAME: &str = "verifyChat";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("chat_id", self.chat_id.to_string());
+		parts.add_string("custom_description", self.custom_description);
+		parts
+	}
+}
 /**Verifies a user [on behalf of the organization](https://telegram.org/verify#third-party-verification) which is represented by the bot. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#verifyuser*/
-#[apply(
-	Option => #[serde(skip_serializing_if = "Option::is_none")],
-)]
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug)]
 pub struct VerifyUser {
 	/**Custom description for the verification; 0-70 characters. Must be empty if the organization isn't allowed to provide a custom verification description.*/
 	pub custom_description: Option<String>,
@@ -12462,4 +16660,13 @@ impl VerifyUser {
 		self
 	}
 }
-method!(VerifyUser, "verifyUser", bool);
+impl Executable for VerifyUser {
+	type Response = bool;
+	const METHOD_NAME: &str = "verifyUser";
+	fn into_parts(self) -> FormParts {
+		let mut parts = FormParts::new(2);
+		parts.add_string("custom_description", self.custom_description);
+		parts.add_i64("user_id", self.user_id);
+		parts
+	}
+}

@@ -6,15 +6,18 @@ edition = "2024"
 path = "lib.rs"
 
 [dependencies]
-derive_more = { version = "1", features = ["from"] }
+derive_more = { version = "1", features = ["from", "display"] }
 serde = { version = "1", features = ["derive"] }
 serde_with = { version = "3.12" }
 serde_json = { version = "1" }
 itoa = { version = "1" }
 ryu = { version = "1" }
 
-# futures-util = { version = "0.3.31", default-features = false, features = ["io"] }
+futures-util = { version = "0.3", default-features = false, features = ["io"] }
 # tokio-util = { version = "0.7", default-features = false, features = ["codec"] }
 # tokio = { version = "1.43", default-features = false }
 
 [dev-dependencies]
+
+# [features]
+# stream-file = ["dep:tokio", "dep:tokio-util"]
