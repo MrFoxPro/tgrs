@@ -23,7 +23,7 @@ impl FormParts {
 	#[inline] pub fn add_f32(&mut self, k: &'static str, v: impl Into<Option<f32>>) {
 		if let Some(v) = v.into() { self.inner.push((k.into(), String::from(ryu::Buffer::new().format(v)).into())) }
 	}
-	#[inline] pub fn add_object<T: Serialize>(&mut self, k: &'static str, v: T) { 
+	#[inline] pub fn add_object(&mut self, k: &'static str, v: impl Serialize) { 
 		self.inner.push((k.into(), serde_json::to_string(&v).unwrap().into()));
 	}
 	#[inline] pub fn add_file(&mut self, k: &'static str, v: impl Into<Option<InputFile>>) {
