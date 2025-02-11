@@ -5,6 +5,8 @@ use serde_with::apply;
 use derive_more::{From, Display};
 use crate::{addons::*, custom::*, client::{Executable, FormParts}, InputFile};
 
+pub const SCHEMA_VERSION: &str = "8.2.0";
+
 /**Contains information about the affiliate that received a commission via this transaction.
 
 https://core.telegram.org/bots/api/#affiliateinfo*/

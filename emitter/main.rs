@@ -1,4 +1,4 @@
-#![allow(unused_must_use)]
+#![allow(unused_imports, unused_must_use)]
 #![feature(let_chains)]
 
 mod indent;
@@ -229,6 +229,8 @@ pub fn main() -> Result<()> {
 	writeln!(out, "use serde_with::apply;");
 	writeln!(out, "use derive_more::{{From, Display}};");
 	writeln!(out, "use crate::{{addons::*, custom::*, client::{{Executable, FormParts}}, InputFile}};");
+	writeln!(out, "");
+	writeln!(out, r#"pub const SCHEMA_VERSION: &str = "{}";"#, parsed.version.to_string());
 	writeln!(out, "");
 
 	let mut registry = BTreeMap::new();
