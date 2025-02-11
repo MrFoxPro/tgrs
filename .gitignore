@@ -1,4 +1,4 @@
 target
 tests
-.sublime-*
+*.sublime-*
 .vscode
