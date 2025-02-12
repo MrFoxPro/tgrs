@@ -823,6 +823,7 @@ fn print_struct(entity: &Entity, fields: &BTreeMap<String, StructField>, out: &m
 
 
 		if !field.optional { continue; }
+		writeln!(out, "/**{}*/", field.comment);
 		write!(out, "pub fn {0}(mut self, {0}: ", field.name);
 
  		let accept_type = field_typename(&StructField { optional: false, ..field.clone() }, entity);

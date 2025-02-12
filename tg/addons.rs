@@ -4,11 +4,21 @@ use futures_util::AsyncRead;
 use serde::{Deserialize, Serialize};
 use crate::*;
 
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug, Serialize, From)]
 #[serde(untagged)]
 pub enum Asset {
 	File(#[serde(skip)] InputFile),
 	Url(String),
+}
+impl Asset {
+	pub fn file(input: impl Into<InputFile>) -> Self {
+		Self::File(input.into())
+	}
+}
+impl From<Vec<u8>> for Asset {
+	fn from(value: Vec<u8>) -> Self {
+	    Self::File(value.into())
+	}
 }
 
 /** Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass `attach://<file_attach_name>` to upload a new one using `multipart/form-data` under `file_attach_name` name */
