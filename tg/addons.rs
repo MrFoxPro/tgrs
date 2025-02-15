@@ -19,25 +19,46 @@ pub trait Attachable: Serialize + Sized {
 
 pub const FILE_ANCHOR: &str = "<FILE>";
 
+#[derive(Debug, Clone, From)]
+pub struct InputFile {
+	pub file_name: Option<String>,
+	pub inner: InputFileInner,
+}
+impl InputFile {
+	pub fn new(inner: impl Into<InputFileInner>) -> Self {
+		InputFile { file_name: None, inner: inner.into() }
+	}
+	pub fn with_filename(inner: impl Into<InputFileInner>, filename: impl Into<String>) -> Self {
+		InputFile { file_name: Some(filename.into()), inner: inner.into() }
+	}
+}
+impl From<Vec<u8>> for InputFile {
+	fn from(value: Vec<u8>) -> Self { Self { file_name: None, inner: value.into() } }
+}
+impl From<Option<Box<dyn AsyncRead + Send + Sync + Unpin>>> for InputFile {
+	fn from(value: Option<Box<dyn AsyncRead + Send + Sync + Unpin>>) -> Self { Self { file_name: None, inner: value.into() } }
+}
+
 #[derive(From)]
-pub enum InputFile {
+pub enum InputFileInner {
 	Bytes(Vec<u8>),
 	Stream(Option<Box<dyn AsyncRead + Send + Sync + Unpin>>),
 }
+
 impl Serialize for InputFile {
 	fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
 		FILE_ANCHOR.serialize(serializer)
 	}
 }
-impl Clone for InputFile {
+impl Clone for InputFileInner {
 	fn clone(&self) -> Self {
 		match self {
-			Self::Bytes(r) => Self::Bytes(r.clone()),
+			Self::Bytes(data) => Self::Bytes(data.clone()),
 			Self::Stream(_) => Self::Stream(None)
 		}
 	}
 }
-impl fmt::Debug for InputFile {
+impl fmt::Debug for InputFileInner {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
 		match self {
 			Self::Bytes(_) => writeln!(f, "InputFile::Bytes(<data>)"),
@@ -47,12 +68,11 @@ impl fmt::Debug for InputFile {
 }
 impl Attachable for InputFile {
 	fn attach(self, key: &'static str, parts: &mut FormParts) {
-		let id = parts.inner.len();
-		parts.add_file(id.to_string(), self);
+		let id = self.file_name.clone().unwrap_or_else(|| parts.inner.len().to_string());
 		parts.add_string(key, format!("attach://{id}"));
+		parts.add_file(id, self);
 	}
 }
-
 
 /** Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass `attach://<file_attach_name>` to upload a new one using `multipart/form-data` under `file_attach_name` name */
 #[derive(Clone, Debug, From)]
@@ -65,7 +85,7 @@ impl Asset {
 	pub fn url(input: impl Into<String>) -> Self { Self::Url(input.into()) }
 }
 impl From<Vec<u8>> for Asset {
-	fn from(value: Vec<u8>) -> Self { Self::File(value.into()) }
+	fn from(value: Vec<u8>) -> Self { Self::File(InputFile { file_name: None, inner: value.into() }) }
 }
 
 impl Serialize for Asset {
@@ -90,7 +110,7 @@ impl Attachable for schema::InputSticker {
 	fn attach(self, key: &'static str, parts: &mut FormParts) {
 		let mut as_json = serde_json::to_string(&self).unwrap();
 		if let Asset::File(file) = self.sticker {
-			let file_id = parts.inner.len();
+			let file_id = file.file_name.clone().unwrap_or_else(|| parts.inner.len().to_string());
 			as_json = as_json.replacen(FILE_ANCHOR, &format!("attach://{file_id}"), 1);
 			parts.add_file(file_id.to_string(), file);
 		}
@@ -107,7 +127,7 @@ impl Attachable for schema::InputMedia {
 			| Self::Photo(InputMediaPhoto { media: Asset::File(file), .. })
 			| Self::Audio(InputMediaAudio { media: Asset::File(file), .. })
 			| Self::Video(InputMediaVideo { media: Asset::File(file), .. }) => {
-				let file_id = parts.inner.len();
+				let file_id = file.file_name.clone().unwrap_or_else(|| parts.inner.len().to_string());
 				as_json = as_json.replacen(FILE_ANCHOR, &format!("attach://{file_id}"), 1);
 				parts.add_file(file_id.to_string(), file);
 			}

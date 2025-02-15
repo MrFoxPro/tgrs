@@ -80,7 +80,7 @@ pub struct ResponseError {
 impl Error for ResponseError {}
 impl fmt::Display for ResponseError {
 	fn fmt(&self, out: &mut fmt::Formatter) -> fmt::Result {
-		write!(out, "a telegram error has occurred: description={}", self.description)?;
+		write!(out, "telegram error occurred: description={}", self.description)?;
 		if let Some(code) = self.error_code {
 			write!(out, "; error_code={}", code)?;
 		}

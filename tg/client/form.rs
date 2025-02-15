@@ -2,8 +2,7 @@ use std::{borrow::Cow, fmt};
 use futures_util::AsyncRead;
 use derive_more::derive::From;
 use serde::Serialize;
-use crate::{Attachable, InputFile};
-
+use crate::{Attachable, InputFile, InputFileInner};
 
 pub struct FormParts {
 	pub inner: Vec<(Cow<'static, str>, Part)>
@@ -29,9 +28,9 @@ impl FormParts {
 	}
 	#[inline] pub fn add_file(&mut self, key: impl Into<Cow<'static, str>>, v: impl Into<Option<InputFile>>) {
 		let Some(v) = v.into() else { return };
-		match v {
-			InputFile::Bytes(bytes) => self.inner.push((key.into(), bytes.into())),
-			InputFile::Stream(Some(stream)) => self.inner.push((key.into(), stream.into())),
+		match v.inner {
+			InputFileInner::Bytes(bytes) => self.inner.push((key.into(), bytes.into())),
+			InputFileInner::Stream(Some(stream)) => self.inner.push((key.into(), stream.into())),
 			_ => return
 		}
 	}
@@ -39,7 +38,6 @@ impl FormParts {
 		v.attach(key, self)
 	}
 }
-
 
 #[derive(From)]
 pub enum Part {
