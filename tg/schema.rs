@@ -36,17 +36,17 @@ impl AffiliateInfo {
 			nanostar_amount: None,
 		}
 	}
-	/***Optional*. The chat that received an affiliate commission if it was received by a chat*/
+	/** *Optional*. The chat that received an affiliate commission if it was received by a chat*/
 	pub fn affiliate_chat(mut self, affiliate_chat: impl Into<Chat>) -> Self {
 		self.affiliate_chat = Some(affiliate_chat.into());
 		self
 	}
-	/***Optional*. The bot or the user that received an affiliate commission if it was received by a bot or a user*/
+	/** *Optional*. The bot or the user that received an affiliate commission if it was received by a bot or a user*/
 	pub fn affiliate_user(mut self, affiliate_user: impl Into<User>) -> Self {
 		self.affiliate_user = Some(affiliate_user.into());
 		self
 	}
-	/***Optional*. The number of 1/1000000000 shares of Telegram Stars received by the affiliate; from -999999999 to 999999999; can be negative for refunds*/
+	/** *Optional*. The number of 1/1000000000 shares of Telegram Stars received by the affiliate; from -999999999 to 999999999; can be negative for refunds*/
 	pub fn nanostar_amount(mut self, nanostar_amount: impl Into<i64>) -> Self {
 		self.nanostar_amount = Some(nanostar_amount.into());
 		self
@@ -93,22 +93,22 @@ impl Animation {
 			width: width.into(),
 		}
 	}
-	/***Optional*. Original animation filename as defined by the sender*/
+	/** *Optional*. Original animation filename as defined by the sender*/
 	pub fn file_name(mut self, file_name: impl Into<String>) -> Self {
 		self.file_name = Some(file_name.into());
 		self
 	}
-	/***Optional*. File size in bytes. It can be bigger than 2^31 and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this value.*/
+	/** *Optional*. File size in bytes. It can be bigger than 2^31 and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this value.*/
 	pub fn file_size(mut self, file_size: impl Into<i64>) -> Self {
 		self.file_size = Some(file_size.into());
 		self
 	}
-	/***Optional*. MIME type of the file as defined by the sender*/
+	/** *Optional*. MIME type of the file as defined by the sender*/
 	pub fn mime_type(mut self, mime_type: impl Into<String>) -> Self {
 		self.mime_type = Some(mime_type.into());
 		self
 	}
-	/***Optional*. Animation thumbnail as defined by the sender*/
+	/** *Optional*. Animation thumbnail as defined by the sender*/
 	pub fn thumbnail(mut self, thumbnail: impl Into<PhotoSize>) -> Self {
 		self.thumbnail = Some(thumbnail.into());
 		self
@@ -155,32 +155,32 @@ impl Audio {
 			title: None,
 		}
 	}
-	/***Optional*. Original filename as defined by the sender*/
+	/** *Optional*. Original filename as defined by the sender*/
 	pub fn file_name(mut self, file_name: impl Into<String>) -> Self {
 		self.file_name = Some(file_name.into());
 		self
 	}
-	/***Optional*. File size in bytes. It can be bigger than 2^31 and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this value.*/
+	/** *Optional*. File size in bytes. It can be bigger than 2^31 and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this value.*/
 	pub fn file_size(mut self, file_size: impl Into<i64>) -> Self {
 		self.file_size = Some(file_size.into());
 		self
 	}
-	/***Optional*. MIME type of the file as defined by the sender*/
+	/** *Optional*. MIME type of the file as defined by the sender*/
 	pub fn mime_type(mut self, mime_type: impl Into<String>) -> Self {
 		self.mime_type = Some(mime_type.into());
 		self
 	}
-	/***Optional*. Performer of the audio as defined by the sender or by audio tags*/
+	/** *Optional*. Performer of the audio as defined by the sender or by audio tags*/
 	pub fn performer(mut self, performer: impl Into<String>) -> Self {
 		self.performer = Some(performer.into());
 		self
 	}
-	/***Optional*. Thumbnail of the album cover to which the music file belongs*/
+	/** *Optional*. Thumbnail of the album cover to which the music file belongs*/
 	pub fn thumbnail(mut self, thumbnail: impl Into<PhotoSize>) -> Self {
 		self.thumbnail = Some(thumbnail.into());
 		self
 	}
-	/***Optional*. Title of the audio as defined by the sender or by audio tags*/
+	/** *Optional*. Title of the audio as defined by the sender or by audio tags*/
 	pub fn title(mut self, title: impl Into<String>) -> Self {
 		self.title = Some(title.into());
 		self
@@ -362,13 +362,13 @@ impl BackgroundTypePattern {
 			r#type: r#type.into(),
 		}
 	}
-	/***Optional*. *True*, if the background fill must be applied only to the pattern itself. All other pixels are black in this case. For dark themes only
+	/** *Optional*. *True*, if the background fill must be applied only to the pattern itself. All other pixels are black in this case. For dark themes only
 	Default value: true*/
 	pub fn is_inverted(mut self, is_inverted: bool) -> Self {
 		self.is_inverted = Some(is_inverted);
 		self
 	}
-	/***Optional*. *True*, if the background moves slightly when the device is tilted
+	/** *Optional*. *True*, if the background moves slightly when the device is tilted
 	Default value: true*/
 	pub fn is_moving(mut self, is_moving: bool) -> Self {
 		self.is_moving = Some(is_moving);
@@ -407,13 +407,13 @@ impl BackgroundTypeWallpaper {
 			r#type: r#type.into(),
 		}
 	}
-	/***Optional*. *True*, if the wallpaper is downscaled to fit in a 450x450 square and then box-blurred with radius 12
+	/** *Optional*. *True*, if the wallpaper is downscaled to fit in a 450x450 square and then box-blurred with radius 12
 	Default value: true*/
 	pub fn is_blurred(mut self, is_blurred: bool) -> Self {
 		self.is_blurred = Some(is_blurred);
 		self
 	}
-	/***Optional*. *True*, if the background moves slightly when the device is tilted
+	/** *Optional*. *True*, if the background moves slightly when the device is tilted
 	Default value: true*/
 	pub fn is_moving(mut self, is_moving: bool) -> Self {
 		self.is_moving = Some(is_moving);
@@ -443,7 +443,7 @@ impl Birthdate {
 			year: None,
 		}
 	}
-	/***Optional*. Year of the user's birth*/
+	/** *Optional*. Year of the user's birth*/
 	pub fn year(mut self, year: impl Into<i64>) -> Self {
 		self.year = Some(year.into());
 		self
@@ -715,17 +715,17 @@ impl BusinessIntro {
 			title: None,
 		}
 	}
-	/***Optional*. Message text of the business intro*/
+	/** *Optional*. Message text of the business intro*/
 	pub fn message(mut self, message: impl Into<String>) -> Self {
 		self.message = Some(message.into());
 		self
 	}
-	/***Optional*. Sticker of the business intro*/
+	/** *Optional*. Sticker of the business intro*/
 	pub fn sticker(mut self, sticker: impl Into<Sticker>) -> Self {
 		self.sticker = Some(sticker.into());
 		self
 	}
-	/***Optional*. Title text of the business intro*/
+	/** *Optional*. Title text of the business intro*/
 	pub fn title(mut self, title: impl Into<String>) -> Self {
 		self.title = Some(title.into());
 		self
@@ -751,7 +751,7 @@ impl BusinessLocation {
 			location: None,
 		}
 	}
-	/***Optional*. Location of the business*/
+	/** *Optional*. Location of the business*/
 	pub fn location(mut self, location: impl Into<Location>) -> Self {
 		self.location = Some(location.into());
 		self
@@ -867,22 +867,22 @@ impl CallbackQuery {
 			message: None,
 		}
 	}
-	/***Optional*. Data associated with the callback button. Be aware that the message originated the query can contain no callback buttons with this data.*/
+	/** *Optional*. Data associated with the callback button. Be aware that the message originated the query can contain no callback buttons with this data.*/
 	pub fn data(mut self, data: impl Into<String>) -> Self {
 		self.data = Some(data.into());
 		self
 	}
-	/***Optional*. Short name of a [Game](https://core.telegram.org/bots/api/#games) to be returned, serves as the unique identifier for the game*/
+	/** *Optional*. Short name of a [Game](https://core.telegram.org/bots/api/#games) to be returned, serves as the unique identifier for the game*/
 	pub fn game_short_name(mut self, game_short_name: impl Into<String>) -> Self {
 		self.game_short_name = Some(game_short_name.into());
 		self
 	}
-	/***Optional*. Identifier of the message sent via the bot in inline mode, that originated the query.*/
+	/** *Optional*. Identifier of the message sent via the bot in inline mode, that originated the query.*/
 	pub fn inline_message_id(mut self, inline_message_id: impl Into<String>) -> Self {
 		self.inline_message_id = Some(inline_message_id.into());
 		self
 	}
-	/***Optional*. Message sent by the bot with the callback button that originated the query*/
+	/** *Optional*. Message sent by the bot with the callback button that originated the query*/
 	pub fn message(mut self, message: impl Into<MaybeInaccessibleMessage>) -> Self {
 		self.message = Some(message.into());
 		self
@@ -925,28 +925,28 @@ impl Chat {
 			username: None,
 		}
 	}
-	/***Optional*. First name of the other party in a private chat*/
+	/** *Optional*. First name of the other party in a private chat*/
 	pub fn first_name(mut self, first_name: impl Into<String>) -> Self {
 		self.first_name = Some(first_name.into());
 		self
 	}
-	/***Optional*. *True*, if the supergroup chat is a forum (has [topics](https://telegram.org/blog/topics-in-groups-collectible-usernames#topics-in-groups) enabled)
+	/** *Optional*. *True*, if the supergroup chat is a forum (has [topics](https://telegram.org/blog/topics-in-groups-collectible-usernames#topics-in-groups) enabled)
 	Default value: true*/
 	pub fn is_forum(mut self, is_forum: bool) -> Self {
 		self.is_forum = Some(is_forum);
 		self
 	}
-	/***Optional*. Last name of the other party in a private chat*/
+	/** *Optional*. Last name of the other party in a private chat*/
 	pub fn last_name(mut self, last_name: impl Into<String>) -> Self {
 		self.last_name = Some(last_name.into());
 		self
 	}
-	/***Optional*. Title, for supergroups, channels and group chats*/
+	/** *Optional*. Title, for supergroups, channels and group chats*/
 	pub fn title(mut self, title: impl Into<String>) -> Self {
 		self.title = Some(title.into());
 		self
 	}
-	/***Optional*. Username, for private chats, supergroups and channels if available*/
+	/** *Optional*. Username, for private chats, supergroups and channels if available*/
 	pub fn username(mut self, username: impl Into<String>) -> Self {
 		self.username = Some(username.into());
 		self
@@ -1011,22 +1011,22 @@ impl ChatAdministratorRights {
 			is_anonymous: is_anonymous,
 		}
 	}
-	/***Optional*. *True*, if the administrator can edit messages of other users and can pin messages; for channels only*/
+	/** *Optional*. *True*, if the administrator can edit messages of other users and can pin messages; for channels only*/
 	pub fn can_edit_messages(mut self, can_edit_messages: bool) -> Self {
 		self.can_edit_messages = Some(can_edit_messages);
 		self
 	}
-	/***Optional*. *True*, if the user is allowed to create, rename, close, and reopen forum topics; for supergroups only*/
+	/** *Optional*. *True*, if the user is allowed to create, rename, close, and reopen forum topics; for supergroups only*/
 	pub fn can_manage_topics(mut self, can_manage_topics: bool) -> Self {
 		self.can_manage_topics = Some(can_manage_topics);
 		self
 	}
-	/***Optional*. *True*, if the user is allowed to pin messages; for groups and supergroups only*/
+	/** *Optional*. *True*, if the user is allowed to pin messages; for groups and supergroups only*/
 	pub fn can_pin_messages(mut self, can_pin_messages: bool) -> Self {
 		self.can_pin_messages = Some(can_pin_messages);
 		self
 	}
-	/***Optional*. *True*, if the administrator can post messages in the channel, or access channel statistics; for channels only*/
+	/** *Optional*. *True*, if the administrator can post messages in the channel, or access channel statistics; for channels only*/
 	pub fn can_post_messages(mut self, can_post_messages: bool) -> Self {
 		self.can_post_messages = Some(can_post_messages);
 		self
@@ -1174,18 +1174,18 @@ impl ChatBoostSourceGiveaway {
 			user: None,
 		}
 	}
-	/***Optional*. True, if the giveaway was completed, but there was no user to win the prize
+	/** *Optional*. True, if the giveaway was completed, but there was no user to win the prize
 	Default value: true*/
 	pub fn is_unclaimed(mut self, is_unclaimed: bool) -> Self {
 		self.is_unclaimed = Some(is_unclaimed);
 		self
 	}
-	/***Optional*. The number of Telegram Stars to be split between giveaway winners; for Telegram Star giveaways only*/
+	/** *Optional*. The number of Telegram Stars to be split between giveaway winners; for Telegram Star giveaways only*/
 	pub fn prize_star_count(mut self, prize_star_count: impl Into<i64>) -> Self {
 		self.prize_star_count = Some(prize_star_count.into());
 		self
 	}
-	/***Optional*. User that won the prize in the giveaway if any; for Telegram Premium giveaways only*/
+	/** *Optional*. User that won the prize in the giveaway if any; for Telegram Premium giveaways only*/
 	pub fn user(mut self, user: impl Into<User>) -> Self {
 		self.user = Some(user.into());
 		self
@@ -1391,7 +1391,7 @@ impl ChatFullInfo {
 		self.active_usernames.push(active_username.into());
 		self
 	}
-	/***Optional*. If non-empty, the list of all [active chat usernames](https://telegram.org/blog/topics-in-groups-collectible-usernames#collectible-usernames); for private chats, supergroups and channels*/
+	/** *Optional*. If non-empty, the list of all [active chat usernames](https://telegram.org/blog/topics-in-groups-collectible-usernames#collectible-usernames); for private chats, supergroups and channels*/
 	pub fn active_usernames(mut self, active_usernames: impl Into<Vec<String>>) -> Self {
 		self.active_usernames = active_usernames.into();
 		self
@@ -1400,208 +1400,208 @@ impl ChatFullInfo {
 		self.available_reactions.push(available_reaction.into());
 		self
 	}
-	/***Optional*. List of available reactions allowed in the chat. If omitted, then all [emoji reactions](https://core.telegram.org/bots/api/#reactiontypeemoji) are allowed.*/
+	/** *Optional*. List of available reactions allowed in the chat. If omitted, then all [emoji reactions](https://core.telegram.org/bots/api/#reactiontypeemoji) are allowed.*/
 	pub fn available_reactions(mut self, available_reactions: impl Into<Vec<ReactionType>>) -> Self {
 		self.available_reactions = available_reactions.into();
 		self
 	}
-	/***Optional*. Custom emoji identifier of the emoji chosen by the chat for the reply header and link preview background*/
+	/** *Optional*. Custom emoji identifier of the emoji chosen by the chat for the reply header and link preview background*/
 	pub fn background_custom_emoji_id(mut self, background_custom_emoji_id: impl Into<String>) -> Self {
 		self.background_custom_emoji_id = Some(background_custom_emoji_id.into());
 		self
 	}
-	/***Optional*. Bio of the other party in a private chat*/
+	/** *Optional*. Bio of the other party in a private chat*/
 	pub fn bio(mut self, bio: impl Into<String>) -> Self {
 		self.bio = Some(bio.into());
 		self
 	}
-	/***Optional*. For private chats, the date of birth of the user*/
+	/** *Optional*. For private chats, the date of birth of the user*/
 	pub fn birthdate(mut self, birthdate: impl Into<Birthdate>) -> Self {
 		self.birthdate = Some(birthdate.into());
 		self
 	}
-	/***Optional*. For private chats with business accounts, the intro of the business*/
+	/** *Optional*. For private chats with business accounts, the intro of the business*/
 	pub fn business_intro(mut self, business_intro: impl Into<BusinessIntro>) -> Self {
 		self.business_intro = Some(business_intro.into());
 		self
 	}
-	/***Optional*. For private chats with business accounts, the location of the business*/
+	/** *Optional*. For private chats with business accounts, the location of the business*/
 	pub fn business_location(mut self, business_location: impl Into<BusinessLocation>) -> Self {
 		self.business_location = Some(business_location.into());
 		self
 	}
-	/***Optional*. For private chats with business accounts, the opening hours of the business*/
+	/** *Optional*. For private chats with business accounts, the opening hours of the business*/
 	pub fn business_opening_hours(mut self, business_opening_hours: impl Into<BusinessOpeningHours>) -> Self {
 		self.business_opening_hours = Some(business_opening_hours.into());
 		self
 	}
-	/***Optional*. *True*, if paid media messages can be sent or forwarded to the channel chat. The field is available only for channel chats.
+	/** *Optional*. *True*, if paid media messages can be sent or forwarded to the channel chat. The field is available only for channel chats.
 	Default value: true*/
 	pub fn can_send_paid_media(mut self, can_send_paid_media: bool) -> Self {
 		self.can_send_paid_media = Some(can_send_paid_media);
 		self
 	}
-	/***Optional*. *True*, if the bot can change the group sticker set
+	/** *Optional*. *True*, if the bot can change the group sticker set
 	Default value: true*/
 	pub fn can_set_sticker_set(mut self, can_set_sticker_set: bool) -> Self {
 		self.can_set_sticker_set = Some(can_set_sticker_set);
 		self
 	}
-	/***Optional*. For supergroups, the name of the group's custom emoji sticker set. Custom emoji from this set can be used by all users and bots in the group.*/
+	/** *Optional*. For supergroups, the name of the group's custom emoji sticker set. Custom emoji from this set can be used by all users and bots in the group.*/
 	pub fn custom_emoji_sticker_set_name(mut self, custom_emoji_sticker_set_name: impl Into<String>) -> Self {
 		self.custom_emoji_sticker_set_name = Some(custom_emoji_sticker_set_name.into());
 		self
 	}
-	/***Optional*. Description, for groups, supergroups and channel chats*/
+	/** *Optional*. Description, for groups, supergroups and channel chats*/
 	pub fn description(mut self, description: impl Into<String>) -> Self {
 		self.description = Some(description.into());
 		self
 	}
-	/***Optional*. Custom emoji identifier of the emoji status of the chat or the other party in a private chat*/
+	/** *Optional*. Custom emoji identifier of the emoji status of the chat or the other party in a private chat*/
 	pub fn emoji_status_custom_emoji_id(mut self, emoji_status_custom_emoji_id: impl Into<String>) -> Self {
 		self.emoji_status_custom_emoji_id = Some(emoji_status_custom_emoji_id.into());
 		self
 	}
-	/***Optional*. Expiration date of the emoji status of the chat or the other party in a private chat, in Unix time, if any*/
+	/** *Optional*. Expiration date of the emoji status of the chat or the other party in a private chat, in Unix time, if any*/
 	pub fn emoji_status_expiration_date(mut self, emoji_status_expiration_date: impl Into<i64>) -> Self {
 		self.emoji_status_expiration_date = Some(emoji_status_expiration_date.into());
 		self
 	}
-	/***Optional*. First name of the other party in a private chat*/
+	/** *Optional*. First name of the other party in a private chat*/
 	pub fn first_name(mut self, first_name: impl Into<String>) -> Self {
 		self.first_name = Some(first_name.into());
 		self
 	}
-	/***Optional*. *True*, if aggressive anti-spam checks are enabled in the supergroup. The field is only available to chat administrators.
+	/** *Optional*. *True*, if aggressive anti-spam checks are enabled in the supergroup. The field is only available to chat administrators.
 	Default value: true*/
 	pub fn has_aggressive_anti_spam_enabled(mut self, has_aggressive_anti_spam_enabled: bool) -> Self {
 		self.has_aggressive_anti_spam_enabled = Some(has_aggressive_anti_spam_enabled);
 		self
 	}
-	/***Optional*. *True*, if non-administrators can only get the list of bots and administrators in the chat
+	/** *Optional*. *True*, if non-administrators can only get the list of bots and administrators in the chat
 	Default value: true*/
 	pub fn has_hidden_members(mut self, has_hidden_members: bool) -> Self {
 		self.has_hidden_members = Some(has_hidden_members);
 		self
 	}
-	/***Optional*. *True*, if privacy settings of the other party in the private chat allows to use `tg://user?id=<user_id>` links only in chats with the user
+	/** *Optional*. *True*, if privacy settings of the other party in the private chat allows to use `tg://user?id=<user_id>` links only in chats with the user
 	Default value: true*/
 	pub fn has_private_forwards(mut self, has_private_forwards: bool) -> Self {
 		self.has_private_forwards = Some(has_private_forwards);
 		self
 	}
-	/***Optional*. *True*, if messages from the chat can't be forwarded to other chats
+	/** *Optional*. *True*, if messages from the chat can't be forwarded to other chats
 	Default value: true*/
 	pub fn has_protected_content(mut self, has_protected_content: bool) -> Self {
 		self.has_protected_content = Some(has_protected_content);
 		self
 	}
-	/***Optional*. *True*, if the privacy settings of the other party restrict sending voice and video note messages in the private chat
+	/** *Optional*. *True*, if the privacy settings of the other party restrict sending voice and video note messages in the private chat
 	Default value: true*/
 	pub fn has_restricted_voice_and_video_messages(mut self, has_restricted_voice_and_video_messages: bool) -> Self {
 		self.has_restricted_voice_and_video_messages = Some(has_restricted_voice_and_video_messages);
 		self
 	}
-	/***Optional*. *True*, if new chat members will have access to old messages; available only to chat administrators
+	/** *Optional*. *True*, if new chat members will have access to old messages; available only to chat administrators
 	Default value: true*/
 	pub fn has_visible_history(mut self, has_visible_history: bool) -> Self {
 		self.has_visible_history = Some(has_visible_history);
 		self
 	}
-	/***Optional*. Primary invite link, for groups, supergroups and channel chats*/
+	/** *Optional*. Primary invite link, for groups, supergroups and channel chats*/
 	pub fn invite_link(mut self, invite_link: impl Into<String>) -> Self {
 		self.invite_link = Some(invite_link.into());
 		self
 	}
-	/***Optional*. *True*, if the supergroup chat is a forum (has [topics](https://telegram.org/blog/topics-in-groups-collectible-usernames#topics-in-groups) enabled)
+	/** *Optional*. *True*, if the supergroup chat is a forum (has [topics](https://telegram.org/blog/topics-in-groups-collectible-usernames#topics-in-groups) enabled)
 	Default value: true*/
 	pub fn is_forum(mut self, is_forum: bool) -> Self {
 		self.is_forum = Some(is_forum);
 		self
 	}
-	/***Optional*. *True*, if all users directly joining the supergroup without using an invite link need to be approved by supergroup administrators
+	/** *Optional*. *True*, if all users directly joining the supergroup without using an invite link need to be approved by supergroup administrators
 	Default value: true*/
 	pub fn join_by_request(mut self, join_by_request: bool) -> Self {
 		self.join_by_request = Some(join_by_request);
 		self
 	}
-	/***Optional*. *True*, if users need to join the supergroup before they can send messages
+	/** *Optional*. *True*, if users need to join the supergroup before they can send messages
 	Default value: true*/
 	pub fn join_to_send_messages(mut self, join_to_send_messages: bool) -> Self {
 		self.join_to_send_messages = Some(join_to_send_messages);
 		self
 	}
-	/***Optional*. Last name of the other party in a private chat*/
+	/** *Optional*. Last name of the other party in a private chat*/
 	pub fn last_name(mut self, last_name: impl Into<String>) -> Self {
 		self.last_name = Some(last_name.into());
 		self
 	}
-	/***Optional*. Unique identifier for the linked chat, i.e. the discussion group identifier for a channel and vice versa; for supergroups and channel chats. This identifier may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.*/
+	/** *Optional*. Unique identifier for the linked chat, i.e. the discussion group identifier for a channel and vice versa; for supergroups and channel chats. This identifier may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.*/
 	pub fn linked_chat_id(mut self, linked_chat_id: impl Into<i64>) -> Self {
 		self.linked_chat_id = Some(linked_chat_id.into());
 		self
 	}
-	/***Optional*. For supergroups, the location to which the supergroup is connected*/
+	/** *Optional*. For supergroups, the location to which the supergroup is connected*/
 	pub fn location(mut self, location: impl Into<ChatLocation>) -> Self {
 		self.location = Some(location.into());
 		self
 	}
-	/***Optional*. The time after which all messages sent to the chat will be automatically deleted; in seconds*/
+	/** *Optional*. The time after which all messages sent to the chat will be automatically deleted; in seconds*/
 	pub fn message_auto_delete_time(mut self, message_auto_delete_time: impl Into<i64>) -> Self {
 		self.message_auto_delete_time = Some(message_auto_delete_time.into());
 		self
 	}
-	/***Optional*. Default chat member permissions, for groups and supergroups*/
+	/** *Optional*. Default chat member permissions, for groups and supergroups*/
 	pub fn permissions(mut self, permissions: impl Into<ChatPermissions>) -> Self {
 		self.permissions = Some(permissions.into());
 		self
 	}
-	/***Optional*. For private chats, the personal channel of the user*/
+	/** *Optional*. For private chats, the personal channel of the user*/
 	pub fn personal_chat(mut self, personal_chat: impl Into<Chat>) -> Self {
 		self.personal_chat = Some(personal_chat.into());
 		self
 	}
-	/***Optional*. Chat photo*/
+	/** *Optional*. Chat photo*/
 	pub fn photo(mut self, photo: impl Into<ChatPhoto>) -> Self {
 		self.photo = Some(photo.into());
 		self
 	}
-	/***Optional*. The most recent pinned message (by sending date)*/
+	/** *Optional*. The most recent pinned message (by sending date)*/
 	pub fn pinned_message(mut self, pinned_message: impl Into<Message>) -> Self {
 		self.pinned_message = Some(pinned_message.into());
 		self
 	}
-	/***Optional*. Identifier of the accent color for the chat's profile background. See [profile accent colors](https://core.telegram.org/bots/api/#profile-accent-colors) for more details.*/
+	/** *Optional*. Identifier of the accent color for the chat's profile background. See [profile accent colors](https://core.telegram.org/bots/api/#profile-accent-colors) for more details.*/
 	pub fn profile_accent_color_id(mut self, profile_accent_color_id: impl Into<i64>) -> Self {
 		self.profile_accent_color_id = Some(profile_accent_color_id.into());
 		self
 	}
-	/***Optional*. Custom emoji identifier of the emoji chosen by the chat for its profile background*/
+	/** *Optional*. Custom emoji identifier of the emoji chosen by the chat for its profile background*/
 	pub fn profile_background_custom_emoji_id(mut self, profile_background_custom_emoji_id: impl Into<String>) -> Self {
 		self.profile_background_custom_emoji_id = Some(profile_background_custom_emoji_id.into());
 		self
 	}
-	/***Optional*. For supergroups, the minimum allowed delay between consecutive messages sent by each unprivileged user; in seconds*/
+	/** *Optional*. For supergroups, the minimum allowed delay between consecutive messages sent by each unprivileged user; in seconds*/
 	pub fn slow_mode_delay(mut self, slow_mode_delay: impl Into<i64>) -> Self {
 		self.slow_mode_delay = Some(slow_mode_delay.into());
 		self
 	}
-	/***Optional*. For supergroups, name of the group sticker set*/
+	/** *Optional*. For supergroups, name of the group sticker set*/
 	pub fn sticker_set_name(mut self, sticker_set_name: impl Into<String>) -> Self {
 		self.sticker_set_name = Some(sticker_set_name.into());
 		self
 	}
-	/***Optional*. Title, for supergroups, channels and group chats*/
+	/** *Optional*. Title, for supergroups, channels and group chats*/
 	pub fn title(mut self, title: impl Into<String>) -> Self {
 		self.title = Some(title.into());
 		self
 	}
-	/***Optional*. For supergroups, the minimum number of boosts that a non-administrator user needs to add in order to ignore slow mode and chat permissions*/
+	/** *Optional*. For supergroups, the minimum number of boosts that a non-administrator user needs to add in order to ignore slow mode and chat permissions*/
 	pub fn unrestrict_boost_count(mut self, unrestrict_boost_count: impl Into<i64>) -> Self {
 		self.unrestrict_boost_count = Some(unrestrict_boost_count.into());
 		self
 	}
-	/***Optional*. Username, for private chats, supergroups and channels if available*/
+	/** *Optional*. Username, for private chats, supergroups and channels if available*/
 	pub fn username(mut self, username: impl Into<String>) -> Self {
 		self.username = Some(username.into());
 		self
@@ -1661,32 +1661,32 @@ impl ChatInviteLink {
 			subscription_price: None,
 		}
 	}
-	/***Optional*. Point in time (Unix timestamp) when the link will expire or has been expired*/
+	/** *Optional*. Point in time (Unix timestamp) when the link will expire or has been expired*/
 	pub fn expire_date(mut self, expire_date: impl Into<i64>) -> Self {
 		self.expire_date = Some(expire_date.into());
 		self
 	}
-	/***Optional*. The maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999*/
+	/** *Optional*. The maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999*/
 	pub fn member_limit(mut self, member_limit: impl Into<i64>) -> Self {
 		self.member_limit = Some(member_limit.into());
 		self
 	}
-	/***Optional*. Invite link name*/
+	/** *Optional*. Invite link name*/
 	pub fn name(mut self, name: impl Into<String>) -> Self {
 		self.name = Some(name.into());
 		self
 	}
-	/***Optional*. Number of pending join requests created using this link*/
+	/** *Optional*. Number of pending join requests created using this link*/
 	pub fn pending_join_request_count(mut self, pending_join_request_count: impl Into<i64>) -> Self {
 		self.pending_join_request_count = Some(pending_join_request_count.into());
 		self
 	}
-	/***Optional*. The number of seconds the subscription will be active for before the next payment*/
+	/** *Optional*. The number of seconds the subscription will be active for before the next payment*/
 	pub fn subscription_period(mut self, subscription_period: impl Into<i64>) -> Self {
 		self.subscription_period = Some(subscription_period.into());
 		self
 	}
-	/***Optional*. The amount of Telegram Stars a user must pay initially and after each subsequent subscription period to be a member of the chat using the link*/
+	/** *Optional*. The amount of Telegram Stars a user must pay initially and after each subsequent subscription period to be a member of the chat using the link*/
 	pub fn subscription_price(mut self, subscription_price: impl Into<i64>) -> Self {
 		self.subscription_price = Some(subscription_price.into());
 		self
@@ -1724,12 +1724,12 @@ impl ChatJoinRequest {
 			user_chat_id: user_chat_id.into(),
 		}
 	}
-	/***Optional*. Bio of the user.*/
+	/** *Optional*. Bio of the user.*/
 	pub fn bio(mut self, bio: impl Into<String>) -> Self {
 		self.bio = Some(bio.into());
 		self
 	}
-	/***Optional*. Chat invite link that was used by the user to send the join request*/
+	/** *Optional*. Chat invite link that was used by the user to send the join request*/
 	pub fn invite_link(mut self, invite_link: impl Into<ChatInviteLink>) -> Self {
 		self.invite_link = Some(invite_link.into());
 		self
@@ -1847,27 +1847,27 @@ impl ChatMemberAdministrator {
 			user: user.into(),
 		}
 	}
-	/***Optional*. *True*, if the administrator can edit messages of other users and can pin messages; for channels only*/
+	/** *Optional*. *True*, if the administrator can edit messages of other users and can pin messages; for channels only*/
 	pub fn can_edit_messages(mut self, can_edit_messages: bool) -> Self {
 		self.can_edit_messages = Some(can_edit_messages);
 		self
 	}
-	/***Optional*. *True*, if the user is allowed to create, rename, close, and reopen forum topics; for supergroups only*/
+	/** *Optional*. *True*, if the user is allowed to create, rename, close, and reopen forum topics; for supergroups only*/
 	pub fn can_manage_topics(mut self, can_manage_topics: bool) -> Self {
 		self.can_manage_topics = Some(can_manage_topics);
 		self
 	}
-	/***Optional*. *True*, if the user is allowed to pin messages; for groups and supergroups only*/
+	/** *Optional*. *True*, if the user is allowed to pin messages; for groups and supergroups only*/
 	pub fn can_pin_messages(mut self, can_pin_messages: bool) -> Self {
 		self.can_pin_messages = Some(can_pin_messages);
 		self
 	}
-	/***Optional*. *True*, if the administrator can post messages in the channel, or access channel statistics; for channels only*/
+	/** *Optional*. *True*, if the administrator can post messages in the channel, or access channel statistics; for channels only*/
 	pub fn can_post_messages(mut self, can_post_messages: bool) -> Self {
 		self.can_post_messages = Some(can_post_messages);
 		self
 	}
-	/***Optional*. Custom title for this user*/
+	/** *Optional*. Custom title for this user*/
 	pub fn custom_title(mut self, custom_title: impl Into<String>) -> Self {
 		self.custom_title = Some(custom_title.into());
 		self
@@ -1938,7 +1938,7 @@ impl ChatMemberMember {
 			user: user.into(),
 		}
 	}
-	/***Optional*. Date when the user's subscription will expire; Unix time*/
+	/** *Optional*. Date when the user's subscription will expire; Unix time*/
 	pub fn until_date(mut self, until_date: impl Into<i64>) -> Self {
 		self.until_date = Some(until_date.into());
 		self
@@ -1971,7 +1971,7 @@ impl ChatMemberOwner {
 			user: user.into(),
 		}
 	}
-	/***Optional*. Custom title for this user*/
+	/** *Optional*. Custom title for this user*/
 	pub fn custom_title(mut self, custom_title: impl Into<String>) -> Self {
 		self.custom_title = Some(custom_title.into());
 		self
@@ -2082,17 +2082,17 @@ impl ChatMemberUpdated {
 			via_join_request: None,
 		}
 	}
-	/***Optional*. Chat invite link, which was used by the user to join the chat; for joining by invite link events only.*/
+	/** *Optional*. Chat invite link, which was used by the user to join the chat; for joining by invite link events only.*/
 	pub fn invite_link(mut self, invite_link: impl Into<ChatInviteLink>) -> Self {
 		self.invite_link = Some(invite_link.into());
 		self
 	}
-	/***Optional*. True, if the user joined the chat via a chat folder invite link*/
+	/** *Optional*. True, if the user joined the chat via a chat folder invite link*/
 	pub fn via_chat_folder_invite_link(mut self, via_chat_folder_invite_link: bool) -> Self {
 		self.via_chat_folder_invite_link = Some(via_chat_folder_invite_link);
 		self
 	}
-	/***Optional*. True, if the user joined the chat after sending a direct join request without using an invite link and being approved by an administrator*/
+	/** *Optional*. True, if the user joined the chat after sending a direct join request without using an invite link and being approved by an administrator*/
 	pub fn via_join_request(mut self, via_join_request: bool) -> Self {
 		self.via_join_request = Some(via_join_request);
 		self
@@ -2154,72 +2154,72 @@ impl ChatPermissions {
 			can_send_voice_notes: None,
 		}
 	}
-	/***Optional*. *True*, if the user is allowed to add web page previews to their messages*/
+	/** *Optional*. *True*, if the user is allowed to add web page previews to their messages*/
 	pub fn can_add_web_page_previews(mut self, can_add_web_page_previews: bool) -> Self {
 		self.can_add_web_page_previews = Some(can_add_web_page_previews);
 		self
 	}
-	/***Optional*. *True*, if the user is allowed to change the chat title, photo and other settings. Ignored in public supergroups*/
+	/** *Optional*. *True*, if the user is allowed to change the chat title, photo and other settings. Ignored in public supergroups*/
 	pub fn can_change_info(mut self, can_change_info: bool) -> Self {
 		self.can_change_info = Some(can_change_info);
 		self
 	}
-	/***Optional*. *True*, if the user is allowed to invite new users to the chat*/
+	/** *Optional*. *True*, if the user is allowed to invite new users to the chat*/
 	pub fn can_invite_users(mut self, can_invite_users: bool) -> Self {
 		self.can_invite_users = Some(can_invite_users);
 		self
 	}
-	/***Optional*. *True*, if the user is allowed to create forum topics. If omitted defaults to the value of can\_pin\_messages*/
+	/** *Optional*. *True*, if the user is allowed to create forum topics. If omitted defaults to the value of can\_pin\_messages*/
 	pub fn can_manage_topics(mut self, can_manage_topics: bool) -> Self {
 		self.can_manage_topics = Some(can_manage_topics);
 		self
 	}
-	/***Optional*. *True*, if the user is allowed to pin messages. Ignored in public supergroups*/
+	/** *Optional*. *True*, if the user is allowed to pin messages. Ignored in public supergroups*/
 	pub fn can_pin_messages(mut self, can_pin_messages: bool) -> Self {
 		self.can_pin_messages = Some(can_pin_messages);
 		self
 	}
-	/***Optional*. *True*, if the user is allowed to send audios*/
+	/** *Optional*. *True*, if the user is allowed to send audios*/
 	pub fn can_send_audios(mut self, can_send_audios: bool) -> Self {
 		self.can_send_audios = Some(can_send_audios);
 		self
 	}
-	/***Optional*. *True*, if the user is allowed to send documents*/
+	/** *Optional*. *True*, if the user is allowed to send documents*/
 	pub fn can_send_documents(mut self, can_send_documents: bool) -> Self {
 		self.can_send_documents = Some(can_send_documents);
 		self
 	}
-	/***Optional*. *True*, if the user is allowed to send text messages, contacts, giveaways, giveaway winners, invoices, locations and venues*/
+	/** *Optional*. *True*, if the user is allowed to send text messages, contacts, giveaways, giveaway winners, invoices, locations and venues*/
 	pub fn can_send_messages(mut self, can_send_messages: bool) -> Self {
 		self.can_send_messages = Some(can_send_messages);
 		self
 	}
-	/***Optional*. *True*, if the user is allowed to send animations, games, stickers and use inline bots*/
+	/** *Optional*. *True*, if the user is allowed to send animations, games, stickers and use inline bots*/
 	pub fn can_send_other_messages(mut self, can_send_other_messages: bool) -> Self {
 		self.can_send_other_messages = Some(can_send_other_messages);
 		self
 	}
-	/***Optional*. *True*, if the user is allowed to send photos*/
+	/** *Optional*. *True*, if the user is allowed to send photos*/
 	pub fn can_send_photos(mut self, can_send_photos: bool) -> Self {
 		self.can_send_photos = Some(can_send_photos);
 		self
 	}
-	/***Optional*. *True*, if the user is allowed to send polls*/
+	/** *Optional*. *True*, if the user is allowed to send polls*/
 	pub fn can_send_polls(mut self, can_send_polls: bool) -> Self {
 		self.can_send_polls = Some(can_send_polls);
 		self
 	}
-	/***Optional*. *True*, if the user is allowed to send video notes*/
+	/** *Optional*. *True*, if the user is allowed to send video notes*/
 	pub fn can_send_video_notes(mut self, can_send_video_notes: bool) -> Self {
 		self.can_send_video_notes = Some(can_send_video_notes);
 		self
 	}
-	/***Optional*. *True*, if the user is allowed to send videos*/
+	/** *Optional*. *True*, if the user is allowed to send videos*/
 	pub fn can_send_videos(mut self, can_send_videos: bool) -> Self {
 		self.can_send_videos = Some(can_send_videos);
 		self
 	}
-	/***Optional*. *True*, if the user is allowed to send voice notes*/
+	/** *Optional*. *True*, if the user is allowed to send voice notes*/
 	pub fn can_send_voice_notes(mut self, can_send_voice_notes: bool) -> Self {
 		self.can_send_voice_notes = Some(can_send_voice_notes);
 		self
@@ -2283,17 +2283,17 @@ impl ChatShared {
 		self.photo.push(photo.into());
 		self
 	}
-	/***Optional*. Available sizes of the chat photo, if the photo was requested by the bot*/
+	/** *Optional*. Available sizes of the chat photo, if the photo was requested by the bot*/
 	pub fn photo(mut self, photo: impl Into<Vec<PhotoSize>>) -> Self {
 		self.photo = photo.into();
 		self
 	}
-	/***Optional*. Title of the chat, if the title was requested by the bot.*/
+	/** *Optional*. Title of the chat, if the title was requested by the bot.*/
 	pub fn title(mut self, title: impl Into<String>) -> Self {
 		self.title = Some(title.into());
 		self
 	}
-	/***Optional*. Username of the chat, if the username was requested by the bot and available.*/
+	/** *Optional*. Username of the chat, if the username was requested by the bot and available.*/
 	pub fn username(mut self, username: impl Into<String>) -> Self {
 		self.username = Some(username.into());
 		self
@@ -2328,12 +2328,12 @@ impl ChosenInlineResult {
 			result_id: result_id.into(),
 		}
 	}
-	/***Optional*. Identifier of the sent inline message. Available only if there is an [inline keyboard](https://core.telegram.org/bots/api/#inlinekeyboardmarkup) attached to the message. Will be also received in [callback queries](https://core.telegram.org/bots/api/#callbackquery) and can be used to [edit](https://core.telegram.org/bots/api/#updating-messages) the message.*/
+	/** *Optional*. Identifier of the sent inline message. Available only if there is an [inline keyboard](https://core.telegram.org/bots/api/#inlinekeyboardmarkup) attached to the message. Will be also received in [callback queries](https://core.telegram.org/bots/api/#callbackquery) and can be used to [edit](https://core.telegram.org/bots/api/#updating-messages) the message.*/
 	pub fn inline_message_id(mut self, inline_message_id: impl Into<String>) -> Self {
 		self.inline_message_id = Some(inline_message_id.into());
 		self
 	}
-	/***Optional*. Sender location, only for bots that require user location*/
+	/** *Optional*. Sender location, only for bots that require user location*/
 	pub fn location(mut self, location: impl Into<Location>) -> Self {
 		self.location = Some(location.into());
 		self
@@ -2368,17 +2368,17 @@ impl Contact {
 			vcard: None,
 		}
 	}
-	/***Optional*. Contact's last name*/
+	/** *Optional*. Contact's last name*/
 	pub fn last_name(mut self, last_name: impl Into<String>) -> Self {
 		self.last_name = Some(last_name.into());
 		self
 	}
-	/***Optional*. Contact's user identifier in Telegram. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier.*/
+	/** *Optional*. Contact's user identifier in Telegram. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier.*/
 	pub fn user_id(mut self, user_id: impl Into<i64>) -> Self {
 		self.user_id = Some(user_id.into());
 		self
 	}
-	/***Optional*. Additional data about the contact in the form of a [vCard](https://en.wikipedia.org/wiki/VCard)*/
+	/** *Optional*. Additional data about the contact in the form of a [vCard](https://en.wikipedia.org/wiki/VCard)*/
 	pub fn vcard(mut self, vcard: impl Into<String>) -> Self {
 		self.vcard = Some(vcard.into());
 		self
@@ -2451,22 +2451,22 @@ impl Document {
 			thumbnail: None,
 		}
 	}
-	/***Optional*. Original filename as defined by the sender*/
+	/** *Optional*. Original filename as defined by the sender*/
 	pub fn file_name(mut self, file_name: impl Into<String>) -> Self {
 		self.file_name = Some(file_name.into());
 		self
 	}
-	/***Optional*. File size in bytes. It can be bigger than 2^31 and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this value.*/
+	/** *Optional*. File size in bytes. It can be bigger than 2^31 and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this value.*/
 	pub fn file_size(mut self, file_size: impl Into<i64>) -> Self {
 		self.file_size = Some(file_size.into());
 		self
 	}
-	/***Optional*. MIME type of the file as defined by the sender*/
+	/** *Optional*. MIME type of the file as defined by the sender*/
 	pub fn mime_type(mut self, mime_type: impl Into<String>) -> Self {
 		self.mime_type = Some(mime_type.into());
 		self
 	}
-	/***Optional*. Document thumbnail as defined by the sender*/
+	/** *Optional*. Document thumbnail as defined by the sender*/
 	pub fn thumbnail(mut self, thumbnail: impl Into<PhotoSize>) -> Self {
 		self.thumbnail = Some(thumbnail.into());
 		self
@@ -2539,12 +2539,12 @@ impl EncryptedPassportElement {
 			translation: Vec::new(),
 		}
 	}
-	/***Optional*. Base64-encoded encrypted Telegram Passport element data provided by the user; available only for “personal\_details”, “passport”, “driver\_license”, “identity\_card”, “internal\_passport” and “address” types. Can be decrypted and verified using the accompanying [EncryptedCredentials](https://core.telegram.org/bots/api/#encryptedcredentials).*/
+	/** *Optional*. Base64-encoded encrypted Telegram Passport element data provided by the user; available only for “personal\_details”, “passport”, “driver\_license”, “identity\_card”, “internal\_passport” and “address” types. Can be decrypted and verified using the accompanying [EncryptedCredentials](https://core.telegram.org/bots/api/#encryptedcredentials).*/
 	pub fn data(mut self, data: impl Into<String>) -> Self {
 		self.data = Some(data.into());
 		self
 	}
-	/***Optional*. User's verified email address; available only for “email” type*/
+	/** *Optional*. User's verified email address; available only for “email” type*/
 	pub fn email(mut self, email: impl Into<String>) -> Self {
 		self.email = Some(email.into());
 		self
@@ -2553,27 +2553,27 @@ impl EncryptedPassportElement {
 		self.files.push(file.into());
 		self
 	}
-	/***Optional*. Array of encrypted files with documents provided by the user; available only for “utility\_bill”, “bank\_statement”, “rental\_agreement”, “passport\_registration” and “temporary\_registration” types. Files can be decrypted and verified using the accompanying [EncryptedCredentials](https://core.telegram.org/bots/api/#encryptedcredentials).*/
+	/** *Optional*. Array of encrypted files with documents provided by the user; available only for “utility\_bill”, “bank\_statement”, “rental\_agreement”, “passport\_registration” and “temporary\_registration” types. Files can be decrypted and verified using the accompanying [EncryptedCredentials](https://core.telegram.org/bots/api/#encryptedcredentials).*/
 	pub fn files(mut self, files: impl Into<Vec<PassportFile>>) -> Self {
 		self.files = files.into();
 		self
 	}
-	/***Optional*. Encrypted file with the front side of the document, provided by the user; available only for “passport”, “driver\_license”, “identity\_card” and “internal\_passport”. The file can be decrypted and verified using the accompanying [EncryptedCredentials](https://core.telegram.org/bots/api/#encryptedcredentials).*/
+	/** *Optional*. Encrypted file with the front side of the document, provided by the user; available only for “passport”, “driver\_license”, “identity\_card” and “internal\_passport”. The file can be decrypted and verified using the accompanying [EncryptedCredentials](https://core.telegram.org/bots/api/#encryptedcredentials).*/
 	pub fn front_side(mut self, front_side: impl Into<PassportFile>) -> Self {
 		self.front_side = Some(front_side.into());
 		self
 	}
-	/***Optional*. User's verified phone number; available only for “phone\_number” type*/
+	/** *Optional*. User's verified phone number; available only for “phone\_number” type*/
 	pub fn phone_number(mut self, phone_number: impl Into<String>) -> Self {
 		self.phone_number = Some(phone_number.into());
 		self
 	}
-	/***Optional*. Encrypted file with the reverse side of the document, provided by the user; available only for “driver\_license” and “identity\_card”. The file can be decrypted and verified using the accompanying [EncryptedCredentials](https://core.telegram.org/bots/api/#encryptedcredentials).*/
+	/** *Optional*. Encrypted file with the reverse side of the document, provided by the user; available only for “driver\_license” and “identity\_card”. The file can be decrypted and verified using the accompanying [EncryptedCredentials](https://core.telegram.org/bots/api/#encryptedcredentials).*/
 	pub fn reverse_side(mut self, reverse_side: impl Into<PassportFile>) -> Self {
 		self.reverse_side = Some(reverse_side.into());
 		self
 	}
-	/***Optional*. Encrypted file with the selfie of the user holding a document, provided by the user; available if requested for “passport”, “driver\_license”, “identity\_card” and “internal\_passport”. The file can be decrypted and verified using the accompanying [EncryptedCredentials](https://core.telegram.org/bots/api/#encryptedcredentials).*/
+	/** *Optional*. Encrypted file with the selfie of the user holding a document, provided by the user; available if requested for “passport”, “driver\_license”, “identity\_card” and “internal\_passport”. The file can be decrypted and verified using the accompanying [EncryptedCredentials](https://core.telegram.org/bots/api/#encryptedcredentials).*/
 	pub fn selfie(mut self, selfie: impl Into<PassportFile>) -> Self {
 		self.selfie = Some(selfie.into());
 		self
@@ -2582,7 +2582,7 @@ impl EncryptedPassportElement {
 		self.translation.push(translation.into());
 		self
 	}
-	/***Optional*. Array of encrypted files with translated versions of documents provided by the user; available if requested for “passport”, “driver\_license”, “identity\_card”, “internal\_passport”, “utility\_bill”, “bank\_statement”, “rental\_agreement”, “passport\_registration” and “temporary\_registration” types. Files can be decrypted and verified using the accompanying [EncryptedCredentials](https://core.telegram.org/bots/api/#encryptedcredentials).*/
+	/** *Optional*. Array of encrypted files with translated versions of documents provided by the user; available if requested for “passport”, “driver\_license”, “identity\_card”, “internal\_passport”, “utility\_bill”, “bank\_statement”, “rental\_agreement”, “passport\_registration” and “temporary\_registration” types. Files can be decrypted and verified using the accompanying [EncryptedCredentials](https://core.telegram.org/bots/api/#encryptedcredentials).*/
 	pub fn translation(mut self, translation: impl Into<Vec<PassportFile>>) -> Self {
 		self.translation = translation.into();
 		self
@@ -2676,78 +2676,78 @@ impl ExternalReplyInfo {
 			voice: None,
 		}
 	}
-	/***Optional*. Message is an animation, information about the animation*/
+	/** *Optional*. Message is an animation, information about the animation*/
 	pub fn animation(mut self, animation: impl Into<Animation>) -> Self {
 		self.animation = Some(animation.into());
 		self
 	}
-	/***Optional*. Message is an audio file, information about the file*/
+	/** *Optional*. Message is an audio file, information about the file*/
 	pub fn audio(mut self, audio: impl Into<Audio>) -> Self {
 		self.audio = Some(audio.into());
 		self
 	}
-	/***Optional*. Chat the original message belongs to. Available only if the chat is a supergroup or a channel.*/
+	/** *Optional*. Chat the original message belongs to. Available only if the chat is a supergroup or a channel.*/
 	pub fn chat(mut self, chat: impl Into<Chat>) -> Self {
 		self.chat = Some(chat.into());
 		self
 	}
-	/***Optional*. Message is a shared contact, information about the contact*/
+	/** *Optional*. Message is a shared contact, information about the contact*/
 	pub fn contact(mut self, contact: impl Into<Contact>) -> Self {
 		self.contact = Some(contact.into());
 		self
 	}
-	/***Optional*. Message is a dice with random value*/
+	/** *Optional*. Message is a dice with random value*/
 	pub fn dice(mut self, dice: impl Into<Dice>) -> Self {
 		self.dice = Some(dice.into());
 		self
 	}
-	/***Optional*. Message is a general file, information about the file*/
+	/** *Optional*. Message is a general file, information about the file*/
 	pub fn document(mut self, document: impl Into<Document>) -> Self {
 		self.document = Some(document.into());
 		self
 	}
-	/***Optional*. Message is a game, information about the game. [More about games »](https://core.telegram.org/bots/api/#games)*/
+	/** *Optional*. Message is a game, information about the game. [More about games »](https://core.telegram.org/bots/api/#games)*/
 	pub fn game(mut self, game: impl Into<Game>) -> Self {
 		self.game = Some(game.into());
 		self
 	}
-	/***Optional*. Message is a scheduled giveaway, information about the giveaway*/
+	/** *Optional*. Message is a scheduled giveaway, information about the giveaway*/
 	pub fn giveaway(mut self, giveaway: impl Into<Giveaway>) -> Self {
 		self.giveaway = Some(giveaway.into());
 		self
 	}
-	/***Optional*. A giveaway with public winners was completed*/
+	/** *Optional*. A giveaway with public winners was completed*/
 	pub fn giveaway_winners(mut self, giveaway_winners: impl Into<GiveawayWinners>) -> Self {
 		self.giveaway_winners = Some(giveaway_winners.into());
 		self
 	}
-	/***Optional*. *True*, if the message media is covered by a spoiler animation
+	/** *Optional*. *True*, if the message media is covered by a spoiler animation
 	Default value: true*/
 	pub fn has_media_spoiler(mut self, has_media_spoiler: bool) -> Self {
 		self.has_media_spoiler = Some(has_media_spoiler);
 		self
 	}
-	/***Optional*. Message is an invoice for a [payment](https://core.telegram.org/bots/api/#payments), information about the invoice. [More about payments »](https://core.telegram.org/bots/api/#payments)*/
+	/** *Optional*. Message is an invoice for a [payment](https://core.telegram.org/bots/api/#payments), information about the invoice. [More about payments »](https://core.telegram.org/bots/api/#payments)*/
 	pub fn invoice(mut self, invoice: impl Into<Invoice>) -> Self {
 		self.invoice = Some(invoice.into());
 		self
 	}
-	/***Optional*. Options used for link preview generation for the original message, if it is a text message*/
+	/** *Optional*. Options used for link preview generation for the original message, if it is a text message*/
 	pub fn link_preview_options(mut self, link_preview_options: impl Into<LinkPreviewOptions>) -> Self {
 		self.link_preview_options = Some(link_preview_options.into());
 		self
 	}
-	/***Optional*. Message is a shared location, information about the location*/
+	/** *Optional*. Message is a shared location, information about the location*/
 	pub fn location(mut self, location: impl Into<Location>) -> Self {
 		self.location = Some(location.into());
 		self
 	}
-	/***Optional*. Unique message identifier inside the original chat. Available only if the original chat is a supergroup or a channel.*/
+	/** *Optional*. Unique message identifier inside the original chat. Available only if the original chat is a supergroup or a channel.*/
 	pub fn message_id(mut self, message_id: impl Into<i64>) -> Self {
 		self.message_id = Some(message_id.into());
 		self
 	}
-	/***Optional*. Message contains paid media; information about the paid media*/
+	/** *Optional*. Message contains paid media; information about the paid media*/
 	pub fn paid_media(mut self, paid_media: impl Into<PaidMediaInfo>) -> Self {
 		self.paid_media = Some(paid_media.into());
 		self
@@ -2756,42 +2756,42 @@ impl ExternalReplyInfo {
 		self.photo.push(photo.into());
 		self
 	}
-	/***Optional*. Message is a photo, available sizes of the photo*/
+	/** *Optional*. Message is a photo, available sizes of the photo*/
 	pub fn photo(mut self, photo: impl Into<Vec<PhotoSize>>) -> Self {
 		self.photo = photo.into();
 		self
 	}
-	/***Optional*. Message is a native poll, information about the poll*/
+	/** *Optional*. Message is a native poll, information about the poll*/
 	pub fn poll(mut self, poll: impl Into<Poll>) -> Self {
 		self.poll = Some(poll.into());
 		self
 	}
-	/***Optional*. Message is a sticker, information about the sticker*/
+	/** *Optional*. Message is a sticker, information about the sticker*/
 	pub fn sticker(mut self, sticker: impl Into<Sticker>) -> Self {
 		self.sticker = Some(sticker.into());
 		self
 	}
-	/***Optional*. Message is a forwarded story*/
+	/** *Optional*. Message is a forwarded story*/
 	pub fn story(mut self, story: impl Into<Story>) -> Self {
 		self.story = Some(story.into());
 		self
 	}
-	/***Optional*. Message is a venue, information about the venue*/
+	/** *Optional*. Message is a venue, information about the venue*/
 	pub fn venue(mut self, venue: impl Into<Venue>) -> Self {
 		self.venue = Some(venue.into());
 		self
 	}
-	/***Optional*. Message is a video, information about the video*/
+	/** *Optional*. Message is a video, information about the video*/
 	pub fn video(mut self, video: impl Into<Video>) -> Self {
 		self.video = Some(video.into());
 		self
 	}
-	/***Optional*. Message is a [video note](https://telegram.org/blog/video-messages-and-telescope), information about the video message*/
+	/** *Optional*. Message is a [video note](https://telegram.org/blog/video-messages-and-telescope), information about the video message*/
 	pub fn video_note(mut self, video_note: impl Into<VideoNote>) -> Self {
 		self.video_note = Some(video_note.into());
 		self
 	}
-	/***Optional*. Message is a voice message, information about the file*/
+	/** *Optional*. Message is a voice message, information about the file*/
 	pub fn voice(mut self, voice: impl Into<Voice>) -> Self {
 		self.voice = Some(voice.into());
 		self
@@ -2825,12 +2825,12 @@ impl File {
 			file_unique_id: file_unique_id.into(),
 		}
 	}
-	/***Optional*. File path. Use `https://api.telegram.org/file/bot<token>/<file_path>` to get the file.*/
+	/** *Optional*. File path. Use `https://api.telegram.org/file/bot<token>/<file_path>` to get the file.*/
 	pub fn file_path(mut self, file_path: impl Into<String>) -> Self {
 		self.file_path = Some(file_path.into());
 		self
 	}
-	/***Optional*. File size in bytes. It can be bigger than 2^31 and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this value.*/
+	/** *Optional*. File size in bytes. It can be bigger than 2^31 and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this value.*/
 	pub fn file_size(mut self, file_size: impl Into<i64>) -> Self {
 		self.file_size = Some(file_size.into());
 		self
@@ -2862,14 +2862,14 @@ impl ForceReply {
 			selective: None,
 		}
 	}
-	/***Optional*. The placeholder to be shown in the input field when the reply is active; 1-64 characters
+	/** *Optional*. The placeholder to be shown in the input field when the reply is active; 1-64 characters
 	Min len: 1
 	Max len: 64*/
 	pub fn input_field_placeholder(mut self, input_field_placeholder: impl Into<String>) -> Self {
 		self.input_field_placeholder = Some(input_field_placeholder.into());
 		self
 	}
-	/***Optional*. Use this parameter if you want to force reply from specific users only. Targets: 1) users that are @mentioned in the *text* of the [Message](https://core.telegram.org/bots/api/#message) object; 2) if the bot's message is a reply to a message in the same chat and forum topic, sender of the original message.*/
+	/** *Optional*. Use this parameter if you want to force reply from specific users only. Targets: 1) users that are @mentioned in the *text* of the [Message](https://core.telegram.org/bots/api/#message) object; 2) if the bot's message is a reply to a message in the same chat and forum topic, sender of the original message.*/
 	pub fn selective(mut self, selective: bool) -> Self {
 		self.selective = Some(selective);
 		self
@@ -2901,7 +2901,7 @@ impl ForumTopic {
 			name: name.into(),
 		}
 	}
-	/***Optional*. Unique identifier of the custom emoji shown as the topic icon*/
+	/** *Optional*. Unique identifier of the custom emoji shown as the topic icon*/
 	pub fn icon_custom_emoji_id(mut self, icon_custom_emoji_id: impl Into<String>) -> Self {
 		self.icon_custom_emoji_id = Some(icon_custom_emoji_id.into());
 		self
@@ -2934,7 +2934,7 @@ impl ForumTopicCreated {
 			name: name.into(),
 		}
 	}
-	/***Optional*. Unique identifier of the custom emoji shown as the topic icon*/
+	/** *Optional*. Unique identifier of the custom emoji shown as the topic icon*/
 	pub fn icon_custom_emoji_id(mut self, icon_custom_emoji_id: impl Into<String>) -> Self {
 		self.icon_custom_emoji_id = Some(icon_custom_emoji_id.into());
 		self
@@ -2960,12 +2960,12 @@ impl ForumTopicEdited {
 			name: None,
 		}
 	}
-	/***Optional*. New identifier of the custom emoji shown as the topic icon, if it was edited; an empty string if the icon was removed*/
+	/** *Optional*. New identifier of the custom emoji shown as the topic icon, if it was edited; an empty string if the icon was removed*/
 	pub fn icon_custom_emoji_id(mut self, icon_custom_emoji_id: impl Into<String>) -> Self {
 		self.icon_custom_emoji_id = Some(icon_custom_emoji_id.into());
 		self
 	}
-	/***Optional*. New name of the topic, if it was edited*/
+	/** *Optional*. New name of the topic, if it was edited*/
 	pub fn name(mut self, name: impl Into<String>) -> Self {
 		self.name = Some(name.into());
 		self
@@ -3017,7 +3017,7 @@ impl Game {
 			title: title.into(),
 		}
 	}
-	/***Optional*. Animation that will be displayed in the game message in chats. Upload via [BotFather](https://t.me/botfather)*/
+	/** *Optional*. Animation that will be displayed in the game message in chats. Upload via [BotFather](https://t.me/botfather)*/
 	pub fn animation(mut self, animation: impl Into<Animation>) -> Self {
 		self.animation = Some(animation.into());
 		self
@@ -3026,7 +3026,7 @@ impl Game {
 		self.photo.push(photo.into());
 		self
 	}
-	/***Optional*. Brief description of the game or high scores included in the game message. Can be automatically edited to include current high scores for the game when the bot calls [setGameScore](https://core.telegram.org/bots/api/#setgamescore), or manually edited using [editMessageText](https://core.telegram.org/bots/api/#editmessagetext). 0-4096 characters.
+	/** *Optional*. Brief description of the game or high scores included in the game message. Can be automatically edited to include current high scores for the game when the bot calls [setGameScore](https://core.telegram.org/bots/api/#setgamescore), or manually edited using [editMessageText](https://core.telegram.org/bots/api/#editmessagetext). 0-4096 characters.
 	Min len: 0
 	Max len: 4096*/
 	pub fn text(mut self, text: impl Into<String>) -> Self {
@@ -3037,7 +3037,7 @@ impl Game {
 		self.text_entities.push(text_entity.into());
 		self
 	}
-	/***Optional*. Special entities that appear in *text*, such as usernames, URLs, bot commands, etc.*/
+	/** *Optional*. Special entities that appear in *text*, such as usernames, URLs, bot commands, etc.*/
 	pub fn text_entities(mut self, text_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.text_entities = text_entities.into();
 		self
@@ -3104,17 +3104,17 @@ impl Gift {
 			upgrade_star_count: None,
 		}
 	}
-	/***Optional*. The number of remaining gifts of this type that can be sent; for limited gifts only*/
+	/** *Optional*. The number of remaining gifts of this type that can be sent; for limited gifts only*/
 	pub fn remaining_count(mut self, remaining_count: impl Into<i64>) -> Self {
 		self.remaining_count = Some(remaining_count.into());
 		self
 	}
-	/***Optional*. The total number of the gifts of this type that can be sent; for limited gifts only*/
+	/** *Optional*. The total number of the gifts of this type that can be sent; for limited gifts only*/
 	pub fn total_count(mut self, total_count: impl Into<i64>) -> Self {
 		self.total_count = Some(total_count.into());
 		self
 	}
-	/***Optional*. The number of Telegram Stars that must be paid to upgrade the gift to a unique one*/
+	/** *Optional*. The number of Telegram Stars that must be paid to upgrade the gift to a unique one*/
 	pub fn upgrade_star_count(mut self, upgrade_star_count: impl Into<i64>) -> Self {
 		self.upgrade_star_count = Some(upgrade_star_count.into());
 		self
@@ -3194,34 +3194,34 @@ impl Giveaway {
 		self.country_codes.push(country_code.into());
 		self
 	}
-	/***Optional*. A list of two-letter [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country codes indicating the countries from which eligible users for the giveaway must come. If empty, then all users can participate in the giveaway. Users with a phone number that was bought on Fragment can always participate in giveaways.*/
+	/** *Optional*. A list of two-letter [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country codes indicating the countries from which eligible users for the giveaway must come. If empty, then all users can participate in the giveaway. Users with a phone number that was bought on Fragment can always participate in giveaways.*/
 	pub fn country_codes(mut self, country_codes: impl Into<Vec<String>>) -> Self {
 		self.country_codes = country_codes.into();
 		self
 	}
-	/***Optional*. *True*, if the list of giveaway winners will be visible to everyone
+	/** *Optional*. *True*, if the list of giveaway winners will be visible to everyone
 	Default value: true*/
 	pub fn has_public_winners(mut self, has_public_winners: bool) -> Self {
 		self.has_public_winners = Some(has_public_winners);
 		self
 	}
-	/***Optional*. *True*, if only users who join the chats after the giveaway started should be eligible to win
+	/** *Optional*. *True*, if only users who join the chats after the giveaway started should be eligible to win
 	Default value: true*/
 	pub fn only_new_members(mut self, only_new_members: bool) -> Self {
 		self.only_new_members = Some(only_new_members);
 		self
 	}
-	/***Optional*. The number of months the Telegram Premium subscription won from the giveaway will be active for; for Telegram Premium giveaways only*/
+	/** *Optional*. The number of months the Telegram Premium subscription won from the giveaway will be active for; for Telegram Premium giveaways only*/
 	pub fn premium_subscription_month_count(mut self, premium_subscription_month_count: impl Into<i64>) -> Self {
 		self.premium_subscription_month_count = Some(premium_subscription_month_count.into());
 		self
 	}
-	/***Optional*. Description of additional giveaway prize*/
+	/** *Optional*. Description of additional giveaway prize*/
 	pub fn prize_description(mut self, prize_description: impl Into<String>) -> Self {
 		self.prize_description = Some(prize_description.into());
 		self
 	}
-	/***Optional*. The number of Telegram Stars to be split between giveaway winners; for Telegram Star giveaways only*/
+	/** *Optional*. The number of Telegram Stars to be split between giveaway winners; for Telegram Star giveaways only*/
 	pub fn prize_star_count(mut self, prize_star_count: impl Into<i64>) -> Self {
 		self.prize_star_count = Some(prize_star_count.into());
 		self
@@ -3254,18 +3254,18 @@ impl GiveawayCompleted {
 			winner_count: winner_count.into(),
 		}
 	}
-	/***Optional*. Message with the giveaway that was completed, if it wasn't deleted*/
+	/** *Optional*. Message with the giveaway that was completed, if it wasn't deleted*/
 	pub fn giveaway_message(mut self, giveaway_message: impl Into<Box<Message>>) -> Self {
 		self.giveaway_message = Some(giveaway_message.into());
 		self
 	}
-	/***Optional*. *True*, if the giveaway is a Telegram Star giveaway. Otherwise, currently, the giveaway is a Telegram Premium giveaway.
+	/** *Optional*. *True*, if the giveaway is a Telegram Star giveaway. Otherwise, currently, the giveaway is a Telegram Premium giveaway.
 	Default value: true*/
 	pub fn is_star_giveaway(mut self, is_star_giveaway: bool) -> Self {
 		self.is_star_giveaway = Some(is_star_giveaway);
 		self
 	}
-	/***Optional*. Number of undistributed prizes*/
+	/** *Optional*. Number of undistributed prizes*/
 	pub fn unclaimed_prize_count(mut self, unclaimed_prize_count: impl Into<i64>) -> Self {
 		self.unclaimed_prize_count = Some(unclaimed_prize_count.into());
 		self
@@ -3288,7 +3288,7 @@ impl GiveawayCreated {
 			prize_star_count: None,
 		}
 	}
-	/***Optional*. The number of Telegram Stars to be split between giveaway winners; for Telegram Star giveaways only*/
+	/** *Optional*. The number of Telegram Stars to be split between giveaway winners; for Telegram Star giveaways only*/
 	pub fn prize_star_count(mut self, prize_star_count: impl Into<i64>) -> Self {
 		self.prize_star_count = Some(prize_star_count.into());
 		self
@@ -3347,38 +3347,38 @@ impl GiveawayWinners {
 			winners_selection_date: winners_selection_date.into(),
 		}
 	}
-	/***Optional*. The number of other chats the user had to join in order to be eligible for the giveaway*/
+	/** *Optional*. The number of other chats the user had to join in order to be eligible for the giveaway*/
 	pub fn additional_chat_count(mut self, additional_chat_count: impl Into<i64>) -> Self {
 		self.additional_chat_count = Some(additional_chat_count.into());
 		self
 	}
-	/***Optional*. *True*, if only users who had joined the chats after the giveaway started were eligible to win
+	/** *Optional*. *True*, if only users who had joined the chats after the giveaway started were eligible to win
 	Default value: true*/
 	pub fn only_new_members(mut self, only_new_members: bool) -> Self {
 		self.only_new_members = Some(only_new_members);
 		self
 	}
-	/***Optional*. The number of months the Telegram Premium subscription won from the giveaway will be active for; for Telegram Premium giveaways only*/
+	/** *Optional*. The number of months the Telegram Premium subscription won from the giveaway will be active for; for Telegram Premium giveaways only*/
 	pub fn premium_subscription_month_count(mut self, premium_subscription_month_count: impl Into<i64>) -> Self {
 		self.premium_subscription_month_count = Some(premium_subscription_month_count.into());
 		self
 	}
-	/***Optional*. Description of additional giveaway prize*/
+	/** *Optional*. Description of additional giveaway prize*/
 	pub fn prize_description(mut self, prize_description: impl Into<String>) -> Self {
 		self.prize_description = Some(prize_description.into());
 		self
 	}
-	/***Optional*. The number of Telegram Stars that were split between giveaway winners; for Telegram Star giveaways only*/
+	/** *Optional*. The number of Telegram Stars that were split between giveaway winners; for Telegram Star giveaways only*/
 	pub fn prize_star_count(mut self, prize_star_count: impl Into<i64>) -> Self {
 		self.prize_star_count = Some(prize_star_count.into());
 		self
 	}
-	/***Optional*. Number of undistributed prizes*/
+	/** *Optional*. Number of undistributed prizes*/
 	pub fn unclaimed_prize_count(mut self, unclaimed_prize_count: impl Into<i64>) -> Self {
 		self.unclaimed_prize_count = Some(unclaimed_prize_count.into());
 		self
 	}
-	/***Optional*. *True*, if the giveaway was canceled because the payment for it was refunded
+	/** *Optional*. *True*, if the giveaway was canceled because the payment for it was refunded
 	Default value: true*/
 	pub fn was_refunded(mut self, was_refunded: bool) -> Self {
 		self.was_refunded = Some(was_refunded);
@@ -3463,58 +3463,58 @@ impl InlineKeyboardButton {
 			web_app: None,
 		}
 	}
-	/***Optional*. Data to be sent in a [callback query](https://core.telegram.org/bots/api/#callbackquery) to the bot when the button is pressed, 1-64 bytes*/
+	/** *Optional*. Data to be sent in a [callback query](https://core.telegram.org/bots/api/#callbackquery) to the bot when the button is pressed, 1-64 bytes*/
 	pub fn callback_data(mut self, callback_data: impl Into<String>) -> Self {
 		self.callback_data = Some(callback_data.into());
 		self
 	}
-	/***Optional*. Description of the game that will be launched when the user presses the button.  
+	/** *Optional*. Description of the game that will be launched when the user presses the button.  
 
 	**NOTE:** This type of button **must** always be the first button in the first row.*/
 	pub fn callback_game(mut self, callback_game: impl Into<CallbackGame>) -> Self {
 		self.callback_game = Some(callback_game.into());
 		self
 	}
-	/***Optional*. Description of the button that copies the specified text to the clipboard.*/
+	/** *Optional*. Description of the button that copies the specified text to the clipboard.*/
 	pub fn copy_text(mut self, copy_text: impl Into<CopyTextButton>) -> Self {
 		self.copy_text = Some(copy_text.into());
 		self
 	}
-	/***Optional*. An HTTPS URL used to automatically authorize the user. Can be used as a replacement for the [Telegram Login Widget](https://core.telegram.org/widgets/login).*/
+	/** *Optional*. An HTTPS URL used to automatically authorize the user. Can be used as a replacement for the [Telegram Login Widget](https://core.telegram.org/widgets/login).*/
 	pub fn login_url(mut self, login_url: impl Into<LoginUrl>) -> Self {
 		self.login_url = Some(login_url.into());
 		self
 	}
-	/***Optional*. Specify *True*, to send a [Pay button](https://core.telegram.org/bots/api/#payments). Substrings “⭐” and “XTR” in the buttons's text will be replaced with a Telegram Star icon.  
+	/** *Optional*. Specify *True*, to send a [Pay button](https://core.telegram.org/bots/api/#payments). Substrings “⭐” and “XTR” in the buttons's text will be replaced with a Telegram Star icon.  
 
 	**NOTE:** This type of button **must** always be the first button in the first row and can only be used in invoice messages.*/
 	pub fn pay(mut self, pay: bool) -> Self {
 		self.pay = Some(pay);
 		self
 	}
-	/***Optional*. If set, pressing the button will prompt the user to select one of their chats, open that chat and insert the bot's username and the specified inline query in the input field. May be empty, in which case just the bot's username will be inserted. Not supported for messages sent on behalf of a Telegram Business account.*/
+	/** *Optional*. If set, pressing the button will prompt the user to select one of their chats, open that chat and insert the bot's username and the specified inline query in the input field. May be empty, in which case just the bot's username will be inserted. Not supported for messages sent on behalf of a Telegram Business account.*/
 	pub fn switch_inline_query(mut self, switch_inline_query: impl Into<String>) -> Self {
 		self.switch_inline_query = Some(switch_inline_query.into());
 		self
 	}
-	/***Optional*. If set, pressing the button will prompt the user to select one of their chats of the specified type, open that chat and insert the bot's username and the specified inline query in the input field. Not supported for messages sent on behalf of a Telegram Business account.*/
+	/** *Optional*. If set, pressing the button will prompt the user to select one of their chats of the specified type, open that chat and insert the bot's username and the specified inline query in the input field. Not supported for messages sent on behalf of a Telegram Business account.*/
 	pub fn switch_inline_query_chosen_chat(mut self, switch_inline_query_chosen_chat: impl Into<SwitchInlineQueryChosenChat>) -> Self {
 		self.switch_inline_query_chosen_chat = Some(switch_inline_query_chosen_chat.into());
 		self
 	}
-	/***Optional*. If set, pressing the button will insert the bot's username and the specified inline query in the current chat's input field. May be empty, in which case only the bot's username will be inserted.  
+	/** *Optional*. If set, pressing the button will insert the bot's username and the specified inline query in the current chat's input field. May be empty, in which case only the bot's username will be inserted.  
 
 	This offers a quick way for the user to open your bot in inline mode in the same chat - good for selecting something from multiple options. Not supported in channels and for messages sent on behalf of a Telegram Business account.*/
 	pub fn switch_inline_query_current_chat(mut self, switch_inline_query_current_chat: impl Into<String>) -> Self {
 		self.switch_inline_query_current_chat = Some(switch_inline_query_current_chat.into());
 		self
 	}
-	/***Optional*. HTTP or tg:// URL to be opened when the button is pressed. Links `tg://user?id=<user_id>` can be used to mention a user by their identifier without using a username, if this is allowed by their privacy settings.*/
+	/** *Optional*. HTTP or tg:// URL to be opened when the button is pressed. Links `tg://user?id=<user_id>` can be used to mention a user by their identifier without using a username, if this is allowed by their privacy settings.*/
 	pub fn url(mut self, url: impl Into<String>) -> Self {
 		self.url = Some(url.into());
 		self
 	}
-	/***Optional*. Description of the [Web App](https://core.telegram.org/bots/webapps) that will be launched when the user presses the button. The Web App will be able to send an arbitrary message on behalf of the user using the method [answerWebAppQuery](https://core.telegram.org/bots/api/#answerwebappquery). Available only in private chats between a user and the bot. Not supported for messages sent on behalf of a Telegram Business account.*/
+	/** *Optional*. Description of the [Web App](https://core.telegram.org/bots/webapps) that will be launched when the user presses the button. The Web App will be able to send an arbitrary message on behalf of the user using the method [answerWebAppQuery](https://core.telegram.org/bots/api/#answerwebappquery). Available only in private chats between a user and the bot. Not supported for messages sent on behalf of a Telegram Business account.*/
 	pub fn web_app(mut self, web_app: impl Into<WebAppInfo>) -> Self {
 		self.web_app = Some(web_app.into());
 		self
@@ -3575,13 +3575,13 @@ impl InlineQuery {
 			query: query.into(),
 		}
 	}
-	/***Optional*. Type of the chat from which the inline query was sent. Can be either “sender” for a private chat with the inline query sender, “private”, “group”, “supergroup”, or “channel”. The chat type should be always known for requests sent from official clients and most third-party clients, unless the request was sent from a secret chat
+	/** *Optional*. Type of the chat from which the inline query was sent. Can be either “sender” for a private chat with the inline query sender, “private”, “group”, “supergroup”, or “channel”. The chat type should be always known for requests sent from official clients and most third-party clients, unless the request was sent from a secret chat
 	One of: sender, private, group, supergroup, channel*/
 	pub fn chat_type(mut self, chat_type: impl Into<String>) -> Self {
 		self.chat_type = Some(chat_type.into());
 		self
 	}
-	/***Optional*. Sender location, only for bots that request user location*/
+	/** *Optional*. Sender location, only for bots that request user location*/
 	pub fn location(mut self, location: impl Into<Location>) -> Self {
 		self.location = Some(location.into());
 		self
@@ -3680,32 +3680,32 @@ impl InlineQueryResultArticle {
 			url: None,
 		}
 	}
-	/***Optional*. Short description of the result*/
+	/** *Optional*. Short description of the result*/
 	pub fn description(mut self, description: impl Into<String>) -> Self {
 		self.description = Some(description.into());
 		self
 	}
-	/***Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
+	/** *Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/***Optional*. Thumbnail height*/
+	/** *Optional*. Thumbnail height*/
 	pub fn thumbnail_height(mut self, thumbnail_height: impl Into<i64>) -> Self {
 		self.thumbnail_height = Some(thumbnail_height.into());
 		self
 	}
-	/***Optional*. Url of the thumbnail for the result*/
+	/** *Optional*. Url of the thumbnail for the result*/
 	pub fn thumbnail_url(mut self, thumbnail_url: impl Into<String>) -> Self {
 		self.thumbnail_url = Some(thumbnail_url.into());
 		self
 	}
-	/***Optional*. Thumbnail width*/
+	/** *Optional*. Thumbnail width*/
 	pub fn thumbnail_width(mut self, thumbnail_width: impl Into<i64>) -> Self {
 		self.thumbnail_width = Some(thumbnail_width.into());
 		self
 	}
-	/***Optional*. URL of the result*/
+	/** *Optional*. URL of the result*/
 	pub fn url(mut self, url: impl Into<String>) -> Self {
 		self.url = Some(url.into());
 		self
@@ -3762,12 +3762,12 @@ impl InlineQueryResultAudio {
 			title: title.into(),
 		}
 	}
-	/***Optional*. Audio duration in seconds*/
+	/** *Optional*. Audio duration in seconds*/
 	pub fn audio_duration(mut self, audio_duration: impl Into<i64>) -> Self {
 		self.audio_duration = Some(audio_duration.into());
 		self
 	}
-	/***Optional*. Caption, 0-1024 characters after entities parsing
+	/** *Optional*. Caption, 0-1024 characters after entities parsing
 	Min len: 0
 	Max len: 1024*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
@@ -3778,27 +3778,27 @@ impl InlineQueryResultAudio {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/***Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** *Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/***Optional*. Content of the message to be sent instead of the audio*/
+	/** *Optional*. Content of the message to be sent instead of the audio*/
 	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
 		self.input_message_content = Some(input_message_content.into());
 		self
 	}
-	/***Optional*. Mode for parsing entities in the audio caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** *Optional*. Mode for parsing entities in the audio caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/***Optional*. Performer*/
+	/** *Optional*. Performer*/
 	pub fn performer(mut self, performer: impl Into<String>) -> Self {
 		self.performer = Some(performer.into());
 		self
 	}
-	/***Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
+	/** *Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
@@ -3846,7 +3846,7 @@ impl InlineQueryResultCachedAudio {
 			reply_markup: None,
 		}
 	}
-	/***Optional*. Caption, 0-1024 characters after entities parsing
+	/** *Optional*. Caption, 0-1024 characters after entities parsing
 	Min len: 0
 	Max len: 1024*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
@@ -3857,22 +3857,22 @@ impl InlineQueryResultCachedAudio {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/***Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** *Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/***Optional*. Content of the message to be sent instead of the audio*/
+	/** *Optional*. Content of the message to be sent instead of the audio*/
 	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
 		self.input_message_content = Some(input_message_content.into());
 		self
 	}
-	/***Optional*. Mode for parsing entities in the audio caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** *Optional*. Mode for parsing entities in the audio caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/***Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
+	/** *Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
@@ -3926,7 +3926,7 @@ impl InlineQueryResultCachedDocument {
 			title: title.into(),
 		}
 	}
-	/***Optional*. Caption of the document to be sent, 0-1024 characters after entities parsing
+	/** *Optional*. Caption of the document to be sent, 0-1024 characters after entities parsing
 	Min len: 0
 	Max len: 1024*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
@@ -3937,27 +3937,27 @@ impl InlineQueryResultCachedDocument {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/***Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** *Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/***Optional*. Short description of the result*/
+	/** *Optional*. Short description of the result*/
 	pub fn description(mut self, description: impl Into<String>) -> Self {
 		self.description = Some(description.into());
 		self
 	}
-	/***Optional*. Content of the message to be sent instead of the file*/
+	/** *Optional*. Content of the message to be sent instead of the file*/
 	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
 		self.input_message_content = Some(input_message_content.into());
 		self
 	}
-	/***Optional*. Mode for parsing entities in the document caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** *Optional*. Mode for parsing entities in the document caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/***Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
+	/** *Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
@@ -4011,7 +4011,7 @@ impl InlineQueryResultCachedGif {
 			title: None,
 		}
 	}
-	/***Optional*. Caption of the GIF file to be sent, 0-1024 characters after entities parsing
+	/** *Optional*. Caption of the GIF file to be sent, 0-1024 characters after entities parsing
 	Min len: 0
 	Max len: 1024*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
@@ -4022,32 +4022,32 @@ impl InlineQueryResultCachedGif {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/***Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** *Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/***Optional*. Content of the message to be sent instead of the GIF animation*/
+	/** *Optional*. Content of the message to be sent instead of the GIF animation*/
 	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
 		self.input_message_content = Some(input_message_content.into());
 		self
 	}
-	/***Optional*. Mode for parsing entities in the caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** *Optional*. Mode for parsing entities in the caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/***Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
+	/** *Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/***Optional*. Pass *True*, if the caption must be shown above the message media*/
+	/** *Optional*. Pass *True*, if the caption must be shown above the message media*/
 	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
 		self.show_caption_above_media = Some(show_caption_above_media);
 		self
 	}
-	/***Optional*. Title for the result*/
+	/** *Optional*. Title for the result*/
 	pub fn title(mut self, title: impl Into<String>) -> Self {
 		self.title = Some(title.into());
 		self
@@ -4101,7 +4101,7 @@ impl InlineQueryResultCachedMpeg4Gif {
 			title: None,
 		}
 	}
-	/***Optional*. Caption of the MPEG-4 file to be sent, 0-1024 characters after entities parsing
+	/** *Optional*. Caption of the MPEG-4 file to be sent, 0-1024 characters after entities parsing
 	Min len: 0
 	Max len: 1024*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
@@ -4112,32 +4112,32 @@ impl InlineQueryResultCachedMpeg4Gif {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/***Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** *Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/***Optional*. Content of the message to be sent instead of the video animation*/
+	/** *Optional*. Content of the message to be sent instead of the video animation*/
 	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
 		self.input_message_content = Some(input_message_content.into());
 		self
 	}
-	/***Optional*. Mode for parsing entities in the caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** *Optional*. Mode for parsing entities in the caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/***Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
+	/** *Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/***Optional*. Pass *True*, if the caption must be shown above the message media*/
+	/** *Optional*. Pass *True*, if the caption must be shown above the message media*/
 	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
 		self.show_caption_above_media = Some(show_caption_above_media);
 		self
 	}
-	/***Optional*. Title for the result*/
+	/** *Optional*. Title for the result*/
 	pub fn title(mut self, title: impl Into<String>) -> Self {
 		self.title = Some(title.into());
 		self
@@ -4194,7 +4194,7 @@ impl InlineQueryResultCachedPhoto {
 			title: None,
 		}
 	}
-	/***Optional*. Caption of the photo to be sent, 0-1024 characters after entities parsing
+	/** *Optional*. Caption of the photo to be sent, 0-1024 characters after entities parsing
 	Min len: 0
 	Max len: 1024*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
@@ -4205,37 +4205,37 @@ impl InlineQueryResultCachedPhoto {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/***Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** *Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/***Optional*. Short description of the result*/
+	/** *Optional*. Short description of the result*/
 	pub fn description(mut self, description: impl Into<String>) -> Self {
 		self.description = Some(description.into());
 		self
 	}
-	/***Optional*. Content of the message to be sent instead of the photo*/
+	/** *Optional*. Content of the message to be sent instead of the photo*/
 	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
 		self.input_message_content = Some(input_message_content.into());
 		self
 	}
-	/***Optional*. Mode for parsing entities in the photo caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** *Optional*. Mode for parsing entities in the photo caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/***Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
+	/** *Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/***Optional*. Pass *True*, if the caption must be shown above the message media*/
+	/** *Optional*. Pass *True*, if the caption must be shown above the message media*/
 	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
 		self.show_caption_above_media = Some(show_caption_above_media);
 		self
 	}
-	/***Optional*. Title for the result*/
+	/** *Optional*. Title for the result*/
 	pub fn title(mut self, title: impl Into<String>) -> Self {
 		self.title = Some(title.into());
 		self
@@ -4271,12 +4271,12 @@ impl InlineQueryResultCachedSticker {
 			sticker_file_id: sticker_file_id.into(),
 		}
 	}
-	/***Optional*. Content of the message to be sent instead of the sticker*/
+	/** *Optional*. Content of the message to be sent instead of the sticker*/
 	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
 		self.input_message_content = Some(input_message_content.into());
 		self
 	}
-	/***Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
+	/** *Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
@@ -4333,7 +4333,7 @@ impl InlineQueryResultCachedVideo {
 			video_file_id: video_file_id.into(),
 		}
 	}
-	/***Optional*. Caption of the video to be sent, 0-1024 characters after entities parsing
+	/** *Optional*. Caption of the video to be sent, 0-1024 characters after entities parsing
 	Min len: 0
 	Max len: 1024*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
@@ -4344,32 +4344,32 @@ impl InlineQueryResultCachedVideo {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/***Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** *Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/***Optional*. Short description of the result*/
+	/** *Optional*. Short description of the result*/
 	pub fn description(mut self, description: impl Into<String>) -> Self {
 		self.description = Some(description.into());
 		self
 	}
-	/***Optional*. Content of the message to be sent instead of the video*/
+	/** *Optional*. Content of the message to be sent instead of the video*/
 	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
 		self.input_message_content = Some(input_message_content.into());
 		self
 	}
-	/***Optional*. Mode for parsing entities in the video caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** *Optional*. Mode for parsing entities in the video caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/***Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
+	/** *Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/***Optional*. Pass *True*, if the caption must be shown above the message media*/
+	/** *Optional*. Pass *True*, if the caption must be shown above the message media*/
 	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
 		self.show_caption_above_media = Some(show_caption_above_media);
 		self
@@ -4420,7 +4420,7 @@ impl InlineQueryResultCachedVoice {
 			voice_file_id: voice_file_id.into(),
 		}
 	}
-	/***Optional*. Caption, 0-1024 characters after entities parsing
+	/** *Optional*. Caption, 0-1024 characters after entities parsing
 	Min len: 0
 	Max len: 1024*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
@@ -4431,22 +4431,22 @@ impl InlineQueryResultCachedVoice {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/***Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** *Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/***Optional*. Content of the message to be sent instead of the voice message*/
+	/** *Optional*. Content of the message to be sent instead of the voice message*/
 	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
 		self.input_message_content = Some(input_message_content.into());
 		self
 	}
-	/***Optional*. Mode for parsing entities in the voice message caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** *Optional*. Mode for parsing entities in the voice message caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/***Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
+	/** *Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
@@ -4500,37 +4500,37 @@ impl InlineQueryResultContact {
 			vcard: None,
 		}
 	}
-	/***Optional*. Content of the message to be sent instead of the contact*/
+	/** *Optional*. Content of the message to be sent instead of the contact*/
 	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
 		self.input_message_content = Some(input_message_content.into());
 		self
 	}
-	/***Optional*. Contact's last name*/
+	/** *Optional*. Contact's last name*/
 	pub fn last_name(mut self, last_name: impl Into<String>) -> Self {
 		self.last_name = Some(last_name.into());
 		self
 	}
-	/***Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
+	/** *Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/***Optional*. Thumbnail height*/
+	/** *Optional*. Thumbnail height*/
 	pub fn thumbnail_height(mut self, thumbnail_height: impl Into<i64>) -> Self {
 		self.thumbnail_height = Some(thumbnail_height.into());
 		self
 	}
-	/***Optional*. Url of the thumbnail for the result*/
+	/** *Optional*. Url of the thumbnail for the result*/
 	pub fn thumbnail_url(mut self, thumbnail_url: impl Into<String>) -> Self {
 		self.thumbnail_url = Some(thumbnail_url.into());
 		self
 	}
-	/***Optional*. Thumbnail width*/
+	/** *Optional*. Thumbnail width*/
 	pub fn thumbnail_width(mut self, thumbnail_width: impl Into<i64>) -> Self {
 		self.thumbnail_width = Some(thumbnail_width.into());
 		self
 	}
-	/***Optional*. Additional data about the contact in the form of a [vCard](https://en.wikipedia.org/wiki/VCard), 0-2048 bytes*/
+	/** *Optional*. Additional data about the contact in the form of a [vCard](https://en.wikipedia.org/wiki/VCard), 0-2048 bytes*/
 	pub fn vcard(mut self, vcard: impl Into<String>) -> Self {
 		self.vcard = Some(vcard.into());
 		self
@@ -4597,7 +4597,7 @@ impl InlineQueryResultDocument {
 			title: title.into(),
 		}
 	}
-	/***Optional*. Caption of the document to be sent, 0-1024 characters after entities parsing
+	/** *Optional*. Caption of the document to be sent, 0-1024 characters after entities parsing
 	Min len: 0
 	Max len: 1024*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
@@ -4608,42 +4608,42 @@ impl InlineQueryResultDocument {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/***Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** *Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/***Optional*. Short description of the result*/
+	/** *Optional*. Short description of the result*/
 	pub fn description(mut self, description: impl Into<String>) -> Self {
 		self.description = Some(description.into());
 		self
 	}
-	/***Optional*. Content of the message to be sent instead of the file*/
+	/** *Optional*. Content of the message to be sent instead of the file*/
 	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
 		self.input_message_content = Some(input_message_content.into());
 		self
 	}
-	/***Optional*. Mode for parsing entities in the document caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** *Optional*. Mode for parsing entities in the document caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/***Optional*. Inline keyboard attached to the message*/
+	/** *Optional*. Inline keyboard attached to the message*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/***Optional*. Thumbnail height*/
+	/** *Optional*. Thumbnail height*/
 	pub fn thumbnail_height(mut self, thumbnail_height: impl Into<i64>) -> Self {
 		self.thumbnail_height = Some(thumbnail_height.into());
 		self
 	}
-	/***Optional*. URL of the thumbnail (JPEG only) for the file*/
+	/** *Optional*. URL of the thumbnail (JPEG only) for the file*/
 	pub fn thumbnail_url(mut self, thumbnail_url: impl Into<String>) -> Self {
 		self.thumbnail_url = Some(thumbnail_url.into());
 		self
 	}
-	/***Optional*. Thumbnail width*/
+	/** *Optional*. Thumbnail width*/
 	pub fn thumbnail_width(mut self, thumbnail_width: impl Into<i64>) -> Self {
 		self.thumbnail_width = Some(thumbnail_width.into());
 		self
@@ -4676,7 +4676,7 @@ impl InlineQueryResultGame {
 			reply_markup: None,
 		}
 	}
-	/***Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
+	/** *Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
@@ -4747,7 +4747,7 @@ impl InlineQueryResultGif {
 			title: None,
 		}
 	}
-	/***Optional*. Caption of the GIF file to be sent, 0-1024 characters after entities parsing
+	/** *Optional*. Caption of the GIF file to be sent, 0-1024 characters after entities parsing
 	Min len: 0
 	Max len: 1024*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
@@ -4758,54 +4758,54 @@ impl InlineQueryResultGif {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/***Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** *Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/***Optional*. Duration of the GIF in seconds*/
+	/** *Optional*. Duration of the GIF in seconds*/
 	pub fn gif_duration(mut self, gif_duration: impl Into<i64>) -> Self {
 		self.gif_duration = Some(gif_duration.into());
 		self
 	}
-	/***Optional*. Height of the GIF*/
+	/** *Optional*. Height of the GIF*/
 	pub fn gif_height(mut self, gif_height: impl Into<i64>) -> Self {
 		self.gif_height = Some(gif_height.into());
 		self
 	}
-	/***Optional*. Width of the GIF*/
+	/** *Optional*. Width of the GIF*/
 	pub fn gif_width(mut self, gif_width: impl Into<i64>) -> Self {
 		self.gif_width = Some(gif_width.into());
 		self
 	}
-	/***Optional*. Content of the message to be sent instead of the GIF animation*/
+	/** *Optional*. Content of the message to be sent instead of the GIF animation*/
 	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
 		self.input_message_content = Some(input_message_content.into());
 		self
 	}
-	/***Optional*. Mode for parsing entities in the caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** *Optional*. Mode for parsing entities in the caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/***Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
+	/** *Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/***Optional*. Pass *True*, if the caption must be shown above the message media*/
+	/** *Optional*. Pass *True*, if the caption must be shown above the message media*/
 	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
 		self.show_caption_above_media = Some(show_caption_above_media);
 		self
 	}
-	/***Optional*. MIME type of the thumbnail, must be one of “image/jpeg”, “image/gif”, or “video/mp4”. Defaults to “image/jpeg”
+	/** *Optional*. MIME type of the thumbnail, must be one of “image/jpeg”, “image/gif”, or “video/mp4”. Defaults to “image/jpeg”
 	One of: image/jpeg, image/gif, video/mp4
 	Default: image/jpeg*/
 	pub fn thumbnail_mime_type(mut self, thumbnail_mime_type: impl Into<String>) -> Self {
 		self.thumbnail_mime_type = Some(thumbnail_mime_type.into());
 		self
 	}
-	/***Optional*. Title for the result*/
+	/** *Optional*. Title for the result*/
 	pub fn title(mut self, title: impl Into<String>) -> Self {
 		self.title = Some(title.into());
 		self
@@ -4868,47 +4868,47 @@ impl InlineQueryResultLocation {
 			title: title.into(),
 		}
 	}
-	/***Optional*. For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.*/
+	/** *Optional*. For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.*/
 	pub fn heading(mut self, heading: impl Into<i64>) -> Self {
 		self.heading = Some(heading.into());
 		self
 	}
-	/***Optional*. The radius of uncertainty for the location, measured in meters; 0-1500*/
+	/** *Optional*. The radius of uncertainty for the location, measured in meters; 0-1500*/
 	pub fn horizontal_accuracy(mut self, horizontal_accuracy: impl Into<f32>) -> Self {
 		self.horizontal_accuracy = Some(horizontal_accuracy.into());
 		self
 	}
-	/***Optional*. Content of the message to be sent instead of the location*/
+	/** *Optional*. Content of the message to be sent instead of the location*/
 	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
 		self.input_message_content = Some(input_message_content.into());
 		self
 	}
-	/***Optional*. Period in seconds during which the location can be updated, should be between 60 and 86400, or 0x7FFFFFFF for live locations that can be edited indefinitely.*/
+	/** *Optional*. Period in seconds during which the location can be updated, should be between 60 and 86400, or 0x7FFFFFFF for live locations that can be edited indefinitely.*/
 	pub fn live_period(mut self, live_period: impl Into<i64>) -> Self {
 		self.live_period = Some(live_period.into());
 		self
 	}
-	/***Optional*. For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.*/
+	/** *Optional*. For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.*/
 	pub fn proximity_alert_radius(mut self, proximity_alert_radius: impl Into<i64>) -> Self {
 		self.proximity_alert_radius = Some(proximity_alert_radius.into());
 		self
 	}
-	/***Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
+	/** *Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/***Optional*. Thumbnail height*/
+	/** *Optional*. Thumbnail height*/
 	pub fn thumbnail_height(mut self, thumbnail_height: impl Into<i64>) -> Self {
 		self.thumbnail_height = Some(thumbnail_height.into());
 		self
 	}
-	/***Optional*. Url of the thumbnail for the result*/
+	/** *Optional*. Url of the thumbnail for the result*/
 	pub fn thumbnail_url(mut self, thumbnail_url: impl Into<String>) -> Self {
 		self.thumbnail_url = Some(thumbnail_url.into());
 		self
 	}
-	/***Optional*. Thumbnail width*/
+	/** *Optional*. Thumbnail width*/
 	pub fn thumbnail_width(mut self, thumbnail_width: impl Into<i64>) -> Self {
 		self.thumbnail_width = Some(thumbnail_width.into());
 		self
@@ -4979,7 +4979,7 @@ impl InlineQueryResultMpeg4Gif {
 			title: None,
 		}
 	}
-	/***Optional*. Caption of the MPEG-4 file to be sent, 0-1024 characters after entities parsing
+	/** *Optional*. Caption of the MPEG-4 file to be sent, 0-1024 characters after entities parsing
 	Min len: 0
 	Max len: 1024*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
@@ -4990,54 +4990,54 @@ impl InlineQueryResultMpeg4Gif {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/***Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** *Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/***Optional*. Content of the message to be sent instead of the video animation*/
+	/** *Optional*. Content of the message to be sent instead of the video animation*/
 	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
 		self.input_message_content = Some(input_message_content.into());
 		self
 	}
-	/***Optional*. Video duration in seconds*/
+	/** *Optional*. Video duration in seconds*/
 	pub fn mpeg4_duration(mut self, mpeg4_duration: impl Into<i64>) -> Self {
 		self.mpeg4_duration = Some(mpeg4_duration.into());
 		self
 	}
-	/***Optional*. Video height*/
+	/** *Optional*. Video height*/
 	pub fn mpeg4_height(mut self, mpeg4_height: impl Into<i64>) -> Self {
 		self.mpeg4_height = Some(mpeg4_height.into());
 		self
 	}
-	/***Optional*. Video width*/
+	/** *Optional*. Video width*/
 	pub fn mpeg4_width(mut self, mpeg4_width: impl Into<i64>) -> Self {
 		self.mpeg4_width = Some(mpeg4_width.into());
 		self
 	}
-	/***Optional*. Mode for parsing entities in the caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** *Optional*. Mode for parsing entities in the caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/***Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
+	/** *Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/***Optional*. Pass *True*, if the caption must be shown above the message media*/
+	/** *Optional*. Pass *True*, if the caption must be shown above the message media*/
 	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
 		self.show_caption_above_media = Some(show_caption_above_media);
 		self
 	}
-	/***Optional*. MIME type of the thumbnail, must be one of “image/jpeg”, “image/gif”, or “video/mp4”. Defaults to “image/jpeg”
+	/** *Optional*. MIME type of the thumbnail, must be one of “image/jpeg”, “image/gif”, or “video/mp4”. Defaults to “image/jpeg”
 	One of: image/jpeg, image/gif, video/mp4
 	Default: image/jpeg*/
 	pub fn thumbnail_mime_type(mut self, thumbnail_mime_type: impl Into<String>) -> Self {
 		self.thumbnail_mime_type = Some(thumbnail_mime_type.into());
 		self
 	}
-	/***Optional*. Title for the result*/
+	/** *Optional*. Title for the result*/
 	pub fn title(mut self, title: impl Into<String>) -> Self {
 		self.title = Some(title.into());
 		self
@@ -5103,7 +5103,7 @@ impl InlineQueryResultPhoto {
 			title: None,
 		}
 	}
-	/***Optional*. Caption of the photo to be sent, 0-1024 characters after entities parsing
+	/** *Optional*. Caption of the photo to be sent, 0-1024 characters after entities parsing
 	Min len: 0
 	Max len: 1024*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
@@ -5114,47 +5114,47 @@ impl InlineQueryResultPhoto {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/***Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** *Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/***Optional*. Short description of the result*/
+	/** *Optional*. Short description of the result*/
 	pub fn description(mut self, description: impl Into<String>) -> Self {
 		self.description = Some(description.into());
 		self
 	}
-	/***Optional*. Content of the message to be sent instead of the photo*/
+	/** *Optional*. Content of the message to be sent instead of the photo*/
 	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
 		self.input_message_content = Some(input_message_content.into());
 		self
 	}
-	/***Optional*. Mode for parsing entities in the photo caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** *Optional*. Mode for parsing entities in the photo caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/***Optional*. Height of the photo*/
+	/** *Optional*. Height of the photo*/
 	pub fn photo_height(mut self, photo_height: impl Into<i64>) -> Self {
 		self.photo_height = Some(photo_height.into());
 		self
 	}
-	/***Optional*. Width of the photo*/
+	/** *Optional*. Width of the photo*/
 	pub fn photo_width(mut self, photo_width: impl Into<i64>) -> Self {
 		self.photo_width = Some(photo_width.into());
 		self
 	}
-	/***Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
+	/** *Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/***Optional*. Pass *True*, if the caption must be shown above the message media*/
+	/** *Optional*. Pass *True*, if the caption must be shown above the message media*/
 	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
 		self.show_caption_above_media = Some(show_caption_above_media);
 		self
 	}
-	/***Optional*. Title for the result*/
+	/** *Optional*. Title for the result*/
 	pub fn title(mut self, title: impl Into<String>) -> Self {
 		self.title = Some(title.into());
 		self
@@ -5220,47 +5220,47 @@ impl InlineQueryResultVenue {
 			title: title.into(),
 		}
 	}
-	/***Optional*. Foursquare identifier of the venue if known*/
+	/** *Optional*. Foursquare identifier of the venue if known*/
 	pub fn foursquare_id(mut self, foursquare_id: impl Into<String>) -> Self {
 		self.foursquare_id = Some(foursquare_id.into());
 		self
 	}
-	/***Optional*. Foursquare type of the venue, if known. (For example, “arts\_entertainment/default”, “arts\_entertainment/aquarium” or “food/icecream”.)*/
+	/** *Optional*. Foursquare type of the venue, if known. (For example, “arts\_entertainment/default”, “arts\_entertainment/aquarium” or “food/icecream”.)*/
 	pub fn foursquare_type(mut self, foursquare_type: impl Into<String>) -> Self {
 		self.foursquare_type = Some(foursquare_type.into());
 		self
 	}
-	/***Optional*. Google Places identifier of the venue*/
+	/** *Optional*. Google Places identifier of the venue*/
 	pub fn google_place_id(mut self, google_place_id: impl Into<String>) -> Self {
 		self.google_place_id = Some(google_place_id.into());
 		self
 	}
-	/***Optional*. Google Places type of the venue. (See [supported types](https://developers.google.com/places/web-service/supported_types).)*/
+	/** *Optional*. Google Places type of the venue. (See [supported types](https://developers.google.com/places/web-service/supported_types).)*/
 	pub fn google_place_type(mut self, google_place_type: impl Into<String>) -> Self {
 		self.google_place_type = Some(google_place_type.into());
 		self
 	}
-	/***Optional*. Content of the message to be sent instead of the venue*/
+	/** *Optional*. Content of the message to be sent instead of the venue*/
 	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
 		self.input_message_content = Some(input_message_content.into());
 		self
 	}
-	/***Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
+	/** *Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/***Optional*. Thumbnail height*/
+	/** *Optional*. Thumbnail height*/
 	pub fn thumbnail_height(mut self, thumbnail_height: impl Into<i64>) -> Self {
 		self.thumbnail_height = Some(thumbnail_height.into());
 		self
 	}
-	/***Optional*. Url of the thumbnail for the result*/
+	/** *Optional*. Url of the thumbnail for the result*/
 	pub fn thumbnail_url(mut self, thumbnail_url: impl Into<String>) -> Self {
 		self.thumbnail_url = Some(thumbnail_url.into());
 		self
 	}
-	/***Optional*. Thumbnail width*/
+	/** *Optional*. Thumbnail width*/
 	pub fn thumbnail_width(mut self, thumbnail_width: impl Into<i64>) -> Self {
 		self.thumbnail_width = Some(thumbnail_width.into());
 		self
@@ -5335,7 +5335,7 @@ impl InlineQueryResultVideo {
 			video_width: None,
 		}
 	}
-	/***Optional*. Caption of the video to be sent, 0-1024 characters after entities parsing
+	/** *Optional*. Caption of the video to be sent, 0-1024 characters after entities parsing
 	Min len: 0
 	Max len: 1024*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
@@ -5346,47 +5346,47 @@ impl InlineQueryResultVideo {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/***Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** *Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/***Optional*. Short description of the result*/
+	/** *Optional*. Short description of the result*/
 	pub fn description(mut self, description: impl Into<String>) -> Self {
 		self.description = Some(description.into());
 		self
 	}
-	/***Optional*. Content of the message to be sent instead of the video. This field is **required** if InlineQueryResultVideo is used to send an HTML-page as a result (e.g., a YouTube video).*/
+	/** *Optional*. Content of the message to be sent instead of the video. This field is **required** if InlineQueryResultVideo is used to send an HTML-page as a result (e.g., a YouTube video).*/
 	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
 		self.input_message_content = Some(input_message_content.into());
 		self
 	}
-	/***Optional*. Mode for parsing entities in the video caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** *Optional*. Mode for parsing entities in the video caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/***Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
+	/** *Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/***Optional*. Pass *True*, if the caption must be shown above the message media*/
+	/** *Optional*. Pass *True*, if the caption must be shown above the message media*/
 	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
 		self.show_caption_above_media = Some(show_caption_above_media);
 		self
 	}
-	/***Optional*. Video duration in seconds*/
+	/** *Optional*. Video duration in seconds*/
 	pub fn video_duration(mut self, video_duration: impl Into<i64>) -> Self {
 		self.video_duration = Some(video_duration.into());
 		self
 	}
-	/***Optional*. Video height*/
+	/** *Optional*. Video height*/
 	pub fn video_height(mut self, video_height: impl Into<i64>) -> Self {
 		self.video_height = Some(video_height.into());
 		self
 	}
-	/***Optional*. Video width*/
+	/** *Optional*. Video width*/
 	pub fn video_width(mut self, video_width: impl Into<i64>) -> Self {
 		self.video_width = Some(video_width.into());
 		self
@@ -5440,7 +5440,7 @@ impl InlineQueryResultVoice {
 			voice_url: voice_url.into(),
 		}
 	}
-	/***Optional*. Caption, 0-1024 characters after entities parsing
+	/** *Optional*. Caption, 0-1024 characters after entities parsing
 	Min len: 0
 	Max len: 1024*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
@@ -5451,27 +5451,27 @@ impl InlineQueryResultVoice {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/***Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** *Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/***Optional*. Content of the message to be sent instead of the voice recording*/
+	/** *Optional*. Content of the message to be sent instead of the voice recording*/
 	pub fn input_message_content(mut self, input_message_content: impl Into<InputMessageContent>) -> Self {
 		self.input_message_content = Some(input_message_content.into());
 		self
 	}
-	/***Optional*. Mode for parsing entities in the voice message caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** *Optional*. Mode for parsing entities in the voice message caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/***Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
+	/** *Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/***Optional*. Recording duration in seconds*/
+	/** *Optional*. Recording duration in seconds*/
 	pub fn voice_duration(mut self, voice_duration: impl Into<i64>) -> Self {
 		self.voice_duration = Some(voice_duration.into());
 		self
@@ -5504,7 +5504,7 @@ impl InlineQueryResultsButton {
 			web_app: None,
 		}
 	}
-	/***Optional*. [Deep-linking](https://core.telegram.org/bots/features#deep-linking) parameter for the /start message sent to the bot when a user presses the button. 1-64 characters, only `A-Z`, `a-z`, `0-9`, `_` and `-` are allowed.  
+	/** *Optional*. [Deep-linking](https://core.telegram.org/bots/features#deep-linking) parameter for the /start message sent to the bot when a user presses the button. 1-64 characters, only `A-Z`, `a-z`, `0-9`, `_` and `-` are allowed.  
 
 	*Example:* An inline bot that sends YouTube videos can ask the user to connect the bot to their YouTube account to adapt search results accordingly. To do this, it displays a 'Connect your YouTube account' button above the results, or even before showing any. The user presses the button, switches to a private chat with the bot and, in doing so, passes a start parameter that instructs the bot to return an OAuth link. Once done, the bot can offer a [*switch\_inline*](https://core.telegram.org/bots/api/#inlinekeyboardmarkup) button so that the user can easily return to the chat where they wanted to use the bot's inline capabilities.
 	Min len: 1
@@ -5513,7 +5513,7 @@ impl InlineQueryResultsButton {
 		self.start_parameter = Some(start_parameter.into());
 		self
 	}
-	/***Optional*. Description of the [Web App](https://core.telegram.org/bots/webapps) that will be launched when the user presses the button. The Web App will be able to switch back to the inline mode using the method [switchInlineQuery](https://core.telegram.org/bots/webapps#initializing-mini-apps) inside the Web App.*/
+	/** *Optional*. Description of the [Web App](https://core.telegram.org/bots/webapps) that will be launched when the user presses the button. The Web App will be able to switch back to the inline mode using the method [switchInlineQuery](https://core.telegram.org/bots/webapps#initializing-mini-apps) inside the Web App.*/
 	pub fn web_app(mut self, web_app: impl Into<WebAppInfo>) -> Self {
 		self.web_app = Some(web_app.into());
 		self
@@ -5545,12 +5545,12 @@ impl InputContactMessageContent {
 			vcard: None,
 		}
 	}
-	/***Optional*. Contact's last name*/
+	/** *Optional*. Contact's last name*/
 	pub fn last_name(mut self, last_name: impl Into<String>) -> Self {
 		self.last_name = Some(last_name.into());
 		self
 	}
-	/***Optional*. Additional data about the contact in the form of a [vCard](https://en.wikipedia.org/wiki/VCard), 0-2048 bytes*/
+	/** *Optional*. Additional data about the contact in the form of a [vCard](https://en.wikipedia.org/wiki/VCard), 0-2048 bytes*/
 	pub fn vcard(mut self, vcard: impl Into<String>) -> Self {
 		self.vcard = Some(vcard.into());
 		self
@@ -5636,53 +5636,53 @@ impl InputInvoiceMessageContent {
 			title: title.into(),
 		}
 	}
-	/***Optional*. Pass *True* if the final price depends on the shipping method. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
+	/** *Optional*. Pass *True* if the final price depends on the shipping method. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub fn is_flexible(mut self, is_flexible: bool) -> Self {
 		self.is_flexible = Some(is_flexible);
 		self
 	}
-	/***Optional*. The maximum accepted amount for tips in the *smallest units* of the currency (integer, **not** float/double). For example, for a maximum tip of `US$ 1.45` pass `max_tip_amount = 145`. See the *exp* parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0. Not supported for payments in [Telegram Stars](https://t.me/BotNews/90).
+	/** *Optional*. The maximum accepted amount for tips in the *smallest units* of the currency (integer, **not** float/double). For example, for a maximum tip of `US$ 1.45` pass `max_tip_amount = 145`. See the *exp* parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0. Not supported for payments in [Telegram Stars](https://t.me/BotNews/90).
 	Default value: 0*/
 	pub fn max_tip_amount(mut self, max_tip_amount: impl Into<i64>) -> Self {
 		self.max_tip_amount = Some(max_tip_amount.into());
 		self
 	}
-	/***Optional*. Pass *True* if you require the user's email address to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
+	/** *Optional*. Pass *True* if you require the user's email address to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub fn need_email(mut self, need_email: bool) -> Self {
 		self.need_email = Some(need_email);
 		self
 	}
-	/***Optional*. Pass *True* if you require the user's full name to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
+	/** *Optional*. Pass *True* if you require the user's full name to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub fn need_name(mut self, need_name: bool) -> Self {
 		self.need_name = Some(need_name);
 		self
 	}
-	/***Optional*. Pass *True* if you require the user's phone number to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
+	/** *Optional*. Pass *True* if you require the user's phone number to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub fn need_phone_number(mut self, need_phone_number: bool) -> Self {
 		self.need_phone_number = Some(need_phone_number);
 		self
 	}
-	/***Optional*. Pass *True* if you require the user's shipping address to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
+	/** *Optional*. Pass *True* if you require the user's shipping address to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub fn need_shipping_address(mut self, need_shipping_address: bool) -> Self {
 		self.need_shipping_address = Some(need_shipping_address);
 		self
 	}
-	/***Optional*. Photo height*/
+	/** *Optional*. Photo height*/
 	pub fn photo_height(mut self, photo_height: impl Into<i64>) -> Self {
 		self.photo_height = Some(photo_height.into());
 		self
 	}
-	/***Optional*. Photo size in bytes*/
+	/** *Optional*. Photo size in bytes*/
 	pub fn photo_size(mut self, photo_size: impl Into<i64>) -> Self {
 		self.photo_size = Some(photo_size.into());
 		self
 	}
-	/***Optional*. URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service.*/
+	/** *Optional*. URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service.*/
 	pub fn photo_url(mut self, photo_url: impl Into<String>) -> Self {
 		self.photo_url = Some(photo_url.into());
 		self
 	}
-	/***Optional*. Photo width*/
+	/** *Optional*. Photo width*/
 	pub fn photo_width(mut self, photo_width: impl Into<i64>) -> Self {
 		self.photo_width = Some(photo_width.into());
 		self
@@ -5691,22 +5691,22 @@ impl InputInvoiceMessageContent {
 		self.prices.push(price.into());
 		self
 	}
-	/***Optional*. A JSON-serialized object for data about the invoice, which will be shared with the payment provider. A detailed description of the required fields should be provided by the payment provider.*/
+	/** *Optional*. A JSON-serialized object for data about the invoice, which will be shared with the payment provider. A detailed description of the required fields should be provided by the payment provider.*/
 	pub fn provider_data(mut self, provider_data: impl Into<String>) -> Self {
 		self.provider_data = Some(provider_data.into());
 		self
 	}
-	/***Optional*. Payment provider token, obtained via [@BotFather](https://t.me/botfather). Pass an empty string for payments in [Telegram Stars](https://t.me/BotNews/90).*/
+	/** *Optional*. Payment provider token, obtained via [@BotFather](https://t.me/botfather). Pass an empty string for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub fn provider_token(mut self, provider_token: impl Into<String>) -> Self {
 		self.provider_token = Some(provider_token.into());
 		self
 	}
-	/***Optional*. Pass *True* if the user's email address should be sent to the provider. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
+	/** *Optional*. Pass *True* if the user's email address should be sent to the provider. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub fn send_email_to_provider(mut self, send_email_to_provider: bool) -> Self {
 		self.send_email_to_provider = Some(send_email_to_provider);
 		self
 	}
-	/***Optional*. Pass *True* if the user's phone number should be sent to the provider. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
+	/** *Optional*. Pass *True* if the user's phone number should be sent to the provider. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub fn send_phone_number_to_provider(mut self, send_phone_number_to_provider: bool) -> Self {
 		self.send_phone_number_to_provider = Some(send_phone_number_to_provider);
 		self
@@ -5715,7 +5715,7 @@ impl InputInvoiceMessageContent {
 		self.suggested_tip_amounts.push(suggested_tip_amount.into());
 		self
 	}
-	/***Optional*. A JSON-serialized array of suggested amounts of tip in the *smallest units* of the currency (integer, **not** float/double). At most 4 suggested tip amounts can be specified. The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed *max\_tip\_amount*.*/
+	/** *Optional*. A JSON-serialized array of suggested amounts of tip in the *smallest units* of the currency (integer, **not** float/double). At most 4 suggested tip amounts can be specified. The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed *max\_tip\_amount*.*/
 	pub fn suggested_tip_amounts(mut self, suggested_tip_amounts: impl Into<Vec<i64>>) -> Self {
 		self.suggested_tip_amounts = suggested_tip_amounts.into();
 		self
@@ -5753,22 +5753,22 @@ impl InputLocationMessageContent {
 			proximity_alert_radius: None,
 		}
 	}
-	/***Optional*. For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.*/
+	/** *Optional*. For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.*/
 	pub fn heading(mut self, heading: impl Into<i64>) -> Self {
 		self.heading = Some(heading.into());
 		self
 	}
-	/***Optional*. The radius of uncertainty for the location, measured in meters; 0-1500*/
+	/** *Optional*. The radius of uncertainty for the location, measured in meters; 0-1500*/
 	pub fn horizontal_accuracy(mut self, horizontal_accuracy: impl Into<f32>) -> Self {
 		self.horizontal_accuracy = Some(horizontal_accuracy.into());
 		self
 	}
-	/***Optional*. Period in seconds during which the location can be updated, should be between 60 and 86400, or 0x7FFFFFFF for live locations that can be edited indefinitely.*/
+	/** *Optional*. Period in seconds during which the location can be updated, should be between 60 and 86400, or 0x7FFFFFFF for live locations that can be edited indefinitely.*/
 	pub fn live_period(mut self, live_period: impl Into<i64>) -> Self {
 		self.live_period = Some(live_period.into());
 		self
 	}
-	/***Optional*. For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.*/
+	/** *Optional*. For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.*/
 	pub fn proximity_alert_radius(mut self, proximity_alert_radius: impl Into<i64>) -> Self {
 		self.proximity_alert_radius = Some(proximity_alert_radius.into());
 		self
@@ -5843,7 +5843,7 @@ impl InputMediaAnimation {
 			width: None,
 		}
 	}
-	/***Optional*. Caption of the animation to be sent, 0-1024 characters after entities parsing
+	/** *Optional*. Caption of the animation to be sent, 0-1024 characters after entities parsing
 	Min len: 0
 	Max len: 1024*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
@@ -5854,42 +5854,42 @@ impl InputMediaAnimation {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/***Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** *Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/***Optional*. Animation duration in seconds*/
+	/** *Optional*. Animation duration in seconds*/
 	pub fn duration(mut self, duration: impl Into<i64>) -> Self {
 		self.duration = Some(duration.into());
 		self
 	}
-	/***Optional*. Pass *True* if the animation needs to be covered with a spoiler animation*/
+	/** *Optional*. Pass *True* if the animation needs to be covered with a spoiler animation*/
 	pub fn has_spoiler(mut self, has_spoiler: bool) -> Self {
 		self.has_spoiler = Some(has_spoiler);
 		self
 	}
-	/***Optional*. Animation height*/
+	/** *Optional*. Animation height*/
 	pub fn height(mut self, height: impl Into<i64>) -> Self {
 		self.height = Some(height.into());
 		self
 	}
-	/***Optional*. Mode for parsing entities in the animation caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** *Optional*. Mode for parsing entities in the animation caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/***Optional*. Pass *True*, if the caption must be shown above the message media*/
+	/** *Optional*. Pass *True*, if the caption must be shown above the message media*/
 	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
 		self.show_caption_above_media = Some(show_caption_above_media);
 		self
 	}
-	/***Optional*. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
+	/** *Optional*. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
 	pub fn thumbnail(mut self, thumbnail: impl Into<Asset>) -> Self {
 		self.thumbnail = Some(thumbnail.into());
 		self
 	}
-	/***Optional*. Animation width*/
+	/** *Optional*. Animation width*/
 	pub fn width(mut self, width: impl Into<i64>) -> Self {
 		self.width = Some(width.into());
 		self
@@ -5940,7 +5940,7 @@ impl InputMediaAudio {
 			title: None,
 		}
 	}
-	/***Optional*. Caption of the audio to be sent, 0-1024 characters after entities parsing
+	/** *Optional*. Caption of the audio to be sent, 0-1024 characters after entities parsing
 	Min len: 0
 	Max len: 1024*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
@@ -5951,32 +5951,32 @@ impl InputMediaAudio {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/***Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** *Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/***Optional*. Duration of the audio in seconds*/
+	/** *Optional*. Duration of the audio in seconds*/
 	pub fn duration(mut self, duration: impl Into<i64>) -> Self {
 		self.duration = Some(duration.into());
 		self
 	}
-	/***Optional*. Mode for parsing entities in the audio caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** *Optional*. Mode for parsing entities in the audio caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/***Optional*. Performer of the audio*/
+	/** *Optional*. Performer of the audio*/
 	pub fn performer(mut self, performer: impl Into<String>) -> Self {
 		self.performer = Some(performer.into());
 		self
 	}
-	/***Optional*. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
+	/** *Optional*. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
 	pub fn thumbnail(mut self, thumbnail: impl Into<Asset>) -> Self {
 		self.thumbnail = Some(thumbnail.into());
 		self
 	}
-	/***Optional*. Title of the audio*/
+	/** *Optional*. Title of the audio*/
 	pub fn title(mut self, title: impl Into<String>) -> Self {
 		self.title = Some(title.into());
 		self
@@ -6021,7 +6021,7 @@ impl InputMediaDocument {
 			thumbnail: None,
 		}
 	}
-	/***Optional*. Caption of the document to be sent, 0-1024 characters after entities parsing
+	/** *Optional*. Caption of the document to be sent, 0-1024 characters after entities parsing
 	Min len: 0
 	Max len: 1024*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
@@ -6032,22 +6032,22 @@ impl InputMediaDocument {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/***Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** *Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/***Optional*. Disables automatic server-side content type detection for files uploaded using multipart/form-data. Always *True*, if the document is sent as part of an album.*/
+	/** *Optional*. Disables automatic server-side content type detection for files uploaded using multipart/form-data. Always *True*, if the document is sent as part of an album.*/
 	pub fn disable_content_type_detection(mut self, disable_content_type_detection: bool) -> Self {
 		self.disable_content_type_detection = Some(disable_content_type_detection);
 		self
 	}
-	/***Optional*. Mode for parsing entities in the document caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** *Optional*. Mode for parsing entities in the document caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/***Optional*. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
+	/** *Optional*. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
 	pub fn thumbnail(mut self, thumbnail: impl Into<Asset>) -> Self {
 		self.thumbnail = Some(thumbnail.into());
 		self
@@ -6092,7 +6092,7 @@ impl InputMediaPhoto {
 			show_caption_above_media: None,
 		}
 	}
-	/***Optional*. Caption of the photo to be sent, 0-1024 characters after entities parsing
+	/** *Optional*. Caption of the photo to be sent, 0-1024 characters after entities parsing
 	Min len: 0
 	Max len: 1024*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
@@ -6103,22 +6103,22 @@ impl InputMediaPhoto {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/***Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** *Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/***Optional*. Pass *True* if the photo needs to be covered with a spoiler animation*/
+	/** *Optional*. Pass *True* if the photo needs to be covered with a spoiler animation*/
 	pub fn has_spoiler(mut self, has_spoiler: bool) -> Self {
 		self.has_spoiler = Some(has_spoiler);
 		self
 	}
-	/***Optional*. Mode for parsing entities in the photo caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** *Optional*. Mode for parsing entities in the photo caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/***Optional*. Pass *True*, if the caption must be shown above the message media*/
+	/** *Optional*. Pass *True*, if the caption must be shown above the message media*/
 	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
 		self.show_caption_above_media = Some(show_caption_above_media);
 		self
@@ -6178,7 +6178,7 @@ impl InputMediaVideo {
 			width: None,
 		}
 	}
-	/***Optional*. Caption of the video to be sent, 0-1024 characters after entities parsing
+	/** *Optional*. Caption of the video to be sent, 0-1024 characters after entities parsing
 	Min len: 0
 	Max len: 1024*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
@@ -6189,47 +6189,47 @@ impl InputMediaVideo {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/***Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** *Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/***Optional*. Video duration in seconds*/
+	/** *Optional*. Video duration in seconds*/
 	pub fn duration(mut self, duration: impl Into<i64>) -> Self {
 		self.duration = Some(duration.into());
 		self
 	}
-	/***Optional*. Pass *True* if the video needs to be covered with a spoiler animation*/
+	/** *Optional*. Pass *True* if the video needs to be covered with a spoiler animation*/
 	pub fn has_spoiler(mut self, has_spoiler: bool) -> Self {
 		self.has_spoiler = Some(has_spoiler);
 		self
 	}
-	/***Optional*. Video height*/
+	/** *Optional*. Video height*/
 	pub fn height(mut self, height: impl Into<i64>) -> Self {
 		self.height = Some(height.into());
 		self
 	}
-	/***Optional*. Mode for parsing entities in the video caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** *Optional*. Mode for parsing entities in the video caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/***Optional*. Pass *True*, if the caption must be shown above the message media*/
+	/** *Optional*. Pass *True*, if the caption must be shown above the message media*/
 	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
 		self.show_caption_above_media = Some(show_caption_above_media);
 		self
 	}
-	/***Optional*. Pass *True* if the uploaded video is suitable for streaming*/
+	/** *Optional*. Pass *True* if the uploaded video is suitable for streaming*/
 	pub fn supports_streaming(mut self, supports_streaming: bool) -> Self {
 		self.supports_streaming = Some(supports_streaming);
 		self
 	}
-	/***Optional*. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
+	/** *Optional*. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
 	pub fn thumbnail(mut self, thumbnail: impl Into<Asset>) -> Self {
 		self.thumbnail = Some(thumbnail.into());
 		self
 	}
-	/***Optional*. Video width*/
+	/** *Optional*. Video width*/
 	pub fn width(mut self, width: impl Into<i64>) -> Self {
 		self.width = Some(width.into());
 		self
@@ -6320,27 +6320,27 @@ impl InputPaidMediaVideo {
 			width: None,
 		}
 	}
-	/***Optional*. Video duration in seconds*/
+	/** *Optional*. Video duration in seconds*/
 	pub fn duration(mut self, duration: impl Into<i64>) -> Self {
 		self.duration = Some(duration.into());
 		self
 	}
-	/***Optional*. Video height*/
+	/** *Optional*. Video height*/
 	pub fn height(mut self, height: impl Into<i64>) -> Self {
 		self.height = Some(height.into());
 		self
 	}
-	/***Optional*. Pass *True* if the uploaded video is suitable for streaming*/
+	/** *Optional*. Pass *True* if the uploaded video is suitable for streaming*/
 	pub fn supports_streaming(mut self, supports_streaming: bool) -> Self {
 		self.supports_streaming = Some(supports_streaming);
 		self
 	}
-	/***Optional*. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
+	/** *Optional*. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
 	pub fn thumbnail(mut self, thumbnail: impl Into<Asset>) -> Self {
 		self.thumbnail = Some(thumbnail.into());
 		self
 	}
-	/***Optional*. Video width*/
+	/** *Optional*. Video width*/
 	pub fn width(mut self, width: impl Into<i64>) -> Self {
 		self.width = Some(width.into());
 		self
@@ -6376,12 +6376,12 @@ impl InputPollOption {
 		self.text_entities.push(text_entity.into());
 		self
 	}
-	/***Optional*. A JSON-serialized list of special entities that appear in the poll option text. It can be specified instead of *text\_parse\_mode**/
+	/** *Optional*. A JSON-serialized list of special entities that appear in the poll option text. It can be specified instead of *text\_parse\_mode**/
 	pub fn text_entities(mut self, text_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.text_entities = text_entities.into();
 		self
 	}
-	/***Optional*. Mode for parsing entities in the text. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details. Currently, only custom emoji entities are allowed*/
+	/** *Optional*. Mode for parsing entities in the text. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details. Currently, only custom emoji entities are allowed*/
 	pub fn text_parse_mode(mut self, text_parse_mode: impl Into<String>) -> Self {
 		self.text_parse_mode = Some(text_parse_mode.into());
 		self
@@ -6426,12 +6426,12 @@ impl InputSticker {
 		self.keywords.push(keyword.into());
 		self
 	}
-	/***Optional*. List of 0-20 search keywords for the sticker with total length of up to 64 characters. For “regular” and “custom\_emoji” stickers only.*/
+	/** *Optional*. List of 0-20 search keywords for the sticker with total length of up to 64 characters. For “regular” and “custom\_emoji” stickers only.*/
 	pub fn keywords(mut self, keywords: impl Into<Vec<String>>) -> Self {
 		self.keywords = keywords.into();
 		self
 	}
-	/***Optional*. Position where the mask should be placed on faces. For “mask” stickers only.*/
+	/** *Optional*. Position where the mask should be placed on faces. For “mask” stickers only.*/
 	pub fn mask_position(mut self, mask_position: impl Into<MaskPosition>) -> Self {
 		self.mask_position = Some(mask_position.into());
 		self
@@ -6470,17 +6470,17 @@ impl InputTextMessageContent {
 		self.entities.push(entity.into());
 		self
 	}
-	/***Optional*. List of special entities that appear in message text, which can be specified instead of *parse\_mode**/
+	/** *Optional*. List of special entities that appear in message text, which can be specified instead of *parse\_mode**/
 	pub fn entities(mut self, entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.entities = entities.into();
 		self
 	}
-	/***Optional*. Link preview generation options for the message*/
+	/** *Optional*. Link preview generation options for the message*/
 	pub fn link_preview_options(mut self, link_preview_options: impl Into<LinkPreviewOptions>) -> Self {
 		self.link_preview_options = Some(link_preview_options.into());
 		self
 	}
-	/***Optional*. Mode for parsing entities in the message text. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** *Optional*. Mode for parsing entities in the message text. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
@@ -6524,22 +6524,22 @@ impl InputVenueMessageContent {
 			title: title.into(),
 		}
 	}
-	/***Optional*. Foursquare identifier of the venue, if known*/
+	/** *Optional*. Foursquare identifier of the venue, if known*/
 	pub fn foursquare_id(mut self, foursquare_id: impl Into<String>) -> Self {
 		self.foursquare_id = Some(foursquare_id.into());
 		self
 	}
-	/***Optional*. Foursquare type of the venue, if known. (For example, “arts\_entertainment/default”, “arts\_entertainment/aquarium” or “food/icecream”.)*/
+	/** *Optional*. Foursquare type of the venue, if known. (For example, “arts\_entertainment/default”, “arts\_entertainment/aquarium” or “food/icecream”.)*/
 	pub fn foursquare_type(mut self, foursquare_type: impl Into<String>) -> Self {
 		self.foursquare_type = Some(foursquare_type.into());
 		self
 	}
-	/***Optional*. Google Places identifier of the venue*/
+	/** *Optional*. Google Places identifier of the venue*/
 	pub fn google_place_id(mut self, google_place_id: impl Into<String>) -> Self {
 		self.google_place_id = Some(google_place_id.into());
 		self
 	}
-	/***Optional*. Google Places type of the venue. (See [supported types](https://developers.google.com/places/web-service/supported_types).)*/
+	/** *Optional*. Google Places type of the venue. (See [supported types](https://developers.google.com/places/web-service/supported_types).)*/
 	pub fn google_place_type(mut self, google_place_type: impl Into<String>) -> Self {
 		self.google_place_type = Some(google_place_type.into());
 		self
@@ -6607,32 +6607,32 @@ impl KeyboardButton {
 			web_app: None,
 		}
 	}
-	/***Optional.* If specified, pressing the button will open a list of suitable chats. Tapping on a chat will send its identifier to the bot in a “chat\_shared” service message. Available in private chats only.*/
+	/** *Optional.* If specified, pressing the button will open a list of suitable chats. Tapping on a chat will send its identifier to the bot in a “chat\_shared” service message. Available in private chats only.*/
 	pub fn request_chat(mut self, request_chat: impl Into<KeyboardButtonRequestChat>) -> Self {
 		self.request_chat = Some(request_chat.into());
 		self
 	}
-	/***Optional*. If *True*, the user's phone number will be sent as a contact when the button is pressed. Available in private chats only.*/
+	/** *Optional*. If *True*, the user's phone number will be sent as a contact when the button is pressed. Available in private chats only.*/
 	pub fn request_contact(mut self, request_contact: bool) -> Self {
 		self.request_contact = Some(request_contact);
 		self
 	}
-	/***Optional*. If *True*, the user's current location will be sent when the button is pressed. Available in private chats only.*/
+	/** *Optional*. If *True*, the user's current location will be sent when the button is pressed. Available in private chats only.*/
 	pub fn request_location(mut self, request_location: bool) -> Self {
 		self.request_location = Some(request_location);
 		self
 	}
-	/***Optional*. If specified, the user will be asked to create a poll and send it to the bot when the button is pressed. Available in private chats only.*/
+	/** *Optional*. If specified, the user will be asked to create a poll and send it to the bot when the button is pressed. Available in private chats only.*/
 	pub fn request_poll(mut self, request_poll: impl Into<KeyboardButtonPollType>) -> Self {
 		self.request_poll = Some(request_poll.into());
 		self
 	}
-	/***Optional.* If specified, pressing the button will open a list of suitable users. Identifiers of selected users will be sent to the bot in a “users\_shared” service message. Available in private chats only.*/
+	/** *Optional.* If specified, pressing the button will open a list of suitable users. Identifiers of selected users will be sent to the bot in a “users\_shared” service message. Available in private chats only.*/
 	pub fn request_users(mut self, request_users: impl Into<KeyboardButtonRequestUsers>) -> Self {
 		self.request_users = Some(request_users.into());
 		self
 	}
-	/***Optional*. If specified, the described [Web App](https://core.telegram.org/bots/webapps) will be launched when the button is pressed. The Web App will be able to send a “web\_app\_data” service message. Available in private chats only.*/
+	/** *Optional*. If specified, the described [Web App](https://core.telegram.org/bots/webapps) will be launched when the button is pressed. The Web App will be able to send a “web\_app\_data” service message. Available in private chats only.*/
 	pub fn web_app(mut self, web_app: impl Into<WebAppInfo>) -> Self {
 		self.web_app = Some(web_app.into());
 		self
@@ -6655,7 +6655,7 @@ impl KeyboardButtonPollType {
 			r#type: None,
 		}
 	}
-	/***Optional*. If *quiz* is passed, the user will be allowed to create only polls in the quiz mode. If *regular* is passed, only regular polls will be allowed. Otherwise, the user will be allowed to create a poll of any type.*/
+	/** *Optional*. If *quiz* is passed, the user will be allowed to create only polls in the quiz mode. If *regular* is passed, only regular polls will be allowed. Otherwise, the user will be allowed to create a poll of any type.*/
 	pub fn r#type(mut self, r#type: impl Into<String>) -> Self {
 		self.r#type = Some(r#type.into());
 		self
@@ -6708,47 +6708,47 @@ impl KeyboardButtonRequestChat {
 			user_administrator_rights: None,
 		}
 	}
-	/***Optional*. A JSON-serialized object listing the required administrator rights of the bot in the chat. The rights must be a subset of *user\_administrator\_rights*. If not specified, no additional restrictions are applied.*/
+	/** *Optional*. A JSON-serialized object listing the required administrator rights of the bot in the chat. The rights must be a subset of *user\_administrator\_rights*. If not specified, no additional restrictions are applied.*/
 	pub fn bot_administrator_rights(mut self, bot_administrator_rights: impl Into<ChatAdministratorRights>) -> Self {
 		self.bot_administrator_rights = Some(bot_administrator_rights.into());
 		self
 	}
-	/***Optional*. Pass *True* to request a chat with the bot as a member. Otherwise, no additional restrictions are applied.*/
+	/** *Optional*. Pass *True* to request a chat with the bot as a member. Otherwise, no additional restrictions are applied.*/
 	pub fn bot_is_member(mut self, bot_is_member: bool) -> Self {
 		self.bot_is_member = Some(bot_is_member);
 		self
 	}
-	/***Optional*. Pass *True* to request a supergroup or a channel with a username, pass *False* to request a chat without a username. If not specified, no additional restrictions are applied.*/
+	/** *Optional*. Pass *True* to request a supergroup or a channel with a username, pass *False* to request a chat without a username. If not specified, no additional restrictions are applied.*/
 	pub fn chat_has_username(mut self, chat_has_username: bool) -> Self {
 		self.chat_has_username = Some(chat_has_username);
 		self
 	}
-	/***Optional*. Pass *True* to request a chat owned by the user. Otherwise, no additional restrictions are applied.*/
+	/** *Optional*. Pass *True* to request a chat owned by the user. Otherwise, no additional restrictions are applied.*/
 	pub fn chat_is_created(mut self, chat_is_created: bool) -> Self {
 		self.chat_is_created = Some(chat_is_created);
 		self
 	}
-	/***Optional*. Pass *True* to request a forum supergroup, pass *False* to request a non-forum chat. If not specified, no additional restrictions are applied.*/
+	/** *Optional*. Pass *True* to request a forum supergroup, pass *False* to request a non-forum chat. If not specified, no additional restrictions are applied.*/
 	pub fn chat_is_forum(mut self, chat_is_forum: bool) -> Self {
 		self.chat_is_forum = Some(chat_is_forum);
 		self
 	}
-	/***Optional*. Pass *True* to request the chat's photo*/
+	/** *Optional*. Pass *True* to request the chat's photo*/
 	pub fn request_photo(mut self, request_photo: bool) -> Self {
 		self.request_photo = Some(request_photo);
 		self
 	}
-	/***Optional*. Pass *True* to request the chat's title*/
+	/** *Optional*. Pass *True* to request the chat's title*/
 	pub fn request_title(mut self, request_title: bool) -> Self {
 		self.request_title = Some(request_title);
 		self
 	}
-	/***Optional*. Pass *True* to request the chat's username*/
+	/** *Optional*. Pass *True* to request the chat's username*/
 	pub fn request_username(mut self, request_username: bool) -> Self {
 		self.request_username = Some(request_username);
 		self
 	}
-	/***Optional*. A JSON-serialized object listing the required administrator rights of the user in the chat. The rights must be a superset of *bot\_administrator\_rights*. If not specified, no additional restrictions are applied.*/
+	/** *Optional*. A JSON-serialized object listing the required administrator rights of the user in the chat. The rights must be a superset of *bot\_administrator\_rights*. If not specified, no additional restrictions are applied.*/
 	pub fn user_administrator_rights(mut self, user_administrator_rights: impl Into<ChatAdministratorRights>) -> Self {
 		self.user_administrator_rights = Some(user_administrator_rights.into());
 		self
@@ -6790,33 +6790,33 @@ impl KeyboardButtonRequestUsers {
 			user_is_premium: None,
 		}
 	}
-	/***Optional*. The maximum number of users to be selected; 1-10. Defaults to 1.
+	/** *Optional*. The maximum number of users to be selected; 1-10. Defaults to 1.
 	Default value: 1*/
 	pub fn max_quantity(mut self, max_quantity: impl Into<i64>) -> Self {
 		self.max_quantity = Some(max_quantity.into());
 		self
 	}
-	/***Optional*. Pass *True* to request the users' first and last names*/
+	/** *Optional*. Pass *True* to request the users' first and last names*/
 	pub fn request_name(mut self, request_name: bool) -> Self {
 		self.request_name = Some(request_name);
 		self
 	}
-	/***Optional*. Pass *True* to request the users' photos*/
+	/** *Optional*. Pass *True* to request the users' photos*/
 	pub fn request_photo(mut self, request_photo: bool) -> Self {
 		self.request_photo = Some(request_photo);
 		self
 	}
-	/***Optional*. Pass *True* to request the users' usernames*/
+	/** *Optional*. Pass *True* to request the users' usernames*/
 	pub fn request_username(mut self, request_username: bool) -> Self {
 		self.request_username = Some(request_username);
 		self
 	}
-	/***Optional*. Pass *True* to request bots, pass *False* to request regular users. If not specified, no additional restrictions are applied.*/
+	/** *Optional*. Pass *True* to request bots, pass *False* to request regular users. If not specified, no additional restrictions are applied.*/
 	pub fn user_is_bot(mut self, user_is_bot: bool) -> Self {
 		self.user_is_bot = Some(user_is_bot);
 		self
 	}
-	/***Optional*. Pass *True* to request premium users, pass *False* to request non-premium users. If not specified, no additional restrictions are applied.*/
+	/** *Optional*. Pass *True* to request premium users, pass *False* to request non-premium users. If not specified, no additional restrictions are applied.*/
 	pub fn user_is_premium(mut self, user_is_premium: bool) -> Self {
 		self.user_is_premium = Some(user_is_premium);
 		self
@@ -6869,27 +6869,27 @@ impl LinkPreviewOptions {
 			url: None,
 		}
 	}
-	/***Optional*. *True*, if the link preview is disabled*/
+	/** *Optional*. *True*, if the link preview is disabled*/
 	pub fn is_disabled(mut self, is_disabled: bool) -> Self {
 		self.is_disabled = Some(is_disabled);
 		self
 	}
-	/***Optional*. *True*, if the media in the link preview is supposed to be enlarged; ignored if the URL isn't explicitly specified or media size change isn't supported for the preview*/
+	/** *Optional*. *True*, if the media in the link preview is supposed to be enlarged; ignored if the URL isn't explicitly specified or media size change isn't supported for the preview*/
 	pub fn prefer_large_media(mut self, prefer_large_media: bool) -> Self {
 		self.prefer_large_media = Some(prefer_large_media);
 		self
 	}
-	/***Optional*. *True*, if the media in the link preview is supposed to be shrunk; ignored if the URL isn't explicitly specified or media size change isn't supported for the preview*/
+	/** *Optional*. *True*, if the media in the link preview is supposed to be shrunk; ignored if the URL isn't explicitly specified or media size change isn't supported for the preview*/
 	pub fn prefer_small_media(mut self, prefer_small_media: bool) -> Self {
 		self.prefer_small_media = Some(prefer_small_media);
 		self
 	}
-	/***Optional*. *True*, if the link preview must be shown above the message text; otherwise, the link preview will be shown below the message text*/
+	/** *Optional*. *True*, if the link preview must be shown above the message text; otherwise, the link preview will be shown below the message text*/
 	pub fn show_above_text(mut self, show_above_text: bool) -> Self {
 		self.show_above_text = Some(show_above_text);
 		self
 	}
-	/***Optional*. URL to use for the link preview. If empty, then the first URL found in the message text will be used*/
+	/** *Optional*. URL to use for the link preview. If empty, then the first URL found in the message text will be used*/
 	pub fn url(mut self, url: impl Into<String>) -> Self {
 		self.url = Some(url.into());
 		self
@@ -6927,22 +6927,22 @@ impl Location {
 			proximity_alert_radius: None,
 		}
 	}
-	/***Optional*. The direction in which user is moving, in degrees; 1-360. For active live locations only.*/
+	/** *Optional*. The direction in which user is moving, in degrees; 1-360. For active live locations only.*/
 	pub fn heading(mut self, heading: impl Into<i64>) -> Self {
 		self.heading = Some(heading.into());
 		self
 	}
-	/***Optional*. The radius of uncertainty for the location, measured in meters; 0-1500*/
+	/** *Optional*. The radius of uncertainty for the location, measured in meters; 0-1500*/
 	pub fn horizontal_accuracy(mut self, horizontal_accuracy: impl Into<f32>) -> Self {
 		self.horizontal_accuracy = Some(horizontal_accuracy.into());
 		self
 	}
-	/***Optional*. Time relative to the message sending date, during which the location can be updated; in seconds. For active live locations only.*/
+	/** *Optional*. Time relative to the message sending date, during which the location can be updated; in seconds. For active live locations only.*/
 	pub fn live_period(mut self, live_period: impl Into<i64>) -> Self {
 		self.live_period = Some(live_period.into());
 		self
 	}
-	/***Optional*. The maximum distance for proximity alerts about approaching another chat member, in meters. For sent live locations only.*/
+	/** *Optional*. The maximum distance for proximity alerts about approaching another chat member, in meters. For sent live locations only.*/
 	pub fn proximity_alert_radius(mut self, proximity_alert_radius: impl Into<i64>) -> Self {
 		self.proximity_alert_radius = Some(proximity_alert_radius.into());
 		self
@@ -6980,17 +6980,17 @@ impl LoginUrl {
 			url: url.into(),
 		}
 	}
-	/***Optional*. Username of a bot, which will be used for user authorization. See [Setting up a bot](https://core.telegram.org/widgets/login#setting-up-a-bot) for more details. If not specified, the current bot's username will be assumed. The *url*'s domain must be the same as the domain linked with the bot. See [Linking your domain to the bot](https://core.telegram.org/widgets/login#linking-your-domain-to-the-bot) for more details.*/
+	/** *Optional*. Username of a bot, which will be used for user authorization. See [Setting up a bot](https://core.telegram.org/widgets/login#setting-up-a-bot) for more details. If not specified, the current bot's username will be assumed. The *url*'s domain must be the same as the domain linked with the bot. See [Linking your domain to the bot](https://core.telegram.org/widgets/login#linking-your-domain-to-the-bot) for more details.*/
 	pub fn bot_username(mut self, bot_username: impl Into<String>) -> Self {
 		self.bot_username = Some(bot_username.into());
 		self
 	}
-	/***Optional*. New text of the button in forwarded messages.*/
+	/** *Optional*. New text of the button in forwarded messages.*/
 	pub fn forward_text(mut self, forward_text: impl Into<String>) -> Self {
 		self.forward_text = Some(forward_text.into());
 		self
 	}
-	/***Optional*. Pass *True* to request the permission for your bot to send messages to the user.*/
+	/** *Optional*. Pass *True* to request the permission for your bot to send messages to the user.*/
 	pub fn request_write_access(mut self, request_write_access: bool) -> Self {
 		self.request_write_access = Some(request_write_access);
 		self
@@ -7161,22 +7161,22 @@ impl MessageEntity {
 			user: None,
 		}
 	}
-	/***Optional*. For “custom\_emoji” only, unique identifier of the custom emoji. Use [getCustomEmojiStickers](https://core.telegram.org/bots/api/#getcustomemojistickers) to get full information about the sticker*/
+	/** *Optional*. For “custom\_emoji” only, unique identifier of the custom emoji. Use [getCustomEmojiStickers](https://core.telegram.org/bots/api/#getcustomemojistickers) to get full information about the sticker*/
 	pub fn custom_emoji_id(mut self, custom_emoji_id: impl Into<String>) -> Self {
 		self.custom_emoji_id = Some(custom_emoji_id.into());
 		self
 	}
-	/***Optional*. For “pre” only, the programming language of the entity text*/
+	/** *Optional*. For “pre” only, the programming language of the entity text*/
 	pub fn language(mut self, language: impl Into<String>) -> Self {
 		self.language = Some(language.into());
 		self
 	}
-	/***Optional*. For “text\_link” only, URL that will be opened after user taps on the text*/
+	/** *Optional*. For “text\_link” only, URL that will be opened after user taps on the text*/
 	pub fn url(mut self, url: impl Into<String>) -> Self {
 		self.url = Some(url.into());
 		self
 	}
-	/***Optional*. For “text\_mention” only, the mentioned user*/
+	/** *Optional*. For “text\_mention” only, the mentioned user*/
 	pub fn user(mut self, user: impl Into<User>) -> Self {
 		self.user = Some(user.into());
 		self
@@ -7243,7 +7243,7 @@ impl MessageOriginChannel {
 			r#type: r#type.into(),
 		}
 	}
-	/***Optional*. Signature of the original post author*/
+	/** *Optional*. Signature of the original post author*/
 	pub fn author_signature(mut self, author_signature: impl Into<String>) -> Self {
 		self.author_signature = Some(author_signature.into());
 		self
@@ -7276,7 +7276,7 @@ impl MessageOriginChat {
 			sender_chat: sender_chat.into(),
 		}
 	}
-	/***Optional*. For messages originally sent by an anonymous chat administrator, original message author signature*/
+	/** *Optional*. For messages originally sent by an anonymous chat administrator, original message author signature*/
 	pub fn author_signature(mut self, author_signature: impl Into<String>) -> Self {
 		self.author_signature = Some(author_signature.into());
 		self
@@ -7393,7 +7393,7 @@ impl MessageReactionUpdated {
 			user: None,
 		}
 	}
-	/***Optional*. The chat on behalf of which the reaction was changed, if the user is anonymous*/
+	/** *Optional*. The chat on behalf of which the reaction was changed, if the user is anonymous*/
 	pub fn actor_chat(mut self, actor_chat: impl Into<Chat>) -> Self {
 		self.actor_chat = Some(actor_chat.into());
 		self
@@ -7406,7 +7406,7 @@ impl MessageReactionUpdated {
 		self.old_reaction.push(old_reaction.into());
 		self
 	}
-	/***Optional*. The user that changed the reaction, if the user isn't anonymous*/
+	/** *Optional*. The user that changed the reaction, if the user isn't anonymous*/
 	pub fn user(mut self, user: impl Into<User>) -> Self {
 		self.user = Some(user.into());
 		self
@@ -7438,22 +7438,22 @@ impl OrderInfo {
 			shipping_address: None,
 		}
 	}
-	/***Optional*. User email*/
+	/** *Optional*. User email*/
 	pub fn email(mut self, email: impl Into<String>) -> Self {
 		self.email = Some(email.into());
 		self
 	}
-	/***Optional*. User name*/
+	/** *Optional*. User name*/
 	pub fn name(mut self, name: impl Into<String>) -> Self {
 		self.name = Some(name.into());
 		self
 	}
-	/***Optional*. User's phone number*/
+	/** *Optional*. User's phone number*/
 	pub fn phone_number(mut self, phone_number: impl Into<String>) -> Self {
 		self.phone_number = Some(phone_number.into());
 		self
 	}
-	/***Optional*. User shipping address*/
+	/** *Optional*. User shipping address*/
 	pub fn shipping_address(mut self, shipping_address: impl Into<ShippingAddress>) -> Self {
 		self.shipping_address = Some(shipping_address.into());
 		self
@@ -7551,17 +7551,17 @@ impl PaidMediaPreview {
 			width: None,
 		}
 	}
-	/***Optional*. Duration of the media in seconds as defined by the sender*/
+	/** *Optional*. Duration of the media in seconds as defined by the sender*/
 	pub fn duration(mut self, duration: impl Into<i64>) -> Self {
 		self.duration = Some(duration.into());
 		self
 	}
-	/***Optional*. Media height as defined by the sender*/
+	/** *Optional*. Media height as defined by the sender*/
 	pub fn height(mut self, height: impl Into<i64>) -> Self {
 		self.height = Some(height.into());
 		self
 	}
-	/***Optional*. Media width as defined by the sender*/
+	/** *Optional*. Media width as defined by the sender*/
 	pub fn width(mut self, width: impl Into<i64>) -> Self {
 		self.width = Some(width.into());
 		self
@@ -7958,7 +7958,7 @@ impl PhotoSize {
 			width: width.into(),
 		}
 	}
-	/***Optional*. File size in bytes*/
+	/** *Optional*. File size in bytes*/
 	pub fn file_size(mut self, file_size: impl Into<i64>) -> Self {
 		self.file_size = Some(file_size.into());
 		self
@@ -8026,17 +8026,17 @@ impl Poll {
 			total_voter_count: total_voter_count.into(),
 		}
 	}
-	/***Optional*. Point in time (Unix timestamp) when the poll will be automatically closed*/
+	/** *Optional*. Point in time (Unix timestamp) when the poll will be automatically closed*/
 	pub fn close_date(mut self, close_date: impl Into<i64>) -> Self {
 		self.close_date = Some(close_date.into());
 		self
 	}
-	/***Optional*. 0-based identifier of the correct answer option. Available only for polls in the quiz mode, which are closed, or was sent (not forwarded) by the bot or to the private chat with the bot.*/
+	/** *Optional*. 0-based identifier of the correct answer option. Available only for polls in the quiz mode, which are closed, or was sent (not forwarded) by the bot or to the private chat with the bot.*/
 	pub fn correct_option_id(mut self, correct_option_id: impl Into<i64>) -> Self {
 		self.correct_option_id = Some(correct_option_id.into());
 		self
 	}
-	/***Optional*. Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters
+	/** *Optional*. Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters
 	Min len: 0
 	Max len: 200*/
 	pub fn explanation(mut self, explanation: impl Into<String>) -> Self {
@@ -8047,12 +8047,12 @@ impl Poll {
 		self.explanation_entities.push(explanation_entity.into());
 		self
 	}
-	/***Optional*. Special entities like usernames, URLs, bot commands, etc. that appear in the *explanation**/
+	/** *Optional*. Special entities like usernames, URLs, bot commands, etc. that appear in the *explanation**/
 	pub fn explanation_entities(mut self, explanation_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.explanation_entities = explanation_entities.into();
 		self
 	}
-	/***Optional*. Amount of time in seconds the poll will be active after creation*/
+	/** *Optional*. Amount of time in seconds the poll will be active after creation*/
 	pub fn open_period(mut self, open_period: impl Into<i64>) -> Self {
 		self.open_period = Some(open_period.into());
 		self
@@ -8065,7 +8065,7 @@ impl Poll {
 		self.question_entities.push(question_entity.into());
 		self
 	}
-	/***Optional*. Special entities that appear in the *question*. Currently, only custom emoji entities are allowed in poll questions*/
+	/** *Optional*. Special entities that appear in the *question*. Currently, only custom emoji entities are allowed in poll questions*/
 	pub fn question_entities(mut self, question_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.question_entities = question_entities.into();
 		self
@@ -8102,12 +8102,12 @@ impl PollAnswer {
 		self.option_ids.push(option_id.into());
 		self
 	}
-	/***Optional*. The user that changed the answer to the poll, if the voter isn't anonymous*/
+	/** *Optional*. The user that changed the answer to the poll, if the voter isn't anonymous*/
 	pub fn user(mut self, user: impl Into<User>) -> Self {
 		self.user = Some(user.into());
 		self
 	}
-	/***Optional*. The chat that changed the answer to the poll, if the voter is anonymous*/
+	/** *Optional*. The chat that changed the answer to the poll, if the voter is anonymous*/
 	pub fn voter_chat(mut self, voter_chat: impl Into<Chat>) -> Self {
 		self.voter_chat = Some(voter_chat.into());
 		self
@@ -8142,7 +8142,7 @@ impl PollOption {
 		self.text_entities.push(text_entity.into());
 		self
 	}
-	/***Optional*. Special entities that appear in the option *text*. Currently, only custom emoji entities are allowed in poll option texts*/
+	/** *Optional*. Special entities that appear in the option *text*. Currently, only custom emoji entities are allowed in poll option texts*/
 	pub fn text_entities(mut self, text_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.text_entities = text_entities.into();
 		self
@@ -8183,12 +8183,12 @@ impl PreCheckoutQuery {
 			total_amount: total_amount.into(),
 		}
 	}
-	/***Optional*. Order information provided by the user*/
+	/** *Optional*. Order information provided by the user*/
 	pub fn order_info(mut self, order_info: impl Into<OrderInfo>) -> Self {
 		self.order_info = Some(order_info.into());
 		self
 	}
-	/***Optional*. Identifier of the shipping option chosen by the user*/
+	/** *Optional*. Identifier of the shipping option chosen by the user*/
 	pub fn shipping_option_id(mut self, shipping_option_id: impl Into<String>) -> Self {
 		self.shipping_option_id = Some(shipping_option_id.into());
 		self
@@ -8350,7 +8350,7 @@ impl RefundedPayment {
 			total_amount: total_amount.into(),
 		}
 	}
-	/***Optional*. Provider payment identifier*/
+	/** *Optional*. Provider payment identifier*/
 	pub fn provider_payment_charge_id(mut self, provider_payment_charge_id: impl Into<String>) -> Self {
 		self.provider_payment_charge_id = Some(provider_payment_charge_id.into());
 		self
@@ -8396,14 +8396,14 @@ impl ReplyKeyboardMarkup {
 			selective: None,
 		}
 	}
-	/***Optional*. The placeholder to be shown in the input field when the keyboard is active; 1-64 characters
+	/** *Optional*. The placeholder to be shown in the input field when the keyboard is active; 1-64 characters
 	Min len: 1
 	Max len: 64*/
 	pub fn input_field_placeholder(mut self, input_field_placeholder: impl Into<String>) -> Self {
 		self.input_field_placeholder = Some(input_field_placeholder.into());
 		self
 	}
-	/***Optional*. Requests clients to always show the keyboard when the regular keyboard is hidden. Defaults to *false*, in which case the custom keyboard can be hidden and opened with a keyboard icon.
+	/** *Optional*. Requests clients to always show the keyboard when the regular keyboard is hidden. Defaults to *false*, in which case the custom keyboard can be hidden and opened with a keyboard icon.
 	Default value: false*/
 	pub fn is_persistent(mut self, is_persistent: bool) -> Self {
 		self.is_persistent = Some(is_persistent);
@@ -8413,19 +8413,19 @@ impl ReplyKeyboardMarkup {
 		self.keyboard.push(keyboard.into());
 		self
 	}
-	/***Optional*. Requests clients to hide the keyboard as soon as it's been used. The keyboard will still be available, but clients will automatically display the usual letter-keyboard in the chat - the user can press a special button in the input field to see the custom keyboard again. Defaults to *false*.
+	/** *Optional*. Requests clients to hide the keyboard as soon as it's been used. The keyboard will still be available, but clients will automatically display the usual letter-keyboard in the chat - the user can press a special button in the input field to see the custom keyboard again. Defaults to *false*.
 	Default value: false*/
 	pub fn one_time_keyboard(mut self, one_time_keyboard: bool) -> Self {
 		self.one_time_keyboard = Some(one_time_keyboard);
 		self
 	}
-	/***Optional*. Requests clients to resize the keyboard vertically for optimal fit (e.g., make the keyboard smaller if there are just two rows of buttons). Defaults to *false*, in which case the custom keyboard is always of the same height as the app's standard keyboard.
+	/** *Optional*. Requests clients to resize the keyboard vertically for optimal fit (e.g., make the keyboard smaller if there are just two rows of buttons). Defaults to *false*, in which case the custom keyboard is always of the same height as the app's standard keyboard.
 	Default value: false*/
 	pub fn resize_keyboard(mut self, resize_keyboard: bool) -> Self {
 		self.resize_keyboard = Some(resize_keyboard);
 		self
 	}
-	/***Optional*. Use this parameter if you want to show the keyboard to specific users only. Targets: 1) users that are @mentioned in the *text* of the [Message](https://core.telegram.org/bots/api/#message) object; 2) if the bot's message is a reply to a message in the same chat and forum topic, sender of the original message.  
+	/** *Optional*. Use this parameter if you want to show the keyboard to specific users only. Targets: 1) users that are @mentioned in the *text* of the [Message](https://core.telegram.org/bots/api/#message) object; 2) if the bot's message is a reply to a message in the same chat and forum topic, sender of the original message.  
 
 	*Example:* A user requests to change the bot's language, bot replies to the request with a keyboard to select the new language. Other users in the group don't see the keyboard.*/
 	pub fn selective(mut self, selective: bool) -> Self {
@@ -8456,7 +8456,7 @@ impl ReplyKeyboardRemove {
 			selective: None,
 		}
 	}
-	/***Optional*. Use this parameter if you want to remove the keyboard for specific users only. Targets: 1) users that are @mentioned in the *text* of the [Message](https://core.telegram.org/bots/api/#message) object; 2) if the bot's message is a reply to a message in the same chat and forum topic, sender of the original message.  
+	/** *Optional*. Use this parameter if you want to remove the keyboard for specific users only. Targets: 1) users that are @mentioned in the *text* of the [Message](https://core.telegram.org/bots/api/#message) object; 2) if the bot's message is a reply to a message in the same chat and forum topic, sender of the original message.  
 
 	*Example:* A user votes in a poll, bot returns confirmation message in reply to the vote and removes the keyboard for that user, while still showing the keyboard with poll options to users who haven't voted yet.*/
 	pub fn selective(mut self, selective: bool) -> Self {
@@ -8511,17 +8511,17 @@ impl ReplyParameters {
 			quote_position: None,
 		}
 	}
-	/***Optional*. Pass *True* if the message should be sent even if the specified message to be replied to is not found. Always *False* for replies in another chat or forum topic. Always *True* for messages sent on behalf of a business account.*/
+	/** *Optional*. Pass *True* if the message should be sent even if the specified message to be replied to is not found. Always *False* for replies in another chat or forum topic. Always *True* for messages sent on behalf of a business account.*/
 	pub fn allow_sending_without_reply(mut self, allow_sending_without_reply: bool) -> Self {
 		self.allow_sending_without_reply = Some(allow_sending_without_reply);
 		self
 	}
-	/***Optional*. If the message to be replied to is from a different chat, unique identifier for the chat or username of the channel (in the format `@channelusername`). Not supported for messages sent on behalf of a business account.*/
+	/** *Optional*. If the message to be replied to is from a different chat, unique identifier for the chat or username of the channel (in the format `@channelusername`). Not supported for messages sent on behalf of a business account.*/
 	pub fn chat_id(mut self, chat_id: impl Into<ChatId>) -> Self {
 		self.chat_id = Some(chat_id.into());
 		self
 	}
-	/***Optional*. Quoted part of the message to be replied to; 0-1024 characters after entities parsing. The quote must be an exact substring of the message to be replied to, including *bold*, *italic*, *underline*, *strikethrough*, *spoiler*, and *custom\_emoji* entities. The message will fail to send if the quote isn't found in the original message.
+	/** *Optional*. Quoted part of the message to be replied to; 0-1024 characters after entities parsing. The quote must be an exact substring of the message to be replied to, including *bold*, *italic*, *underline*, *strikethrough*, *spoiler*, and *custom\_emoji* entities. The message will fail to send if the quote isn't found in the original message.
 	Min len: 0
 	Max len: 1024*/
 	pub fn quote(mut self, quote: impl Into<String>) -> Self {
@@ -8532,17 +8532,17 @@ impl ReplyParameters {
 		self.quote_entities.push(quote_entity.into());
 		self
 	}
-	/***Optional*. A JSON-serialized list of special entities that appear in the quote. It can be specified instead of *quote\_parse\_mode*.*/
+	/** *Optional*. A JSON-serialized list of special entities that appear in the quote. It can be specified instead of *quote\_parse\_mode*.*/
 	pub fn quote_entities(mut self, quote_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.quote_entities = quote_entities.into();
 		self
 	}
-	/***Optional*. Mode for parsing entities in the quote. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** *Optional*. Mode for parsing entities in the quote. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn quote_parse_mode(mut self, quote_parse_mode: impl Into<String>) -> Self {
 		self.quote_parse_mode = Some(quote_parse_mode.into());
 		self
 	}
-	/***Optional*. Position of the quote in the original message in UTF-16 code units*/
+	/** *Optional*. Position of the quote in the original message in UTF-16 code units*/
 	pub fn quote_position(mut self, quote_position: impl Into<i64>) -> Self {
 		self.quote_position = Some(quote_position.into());
 		self
@@ -8565,12 +8565,12 @@ impl ResponseParameters {
 			retry_after: None,
 		}
 	}
-	/***Optional*. The group has been migrated to a supergroup with the specified identifier. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier.*/
+	/** *Optional*. The group has been migrated to a supergroup with the specified identifier. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier.*/
 	pub fn migrate_to_chat_id(mut self, migrate_to_chat_id: impl Into<i64>) -> Self {
 		self.migrate_to_chat_id = Some(migrate_to_chat_id.into());
 		self
 	}
-	/***Optional*. In case of exceeding flood control, the number of seconds left to wait before the request can be repeated*/
+	/** *Optional*. In case of exceeding flood control, the number of seconds left to wait before the request can be repeated*/
 	pub fn retry_after(mut self, retry_after: impl Into<i64>) -> Self {
 		self.retry_after = Some(retry_after.into());
 		self
@@ -8661,7 +8661,7 @@ impl SentWebAppMessage {
 			inline_message_id: None,
 		}
 	}
-	/***Optional*. Identifier of the sent inline message. Available only if there is an [inline keyboard](https://core.telegram.org/bots/api/#inlinekeyboardmarkup) attached to the message.*/
+	/** *Optional*. Identifier of the sent inline message. Available only if there is an [inline keyboard](https://core.telegram.org/bots/api/#inlinekeyboardmarkup) attached to the message.*/
 	pub fn inline_message_id(mut self, inline_message_id: impl Into<String>) -> Self {
 		self.inline_message_id = Some(inline_message_id.into());
 		self
@@ -8704,12 +8704,12 @@ impl SharedUser {
 			username: None,
 		}
 	}
-	/***Optional*. First name of the user, if the name was requested by the bot*/
+	/** *Optional*. First name of the user, if the name was requested by the bot*/
 	pub fn first_name(mut self, first_name: impl Into<String>) -> Self {
 		self.first_name = Some(first_name.into());
 		self
 	}
-	/***Optional*. Last name of the user, if the name was requested by the bot*/
+	/** *Optional*. Last name of the user, if the name was requested by the bot*/
 	pub fn last_name(mut self, last_name: impl Into<String>) -> Self {
 		self.last_name = Some(last_name.into());
 		self
@@ -8718,12 +8718,12 @@ impl SharedUser {
 		self.photo.push(photo.into());
 		self
 	}
-	/***Optional*. Available sizes of the chat photo, if the photo was requested by the bot*/
+	/** *Optional*. Available sizes of the chat photo, if the photo was requested by the bot*/
 	pub fn photo(mut self, photo: impl Into<Vec<PhotoSize>>) -> Self {
 		self.photo = photo.into();
 		self
 	}
-	/***Optional*. Username of the user, if the username was requested by the bot*/
+	/** *Optional*. Username of the user, if the username was requested by the bot*/
 	pub fn username(mut self, username: impl Into<String>) -> Self {
 		self.username = Some(username.into());
 		self
@@ -8843,17 +8843,17 @@ impl StarTransaction {
 			source: None,
 		}
 	}
-	/***Optional*. The number of 1/1000000000 shares of Telegram Stars transferred by the transaction; from 0 to 999999999*/
+	/** *Optional*. The number of 1/1000000000 shares of Telegram Stars transferred by the transaction; from 0 to 999999999*/
 	pub fn nanostar_amount(mut self, nanostar_amount: impl Into<i64>) -> Self {
 		self.nanostar_amount = Some(nanostar_amount.into());
 		self
 	}
-	/***Optional*. Receiver of an outgoing transaction (e.g., a user for a purchase refund, Fragment for a withdrawal). Only for outgoing transactions*/
+	/** *Optional*. Receiver of an outgoing transaction (e.g., a user for a purchase refund, Fragment for a withdrawal). Only for outgoing transactions*/
 	pub fn receiver(mut self, receiver: impl Into<TransactionPartner>) -> Self {
 		self.receiver = Some(receiver.into());
 		self
 	}
-	/***Optional*. Source of an incoming transaction (e.g., a user purchasing goods or services, Fragment refunding a failed withdrawal). Only for incoming transactions*/
+	/** *Optional*. Source of an incoming transaction (e.g., a user purchasing goods or services, Fragment refunding a failed withdrawal). Only for incoming transactions*/
 	pub fn source(mut self, source: impl Into<TransactionPartner>) -> Self {
 		self.source = Some(source.into());
 		self
@@ -8942,43 +8942,43 @@ impl Sticker {
 			width: width.into(),
 		}
 	}
-	/***Optional*. For custom emoji stickers, unique identifier of the custom emoji*/
+	/** *Optional*. For custom emoji stickers, unique identifier of the custom emoji*/
 	pub fn custom_emoji_id(mut self, custom_emoji_id: impl Into<String>) -> Self {
 		self.custom_emoji_id = Some(custom_emoji_id.into());
 		self
 	}
-	/***Optional*. Emoji associated with the sticker*/
+	/** *Optional*. Emoji associated with the sticker*/
 	pub fn emoji(mut self, emoji: impl Into<String>) -> Self {
 		self.emoji = Some(emoji.into());
 		self
 	}
-	/***Optional*. File size in bytes*/
+	/** *Optional*. File size in bytes*/
 	pub fn file_size(mut self, file_size: impl Into<i64>) -> Self {
 		self.file_size = Some(file_size.into());
 		self
 	}
-	/***Optional*. For mask stickers, the position where the mask should be placed*/
+	/** *Optional*. For mask stickers, the position where the mask should be placed*/
 	pub fn mask_position(mut self, mask_position: impl Into<MaskPosition>) -> Self {
 		self.mask_position = Some(mask_position.into());
 		self
 	}
-	/***Optional*. *True*, if the sticker must be repainted to a text color in messages, the color of the Telegram Premium badge in emoji status, white color on chat photos, or another appropriate color in other places
+	/** *Optional*. *True*, if the sticker must be repainted to a text color in messages, the color of the Telegram Premium badge in emoji status, white color on chat photos, or another appropriate color in other places
 	Default value: true*/
 	pub fn needs_repainting(mut self, needs_repainting: bool) -> Self {
 		self.needs_repainting = Some(needs_repainting);
 		self
 	}
-	/***Optional*. For premium regular stickers, premium animation for the sticker*/
+	/** *Optional*. For premium regular stickers, premium animation for the sticker*/
 	pub fn premium_animation(mut self, premium_animation: impl Into<File>) -> Self {
 		self.premium_animation = Some(premium_animation.into());
 		self
 	}
-	/***Optional*. Name of the sticker set to which the sticker belongs*/
+	/** *Optional*. Name of the sticker set to which the sticker belongs*/
 	pub fn set_name(mut self, set_name: impl Into<String>) -> Self {
 		self.set_name = Some(set_name.into());
 		self
 	}
-	/***Optional*. Sticker thumbnail in the .WEBP or .JPG format*/
+	/** *Optional*. Sticker thumbnail in the .WEBP or .JPG format*/
 	pub fn thumbnail(mut self, thumbnail: impl Into<PhotoSize>) -> Self {
 		self.thumbnail = Some(thumbnail.into());
 		self
@@ -9019,7 +9019,7 @@ impl StickerSet {
 		self.stickers.push(sticker.into());
 		self
 	}
-	/***Optional*. Sticker set thumbnail in the .WEBP, .TGS, or .WEBM format*/
+	/** *Optional*. Sticker set thumbnail in the .WEBP, .TGS, or .WEBM format*/
 	pub fn thumbnail(mut self, thumbnail: impl Into<PhotoSize>) -> Self {
 		self.thumbnail = Some(thumbnail.into());
 		self
@@ -9096,29 +9096,29 @@ impl SuccessfulPayment {
 			total_amount: total_amount.into(),
 		}
 	}
-	/***Optional*. True, if the payment is the first payment for a subscription
+	/** *Optional*. True, if the payment is the first payment for a subscription
 	Default value: true*/
 	pub fn is_first_recurring(mut self, is_first_recurring: bool) -> Self {
 		self.is_first_recurring = Some(is_first_recurring);
 		self
 	}
-	/***Optional*. True, if the payment is a recurring payment for a subscription
+	/** *Optional*. True, if the payment is a recurring payment for a subscription
 	Default value: true*/
 	pub fn is_recurring(mut self, is_recurring: bool) -> Self {
 		self.is_recurring = Some(is_recurring);
 		self
 	}
-	/***Optional*. Order information provided by the user*/
+	/** *Optional*. Order information provided by the user*/
 	pub fn order_info(mut self, order_info: impl Into<OrderInfo>) -> Self {
 		self.order_info = Some(order_info.into());
 		self
 	}
-	/***Optional*. Identifier of the shipping option chosen by the user*/
+	/** *Optional*. Identifier of the shipping option chosen by the user*/
 	pub fn shipping_option_id(mut self, shipping_option_id: impl Into<String>) -> Self {
 		self.shipping_option_id = Some(shipping_option_id.into());
 		self
 	}
-	/***Optional*. Expiration date of the subscription, in Unix time; for recurring payments only*/
+	/** *Optional*. Expiration date of the subscription, in Unix time; for recurring payments only*/
 	pub fn subscription_expiration_date(mut self, subscription_expiration_date: impl Into<i64>) -> Self {
 		self.subscription_expiration_date = Some(subscription_expiration_date.into());
 		self
@@ -9153,27 +9153,27 @@ impl SwitchInlineQueryChosenChat {
 			query: None,
 		}
 	}
-	/***Optional*. True, if private chats with bots can be chosen*/
+	/** *Optional*. True, if private chats with bots can be chosen*/
 	pub fn allow_bot_chats(mut self, allow_bot_chats: bool) -> Self {
 		self.allow_bot_chats = Some(allow_bot_chats);
 		self
 	}
-	/***Optional*. True, if channel chats can be chosen*/
+	/** *Optional*. True, if channel chats can be chosen*/
 	pub fn allow_channel_chats(mut self, allow_channel_chats: bool) -> Self {
 		self.allow_channel_chats = Some(allow_channel_chats);
 		self
 	}
-	/***Optional*. True, if group and supergroup chats can be chosen*/
+	/** *Optional*. True, if group and supergroup chats can be chosen*/
 	pub fn allow_group_chats(mut self, allow_group_chats: bool) -> Self {
 		self.allow_group_chats = Some(allow_group_chats);
 		self
 	}
-	/***Optional*. True, if private chats with users can be chosen*/
+	/** *Optional*. True, if private chats with users can be chosen*/
 	pub fn allow_user_chats(mut self, allow_user_chats: bool) -> Self {
 		self.allow_user_chats = Some(allow_user_chats);
 		self
 	}
-	/***Optional*. The default inline query to be inserted in the input field. If left empty, only the bot's username will be inserted*/
+	/** *Optional*. The default inline query to be inserted in the input field. If left empty, only the bot's username will be inserted*/
 	pub fn query(mut self, query: impl Into<String>) -> Self {
 		self.query = Some(query.into());
 		self
@@ -9211,12 +9211,12 @@ impl TextQuote {
 		self.entities.push(entity.into());
 		self
 	}
-	/***Optional*. Special entities that appear in the quote. Currently, only *bold*, *italic*, *underline*, *strikethrough*, *spoiler*, and *custom\_emoji* entities are kept in quotes.*/
+	/** *Optional*. Special entities that appear in the quote. Currently, only *bold*, *italic*, *underline*, *strikethrough*, *spoiler*, and *custom\_emoji* entities are kept in quotes.*/
 	pub fn entities(mut self, entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.entities = entities.into();
 		self
 	}
-	/***Optional*. True, if the quote was chosen manually by the message sender. Otherwise, the quote was added automatically by the server.
+	/** *Optional*. True, if the quote was chosen manually by the message sender. Otherwise, the quote was added automatically by the server.
 	Default value: true*/
 	pub fn is_manual(mut self, is_manual: bool) -> Self {
 		self.is_manual = Some(is_manual);
@@ -9267,7 +9267,7 @@ impl TransactionPartnerAffiliateProgram {
 			sponsor_user: None,
 		}
 	}
-	/***Optional*. Information about the bot that sponsored the affiliate program*/
+	/** *Optional*. Information about the bot that sponsored the affiliate program*/
 	pub fn sponsor_user(mut self, sponsor_user: impl Into<User>) -> Self {
 		self.sponsor_user = Some(sponsor_user.into());
 		self
@@ -9294,7 +9294,7 @@ impl TransactionPartnerFragment {
 			withdrawal_state: None,
 		}
 	}
-	/***Optional*. State of the transaction if the transaction is outgoing*/
+	/** *Optional*. State of the transaction if the transaction is outgoing*/
 	pub fn withdrawal_state(mut self, withdrawal_state: impl Into<RevenueWithdrawalState>) -> Self {
 		self.withdrawal_state = Some(withdrawal_state.into());
 		self
@@ -9391,17 +9391,17 @@ impl TransactionPartnerUser {
 			user: user.into(),
 		}
 	}
-	/***Optional*. Information about the affiliate that received a commission via this transaction*/
+	/** *Optional*. Information about the affiliate that received a commission via this transaction*/
 	pub fn affiliate(mut self, affiliate: impl Into<AffiliateInfo>) -> Self {
 		self.affiliate = Some(affiliate.into());
 		self
 	}
-	/***Optional*. The gift sent to the user by the bot*/
+	/** *Optional*. The gift sent to the user by the bot*/
 	pub fn gift(mut self, gift: impl Into<Gift>) -> Self {
 		self.gift = Some(gift.into());
 		self
 	}
-	/***Optional*. Bot-specified invoice payload*/
+	/** *Optional*. Bot-specified invoice payload*/
 	pub fn invoice_payload(mut self, invoice_payload: impl Into<String>) -> Self {
 		self.invoice_payload = Some(invoice_payload.into());
 		self
@@ -9410,17 +9410,17 @@ impl TransactionPartnerUser {
 		self.paid_media.push(paid_media.into());
 		self
 	}
-	/***Optional*. Information about the paid media bought by the user*/
+	/** *Optional*. Information about the paid media bought by the user*/
 	pub fn paid_media(mut self, paid_media: impl Into<Vec<PaidMedia>>) -> Self {
 		self.paid_media = paid_media.into();
 		self
 	}
-	/***Optional*. Bot-specified paid media payload*/
+	/** *Optional*. Bot-specified paid media payload*/
 	pub fn paid_media_payload(mut self, paid_media_payload: impl Into<String>) -> Self {
 		self.paid_media_payload = Some(paid_media_payload.into());
 		self
 	}
-	/***Optional*. The duration of the paid subscription*/
+	/** *Optional*. The duration of the paid subscription*/
 	pub fn subscription_period(mut self, subscription_period: impl Into<i64>) -> Self {
 		self.subscription_period = Some(subscription_period.into());
 		self
@@ -9513,117 +9513,117 @@ impl Update {
 			update_id: update_id.into(),
 		}
 	}
-	/***Optional*. The bot was connected to or disconnected from a business account, or a user edited an existing connection with the bot*/
+	/** *Optional*. The bot was connected to or disconnected from a business account, or a user edited an existing connection with the bot*/
 	pub fn business_connection(mut self, business_connection: impl Into<BusinessConnection>) -> Self {
 		self.business_connection = Some(business_connection.into());
 		self
 	}
-	/***Optional*. New message from a connected business account*/
+	/** *Optional*. New message from a connected business account*/
 	pub fn business_message(mut self, business_message: impl Into<Message>) -> Self {
 		self.business_message = Some(business_message.into());
 		self
 	}
-	/***Optional*. New incoming callback query*/
+	/** *Optional*. New incoming callback query*/
 	pub fn callback_query(mut self, callback_query: impl Into<CallbackQuery>) -> Self {
 		self.callback_query = Some(callback_query.into());
 		self
 	}
-	/***Optional*. New incoming channel post of any kind - text, photo, sticker, etc.*/
+	/** *Optional*. New incoming channel post of any kind - text, photo, sticker, etc.*/
 	pub fn channel_post(mut self, channel_post: impl Into<Message>) -> Self {
 		self.channel_post = Some(channel_post.into());
 		self
 	}
-	/***Optional*. A chat boost was added or changed. The bot must be an administrator in the chat to receive these updates.*/
+	/** *Optional*. A chat boost was added or changed. The bot must be an administrator in the chat to receive these updates.*/
 	pub fn chat_boost(mut self, chat_boost: impl Into<ChatBoostUpdated>) -> Self {
 		self.chat_boost = Some(chat_boost.into());
 		self
 	}
-	/***Optional*. A request to join the chat has been sent. The bot must have the *can\_invite\_users* administrator right in the chat to receive these updates.*/
+	/** *Optional*. A request to join the chat has been sent. The bot must have the *can\_invite\_users* administrator right in the chat to receive these updates.*/
 	pub fn chat_join_request(mut self, chat_join_request: impl Into<ChatJoinRequest>) -> Self {
 		self.chat_join_request = Some(chat_join_request.into());
 		self
 	}
-	/***Optional*. A chat member's status was updated in a chat. The bot must be an administrator in the chat and must explicitly specify `"chat_member"` in the list of *allowed\_updates* to receive these updates.*/
+	/** *Optional*. A chat member's status was updated in a chat. The bot must be an administrator in the chat and must explicitly specify `"chat_member"` in the list of *allowed\_updates* to receive these updates.*/
 	pub fn chat_member(mut self, chat_member: impl Into<ChatMemberUpdated>) -> Self {
 		self.chat_member = Some(chat_member.into());
 		self
 	}
-	/***Optional*. The result of an [inline](https://core.telegram.org/bots/api/#inline-mode) query that was chosen by a user and sent to their chat partner. Please see our documentation on the [feedback collecting](https://core.telegram.org/bots/inline#collecting-feedback) for details on how to enable these updates for your bot.*/
+	/** *Optional*. The result of an [inline](https://core.telegram.org/bots/api/#inline-mode) query that was chosen by a user and sent to their chat partner. Please see our documentation on the [feedback collecting](https://core.telegram.org/bots/inline#collecting-feedback) for details on how to enable these updates for your bot.*/
 	pub fn chosen_inline_result(mut self, chosen_inline_result: impl Into<ChosenInlineResult>) -> Self {
 		self.chosen_inline_result = Some(chosen_inline_result.into());
 		self
 	}
-	/***Optional*. Messages were deleted from a connected business account*/
+	/** *Optional*. Messages were deleted from a connected business account*/
 	pub fn deleted_business_messages(mut self, deleted_business_messages: impl Into<BusinessMessagesDeleted>) -> Self {
 		self.deleted_business_messages = Some(deleted_business_messages.into());
 		self
 	}
-	/***Optional*. New version of a message from a connected business account*/
+	/** *Optional*. New version of a message from a connected business account*/
 	pub fn edited_business_message(mut self, edited_business_message: impl Into<Message>) -> Self {
 		self.edited_business_message = Some(edited_business_message.into());
 		self
 	}
-	/***Optional*. New version of a channel post that is known to the bot and was edited. This update may at times be triggered by changes to message fields that are either unavailable or not actively used by your bot.*/
+	/** *Optional*. New version of a channel post that is known to the bot and was edited. This update may at times be triggered by changes to message fields that are either unavailable or not actively used by your bot.*/
 	pub fn edited_channel_post(mut self, edited_channel_post: impl Into<Message>) -> Self {
 		self.edited_channel_post = Some(edited_channel_post.into());
 		self
 	}
-	/***Optional*. New version of a message that is known to the bot and was edited. This update may at times be triggered by changes to message fields that are either unavailable or not actively used by your bot.*/
+	/** *Optional*. New version of a message that is known to the bot and was edited. This update may at times be triggered by changes to message fields that are either unavailable or not actively used by your bot.*/
 	pub fn edited_message(mut self, edited_message: impl Into<Message>) -> Self {
 		self.edited_message = Some(edited_message.into());
 		self
 	}
-	/***Optional*. New incoming [inline](https://core.telegram.org/bots/api/#inline-mode) query*/
+	/** *Optional*. New incoming [inline](https://core.telegram.org/bots/api/#inline-mode) query*/
 	pub fn inline_query(mut self, inline_query: impl Into<InlineQuery>) -> Self {
 		self.inline_query = Some(inline_query.into());
 		self
 	}
-	/***Optional*. New incoming message of any kind - text, photo, sticker, etc.*/
+	/** *Optional*. New incoming message of any kind - text, photo, sticker, etc.*/
 	pub fn message(mut self, message: impl Into<Message>) -> Self {
 		self.message = Some(message.into());
 		self
 	}
-	/***Optional*. A reaction to a message was changed by a user. The bot must be an administrator in the chat and must explicitly specify `"message_reaction"` in the list of *allowed\_updates* to receive these updates. The update isn't received for reactions set by bots.*/
+	/** *Optional*. A reaction to a message was changed by a user. The bot must be an administrator in the chat and must explicitly specify `"message_reaction"` in the list of *allowed\_updates* to receive these updates. The update isn't received for reactions set by bots.*/
 	pub fn message_reaction(mut self, message_reaction: impl Into<MessageReactionUpdated>) -> Self {
 		self.message_reaction = Some(message_reaction.into());
 		self
 	}
-	/***Optional*. Reactions to a message with anonymous reactions were changed. The bot must be an administrator in the chat and must explicitly specify `"message_reaction_count"` in the list of *allowed\_updates* to receive these updates. The updates are grouped and can be sent with delay up to a few minutes.*/
+	/** *Optional*. Reactions to a message with anonymous reactions were changed. The bot must be an administrator in the chat and must explicitly specify `"message_reaction_count"` in the list of *allowed\_updates* to receive these updates. The updates are grouped and can be sent with delay up to a few minutes.*/
 	pub fn message_reaction_count(mut self, message_reaction_count: impl Into<MessageReactionCountUpdated>) -> Self {
 		self.message_reaction_count = Some(message_reaction_count.into());
 		self
 	}
-	/***Optional*. The bot's chat member status was updated in a chat. For private chats, this update is received only when the bot is blocked or unblocked by the user.*/
+	/** *Optional*. The bot's chat member status was updated in a chat. For private chats, this update is received only when the bot is blocked or unblocked by the user.*/
 	pub fn my_chat_member(mut self, my_chat_member: impl Into<ChatMemberUpdated>) -> Self {
 		self.my_chat_member = Some(my_chat_member.into());
 		self
 	}
-	/***Optional*. New poll state. Bots receive only updates about manually stopped polls and polls, which are sent by the bot*/
+	/** *Optional*. New poll state. Bots receive only updates about manually stopped polls and polls, which are sent by the bot*/
 	pub fn poll(mut self, poll: impl Into<Poll>) -> Self {
 		self.poll = Some(poll.into());
 		self
 	}
-	/***Optional*. A user changed their answer in a non-anonymous poll. Bots receive new votes only in polls that were sent by the bot itself.*/
+	/** *Optional*. A user changed their answer in a non-anonymous poll. Bots receive new votes only in polls that were sent by the bot itself.*/
 	pub fn poll_answer(mut self, poll_answer: impl Into<PollAnswer>) -> Self {
 		self.poll_answer = Some(poll_answer.into());
 		self
 	}
-	/***Optional*. New incoming pre-checkout query. Contains full information about checkout*/
+	/** *Optional*. New incoming pre-checkout query. Contains full information about checkout*/
 	pub fn pre_checkout_query(mut self, pre_checkout_query: impl Into<PreCheckoutQuery>) -> Self {
 		self.pre_checkout_query = Some(pre_checkout_query.into());
 		self
 	}
-	/***Optional*. A user purchased paid media with a non-empty payload sent by the bot in a non-channel chat*/
+	/** *Optional*. A user purchased paid media with a non-empty payload sent by the bot in a non-channel chat*/
 	pub fn purchased_paid_media(mut self, purchased_paid_media: impl Into<PaidMediaPurchased>) -> Self {
 		self.purchased_paid_media = Some(purchased_paid_media.into());
 		self
 	}
-	/***Optional*. A boost was removed from a chat. The bot must be an administrator in the chat to receive these updates.*/
+	/** *Optional*. A boost was removed from a chat. The bot must be an administrator in the chat to receive these updates.*/
 	pub fn removed_chat_boost(mut self, removed_chat_boost: impl Into<ChatBoostRemoved>) -> Self {
 		self.removed_chat_boost = Some(removed_chat_boost.into());
 		self
 	}
-	/***Optional*. New incoming shipping query. Only for invoices with flexible price*/
+	/** *Optional*. New incoming shipping query. Only for invoices with flexible price*/
 	pub fn shipping_query(mut self, shipping_query: impl Into<ShippingQuery>) -> Self {
 		self.shipping_query = Some(shipping_query.into());
 		self
@@ -9684,54 +9684,54 @@ impl User {
 			username: None,
 		}
 	}
-	/***Optional*. *True*, if this user added the bot to the attachment menu
+	/** *Optional*. *True*, if this user added the bot to the attachment menu
 	Default value: true*/
 	pub fn added_to_attachment_menu(mut self, added_to_attachment_menu: bool) -> Self {
 		self.added_to_attachment_menu = Some(added_to_attachment_menu);
 		self
 	}
-	/***Optional*. *True*, if the bot can be connected to a Telegram Business account to receive its messages. Returned only in [getMe](https://core.telegram.org/bots/api/#getme).*/
+	/** *Optional*. *True*, if the bot can be connected to a Telegram Business account to receive its messages. Returned only in [getMe](https://core.telegram.org/bots/api/#getme).*/
 	pub fn can_connect_to_business(mut self, can_connect_to_business: bool) -> Self {
 		self.can_connect_to_business = Some(can_connect_to_business);
 		self
 	}
-	/***Optional*. *True*, if the bot can be invited to groups. Returned only in [getMe](https://core.telegram.org/bots/api/#getme).*/
+	/** *Optional*. *True*, if the bot can be invited to groups. Returned only in [getMe](https://core.telegram.org/bots/api/#getme).*/
 	pub fn can_join_groups(mut self, can_join_groups: bool) -> Self {
 		self.can_join_groups = Some(can_join_groups);
 		self
 	}
-	/***Optional*. *True*, if [privacy mode](https://core.telegram.org/bots/features#privacy-mode) is disabled for the bot. Returned only in [getMe](https://core.telegram.org/bots/api/#getme).*/
+	/** *Optional*. *True*, if [privacy mode](https://core.telegram.org/bots/features#privacy-mode) is disabled for the bot. Returned only in [getMe](https://core.telegram.org/bots/api/#getme).*/
 	pub fn can_read_all_group_messages(mut self, can_read_all_group_messages: bool) -> Self {
 		self.can_read_all_group_messages = Some(can_read_all_group_messages);
 		self
 	}
-	/***Optional*. *True*, if the bot has a main Web App. Returned only in [getMe](https://core.telegram.org/bots/api/#getme).*/
+	/** *Optional*. *True*, if the bot has a main Web App. Returned only in [getMe](https://core.telegram.org/bots/api/#getme).*/
 	pub fn has_main_web_app(mut self, has_main_web_app: bool) -> Self {
 		self.has_main_web_app = Some(has_main_web_app);
 		self
 	}
-	/***Optional*. *True*, if this user is a Telegram Premium user
+	/** *Optional*. *True*, if this user is a Telegram Premium user
 	Default value: true*/
 	pub fn is_premium(mut self, is_premium: bool) -> Self {
 		self.is_premium = Some(is_premium);
 		self
 	}
-	/***Optional*. [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag) of the user's language*/
+	/** *Optional*. [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag) of the user's language*/
 	pub fn language_code(mut self, language_code: impl Into<String>) -> Self {
 		self.language_code = Some(language_code.into());
 		self
 	}
-	/***Optional*. User's or bot's last name*/
+	/** *Optional*. User's or bot's last name*/
 	pub fn last_name(mut self, last_name: impl Into<String>) -> Self {
 		self.last_name = Some(last_name.into());
 		self
 	}
-	/***Optional*. *True*, if the bot supports inline queries. Returned only in [getMe](https://core.telegram.org/bots/api/#getme).*/
+	/** *Optional*. *True*, if the bot supports inline queries. Returned only in [getMe](https://core.telegram.org/bots/api/#getme).*/
 	pub fn supports_inline_queries(mut self, supports_inline_queries: bool) -> Self {
 		self.supports_inline_queries = Some(supports_inline_queries);
 		self
 	}
-	/***Optional*. User's or bot's username*/
+	/** *Optional*. User's or bot's username*/
 	pub fn username(mut self, username: impl Into<String>) -> Self {
 		self.username = Some(username.into());
 		self
@@ -9844,22 +9844,22 @@ impl Venue {
 			title: title.into(),
 		}
 	}
-	/***Optional*. Foursquare identifier of the venue*/
+	/** *Optional*. Foursquare identifier of the venue*/
 	pub fn foursquare_id(mut self, foursquare_id: impl Into<String>) -> Self {
 		self.foursquare_id = Some(foursquare_id.into());
 		self
 	}
-	/***Optional*. Foursquare type of the venue. (For example, “arts\_entertainment/default”, “arts\_entertainment/aquarium” or “food/icecream”.)*/
+	/** *Optional*. Foursquare type of the venue. (For example, “arts\_entertainment/default”, “arts\_entertainment/aquarium” or “food/icecream”.)*/
 	pub fn foursquare_type(mut self, foursquare_type: impl Into<String>) -> Self {
 		self.foursquare_type = Some(foursquare_type.into());
 		self
 	}
-	/***Optional*. Google Places identifier of the venue*/
+	/** *Optional*. Google Places identifier of the venue*/
 	pub fn google_place_id(mut self, google_place_id: impl Into<String>) -> Self {
 		self.google_place_id = Some(google_place_id.into());
 		self
 	}
-	/***Optional*. Google Places type of the venue. (See [supported types](https://developers.google.com/places/web-service/supported_types).)*/
+	/** *Optional*. Google Places type of the venue. (See [supported types](https://developers.google.com/places/web-service/supported_types).)*/
 	pub fn google_place_type(mut self, google_place_type: impl Into<String>) -> Self {
 		self.google_place_type = Some(google_place_type.into());
 		self
@@ -9906,22 +9906,22 @@ impl Video {
 			width: width.into(),
 		}
 	}
-	/***Optional*. Original filename as defined by the sender*/
+	/** *Optional*. Original filename as defined by the sender*/
 	pub fn file_name(mut self, file_name: impl Into<String>) -> Self {
 		self.file_name = Some(file_name.into());
 		self
 	}
-	/***Optional*. File size in bytes. It can be bigger than 2^31 and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this value.*/
+	/** *Optional*. File size in bytes. It can be bigger than 2^31 and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this value.*/
 	pub fn file_size(mut self, file_size: impl Into<i64>) -> Self {
 		self.file_size = Some(file_size.into());
 		self
 	}
-	/***Optional*. MIME type of the file as defined by the sender*/
+	/** *Optional*. MIME type of the file as defined by the sender*/
 	pub fn mime_type(mut self, mime_type: impl Into<String>) -> Self {
 		self.mime_type = Some(mime_type.into());
 		self
 	}
-	/***Optional*. Video thumbnail*/
+	/** *Optional*. Video thumbnail*/
 	pub fn thumbnail(mut self, thumbnail: impl Into<PhotoSize>) -> Self {
 		self.thumbnail = Some(thumbnail.into());
 		self
@@ -10015,12 +10015,12 @@ impl VideoNote {
 			thumbnail: None,
 		}
 	}
-	/***Optional*. File size in bytes*/
+	/** *Optional*. File size in bytes*/
 	pub fn file_size(mut self, file_size: impl Into<i64>) -> Self {
 		self.file_size = Some(file_size.into());
 		self
 	}
-	/***Optional*. Video thumbnail*/
+	/** *Optional*. Video thumbnail*/
 	pub fn thumbnail(mut self, thumbnail: impl Into<PhotoSize>) -> Self {
 		self.thumbnail = Some(thumbnail.into());
 		self
@@ -10055,12 +10055,12 @@ impl Voice {
 			mime_type: None,
 		}
 	}
-	/***Optional*. File size in bytes. It can be bigger than 2^31 and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this value.*/
+	/** *Optional*. File size in bytes. It can be bigger than 2^31 and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this value.*/
 	pub fn file_size(mut self, file_size: impl Into<i64>) -> Self {
 		self.file_size = Some(file_size.into());
 		self
 	}
-	/***Optional*. MIME type of the file as defined by the sender*/
+	/** *Optional*. MIME type of the file as defined by the sender*/
 	pub fn mime_type(mut self, mime_type: impl Into<String>) -> Self {
 		self.mime_type = Some(mime_type.into());
 		self
@@ -10145,32 +10145,32 @@ impl WebhookInfo {
 		self.allowed_updates.push(allowed_update.into());
 		self
 	}
-	/***Optional*. A list of update types the bot is subscribed to. Defaults to all update types except *chat\_member**/
+	/** *Optional*. A list of update types the bot is subscribed to. Defaults to all update types except *chat\_member**/
 	pub fn allowed_updates(mut self, allowed_updates: impl Into<Vec<String>>) -> Self {
 		self.allowed_updates = allowed_updates.into();
 		self
 	}
-	/***Optional*. Currently used webhook IP address*/
+	/** *Optional*. Currently used webhook IP address*/
 	pub fn ip_address(mut self, ip_address: impl Into<String>) -> Self {
 		self.ip_address = Some(ip_address.into());
 		self
 	}
-	/***Optional*. Unix time for the most recent error that happened when trying to deliver an update via webhook*/
+	/** *Optional*. Unix time for the most recent error that happened when trying to deliver an update via webhook*/
 	pub fn last_error_date(mut self, last_error_date: impl Into<i64>) -> Self {
 		self.last_error_date = Some(last_error_date.into());
 		self
 	}
-	/***Optional*. Error message in human-readable format for the most recent error that happened when trying to deliver an update via webhook*/
+	/** *Optional*. Error message in human-readable format for the most recent error that happened when trying to deliver an update via webhook*/
 	pub fn last_error_message(mut self, last_error_message: impl Into<String>) -> Self {
 		self.last_error_message = Some(last_error_message.into());
 		self
 	}
-	/***Optional*. Unix time of the most recent error that happened when trying to synchronize available updates with Telegram datacenters*/
+	/** *Optional*. Unix time of the most recent error that happened when trying to synchronize available updates with Telegram datacenters*/
 	pub fn last_synchronization_error_date(mut self, last_synchronization_error_date: impl Into<i64>) -> Self {
 		self.last_synchronization_error_date = Some(last_synchronization_error_date.into());
 		self
 	}
-	/***Optional*. The maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery*/
+	/** *Optional*. The maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery*/
 	pub fn max_connections(mut self, max_connections: impl Into<i64>) -> Self {
 		self.max_connections = Some(max_connections.into());
 		self
@@ -10199,17 +10199,17 @@ impl WriteAccessAllowed {
 			web_app_name: None,
 		}
 	}
-	/***Optional*. True, if the access was granted when the bot was added to the attachment or side menu*/
+	/** *Optional*. True, if the access was granted when the bot was added to the attachment or side menu*/
 	pub fn from_attachment_menu(mut self, from_attachment_menu: bool) -> Self {
 		self.from_attachment_menu = Some(from_attachment_menu);
 		self
 	}
-	/***Optional*. True, if the access was granted after the user accepted an explicit request from a Web App sent by the method [requestWriteAccess](https://core.telegram.org/bots/webapps#initializing-mini-apps)*/
+	/** *Optional*. True, if the access was granted after the user accepted an explicit request from a Web App sent by the method [requestWriteAccess](https://core.telegram.org/bots/webapps#initializing-mini-apps)*/
 	pub fn from_request(mut self, from_request: bool) -> Self {
 		self.from_request = Some(from_request);
 		self
 	}
-	/***Optional*. Name of the Web App, if the access was granted when the Web App was launched from a link*/
+	/** *Optional*. Name of the Web App, if the access was granted when the Web App was launched from a link*/
 	pub fn web_app_name(mut self, web_app_name: impl Into<String>) -> Self {
 		self.web_app_name = Some(web_app_name.into());
 		self
@@ -10242,7 +10242,7 @@ impl Executable for AddStickerToSet {
 	fn into_parts(self) -> FormParts {
 		let mut parts = FormParts::new(3);
 		parts.add_string("name", self.name);
-		parts.add_object("sticker", self.sticker);
+		parts.add_attachable("sticker", self.sticker);
 		parts.add_i64("user_id", self.user_id);
 		parts
 	}
@@ -10277,22 +10277,22 @@ impl AnswerCallbackQuery {
 			url: None,
 		}
 	}
-	/**The maximum amount of time in seconds that the result of the callback query may be cached client-side. Telegram apps will support caching starting in version 3.14. Defaults to 0.*/
+	/** The maximum amount of time in seconds that the result of the callback query may be cached client-side. Telegram apps will support caching starting in version 3.14. Defaults to 0.*/
 	pub fn cache_time(mut self, cache_time: impl Into<i64>) -> Self {
 		self.cache_time = Some(cache_time.into());
 		self
 	}
-	/**If *True*, an alert will be shown by the client instead of a notification at the top of the chat screen. Defaults to *false*.*/
+	/** If *True*, an alert will be shown by the client instead of a notification at the top of the chat screen. Defaults to *false*.*/
 	pub fn show_alert(mut self, show_alert: bool) -> Self {
 		self.show_alert = Some(show_alert);
 		self
 	}
-	/**Text of the notification. If not specified, nothing will be shown to the user, 0-200 characters*/
+	/** Text of the notification. If not specified, nothing will be shown to the user, 0-200 characters*/
 	pub fn text(mut self, text: impl Into<String>) -> Self {
 		self.text = Some(text.into());
 		self
 	}
-	/**URL that will be opened by the user's client. If you have created a [Game](https://core.telegram.org/bots/api/#game) and accepted the conditions via [@BotFather](https://t.me/botfather), specify the URL that opens your game - note that this will only work if the query comes from a [*callback\_game*](https://core.telegram.org/bots/api/#inlinekeyboardbutton) button.  
+	/** URL that will be opened by the user's client. If you have created a [Game](https://core.telegram.org/bots/api/#game) and accepted the conditions via [@BotFather](https://t.me/botfather), specify the URL that opens your game - note that this will only work if the query comes from a [*callback\_game*](https://core.telegram.org/bots/api/#inlinekeyboardbutton) button.  
 
 	Otherwise, you may use links like `t.me/your_bot?start=XXXX` that open your bot with a parameter.*/
 	pub fn url(mut self, url: impl Into<String>) -> Self {
@@ -10343,22 +10343,22 @@ impl AnswerInlineQuery {
 			results: results.into(),
 		}
 	}
-	/**A JSON-serialized object describing a button to be shown above inline query results*/
+	/** A JSON-serialized object describing a button to be shown above inline query results*/
 	pub fn button(mut self, button: impl Into<InlineQueryResultsButton>) -> Self {
 		self.button = Some(button.into());
 		self
 	}
-	/**The maximum amount of time in seconds that the result of the inline query may be cached on the server. Defaults to 300.*/
+	/** The maximum amount of time in seconds that the result of the inline query may be cached on the server. Defaults to 300.*/
 	pub fn cache_time(mut self, cache_time: impl Into<i64>) -> Self {
 		self.cache_time = Some(cache_time.into());
 		self
 	}
-	/**Pass *True* if results may be cached on the server side only for the user that sent the query. By default, results may be returned to any user who sends the same query.*/
+	/** Pass *True* if results may be cached on the server side only for the user that sent the query. By default, results may be returned to any user who sends the same query.*/
 	pub fn is_personal(mut self, is_personal: bool) -> Self {
 		self.is_personal = Some(is_personal);
 		self
 	}
-	/**Pass the offset that a client should send in the next query with the same text to receive more results. Pass an empty string if there are no more results or if you don't support pagination. Offset length can't exceed 64 bytes.*/
+	/** Pass the offset that a client should send in the next query with the same text to receive more results. Pass an empty string if there are no more results or if you don't support pagination. Offset length can't exceed 64 bytes.*/
 	pub fn next_offset(mut self, next_offset: impl Into<String>) -> Self {
 		self.next_offset = Some(next_offset.into());
 		self
@@ -10402,7 +10402,7 @@ impl AnswerPreCheckoutQuery {
 			pre_checkout_query_id: pre_checkout_query_id.into(),
 		}
 	}
-	/**Required if *ok* is *False*. Error message in human readable form that explains the reason for failure to proceed with the checkout (e.g. "Sorry, somebody just bought the last of our amazing black T-shirts while you were busy filling out your payment details. Please choose a different color or garment!"). Telegram will display this message to the user.*/
+	/** Required if *ok* is *False*. Error message in human readable form that explains the reason for failure to proceed with the checkout (e.g. "Sorry, somebody just bought the last of our amazing black T-shirts while you were busy filling out your payment details. Please choose a different color or garment!"). Telegram will display this message to the user.*/
 	pub fn error_message(mut self, error_message: impl Into<String>) -> Self {
 		self.error_message = Some(error_message.into());
 		self
@@ -10442,7 +10442,7 @@ impl AnswerShippingQuery {
 			shipping_query_id: shipping_query_id.into(),
 		}
 	}
-	/**Required if *ok* is *False*. Error message in human readable form that explains why it is impossible to complete the order (e.g. “Sorry, delivery to your desired address is unavailable”). Telegram will display this message to the user.*/
+	/** Required if *ok* is *False*. Error message in human readable form that explains why it is impossible to complete the order (e.g. “Sorry, delivery to your desired address is unavailable”). Telegram will display this message to the user.*/
 	pub fn error_message(mut self, error_message: impl Into<String>) -> Self {
 		self.error_message = Some(error_message.into());
 		self
@@ -10451,7 +10451,7 @@ impl AnswerShippingQuery {
 		self.shipping_options.push(shipping_option.into());
 		self
 	}
-	/**Required if *ok* is *True*. A JSON-serialized array of available shipping options.*/
+	/** Required if *ok* is *True*. A JSON-serialized array of available shipping options.*/
 	pub fn shipping_options(mut self, shipping_options: impl Into<Vec<ShippingOption>>) -> Self {
 		self.shipping_options = shipping_options.into();
 		self
@@ -10548,12 +10548,12 @@ impl BanChatMember {
 			user_id: user_id.into(),
 		}
 	}
-	/**Pass *True* to delete all messages from the chat for the user that is being removed. If *False*, the user will be able to see messages in the group that were sent before the user was removed. Always *True* for supergroups and channels.*/
+	/** Pass *True* to delete all messages from the chat for the user that is being removed. If *False*, the user will be able to see messages in the group that were sent before the user was removed. Always *True* for supergroups and channels.*/
 	pub fn revoke_messages(mut self, revoke_messages: bool) -> Self {
 		self.revoke_messages = Some(revoke_messages);
 		self
 	}
-	/**Date when the user will be unbanned; Unix time. If user is banned for more than 366 days or less than 30 seconds from the current time they are considered to be banned forever. Applied for supergroups and channels only.*/
+	/** Date when the user will be unbanned; Unix time. If user is banned for more than 366 days or less than 30 seconds from the current time they are considered to be banned forever. Applied for supergroups and channels only.*/
 	pub fn until_date(mut self, until_date: impl Into<i64>) -> Self {
 		self.until_date = Some(until_date.into());
 		self
@@ -10720,12 +10720,12 @@ impl CopyMessage {
 			show_caption_above_media: None,
 		}
 	}
-	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
+	/** Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub fn allow_paid_broadcast(mut self, allow_paid_broadcast: bool) -> Self {
 		self.allow_paid_broadcast = Some(allow_paid_broadcast);
 		self
 	}
-	/**New caption for media, 0-1024 characters after entities parsing. If not specified, the original caption is kept*/
+	/** New caption for media, 0-1024 characters after entities parsing. If not specified, the original caption is kept*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
 		self.caption = Some(caption.into());
 		self
@@ -10734,42 +10734,42 @@ impl CopyMessage {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/**A JSON-serialized list of special entities that appear in the new caption, which can be specified instead of *parse\_mode**/
+	/** A JSON-serialized list of special entities that appear in the new caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/**Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
+	/** Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
 	pub fn disable_notification(mut self, disable_notification: bool) -> Self {
 		self.disable_notification = Some(disable_notification);
 		self
 	}
-	/**Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
+	/** Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
 	pub fn message_thread_id(mut self, message_thread_id: impl Into<i64>) -> Self {
 		self.message_thread_id = Some(message_thread_id.into());
 		self
 	}
-	/**Mode for parsing entities in the new caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** Mode for parsing entities in the new caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/**Protects the contents of the sent message from forwarding and saving*/
+	/** Protects the contents of the sent message from forwarding and saving*/
 	pub fn protect_content(mut self, protect_content: bool) -> Self {
 		self.protect_content = Some(protect_content);
 		self
 	}
-	/**Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
+	/** Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<ReplyMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/**Description of the message to reply to*/
+	/** Description of the message to reply to*/
 	pub fn reply_parameters(mut self, reply_parameters: impl Into<ReplyParameters>) -> Self {
 		self.reply_parameters = Some(reply_parameters.into());
 		self
 	}
-	/**Pass *True*, if the caption must be shown above the message media. Ignored if a new caption isn't specified.*/
+	/** Pass *True*, if the caption must be shown above the message media. Ignored if a new caption isn't specified.*/
 	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
 		self.show_caption_above_media = Some(show_caption_above_media);
 		self
@@ -10828,7 +10828,7 @@ impl CopyMessages {
 			remove_caption: None,
 		}
 	}
-	/**Sends the messages [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
+	/** Sends the messages [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
 	pub fn disable_notification(mut self, disable_notification: bool) -> Self {
 		self.disable_notification = Some(disable_notification);
 		self
@@ -10837,17 +10837,17 @@ impl CopyMessages {
 		self.message_ids.push(message_id.into());
 		self
 	}
-	/**Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
+	/** Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
 	pub fn message_thread_id(mut self, message_thread_id: impl Into<i64>) -> Self {
 		self.message_thread_id = Some(message_thread_id.into());
 		self
 	}
-	/**Protects the contents of the sent messages from forwarding and saving*/
+	/** Protects the contents of the sent messages from forwarding and saving*/
 	pub fn protect_content(mut self, protect_content: bool) -> Self {
 		self.protect_content = Some(protect_content);
 		self
 	}
-	/**Pass *True* to copy the messages without their captions*/
+	/** Pass *True* to copy the messages without their captions*/
 	pub fn remove_caption(mut self, remove_caption: bool) -> Self {
 		self.remove_caption = Some(remove_caption);
 		self
@@ -10894,22 +10894,22 @@ impl CreateChatInviteLink {
 			name: None,
 		}
 	}
-	/***True*, if users joining the chat via the link need to be approved by chat administrators. If *True*, *member\_limit* can't be specified*/
+	/** *True*, if users joining the chat via the link need to be approved by chat administrators. If *True*, *member\_limit* can't be specified*/
 	pub fn creates_join_request(mut self, creates_join_request: bool) -> Self {
 		self.creates_join_request = Some(creates_join_request);
 		self
 	}
-	/**Point in time (Unix timestamp) when the link will expire*/
+	/** Point in time (Unix timestamp) when the link will expire*/
 	pub fn expire_date(mut self, expire_date: impl Into<i64>) -> Self {
 		self.expire_date = Some(expire_date.into());
 		self
 	}
-	/**The maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999*/
+	/** The maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999*/
 	pub fn member_limit(mut self, member_limit: impl Into<i64>) -> Self {
 		self.member_limit = Some(member_limit.into());
 		self
 	}
-	/**Invite link name; 0-32 characters*/
+	/** Invite link name; 0-32 characters*/
 	pub fn name(mut self, name: impl Into<String>) -> Self {
 		self.name = Some(name.into());
 		self
@@ -10951,7 +10951,7 @@ impl CreateChatSubscriptionInviteLink {
 			subscription_price: subscription_price.into(),
 		}
 	}
-	/**Invite link name; 0-32 characters*/
+	/** Invite link name; 0-32 characters*/
 	pub fn name(mut self, name: impl Into<String>) -> Self {
 		self.name = Some(name.into());
 		self
@@ -10992,12 +10992,12 @@ impl CreateForumTopic {
 			name: name.into(),
 		}
 	}
-	/**Color of the topic icon in RGB format. Currently, must be one of 7322096 (0x6FB9F0), 16766590 (0xFFD67E), 13338331 (0xCB86DB), 9367192 (0x8EEE98), 16749490 (0xFF93B2), or 16478047 (0xFB6F5F)*/
+	/** Color of the topic icon in RGB format. Currently, must be one of 7322096 (0x6FB9F0), 16766590 (0xFFD67E), 13338331 (0xCB86DB), 9367192 (0x8EEE98), 16749490 (0xFF93B2), or 16478047 (0xFB6F5F)*/
 	pub fn icon_color(mut self, icon_color: impl Into<i64>) -> Self {
 		self.icon_color = Some(icon_color.into());
 		self
 	}
-	/**Unique identifier of the custom emoji shown as the topic icon. Use [getForumTopicIconStickers](https://core.telegram.org/bots/api/#getforumtopiciconstickers) to get all allowed custom emoji identifiers.*/
+	/** Unique identifier of the custom emoji shown as the topic icon. Use [getForumTopicIconStickers](https://core.telegram.org/bots/api/#getforumtopiciconstickers) to get all allowed custom emoji identifiers.*/
 	pub fn icon_custom_emoji_id(mut self, icon_custom_emoji_id: impl Into<String>) -> Self {
 		self.icon_custom_emoji_id = Some(icon_custom_emoji_id.into());
 		self
@@ -11092,57 +11092,57 @@ impl CreateInvoiceLink {
 			title: title.into(),
 		}
 	}
-	/**Unique identifier of the business connection on behalf of which the link will be created. For payments in [Telegram Stars](https://t.me/BotNews/90) only.*/
+	/** Unique identifier of the business connection on behalf of which the link will be created. For payments in [Telegram Stars](https://t.me/BotNews/90) only.*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**Pass *True* if the final price depends on the shipping method. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
+	/** Pass *True* if the final price depends on the shipping method. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub fn is_flexible(mut self, is_flexible: bool) -> Self {
 		self.is_flexible = Some(is_flexible);
 		self
 	}
-	/**The maximum accepted amount for tips in the *smallest units* of the currency (integer, **not** float/double). For example, for a maximum tip of `US$ 1.45` pass `max_tip_amount = 145`. See the *exp* parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0. Not supported for payments in [Telegram Stars](https://t.me/BotNews/90).*/
+	/** The maximum accepted amount for tips in the *smallest units* of the currency (integer, **not** float/double). For example, for a maximum tip of `US$ 1.45` pass `max_tip_amount = 145`. See the *exp* parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0. Not supported for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub fn max_tip_amount(mut self, max_tip_amount: impl Into<i64>) -> Self {
 		self.max_tip_amount = Some(max_tip_amount.into());
 		self
 	}
-	/**Pass *True* if you require the user's email address to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
+	/** Pass *True* if you require the user's email address to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub fn need_email(mut self, need_email: bool) -> Self {
 		self.need_email = Some(need_email);
 		self
 	}
-	/**Pass *True* if you require the user's full name to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
+	/** Pass *True* if you require the user's full name to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub fn need_name(mut self, need_name: bool) -> Self {
 		self.need_name = Some(need_name);
 		self
 	}
-	/**Pass *True* if you require the user's phone number to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
+	/** Pass *True* if you require the user's phone number to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub fn need_phone_number(mut self, need_phone_number: bool) -> Self {
 		self.need_phone_number = Some(need_phone_number);
 		self
 	}
-	/**Pass *True* if you require the user's shipping address to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
+	/** Pass *True* if you require the user's shipping address to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub fn need_shipping_address(mut self, need_shipping_address: bool) -> Self {
 		self.need_shipping_address = Some(need_shipping_address);
 		self
 	}
-	/**Photo height*/
+	/** Photo height*/
 	pub fn photo_height(mut self, photo_height: impl Into<i64>) -> Self {
 		self.photo_height = Some(photo_height.into());
 		self
 	}
-	/**Photo size in bytes*/
+	/** Photo size in bytes*/
 	pub fn photo_size(mut self, photo_size: impl Into<i64>) -> Self {
 		self.photo_size = Some(photo_size.into());
 		self
 	}
-	/**URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service.*/
+	/** URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service.*/
 	pub fn photo_url(mut self, photo_url: impl Into<String>) -> Self {
 		self.photo_url = Some(photo_url.into());
 		self
 	}
-	/**Photo width*/
+	/** Photo width*/
 	pub fn photo_width(mut self, photo_width: impl Into<i64>) -> Self {
 		self.photo_width = Some(photo_width.into());
 		self
@@ -11151,27 +11151,27 @@ impl CreateInvoiceLink {
 		self.prices.push(price.into());
 		self
 	}
-	/**JSON-serialized data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider.*/
+	/** JSON-serialized data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider.*/
 	pub fn provider_data(mut self, provider_data: impl Into<String>) -> Self {
 		self.provider_data = Some(provider_data.into());
 		self
 	}
-	/**Payment provider token, obtained via [@BotFather](https://t.me/botfather). Pass an empty string for payments in [Telegram Stars](https://t.me/BotNews/90).*/
+	/** Payment provider token, obtained via [@BotFather](https://t.me/botfather). Pass an empty string for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub fn provider_token(mut self, provider_token: impl Into<String>) -> Self {
 		self.provider_token = Some(provider_token.into());
 		self
 	}
-	/**Pass *True* if the user's email address should be sent to the provider. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
+	/** Pass *True* if the user's email address should be sent to the provider. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub fn send_email_to_provider(mut self, send_email_to_provider: bool) -> Self {
 		self.send_email_to_provider = Some(send_email_to_provider);
 		self
 	}
-	/**Pass *True* if the user's phone number should be sent to the provider. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
+	/** Pass *True* if the user's phone number should be sent to the provider. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub fn send_phone_number_to_provider(mut self, send_phone_number_to_provider: bool) -> Self {
 		self.send_phone_number_to_provider = Some(send_phone_number_to_provider);
 		self
 	}
-	/**The number of seconds the subscription will be active for before the next payment. The currency must be set to “XTR” (Telegram Stars) if the parameter is used. Currently, it must always be 2592000 (30 days) if specified. Any number of subscriptions can be active for a given bot at the same time, including multiple concurrent subscriptions from the same user. Subscription price must no exceed 2500 Telegram Stars.*/
+	/** The number of seconds the subscription will be active for before the next payment. The currency must be set to “XTR” (Telegram Stars) if the parameter is used. Currently, it must always be 2592000 (30 days) if specified. Any number of subscriptions can be active for a given bot at the same time, including multiple concurrent subscriptions from the same user. Subscription price must no exceed 2500 Telegram Stars.*/
 	pub fn subscription_period(mut self, subscription_period: impl Into<i64>) -> Self {
 		self.subscription_period = Some(subscription_period.into());
 		self
@@ -11180,7 +11180,7 @@ impl CreateInvoiceLink {
 		self.suggested_tip_amounts.push(suggested_tip_amount.into());
 		self
 	}
-	/**A JSON-serialized array of suggested amounts of tips in the *smallest units* of the currency (integer, **not** float/double). At most 4 suggested tip amounts can be specified. The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed *max\_tip\_amount*.*/
+	/** A JSON-serialized array of suggested amounts of tips in the *smallest units* of the currency (integer, **not** float/double). At most 4 suggested tip amounts can be specified. The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed *max\_tip\_amount*.*/
 	pub fn suggested_tip_amounts(mut self, suggested_tip_amounts: impl Into<Vec<i64>>) -> Self {
 		self.suggested_tip_amounts = suggested_tip_amounts.into();
 		self
@@ -11245,12 +11245,12 @@ impl CreateNewStickerSet {
 			user_id: user_id.into(),
 		}
 	}
-	/**Pass *True* if stickers in the sticker set must be repainted to the color of text when used in messages, the accent color if used as emoji status, white on chat photos, or another appropriate color based on context; for custom emoji sticker sets only*/
+	/** Pass *True* if stickers in the sticker set must be repainted to the color of text when used in messages, the accent color if used as emoji status, white on chat photos, or another appropriate color based on context; for custom emoji sticker sets only*/
 	pub fn needs_repainting(mut self, needs_repainting: bool) -> Self {
 		self.needs_repainting = Some(needs_repainting);
 		self
 	}
-	/**Type of stickers in the set, pass “regular”, “mask”, or “custom\_emoji”. By default, a regular sticker set is created.*/
+	/** Type of stickers in the set, pass “regular”, “mask”, or “custom\_emoji”. By default, a regular sticker set is created.*/
 	pub fn sticker_type(mut self, sticker_type: impl Into<String>) -> Self {
 		self.sticker_type = Some(sticker_type.into());
 		self
@@ -11464,12 +11464,12 @@ impl DeleteMyCommands {
 			scope: None,
 		}
 	}
-	/**A two-letter ISO 639-1 language code. If empty, commands will be applied to all users from the given scope, for whose language there are no dedicated commands*/
+	/** A two-letter ISO 639-1 language code. If empty, commands will be applied to all users from the given scope, for whose language there are no dedicated commands*/
 	pub fn language_code(mut self, language_code: impl Into<String>) -> Self {
 		self.language_code = Some(language_code.into());
 		self
 	}
-	/**A JSON-serialized object, describing scope of users for which the commands are relevant. Defaults to [BotCommandScopeDefault](https://core.telegram.org/bots/api/#botcommandscopedefault).*/
+	/** A JSON-serialized object, describing scope of users for which the commands are relevant. Defaults to [BotCommandScopeDefault](https://core.telegram.org/bots/api/#botcommandscopedefault).*/
 	pub fn scope(mut self, scope: impl Into<BotCommandScope>) -> Self {
 		self.scope = Some(scope.into());
 		self
@@ -11547,7 +11547,7 @@ impl DeleteWebhook {
 			drop_pending_updates: None,
 		}
 	}
-	/**Pass *True* to drop all pending updates*/
+	/** Pass *True* to drop all pending updates*/
 	pub fn drop_pending_updates(mut self, drop_pending_updates: bool) -> Self {
 		self.drop_pending_updates = Some(drop_pending_updates);
 		self
@@ -11591,22 +11591,22 @@ impl EditChatInviteLink {
 			name: None,
 		}
 	}
-	/***True*, if users joining the chat via the link need to be approved by chat administrators. If *True*, *member\_limit* can't be specified*/
+	/** *True*, if users joining the chat via the link need to be approved by chat administrators. If *True*, *member\_limit* can't be specified*/
 	pub fn creates_join_request(mut self, creates_join_request: bool) -> Self {
 		self.creates_join_request = Some(creates_join_request);
 		self
 	}
-	/**Point in time (Unix timestamp) when the link will expire*/
+	/** Point in time (Unix timestamp) when the link will expire*/
 	pub fn expire_date(mut self, expire_date: impl Into<i64>) -> Self {
 		self.expire_date = Some(expire_date.into());
 		self
 	}
-	/**The maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999*/
+	/** The maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999*/
 	pub fn member_limit(mut self, member_limit: impl Into<i64>) -> Self {
 		self.member_limit = Some(member_limit.into());
 		self
 	}
-	/**Invite link name; 0-32 characters*/
+	/** Invite link name; 0-32 characters*/
 	pub fn name(mut self, name: impl Into<String>) -> Self {
 		self.name = Some(name.into());
 		self
@@ -11646,7 +11646,7 @@ impl EditChatSubscriptionInviteLink {
 			name: None,
 		}
 	}
-	/**Invite link name; 0-32 characters*/
+	/** Invite link name; 0-32 characters*/
 	pub fn name(mut self, name: impl Into<String>) -> Self {
 		self.name = Some(name.into());
 		self
@@ -11686,12 +11686,12 @@ impl EditForumTopic {
 			name: None,
 		}
 	}
-	/**New unique identifier of the custom emoji shown as the topic icon. Use [getForumTopicIconStickers](https://core.telegram.org/bots/api/#getforumtopiciconstickers) to get all allowed custom emoji identifiers. Pass an empty string to remove the icon. If not specified, the current icon will be kept*/
+	/** New unique identifier of the custom emoji shown as the topic icon. Use [getForumTopicIconStickers](https://core.telegram.org/bots/api/#getforumtopiciconstickers) to get all allowed custom emoji identifiers. Pass an empty string to remove the icon. If not specified, the current icon will be kept*/
 	pub fn icon_custom_emoji_id(mut self, icon_custom_emoji_id: impl Into<String>) -> Self {
 		self.icon_custom_emoji_id = Some(icon_custom_emoji_id.into());
 		self
 	}
-	/**New topic name, 0-128 characters. If not specified or empty, the current name of the topic will be kept*/
+	/** New topic name, 0-128 characters. If not specified or empty, the current name of the topic will be kept*/
 	pub fn name(mut self, name: impl Into<String>) -> Self {
 		self.name = Some(name.into());
 		self
@@ -11775,12 +11775,12 @@ impl EditMessageCaption {
 			show_caption_above_media: None,
 		}
 	}
-	/**Unique identifier of the business connection on behalf of which the message to be edited was sent*/
+	/** Unique identifier of the business connection on behalf of which the message to be edited was sent*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**New caption of the message, 0-1024 characters after entities parsing*/
+	/** New caption of the message, 0-1024 characters after entities parsing*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
 		self.caption = Some(caption.into());
 		self
@@ -11789,37 +11789,37 @@ impl EditMessageCaption {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/**A JSON-serialized list of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** A JSON-serialized list of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/**Required if *inline\_message\_id* is not specified. Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
+	/** Required if *inline\_message\_id* is not specified. Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub fn chat_id(mut self, chat_id: impl Into<ChatId>) -> Self {
 		self.chat_id = Some(chat_id.into());
 		self
 	}
-	/**Required if *chat\_id* and *message\_id* are not specified. Identifier of the inline message*/
+	/** Required if *chat\_id* and *message\_id* are not specified. Identifier of the inline message*/
 	pub fn inline_message_id(mut self, inline_message_id: impl Into<String>) -> Self {
 		self.inline_message_id = Some(inline_message_id.into());
 		self
 	}
-	/**Required if *inline\_message\_id* is not specified. Identifier of the message to edit*/
+	/** Required if *inline\_message\_id* is not specified. Identifier of the message to edit*/
 	pub fn message_id(mut self, message_id: impl Into<i64>) -> Self {
 		self.message_id = Some(message_id.into());
 		self
 	}
-	/**Mode for parsing entities in the message caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** Mode for parsing entities in the message caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/**A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards).*/
+	/** A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards).*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/**Pass *True*, if the caption must be shown above the message media. Supported only for animation, photo and video messages.*/
+	/** Pass *True*, if the caption must be shown above the message media. Supported only for animation, photo and video messages.*/
 	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
 		self.show_caption_above_media = Some(show_caption_above_media);
 		self
@@ -11886,47 +11886,47 @@ impl EditMessageLiveLocation {
 			reply_markup: None,
 		}
 	}
-	/**Unique identifier of the business connection on behalf of which the message to be edited was sent*/
+	/** Unique identifier of the business connection on behalf of which the message to be edited was sent*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**Required if *inline\_message\_id* is not specified. Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
+	/** Required if *inline\_message\_id* is not specified. Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub fn chat_id(mut self, chat_id: impl Into<ChatId>) -> Self {
 		self.chat_id = Some(chat_id.into());
 		self
 	}
-	/**Direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.*/
+	/** Direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.*/
 	pub fn heading(mut self, heading: impl Into<i64>) -> Self {
 		self.heading = Some(heading.into());
 		self
 	}
-	/**The radius of uncertainty for the location, measured in meters; 0-1500*/
+	/** The radius of uncertainty for the location, measured in meters; 0-1500*/
 	pub fn horizontal_accuracy(mut self, horizontal_accuracy: impl Into<f32>) -> Self {
 		self.horizontal_accuracy = Some(horizontal_accuracy.into());
 		self
 	}
-	/**Required if *chat\_id* and *message\_id* are not specified. Identifier of the inline message*/
+	/** Required if *chat\_id* and *message\_id* are not specified. Identifier of the inline message*/
 	pub fn inline_message_id(mut self, inline_message_id: impl Into<String>) -> Self {
 		self.inline_message_id = Some(inline_message_id.into());
 		self
 	}
-	/**New period in seconds during which the location can be updated, starting from the message send date. If 0x7FFFFFFF is specified, then the location can be updated forever. Otherwise, the new value must not exceed the current *live\_period* by more than a day, and the live location expiration date must remain within the next 90 days. If not specified, then *live\_period* remains unchanged*/
+	/** New period in seconds during which the location can be updated, starting from the message send date. If 0x7FFFFFFF is specified, then the location can be updated forever. Otherwise, the new value must not exceed the current *live\_period* by more than a day, and the live location expiration date must remain within the next 90 days. If not specified, then *live\_period* remains unchanged*/
 	pub fn live_period(mut self, live_period: impl Into<i64>) -> Self {
 		self.live_period = Some(live_period.into());
 		self
 	}
-	/**Required if *inline\_message\_id* is not specified. Identifier of the message to edit*/
+	/** Required if *inline\_message\_id* is not specified. Identifier of the message to edit*/
 	pub fn message_id(mut self, message_id: impl Into<i64>) -> Self {
 		self.message_id = Some(message_id.into());
 		self
 	}
-	/**The maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.*/
+	/** The maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.*/
 	pub fn proximity_alert_radius(mut self, proximity_alert_radius: impl Into<i64>) -> Self {
 		self.proximity_alert_radius = Some(proximity_alert_radius.into());
 		self
 	}
-	/**A JSON-serialized object for a new [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards).*/
+	/** A JSON-serialized object for a new [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards).*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
@@ -11980,27 +11980,27 @@ impl EditMessageMedia {
 			reply_markup: None,
 		}
 	}
-	/**Unique identifier of the business connection on behalf of which the message to be edited was sent*/
+	/** Unique identifier of the business connection on behalf of which the message to be edited was sent*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**Required if *inline\_message\_id* is not specified. Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
+	/** Required if *inline\_message\_id* is not specified. Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub fn chat_id(mut self, chat_id: impl Into<ChatId>) -> Self {
 		self.chat_id = Some(chat_id.into());
 		self
 	}
-	/**Required if *chat\_id* and *message\_id* are not specified. Identifier of the inline message*/
+	/** Required if *chat\_id* and *message\_id* are not specified. Identifier of the inline message*/
 	pub fn inline_message_id(mut self, inline_message_id: impl Into<String>) -> Self {
 		self.inline_message_id = Some(inline_message_id.into());
 		self
 	}
-	/**Required if *inline\_message\_id* is not specified. Identifier of the message to edit*/
+	/** Required if *inline\_message\_id* is not specified. Identifier of the message to edit*/
 	pub fn message_id(mut self, message_id: impl Into<i64>) -> Self {
 		self.message_id = Some(message_id.into());
 		self
 	}
-	/**A JSON-serialized object for a new [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards).*/
+	/** A JSON-serialized object for a new [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards).*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
@@ -12014,7 +12014,7 @@ impl Executable for EditMessageMedia {
 		parts.add_string("business_connection_id", self.business_connection_id);
 		parts.add_string("chat_id", self.chat_id.map(|x| x.to_string()));
 		parts.add_string("inline_message_id", self.inline_message_id);
-		parts.add_object("media", self.media);
+		parts.add_attachable("media", self.media);
 		parts.add_i64("message_id", self.message_id);
 		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
 		parts
@@ -12046,27 +12046,27 @@ impl EditMessageReplyMarkup {
 			reply_markup: None,
 		}
 	}
-	/**Unique identifier of the business connection on behalf of which the message to be edited was sent*/
+	/** Unique identifier of the business connection on behalf of which the message to be edited was sent*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**Required if *inline\_message\_id* is not specified. Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
+	/** Required if *inline\_message\_id* is not specified. Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub fn chat_id(mut self, chat_id: impl Into<ChatId>) -> Self {
 		self.chat_id = Some(chat_id.into());
 		self
 	}
-	/**Required if *chat\_id* and *message\_id* are not specified. Identifier of the inline message*/
+	/** Required if *chat\_id* and *message\_id* are not specified. Identifier of the inline message*/
 	pub fn inline_message_id(mut self, inline_message_id: impl Into<String>) -> Self {
 		self.inline_message_id = Some(inline_message_id.into());
 		self
 	}
-	/**Required if *inline\_message\_id* is not specified. Identifier of the message to edit*/
+	/** Required if *inline\_message\_id* is not specified. Identifier of the message to edit*/
 	pub fn message_id(mut self, message_id: impl Into<i64>) -> Self {
 		self.message_id = Some(message_id.into());
 		self
 	}
-	/**A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards).*/
+	/** A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards).*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
@@ -12123,12 +12123,12 @@ impl EditMessageText {
 			text: text.into(),
 		}
 	}
-	/**Unique identifier of the business connection on behalf of which the message to be edited was sent*/
+	/** Unique identifier of the business connection on behalf of which the message to be edited was sent*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**Required if *inline\_message\_id* is not specified. Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
+	/** Required if *inline\_message\_id* is not specified. Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub fn chat_id(mut self, chat_id: impl Into<ChatId>) -> Self {
 		self.chat_id = Some(chat_id.into());
 		self
@@ -12137,32 +12137,32 @@ impl EditMessageText {
 		self.entities.push(entity.into());
 		self
 	}
-	/**A JSON-serialized list of special entities that appear in message text, which can be specified instead of *parse\_mode**/
+	/** A JSON-serialized list of special entities that appear in message text, which can be specified instead of *parse\_mode**/
 	pub fn entities(mut self, entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.entities = entities.into();
 		self
 	}
-	/**Required if *chat\_id* and *message\_id* are not specified. Identifier of the inline message*/
+	/** Required if *chat\_id* and *message\_id* are not specified. Identifier of the inline message*/
 	pub fn inline_message_id(mut self, inline_message_id: impl Into<String>) -> Self {
 		self.inline_message_id = Some(inline_message_id.into());
 		self
 	}
-	/**Link preview generation options for the message*/
+	/** Link preview generation options for the message*/
 	pub fn link_preview_options(mut self, link_preview_options: impl Into<LinkPreviewOptions>) -> Self {
 		self.link_preview_options = Some(link_preview_options.into());
 		self
 	}
-	/**Required if *inline\_message\_id* is not specified. Identifier of the message to edit*/
+	/** Required if *inline\_message\_id* is not specified. Identifier of the message to edit*/
 	pub fn message_id(mut self, message_id: impl Into<i64>) -> Self {
 		self.message_id = Some(message_id.into());
 		self
 	}
-	/**Mode for parsing entities in the message text. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** Mode for parsing entities in the message text. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/**A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards).*/
+	/** A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards).*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
@@ -12270,17 +12270,17 @@ impl ForwardMessage {
 			protect_content: None,
 		}
 	}
-	/**Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
+	/** Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
 	pub fn disable_notification(mut self, disable_notification: bool) -> Self {
 		self.disable_notification = Some(disable_notification);
 		self
 	}
-	/**Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
+	/** Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
 	pub fn message_thread_id(mut self, message_thread_id: impl Into<i64>) -> Self {
 		self.message_thread_id = Some(message_thread_id.into());
 		self
 	}
-	/**Protects the contents of the forwarded message from forwarding and saving*/
+	/** Protects the contents of the forwarded message from forwarding and saving*/
 	pub fn protect_content(mut self, protect_content: bool) -> Self {
 		self.protect_content = Some(protect_content);
 		self
@@ -12329,7 +12329,7 @@ impl ForwardMessages {
 			protect_content: None,
 		}
 	}
-	/**Sends the messages [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
+	/** Sends the messages [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
 	pub fn disable_notification(mut self, disable_notification: bool) -> Self {
 		self.disable_notification = Some(disable_notification);
 		self
@@ -12338,12 +12338,12 @@ impl ForwardMessages {
 		self.message_ids.push(message_id.into());
 		self
 	}
-	/**Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
+	/** Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
 	pub fn message_thread_id(mut self, message_thread_id: impl Into<i64>) -> Self {
 		self.message_thread_id = Some(message_thread_id.into());
 		self
 	}
-	/**Protects the contents of the forwarded messages from forwarding and saving*/
+	/** Protects the contents of the forwarded messages from forwarding and saving*/
 	pub fn protect_content(mut self, protect_content: bool) -> Self {
 		self.protect_content = Some(protect_content);
 		self
@@ -12520,7 +12520,7 @@ impl GetChatMenuButton {
 			chat_id: None,
 		}
 	}
-	/**Unique identifier for the target private chat. If not specified, default bot's menu button will be returned*/
+	/** Unique identifier for the target private chat. If not specified, default bot's menu button will be returned*/
 	pub fn chat_id(mut self, chat_id: impl Into<i64>) -> Self {
 		self.chat_id = Some(chat_id.into());
 		self
@@ -12631,17 +12631,17 @@ impl GetGameHighScores {
 			user_id: user_id.into(),
 		}
 	}
-	/**Required if *inline\_message\_id* is not specified. Unique identifier for the target chat*/
+	/** Required if *inline\_message\_id* is not specified. Unique identifier for the target chat*/
 	pub fn chat_id(mut self, chat_id: impl Into<i64>) -> Self {
 		self.chat_id = Some(chat_id.into());
 		self
 	}
-	/**Required if *chat\_id* and *message\_id* are not specified. Identifier of the inline message*/
+	/** Required if *chat\_id* and *message\_id* are not specified. Identifier of the inline message*/
 	pub fn inline_message_id(mut self, inline_message_id: impl Into<String>) -> Self {
 		self.inline_message_id = Some(inline_message_id.into());
 		self
 	}
-	/**Required if *inline\_message\_id* is not specified. Identifier of the sent message*/
+	/** Required if *inline\_message\_id* is not specified. Identifier of the sent message*/
 	pub fn message_id(mut self, message_id: impl Into<i64>) -> Self {
 		self.message_id = Some(message_id.into());
 		self
@@ -12695,12 +12695,12 @@ impl GetMyCommands {
 			scope: None,
 		}
 	}
-	/**A two-letter ISO 639-1 language code or an empty string*/
+	/** A two-letter ISO 639-1 language code or an empty string*/
 	pub fn language_code(mut self, language_code: impl Into<String>) -> Self {
 		self.language_code = Some(language_code.into());
 		self
 	}
-	/**A JSON-serialized object, describing scope of users. Defaults to [BotCommandScopeDefault](https://core.telegram.org/bots/api/#botcommandscopedefault).*/
+	/** A JSON-serialized object, describing scope of users. Defaults to [BotCommandScopeDefault](https://core.telegram.org/bots/api/#botcommandscopedefault).*/
 	pub fn scope(mut self, scope: impl Into<BotCommandScope>) -> Self {
 		self.scope = Some(scope.into());
 		self
@@ -12730,7 +12730,7 @@ impl GetMyDefaultAdministratorRights {
 			for_channels: None,
 		}
 	}
-	/**Pass *True* to get default administrator rights of the bot in channels. Otherwise, default administrator rights of the bot for groups and supergroups will be returned.*/
+	/** Pass *True* to get default administrator rights of the bot in channels. Otherwise, default administrator rights of the bot for groups and supergroups will be returned.*/
 	pub fn for_channels(mut self, for_channels: bool) -> Self {
 		self.for_channels = Some(for_channels);
 		self
@@ -12759,7 +12759,7 @@ impl GetMyDescription {
 			language_code: None,
 		}
 	}
-	/**A two-letter ISO 639-1 language code or an empty string*/
+	/** A two-letter ISO 639-1 language code or an empty string*/
 	pub fn language_code(mut self, language_code: impl Into<String>) -> Self {
 		self.language_code = Some(language_code.into());
 		self
@@ -12788,7 +12788,7 @@ impl GetMyName {
 			language_code: None,
 		}
 	}
-	/**A two-letter ISO 639-1 language code or an empty string*/
+	/** A two-letter ISO 639-1 language code or an empty string*/
 	pub fn language_code(mut self, language_code: impl Into<String>) -> Self {
 		self.language_code = Some(language_code.into());
 		self
@@ -12817,7 +12817,7 @@ impl GetMyShortDescription {
 			language_code: None,
 		}
 	}
-	/**A two-letter ISO 639-1 language code or an empty string*/
+	/** A two-letter ISO 639-1 language code or an empty string*/
 	pub fn language_code(mut self, language_code: impl Into<String>) -> Self {
 		self.language_code = Some(language_code.into());
 		self
@@ -12849,12 +12849,12 @@ impl GetStarTransactions {
 			offset: None,
 		}
 	}
-	/**The maximum number of transactions to be retrieved. Values between 1-100 are accepted. Defaults to 100.*/
+	/** The maximum number of transactions to be retrieved. Values between 1-100 are accepted. Defaults to 100.*/
 	pub fn limit(mut self, limit: impl Into<i64>) -> Self {
 		self.limit = Some(limit.into());
 		self
 	}
-	/**Number of transactions to skip in the response*/
+	/** Number of transactions to skip in the response*/
 	pub fn offset(mut self, offset: impl Into<i64>) -> Self {
 		self.offset = Some(offset.into());
 		self
@@ -12923,24 +12923,24 @@ impl GetUpdates {
 		self.allowed_updates.push(allowed_update.into());
 		self
 	}
-	/**A JSON-serialized list of the update types you want your bot to receive. For example, specify `["message", "edited_channel_post", "callback_query"]` to only receive updates of these types. See [Update](https://core.telegram.org/bots/api/#update) for a complete list of available update types. Specify an empty list to receive all update types except *chat\_member*, *message\_reaction*, and *message\_reaction\_count* (default). If not specified, the previous setting will be used.  
+	/** A JSON-serialized list of the update types you want your bot to receive. For example, specify `["message", "edited_channel_post", "callback_query"]` to only receive updates of these types. See [Update](https://core.telegram.org/bots/api/#update) for a complete list of available update types. Specify an empty list to receive all update types except *chat\_member*, *message\_reaction*, and *message\_reaction\_count* (default). If not specified, the previous setting will be used.  
 
 	Please note that this parameter doesn't affect updates created before the call to getUpdates, so unwanted updates may be received for a short period of time.*/
 	pub fn allowed_updates(mut self, allowed_updates: impl Into<Vec<String>>) -> Self {
 		self.allowed_updates = allowed_updates.into();
 		self
 	}
-	/**Limits the number of updates to be retrieved. Values between 1-100 are accepted. Defaults to 100.*/
+	/** Limits the number of updates to be retrieved. Values between 1-100 are accepted. Defaults to 100.*/
 	pub fn limit(mut self, limit: impl Into<i64>) -> Self {
 		self.limit = Some(limit.into());
 		self
 	}
-	/**Identifier of the first update to be returned. Must be greater by one than the highest among the identifiers of previously received updates. By default, updates starting with the earliest unconfirmed update are returned. An update is considered confirmed as soon as [getUpdates](https://core.telegram.org/bots/api/#getupdates) is called with an *offset* higher than its *update\_id*. The negative offset can be specified to retrieve updates starting from *-offset* update from the end of the updates queue. All previous updates will be forgotten.*/
+	/** Identifier of the first update to be returned. Must be greater by one than the highest among the identifiers of previously received updates. By default, updates starting with the earliest unconfirmed update are returned. An update is considered confirmed as soon as [getUpdates](https://core.telegram.org/bots/api/#getupdates) is called with an *offset* higher than its *update\_id*. The negative offset can be specified to retrieve updates starting from *-offset* update from the end of the updates queue. All previous updates will be forgotten.*/
 	pub fn offset(mut self, offset: impl Into<i64>) -> Self {
 		self.offset = Some(offset.into());
 		self
 	}
-	/**Timeout in seconds for long polling. Defaults to 0, i.e. usual short polling. Should be positive, short polling should be used for testing purposes only.*/
+	/** Timeout in seconds for long polling. Defaults to 0, i.e. usual short polling. Should be positive, short polling should be used for testing purposes only.*/
 	pub fn timeout(mut self, timeout: impl Into<i64>) -> Self {
 		self.timeout = Some(timeout.into());
 		self
@@ -13006,12 +13006,12 @@ impl GetUserProfilePhotos {
 			user_id: user_id.into(),
 		}
 	}
-	/**Limits the number of photos to be retrieved. Values between 1-100 are accepted. Defaults to 100.*/
+	/** Limits the number of photos to be retrieved. Values between 1-100 are accepted. Defaults to 100.*/
 	pub fn limit(mut self, limit: impl Into<i64>) -> Self {
 		self.limit = Some(limit.into());
 		self
 	}
-	/**Sequential number of the first photo to be returned. By default, all photos are returned.*/
+	/** Sequential number of the first photo to be returned. By default, all photos are returned.*/
 	pub fn offset(mut self, offset: impl Into<i64>) -> Self {
 		self.offset = Some(offset.into());
 		self
@@ -13137,12 +13137,12 @@ impl PinChatMessage {
 			message_id: message_id.into(),
 		}
 	}
-	/**Unique identifier of the business connection on behalf of which the message will be pinned*/
+	/** Unique identifier of the business connection on behalf of which the message will be pinned*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**Pass *True* if it is not necessary to send a notification to all chat members about the new pinned message. Notifications are always disabled in channels and private chats.*/
+	/** Pass *True* if it is not necessary to send a notification to all chat members about the new pinned message. Notifications are always disabled in channels and private chats.*/
 	pub fn disable_notification(mut self, disable_notification: bool) -> Self {
 		self.disable_notification = Some(disable_notification);
 		self
@@ -13222,77 +13222,77 @@ impl PromoteChatMember {
 			user_id: user_id.into(),
 		}
 	}
-	/**Pass *True* if the administrator can change chat title, photo and other settings*/
+	/** Pass *True* if the administrator can change chat title, photo and other settings*/
 	pub fn can_change_info(mut self, can_change_info: bool) -> Self {
 		self.can_change_info = Some(can_change_info);
 		self
 	}
-	/**Pass *True* if the administrator can delete messages of other users*/
+	/** Pass *True* if the administrator can delete messages of other users*/
 	pub fn can_delete_messages(mut self, can_delete_messages: bool) -> Self {
 		self.can_delete_messages = Some(can_delete_messages);
 		self
 	}
-	/**Pass *True* if the administrator can delete stories posted by other users*/
+	/** Pass *True* if the administrator can delete stories posted by other users*/
 	pub fn can_delete_stories(mut self, can_delete_stories: bool) -> Self {
 		self.can_delete_stories = Some(can_delete_stories);
 		self
 	}
-	/**Pass *True* if the administrator can edit messages of other users and can pin messages; for channels only*/
+	/** Pass *True* if the administrator can edit messages of other users and can pin messages; for channels only*/
 	pub fn can_edit_messages(mut self, can_edit_messages: bool) -> Self {
 		self.can_edit_messages = Some(can_edit_messages);
 		self
 	}
-	/**Pass *True* if the administrator can edit stories posted by other users, post stories to the chat page, pin chat stories, and access the chat's story archive*/
+	/** Pass *True* if the administrator can edit stories posted by other users, post stories to the chat page, pin chat stories, and access the chat's story archive*/
 	pub fn can_edit_stories(mut self, can_edit_stories: bool) -> Self {
 		self.can_edit_stories = Some(can_edit_stories);
 		self
 	}
-	/**Pass *True* if the administrator can invite new users to the chat*/
+	/** Pass *True* if the administrator can invite new users to the chat*/
 	pub fn can_invite_users(mut self, can_invite_users: bool) -> Self {
 		self.can_invite_users = Some(can_invite_users);
 		self
 	}
-	/**Pass *True* if the administrator can access the chat event log, get boost list, see hidden supergroup and channel members, report spam messages and ignore slow mode. Implied by any other administrator privilege.*/
+	/** Pass *True* if the administrator can access the chat event log, get boost list, see hidden supergroup and channel members, report spam messages and ignore slow mode. Implied by any other administrator privilege.*/
 	pub fn can_manage_chat(mut self, can_manage_chat: bool) -> Self {
 		self.can_manage_chat = Some(can_manage_chat);
 		self
 	}
-	/**Pass *True* if the user is allowed to create, rename, close, and reopen forum topics; for supergroups only*/
+	/** Pass *True* if the user is allowed to create, rename, close, and reopen forum topics; for supergroups only*/
 	pub fn can_manage_topics(mut self, can_manage_topics: bool) -> Self {
 		self.can_manage_topics = Some(can_manage_topics);
 		self
 	}
-	/**Pass *True* if the administrator can manage video chats*/
+	/** Pass *True* if the administrator can manage video chats*/
 	pub fn can_manage_video_chats(mut self, can_manage_video_chats: bool) -> Self {
 		self.can_manage_video_chats = Some(can_manage_video_chats);
 		self
 	}
-	/**Pass *True* if the administrator can pin messages; for supergroups only*/
+	/** Pass *True* if the administrator can pin messages; for supergroups only*/
 	pub fn can_pin_messages(mut self, can_pin_messages: bool) -> Self {
 		self.can_pin_messages = Some(can_pin_messages);
 		self
 	}
-	/**Pass *True* if the administrator can post messages in the channel, or access channel statistics; for channels only*/
+	/** Pass *True* if the administrator can post messages in the channel, or access channel statistics; for channels only*/
 	pub fn can_post_messages(mut self, can_post_messages: bool) -> Self {
 		self.can_post_messages = Some(can_post_messages);
 		self
 	}
-	/**Pass *True* if the administrator can post stories to the chat*/
+	/** Pass *True* if the administrator can post stories to the chat*/
 	pub fn can_post_stories(mut self, can_post_stories: bool) -> Self {
 		self.can_post_stories = Some(can_post_stories);
 		self
 	}
-	/**Pass *True* if the administrator can add new administrators with a subset of their own privileges or demote administrators that they have promoted, directly or indirectly (promoted by administrators that were appointed by him)*/
+	/** Pass *True* if the administrator can add new administrators with a subset of their own privileges or demote administrators that they have promoted, directly or indirectly (promoted by administrators that were appointed by him)*/
 	pub fn can_promote_members(mut self, can_promote_members: bool) -> Self {
 		self.can_promote_members = Some(can_promote_members);
 		self
 	}
-	/**Pass *True* if the administrator can restrict, ban or unban chat members, or access supergroup statistics*/
+	/** Pass *True* if the administrator can restrict, ban or unban chat members, or access supergroup statistics*/
 	pub fn can_restrict_members(mut self, can_restrict_members: bool) -> Self {
 		self.can_restrict_members = Some(can_restrict_members);
 		self
 	}
-	/**Pass *True* if the administrator's presence in the chat is hidden*/
+	/** Pass *True* if the administrator's presence in the chat is hidden*/
 	pub fn is_anonymous(mut self, is_anonymous: bool) -> Self {
 		self.is_anonymous = Some(is_anonymous);
 		self
@@ -13482,7 +13482,7 @@ impl Executable for ReplaceStickerInSet {
 		let mut parts = FormParts::new(4);
 		parts.add_string("name", self.name);
 		parts.add_string("old_sticker", self.old_sticker);
-		parts.add_object("sticker", self.sticker);
+		parts.add_attachable("sticker", self.sticker);
 		parts.add_i64("user_id", self.user_id);
 		parts
 	}
@@ -13513,12 +13513,12 @@ impl RestrictChatMember {
 			user_id: user_id.into(),
 		}
 	}
-	/**Date when restrictions will be lifted for the user; Unix time. If user is restricted for more than 366 days or less than 30 seconds from the current time, they are considered to be restricted forever*/
+	/** Date when restrictions will be lifted for the user; Unix time. If user is restricted for more than 366 days or less than 30 seconds from the current time, they are considered to be restricted forever*/
 	pub fn until_date(mut self, until_date: impl Into<i64>) -> Self {
 		self.until_date = Some(until_date.into());
 		self
 	}
-	/**Pass *True* if chat permissions are set independently. Otherwise, the *can\_send\_other\_messages* and *can\_add\_web\_page\_previews* permissions will imply the *can\_send\_messages*, *can\_send\_audios*, *can\_send\_documents*, *can\_send\_photos*, *can\_send\_videos*, *can\_send\_video\_notes*, and *can\_send\_voice\_notes* permissions; the *can\_send\_polls* permission will imply the *can\_send\_messages* permission.*/
+	/** Pass *True* if chat permissions are set independently. Otherwise, the *can\_send\_other\_messages* and *can\_add\_web\_page\_previews* permissions will imply the *can\_send\_messages*, *can\_send\_audios*, *can\_send\_documents*, *can\_send\_photos*, *can\_send\_videos*, *can\_send\_video\_notes*, and *can\_send\_voice\_notes* permissions; the *can\_send\_polls* permission will imply the *can\_send\_messages* permission.*/
 	pub fn use_independent_chat_permissions(mut self, use_independent_chat_permissions: bool) -> Self {
 		self.use_independent_chat_permissions = Some(use_independent_chat_permissions);
 		self
@@ -13594,22 +13594,22 @@ impl SavePreparedInlineMessage {
 			user_id: user_id.into(),
 		}
 	}
-	/**Pass *True* if the message can be sent to private chats with bots*/
+	/** Pass *True* if the message can be sent to private chats with bots*/
 	pub fn allow_bot_chats(mut self, allow_bot_chats: bool) -> Self {
 		self.allow_bot_chats = Some(allow_bot_chats);
 		self
 	}
-	/**Pass *True* if the message can be sent to channel chats*/
+	/** Pass *True* if the message can be sent to channel chats*/
 	pub fn allow_channel_chats(mut self, allow_channel_chats: bool) -> Self {
 		self.allow_channel_chats = Some(allow_channel_chats);
 		self
 	}
-	/**Pass *True* if the message can be sent to group and supergroup chats*/
+	/** Pass *True* if the message can be sent to group and supergroup chats*/
 	pub fn allow_group_chats(mut self, allow_group_chats: bool) -> Self {
 		self.allow_group_chats = Some(allow_group_chats);
 		self
 	}
-	/**Pass *True* if the message can be sent to private chats with users*/
+	/** Pass *True* if the message can be sent to private chats with users*/
 	pub fn allow_user_chats(mut self, allow_user_chats: bool) -> Self {
 		self.allow_user_chats = Some(allow_user_chats);
 		self
@@ -13697,17 +13697,17 @@ impl SendAnimation {
 			width: None,
 		}
 	}
-	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
+	/** Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub fn allow_paid_broadcast(mut self, allow_paid_broadcast: bool) -> Self {
 		self.allow_paid_broadcast = Some(allow_paid_broadcast);
 		self
 	}
-	/**Unique identifier of the business connection on behalf of which the message will be sent*/
+	/** Unique identifier of the business connection on behalf of which the message will be sent*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**Animation caption (may also be used when resending animation by *file\_id*), 0-1024 characters after entities parsing*/
+	/** Animation caption (may also be used when resending animation by *file\_id*), 0-1024 characters after entities parsing*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
 		self.caption = Some(caption.into());
 		self
@@ -13716,72 +13716,72 @@ impl SendAnimation {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/**A JSON-serialized list of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** A JSON-serialized list of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/**Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
+	/** Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
 	pub fn disable_notification(mut self, disable_notification: bool) -> Self {
 		self.disable_notification = Some(disable_notification);
 		self
 	}
-	/**Duration of sent animation in seconds*/
+	/** Duration of sent animation in seconds*/
 	pub fn duration(mut self, duration: impl Into<i64>) -> Self {
 		self.duration = Some(duration.into());
 		self
 	}
-	/**Pass *True* if the animation needs to be covered with a spoiler animation*/
+	/** Pass *True* if the animation needs to be covered with a spoiler animation*/
 	pub fn has_spoiler(mut self, has_spoiler: bool) -> Self {
 		self.has_spoiler = Some(has_spoiler);
 		self
 	}
-	/**Animation height*/
+	/** Animation height*/
 	pub fn height(mut self, height: impl Into<i64>) -> Self {
 		self.height = Some(height.into());
 		self
 	}
-	/**Unique identifier of the message effect to be added to the message; for private chats only*/
+	/** Unique identifier of the message effect to be added to the message; for private chats only*/
 	pub fn message_effect_id(mut self, message_effect_id: impl Into<String>) -> Self {
 		self.message_effect_id = Some(message_effect_id.into());
 		self
 	}
-	/**Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
+	/** Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
 	pub fn message_thread_id(mut self, message_thread_id: impl Into<i64>) -> Self {
 		self.message_thread_id = Some(message_thread_id.into());
 		self
 	}
-	/**Mode for parsing entities in the animation caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** Mode for parsing entities in the animation caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/**Protects the contents of the sent message from forwarding and saving*/
+	/** Protects the contents of the sent message from forwarding and saving*/
 	pub fn protect_content(mut self, protect_content: bool) -> Self {
 		self.protect_content = Some(protect_content);
 		self
 	}
-	/**Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
+	/** Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<ReplyMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/**Description of the message to reply to*/
+	/** Description of the message to reply to*/
 	pub fn reply_parameters(mut self, reply_parameters: impl Into<ReplyParameters>) -> Self {
 		self.reply_parameters = Some(reply_parameters.into());
 		self
 	}
-	/**Pass *True*, if the caption must be shown above the message media*/
+	/** Pass *True*, if the caption must be shown above the message media*/
 	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
 		self.show_caption_above_media = Some(show_caption_above_media);
 		self
 	}
-	/**Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
+	/** Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
 	pub fn thumbnail(mut self, thumbnail: impl Into<Asset>) -> Self {
 		self.thumbnail = Some(thumbnail.into());
 		self
 	}
-	/**Animation width*/
+	/** Animation width*/
 	pub fn width(mut self, width: impl Into<i64>) -> Self {
 		self.width = Some(width.into());
 		self
@@ -13793,7 +13793,7 @@ impl Executable for SendAnimation {
 	fn into_parts(self) -> FormParts {
 		let mut parts = FormParts::new(19);
 		parts.add_bool("allow_paid_broadcast", self.allow_paid_broadcast);
-		parts.add_asset("animation", self.animation);
+		parts.add_attachable("animation", self.animation);
 		parts.add_string("business_connection_id", self.business_connection_id);
 		parts.add_string("caption", self.caption);
 		if self.caption_entities.len() > 0 { parts.add_object("caption_entities", self.caption_entities) }
@@ -13809,7 +13809,7 @@ impl Executable for SendAnimation {
 		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
 		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
 		parts.add_bool("show_caption_above_media", self.show_caption_above_media);
-		parts.add_asset("thumbnail", self.thumbnail);
+		if let Some(thumbnail) = self.thumbnail { parts.add_attachable("thumbnail", thumbnail) }
 		parts.add_i64("width", self.width);
 		parts
 	}
@@ -13878,17 +13878,17 @@ impl SendAudio {
 			title: None,
 		}
 	}
-	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
+	/** Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub fn allow_paid_broadcast(mut self, allow_paid_broadcast: bool) -> Self {
 		self.allow_paid_broadcast = Some(allow_paid_broadcast);
 		self
 	}
-	/**Unique identifier of the business connection on behalf of which the message will be sent*/
+	/** Unique identifier of the business connection on behalf of which the message will be sent*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**Audio caption, 0-1024 characters after entities parsing*/
+	/** Audio caption, 0-1024 characters after entities parsing*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
 		self.caption = Some(caption.into());
 		self
@@ -13897,62 +13897,62 @@ impl SendAudio {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/**A JSON-serialized list of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** A JSON-serialized list of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/**Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
+	/** Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
 	pub fn disable_notification(mut self, disable_notification: bool) -> Self {
 		self.disable_notification = Some(disable_notification);
 		self
 	}
-	/**Duration of the audio in seconds*/
+	/** Duration of the audio in seconds*/
 	pub fn duration(mut self, duration: impl Into<i64>) -> Self {
 		self.duration = Some(duration.into());
 		self
 	}
-	/**Unique identifier of the message effect to be added to the message; for private chats only*/
+	/** Unique identifier of the message effect to be added to the message; for private chats only*/
 	pub fn message_effect_id(mut self, message_effect_id: impl Into<String>) -> Self {
 		self.message_effect_id = Some(message_effect_id.into());
 		self
 	}
-	/**Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
+	/** Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
 	pub fn message_thread_id(mut self, message_thread_id: impl Into<i64>) -> Self {
 		self.message_thread_id = Some(message_thread_id.into());
 		self
 	}
-	/**Mode for parsing entities in the audio caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** Mode for parsing entities in the audio caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/**Performer*/
+	/** Performer*/
 	pub fn performer(mut self, performer: impl Into<String>) -> Self {
 		self.performer = Some(performer.into());
 		self
 	}
-	/**Protects the contents of the sent message from forwarding and saving*/
+	/** Protects the contents of the sent message from forwarding and saving*/
 	pub fn protect_content(mut self, protect_content: bool) -> Self {
 		self.protect_content = Some(protect_content);
 		self
 	}
-	/**Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
+	/** Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<ReplyMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/**Description of the message to reply to*/
+	/** Description of the message to reply to*/
 	pub fn reply_parameters(mut self, reply_parameters: impl Into<ReplyParameters>) -> Self {
 		self.reply_parameters = Some(reply_parameters.into());
 		self
 	}
-	/**Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
+	/** Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
 	pub fn thumbnail(mut self, thumbnail: impl Into<Asset>) -> Self {
 		self.thumbnail = Some(thumbnail.into());
 		self
 	}
-	/**Track name*/
+	/** Track name*/
 	pub fn title(mut self, title: impl Into<String>) -> Self {
 		self.title = Some(title.into());
 		self
@@ -13964,7 +13964,7 @@ impl Executable for SendAudio {
 	fn into_parts(self) -> FormParts {
 		let mut parts = FormParts::new(17);
 		parts.add_bool("allow_paid_broadcast", self.allow_paid_broadcast);
-		parts.add_asset("audio", self.audio);
+		parts.add_attachable("audio", self.audio);
 		parts.add_string("business_connection_id", self.business_connection_id);
 		parts.add_string("caption", self.caption);
 		if self.caption_entities.len() > 0 { parts.add_object("caption_entities", self.caption_entities) }
@@ -13978,7 +13978,7 @@ impl Executable for SendAudio {
 		parts.add_bool("protect_content", self.protect_content);
 		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
 		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
-		parts.add_asset("thumbnail", self.thumbnail);
+		if let Some(thumbnail) = self.thumbnail { parts.add_attachable("thumbnail", thumbnail) }
 		parts.add_string("title", self.title);
 		parts
 	}
@@ -14010,12 +14010,12 @@ impl SendChatAction {
 			message_thread_id: None,
 		}
 	}
-	/**Unique identifier of the business connection on behalf of which the action will be sent*/
+	/** Unique identifier of the business connection on behalf of which the action will be sent*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**Unique identifier for the target message thread; for supergroups only*/
+	/** Unique identifier for the target message thread; for supergroups only*/
 	pub fn message_thread_id(mut self, message_thread_id: impl Into<i64>) -> Self {
 		self.message_thread_id = Some(message_thread_id.into());
 		self
@@ -14083,52 +14083,52 @@ impl SendContact {
 			vcard: None,
 		}
 	}
-	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
+	/** Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub fn allow_paid_broadcast(mut self, allow_paid_broadcast: bool) -> Self {
 		self.allow_paid_broadcast = Some(allow_paid_broadcast);
 		self
 	}
-	/**Unique identifier of the business connection on behalf of which the message will be sent*/
+	/** Unique identifier of the business connection on behalf of which the message will be sent*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
+	/** Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
 	pub fn disable_notification(mut self, disable_notification: bool) -> Self {
 		self.disable_notification = Some(disable_notification);
 		self
 	}
-	/**Contact's last name*/
+	/** Contact's last name*/
 	pub fn last_name(mut self, last_name: impl Into<String>) -> Self {
 		self.last_name = Some(last_name.into());
 		self
 	}
-	/**Unique identifier of the message effect to be added to the message; for private chats only*/
+	/** Unique identifier of the message effect to be added to the message; for private chats only*/
 	pub fn message_effect_id(mut self, message_effect_id: impl Into<String>) -> Self {
 		self.message_effect_id = Some(message_effect_id.into());
 		self
 	}
-	/**Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
+	/** Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
 	pub fn message_thread_id(mut self, message_thread_id: impl Into<i64>) -> Self {
 		self.message_thread_id = Some(message_thread_id.into());
 		self
 	}
-	/**Protects the contents of the sent message from forwarding and saving*/
+	/** Protects the contents of the sent message from forwarding and saving*/
 	pub fn protect_content(mut self, protect_content: bool) -> Self {
 		self.protect_content = Some(protect_content);
 		self
 	}
-	/**Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
+	/** Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<ReplyMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/**Description of the message to reply to*/
+	/** Description of the message to reply to*/
 	pub fn reply_parameters(mut self, reply_parameters: impl Into<ReplyParameters>) -> Self {
 		self.reply_parameters = Some(reply_parameters.into());
 		self
 	}
-	/**Additional data about the contact in the form of a [vCard](https://en.wikipedia.org/wiki/VCard), 0-2048 bytes*/
+	/** Additional data about the contact in the form of a [vCard](https://en.wikipedia.org/wiki/VCard), 0-2048 bytes*/
 	pub fn vcard(mut self, vcard: impl Into<String>) -> Self {
 		self.vcard = Some(vcard.into());
 		self
@@ -14196,47 +14196,47 @@ impl SendDice {
 			reply_parameters: None,
 		}
 	}
-	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
+	/** Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub fn allow_paid_broadcast(mut self, allow_paid_broadcast: bool) -> Self {
 		self.allow_paid_broadcast = Some(allow_paid_broadcast);
 		self
 	}
-	/**Unique identifier of the business connection on behalf of which the message will be sent*/
+	/** Unique identifier of the business connection on behalf of which the message will be sent*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
+	/** Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
 	pub fn disable_notification(mut self, disable_notification: bool) -> Self {
 		self.disable_notification = Some(disable_notification);
 		self
 	}
-	/**Emoji on which the dice throw animation is based. Currently, must be one of “🎲”, “🎯”, “🏀”, “⚽”, “🎳”, or “🎰”. Dice can have values 1-6 for “🎲”, “🎯” and “🎳”, values 1-5 for “🏀” and “⚽”, and values 1-64 for “🎰”. Defaults to “🎲”*/
+	/** Emoji on which the dice throw animation is based. Currently, must be one of “🎲”, “🎯”, “🏀”, “⚽”, “🎳”, or “🎰”. Dice can have values 1-6 for “🎲”, “🎯” and “🎳”, values 1-5 for “🏀” and “⚽”, and values 1-64 for “🎰”. Defaults to “🎲”*/
 	pub fn emoji(mut self, emoji: impl Into<String>) -> Self {
 		self.emoji = Some(emoji.into());
 		self
 	}
-	/**Unique identifier of the message effect to be added to the message; for private chats only*/
+	/** Unique identifier of the message effect to be added to the message; for private chats only*/
 	pub fn message_effect_id(mut self, message_effect_id: impl Into<String>) -> Self {
 		self.message_effect_id = Some(message_effect_id.into());
 		self
 	}
-	/**Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
+	/** Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
 	pub fn message_thread_id(mut self, message_thread_id: impl Into<i64>) -> Self {
 		self.message_thread_id = Some(message_thread_id.into());
 		self
 	}
-	/**Protects the contents of the sent message from forwarding*/
+	/** Protects the contents of the sent message from forwarding*/
 	pub fn protect_content(mut self, protect_content: bool) -> Self {
 		self.protect_content = Some(protect_content);
 		self
 	}
-	/**Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
+	/** Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<ReplyMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/**Description of the message to reply to*/
+	/** Description of the message to reply to*/
 	pub fn reply_parameters(mut self, reply_parameters: impl Into<ReplyParameters>) -> Self {
 		self.reply_parameters = Some(reply_parameters.into());
 		self
@@ -14316,17 +14316,17 @@ impl SendDocument {
 			thumbnail: None,
 		}
 	}
-	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
+	/** Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub fn allow_paid_broadcast(mut self, allow_paid_broadcast: bool) -> Self {
 		self.allow_paid_broadcast = Some(allow_paid_broadcast);
 		self
 	}
-	/**Unique identifier of the business connection on behalf of which the message will be sent*/
+	/** Unique identifier of the business connection on behalf of which the message will be sent*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**Document caption (may also be used when resending documents by *file\_id*), 0-1024 characters after entities parsing*/
+	/** Document caption (may also be used when resending documents by *file\_id*), 0-1024 characters after entities parsing*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
 		self.caption = Some(caption.into());
 		self
@@ -14335,52 +14335,52 @@ impl SendDocument {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/**A JSON-serialized list of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** A JSON-serialized list of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/**Disables automatic server-side content type detection for files uploaded using multipart/form-data*/
+	/** Disables automatic server-side content type detection for files uploaded using multipart/form-data*/
 	pub fn disable_content_type_detection(mut self, disable_content_type_detection: bool) -> Self {
 		self.disable_content_type_detection = Some(disable_content_type_detection);
 		self
 	}
-	/**Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
+	/** Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
 	pub fn disable_notification(mut self, disable_notification: bool) -> Self {
 		self.disable_notification = Some(disable_notification);
 		self
 	}
-	/**Unique identifier of the message effect to be added to the message; for private chats only*/
+	/** Unique identifier of the message effect to be added to the message; for private chats only*/
 	pub fn message_effect_id(mut self, message_effect_id: impl Into<String>) -> Self {
 		self.message_effect_id = Some(message_effect_id.into());
 		self
 	}
-	/**Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
+	/** Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
 	pub fn message_thread_id(mut self, message_thread_id: impl Into<i64>) -> Self {
 		self.message_thread_id = Some(message_thread_id.into());
 		self
 	}
-	/**Mode for parsing entities in the document caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** Mode for parsing entities in the document caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/**Protects the contents of the sent message from forwarding and saving*/
+	/** Protects the contents of the sent message from forwarding and saving*/
 	pub fn protect_content(mut self, protect_content: bool) -> Self {
 		self.protect_content = Some(protect_content);
 		self
 	}
-	/**Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
+	/** Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<ReplyMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/**Description of the message to reply to*/
+	/** Description of the message to reply to*/
 	pub fn reply_parameters(mut self, reply_parameters: impl Into<ReplyParameters>) -> Self {
 		self.reply_parameters = Some(reply_parameters.into());
 		self
 	}
-	/**Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
+	/** Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
 	pub fn thumbnail(mut self, thumbnail: impl Into<Asset>) -> Self {
 		self.thumbnail = Some(thumbnail.into());
 		self
@@ -14398,14 +14398,14 @@ impl Executable for SendDocument {
 		parts.add_string("chat_id", self.chat_id.to_string());
 		parts.add_bool("disable_content_type_detection", self.disable_content_type_detection);
 		parts.add_bool("disable_notification", self.disable_notification);
-		parts.add_asset("document", self.document);
+		parts.add_attachable("document", self.document);
 		parts.add_string("message_effect_id", self.message_effect_id);
 		parts.add_i64("message_thread_id", self.message_thread_id);
 		parts.add_string("parse_mode", self.parse_mode);
 		parts.add_bool("protect_content", self.protect_content);
 		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
 		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
-		parts.add_asset("thumbnail", self.thumbnail);
+		if let Some(thumbnail) = self.thumbnail { parts.add_attachable("thumbnail", thumbnail) }
 		parts
 	}
 }
@@ -14450,42 +14450,42 @@ impl SendGame {
 			reply_parameters: None,
 		}
 	}
-	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
+	/** Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub fn allow_paid_broadcast(mut self, allow_paid_broadcast: bool) -> Self {
 		self.allow_paid_broadcast = Some(allow_paid_broadcast);
 		self
 	}
-	/**Unique identifier of the business connection on behalf of which the message will be sent*/
+	/** Unique identifier of the business connection on behalf of which the message will be sent*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
+	/** Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
 	pub fn disable_notification(mut self, disable_notification: bool) -> Self {
 		self.disable_notification = Some(disable_notification);
 		self
 	}
-	/**Unique identifier of the message effect to be added to the message; for private chats only*/
+	/** Unique identifier of the message effect to be added to the message; for private chats only*/
 	pub fn message_effect_id(mut self, message_effect_id: impl Into<String>) -> Self {
 		self.message_effect_id = Some(message_effect_id.into());
 		self
 	}
-	/**Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
+	/** Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
 	pub fn message_thread_id(mut self, message_thread_id: impl Into<i64>) -> Self {
 		self.message_thread_id = Some(message_thread_id.into());
 		self
 	}
-	/**Protects the contents of the sent message from forwarding and saving*/
+	/** Protects the contents of the sent message from forwarding and saving*/
 	pub fn protect_content(mut self, protect_content: bool) -> Self {
 		self.protect_content = Some(protect_content);
 		self
 	}
-	/**A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards). If empty, one 'Play game\_title' button will be shown. If not empty, the first button must launch the game.*/
+	/** A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards). If empty, one 'Play game\_title' button will be shown. If not empty, the first button must launch the game.*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/**Description of the message to reply to*/
+	/** Description of the message to reply to*/
 	pub fn reply_parameters(mut self, reply_parameters: impl Into<ReplyParameters>) -> Self {
 		self.reply_parameters = Some(reply_parameters.into());
 		self
@@ -14538,12 +14538,12 @@ impl SendGift {
 			user_id: user_id.into(),
 		}
 	}
-	/**Pass *True* to pay for the gift upgrade from the bot's balance, thereby making the upgrade free for the receiver*/
+	/** Pass *True* to pay for the gift upgrade from the bot's balance, thereby making the upgrade free for the receiver*/
 	pub fn pay_for_upgrade(mut self, pay_for_upgrade: bool) -> Self {
 		self.pay_for_upgrade = Some(pay_for_upgrade);
 		self
 	}
-	/**Text that will be shown along with the gift; 0-255 characters*/
+	/** Text that will be shown along with the gift; 0-255 characters*/
 	pub fn text(mut self, text: impl Into<String>) -> Self {
 		self.text = Some(text.into());
 		self
@@ -14552,12 +14552,12 @@ impl SendGift {
 		self.text_entities.push(text_entity.into());
 		self
 	}
-	/**A JSON-serialized list of special entities that appear in the gift text. It can be specified instead of *text\_parse\_mode*. Entities other than “bold”, “italic”, “underline”, “strikethrough”, “spoiler”, and “custom\_emoji” are ignored.*/
+	/** A JSON-serialized list of special entities that appear in the gift text. It can be specified instead of *text\_parse\_mode*. Entities other than “bold”, “italic”, “underline”, “strikethrough”, “spoiler”, and “custom\_emoji” are ignored.*/
 	pub fn text_entities(mut self, text_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.text_entities = text_entities.into();
 		self
 	}
-	/**Mode for parsing entities in the text. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details. Entities other than “bold”, “italic”, “underline”, “strikethrough”, “spoiler”, and “custom\_emoji” are ignored.*/
+	/** Mode for parsing entities in the text. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details. Entities other than “bold”, “italic”, “underline”, “strikethrough”, “spoiler”, and “custom\_emoji” are ignored.*/
 	pub fn text_parse_mode(mut self, text_parse_mode: impl Into<String>) -> Self {
 		self.text_parse_mode = Some(text_parse_mode.into());
 		self
@@ -14675,72 +14675,72 @@ impl SendInvoice {
 			title: title.into(),
 		}
 	}
-	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
+	/** Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub fn allow_paid_broadcast(mut self, allow_paid_broadcast: bool) -> Self {
 		self.allow_paid_broadcast = Some(allow_paid_broadcast);
 		self
 	}
-	/**Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
+	/** Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
 	pub fn disable_notification(mut self, disable_notification: bool) -> Self {
 		self.disable_notification = Some(disable_notification);
 		self
 	}
-	/**Pass *True* if the final price depends on the shipping method. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
+	/** Pass *True* if the final price depends on the shipping method. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub fn is_flexible(mut self, is_flexible: bool) -> Self {
 		self.is_flexible = Some(is_flexible);
 		self
 	}
-	/**The maximum accepted amount for tips in the *smallest units* of the currency (integer, **not** float/double). For example, for a maximum tip of `US$ 1.45` pass `max_tip_amount = 145`. See the *exp* parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0. Not supported for payments in [Telegram Stars](https://t.me/BotNews/90).*/
+	/** The maximum accepted amount for tips in the *smallest units* of the currency (integer, **not** float/double). For example, for a maximum tip of `US$ 1.45` pass `max_tip_amount = 145`. See the *exp* parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0. Not supported for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub fn max_tip_amount(mut self, max_tip_amount: impl Into<i64>) -> Self {
 		self.max_tip_amount = Some(max_tip_amount.into());
 		self
 	}
-	/**Unique identifier of the message effect to be added to the message; for private chats only*/
+	/** Unique identifier of the message effect to be added to the message; for private chats only*/
 	pub fn message_effect_id(mut self, message_effect_id: impl Into<String>) -> Self {
 		self.message_effect_id = Some(message_effect_id.into());
 		self
 	}
-	/**Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
+	/** Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
 	pub fn message_thread_id(mut self, message_thread_id: impl Into<i64>) -> Self {
 		self.message_thread_id = Some(message_thread_id.into());
 		self
 	}
-	/**Pass *True* if you require the user's email address to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
+	/** Pass *True* if you require the user's email address to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub fn need_email(mut self, need_email: bool) -> Self {
 		self.need_email = Some(need_email);
 		self
 	}
-	/**Pass *True* if you require the user's full name to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
+	/** Pass *True* if you require the user's full name to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub fn need_name(mut self, need_name: bool) -> Self {
 		self.need_name = Some(need_name);
 		self
 	}
-	/**Pass *True* if you require the user's phone number to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
+	/** Pass *True* if you require the user's phone number to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub fn need_phone_number(mut self, need_phone_number: bool) -> Self {
 		self.need_phone_number = Some(need_phone_number);
 		self
 	}
-	/**Pass *True* if you require the user's shipping address to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
+	/** Pass *True* if you require the user's shipping address to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub fn need_shipping_address(mut self, need_shipping_address: bool) -> Self {
 		self.need_shipping_address = Some(need_shipping_address);
 		self
 	}
-	/**Photo height*/
+	/** Photo height*/
 	pub fn photo_height(mut self, photo_height: impl Into<i64>) -> Self {
 		self.photo_height = Some(photo_height.into());
 		self
 	}
-	/**Photo size in bytes*/
+	/** Photo size in bytes*/
 	pub fn photo_size(mut self, photo_size: impl Into<i64>) -> Self {
 		self.photo_size = Some(photo_size.into());
 		self
 	}
-	/**URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for.*/
+	/** URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for.*/
 	pub fn photo_url(mut self, photo_url: impl Into<String>) -> Self {
 		self.photo_url = Some(photo_url.into());
 		self
 	}
-	/**Photo width*/
+	/** Photo width*/
 	pub fn photo_width(mut self, photo_width: impl Into<i64>) -> Self {
 		self.photo_width = Some(photo_width.into());
 		self
@@ -14749,42 +14749,42 @@ impl SendInvoice {
 		self.prices.push(price.into());
 		self
 	}
-	/**Protects the contents of the sent message from forwarding and saving*/
+	/** Protects the contents of the sent message from forwarding and saving*/
 	pub fn protect_content(mut self, protect_content: bool) -> Self {
 		self.protect_content = Some(protect_content);
 		self
 	}
-	/**JSON-serialized data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider.*/
+	/** JSON-serialized data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider.*/
 	pub fn provider_data(mut self, provider_data: impl Into<String>) -> Self {
 		self.provider_data = Some(provider_data.into());
 		self
 	}
-	/**Payment provider token, obtained via [@BotFather](https://t.me/botfather). Pass an empty string for payments in [Telegram Stars](https://t.me/BotNews/90).*/
+	/** Payment provider token, obtained via [@BotFather](https://t.me/botfather). Pass an empty string for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub fn provider_token(mut self, provider_token: impl Into<String>) -> Self {
 		self.provider_token = Some(provider_token.into());
 		self
 	}
-	/**A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards). If empty, one 'Pay `total price`' button will be shown. If not empty, the first button must be a Pay button.*/
+	/** A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards). If empty, one 'Pay `total price`' button will be shown. If not empty, the first button must be a Pay button.*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/**Description of the message to reply to*/
+	/** Description of the message to reply to*/
 	pub fn reply_parameters(mut self, reply_parameters: impl Into<ReplyParameters>) -> Self {
 		self.reply_parameters = Some(reply_parameters.into());
 		self
 	}
-	/**Pass *True* if the user's email address should be sent to the provider. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
+	/** Pass *True* if the user's email address should be sent to the provider. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub fn send_email_to_provider(mut self, send_email_to_provider: bool) -> Self {
 		self.send_email_to_provider = Some(send_email_to_provider);
 		self
 	}
-	/**Pass *True* if the user's phone number should be sent to the provider. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
+	/** Pass *True* if the user's phone number should be sent to the provider. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub fn send_phone_number_to_provider(mut self, send_phone_number_to_provider: bool) -> Self {
 		self.send_phone_number_to_provider = Some(send_phone_number_to_provider);
 		self
 	}
-	/**Unique deep-linking parameter. If left empty, **forwarded copies** of the sent message will have a *Pay* button, allowing multiple users to pay directly from the forwarded message, using the same invoice. If non-empty, forwarded copies of the sent message will have a *URL* button with a deep link to the bot (instead of a *Pay* button), with the value used as the start parameter*/
+	/** Unique deep-linking parameter. If left empty, **forwarded copies** of the sent message will have a *Pay* button, allowing multiple users to pay directly from the forwarded message, using the same invoice. If non-empty, forwarded copies of the sent message will have a *URL* button with a deep link to the bot (instead of a *Pay* button), with the value used as the start parameter*/
 	pub fn start_parameter(mut self, start_parameter: impl Into<String>) -> Self {
 		self.start_parameter = Some(start_parameter.into());
 		self
@@ -14793,7 +14793,7 @@ impl SendInvoice {
 		self.suggested_tip_amounts.push(suggested_tip_amount.into());
 		self
 	}
-	/**A JSON-serialized array of suggested amounts of tips in the *smallest units* of the currency (integer, **not** float/double). At most 4 suggested tip amounts can be specified. The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed *max\_tip\_amount*.*/
+	/** A JSON-serialized array of suggested amounts of tips in the *smallest units* of the currency (integer, **not** float/double). At most 4 suggested tip amounts can be specified. The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed *max\_tip\_amount*.*/
 	pub fn suggested_tip_amounts(mut self, suggested_tip_amounts: impl Into<Vec<i64>>) -> Self {
 		self.suggested_tip_amounts = suggested_tip_amounts.into();
 		self
@@ -14892,62 +14892,62 @@ impl SendLocation {
 			reply_parameters: None,
 		}
 	}
-	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
+	/** Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub fn allow_paid_broadcast(mut self, allow_paid_broadcast: bool) -> Self {
 		self.allow_paid_broadcast = Some(allow_paid_broadcast);
 		self
 	}
-	/**Unique identifier of the business connection on behalf of which the message will be sent*/
+	/** Unique identifier of the business connection on behalf of which the message will be sent*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
+	/** Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
 	pub fn disable_notification(mut self, disable_notification: bool) -> Self {
 		self.disable_notification = Some(disable_notification);
 		self
 	}
-	/**For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.*/
+	/** For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.*/
 	pub fn heading(mut self, heading: impl Into<i64>) -> Self {
 		self.heading = Some(heading.into());
 		self
 	}
-	/**The radius of uncertainty for the location, measured in meters; 0-1500*/
+	/** The radius of uncertainty for the location, measured in meters; 0-1500*/
 	pub fn horizontal_accuracy(mut self, horizontal_accuracy: impl Into<f32>) -> Self {
 		self.horizontal_accuracy = Some(horizontal_accuracy.into());
 		self
 	}
-	/**Period in seconds during which the location will be updated (see [Live Locations](https://telegram.org/blog/live-locations), should be between 60 and 86400, or 0x7FFFFFFF for live locations that can be edited indefinitely.*/
+	/** Period in seconds during which the location will be updated (see [Live Locations](https://telegram.org/blog/live-locations), should be between 60 and 86400, or 0x7FFFFFFF for live locations that can be edited indefinitely.*/
 	pub fn live_period(mut self, live_period: impl Into<i64>) -> Self {
 		self.live_period = Some(live_period.into());
 		self
 	}
-	/**Unique identifier of the message effect to be added to the message; for private chats only*/
+	/** Unique identifier of the message effect to be added to the message; for private chats only*/
 	pub fn message_effect_id(mut self, message_effect_id: impl Into<String>) -> Self {
 		self.message_effect_id = Some(message_effect_id.into());
 		self
 	}
-	/**Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
+	/** Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
 	pub fn message_thread_id(mut self, message_thread_id: impl Into<i64>) -> Self {
 		self.message_thread_id = Some(message_thread_id.into());
 		self
 	}
-	/**Protects the contents of the sent message from forwarding and saving*/
+	/** Protects the contents of the sent message from forwarding and saving*/
 	pub fn protect_content(mut self, protect_content: bool) -> Self {
 		self.protect_content = Some(protect_content);
 		self
 	}
-	/**For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.*/
+	/** For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.*/
 	pub fn proximity_alert_radius(mut self, proximity_alert_radius: impl Into<i64>) -> Self {
 		self.proximity_alert_radius = Some(proximity_alert_radius.into());
 		self
 	}
-	/**Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
+	/** Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<ReplyMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/**Description of the message to reply to*/
+	/** Description of the message to reply to*/
 	pub fn reply_parameters(mut self, reply_parameters: impl Into<ReplyParameters>) -> Self {
 		self.reply_parameters = Some(reply_parameters.into());
 		self
@@ -15014,17 +15014,17 @@ impl SendMediaGroup {
 			reply_parameters: None,
 		}
 	}
-	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
+	/** Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub fn allow_paid_broadcast(mut self, allow_paid_broadcast: bool) -> Self {
 		self.allow_paid_broadcast = Some(allow_paid_broadcast);
 		self
 	}
-	/**Unique identifier of the business connection on behalf of which the message will be sent*/
+	/** Unique identifier of the business connection on behalf of which the message will be sent*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**Sends messages [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
+	/** Sends messages [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
 	pub fn disable_notification(mut self, disable_notification: bool) -> Self {
 		self.disable_notification = Some(disable_notification);
 		self
@@ -15033,22 +15033,22 @@ impl SendMediaGroup {
 		self.media.push(media.into());
 		self
 	}
-	/**Unique identifier of the message effect to be added to the message; for private chats only*/
+	/** Unique identifier of the message effect to be added to the message; for private chats only*/
 	pub fn message_effect_id(mut self, message_effect_id: impl Into<String>) -> Self {
 		self.message_effect_id = Some(message_effect_id.into());
 		self
 	}
-	/**Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
+	/** Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
 	pub fn message_thread_id(mut self, message_thread_id: impl Into<i64>) -> Self {
 		self.message_thread_id = Some(message_thread_id.into());
 		self
 	}
-	/**Protects the contents of the sent messages from forwarding and saving*/
+	/** Protects the contents of the sent messages from forwarding and saving*/
 	pub fn protect_content(mut self, protect_content: bool) -> Self {
 		self.protect_content = Some(protect_content);
 		self
 	}
-	/**Description of the message to reply to*/
+	/** Description of the message to reply to*/
 	pub fn reply_parameters(mut self, reply_parameters: impl Into<ReplyParameters>) -> Self {
 		self.reply_parameters = Some(reply_parameters.into());
 		self
@@ -15121,17 +15121,17 @@ impl SendMessage {
 			text: text.into(),
 		}
 	}
-	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
+	/** Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub fn allow_paid_broadcast(mut self, allow_paid_broadcast: bool) -> Self {
 		self.allow_paid_broadcast = Some(allow_paid_broadcast);
 		self
 	}
-	/**Unique identifier of the business connection on behalf of which the message will be sent*/
+	/** Unique identifier of the business connection on behalf of which the message will be sent*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
+	/** Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
 	pub fn disable_notification(mut self, disable_notification: bool) -> Self {
 		self.disable_notification = Some(disable_notification);
 		self
@@ -15140,42 +15140,42 @@ impl SendMessage {
 		self.entities.push(entity.into());
 		self
 	}
-	/**A JSON-serialized list of special entities that appear in message text, which can be specified instead of *parse\_mode**/
+	/** A JSON-serialized list of special entities that appear in message text, which can be specified instead of *parse\_mode**/
 	pub fn entities(mut self, entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.entities = entities.into();
 		self
 	}
-	/**Link preview generation options for the message*/
+	/** Link preview generation options for the message*/
 	pub fn link_preview_options(mut self, link_preview_options: impl Into<LinkPreviewOptions>) -> Self {
 		self.link_preview_options = Some(link_preview_options.into());
 		self
 	}
-	/**Unique identifier of the message effect to be added to the message; for private chats only*/
+	/** Unique identifier of the message effect to be added to the message; for private chats only*/
 	pub fn message_effect_id(mut self, message_effect_id: impl Into<String>) -> Self {
 		self.message_effect_id = Some(message_effect_id.into());
 		self
 	}
-	/**Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
+	/** Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
 	pub fn message_thread_id(mut self, message_thread_id: impl Into<i64>) -> Self {
 		self.message_thread_id = Some(message_thread_id.into());
 		self
 	}
-	/**Mode for parsing entities in the message text. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** Mode for parsing entities in the message text. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/**Protects the contents of the sent message from forwarding and saving*/
+	/** Protects the contents of the sent message from forwarding and saving*/
 	pub fn protect_content(mut self, protect_content: bool) -> Self {
 		self.protect_content = Some(protect_content);
 		self
 	}
-	/**Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
+	/** Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<ReplyMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/**Description of the message to reply to*/
+	/** Description of the message to reply to*/
 	pub fn reply_parameters(mut self, reply_parameters: impl Into<ReplyParameters>) -> Self {
 		self.reply_parameters = Some(reply_parameters.into());
 		self
@@ -15255,17 +15255,17 @@ impl SendPaidMedia {
 			star_count: star_count.into(),
 		}
 	}
-	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
+	/** Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub fn allow_paid_broadcast(mut self, allow_paid_broadcast: bool) -> Self {
 		self.allow_paid_broadcast = Some(allow_paid_broadcast);
 		self
 	}
-	/**Unique identifier of the business connection on behalf of which the message will be sent*/
+	/** Unique identifier of the business connection on behalf of which the message will be sent*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**Media caption, 0-1024 characters after entities parsing*/
+	/** Media caption, 0-1024 characters after entities parsing*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
 		self.caption = Some(caption.into());
 		self
@@ -15274,12 +15274,12 @@ impl SendPaidMedia {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/**A JSON-serialized list of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** A JSON-serialized list of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/**Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
+	/** Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
 	pub fn disable_notification(mut self, disable_notification: bool) -> Self {
 		self.disable_notification = Some(disable_notification);
 		self
@@ -15288,32 +15288,32 @@ impl SendPaidMedia {
 		self.media.push(media.into());
 		self
 	}
-	/**Mode for parsing entities in the media caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** Mode for parsing entities in the media caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/**Bot-defined paid media payload, 0-128 bytes. This will not be displayed to the user, use it for your internal processes.*/
+	/** Bot-defined paid media payload, 0-128 bytes. This will not be displayed to the user, use it for your internal processes.*/
 	pub fn payload(mut self, payload: impl Into<String>) -> Self {
 		self.payload = Some(payload.into());
 		self
 	}
-	/**Protects the contents of the sent message from forwarding and saving*/
+	/** Protects the contents of the sent message from forwarding and saving*/
 	pub fn protect_content(mut self, protect_content: bool) -> Self {
 		self.protect_content = Some(protect_content);
 		self
 	}
-	/**Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
+	/** Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<ReplyMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/**Description of the message to reply to*/
+	/** Description of the message to reply to*/
 	pub fn reply_parameters(mut self, reply_parameters: impl Into<ReplyParameters>) -> Self {
 		self.reply_parameters = Some(reply_parameters.into());
 		self
 	}
-	/**Pass *True*, if the caption must be shown above the message media*/
+	/** Pass *True*, if the caption must be shown above the message media*/
 	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
 		self.show_caption_above_media = Some(show_caption_above_media);
 		self
@@ -15397,17 +15397,17 @@ impl SendPhoto {
 			show_caption_above_media: None,
 		}
 	}
-	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
+	/** Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub fn allow_paid_broadcast(mut self, allow_paid_broadcast: bool) -> Self {
 		self.allow_paid_broadcast = Some(allow_paid_broadcast);
 		self
 	}
-	/**Unique identifier of the business connection on behalf of which the message will be sent*/
+	/** Unique identifier of the business connection on behalf of which the message will be sent*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**Photo caption (may also be used when resending photos by *file\_id*), 0-1024 characters after entities parsing*/
+	/** Photo caption (may also be used when resending photos by *file\_id*), 0-1024 characters after entities parsing*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
 		self.caption = Some(caption.into());
 		self
@@ -15416,52 +15416,52 @@ impl SendPhoto {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/**A JSON-serialized list of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** A JSON-serialized list of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/**Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
+	/** Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
 	pub fn disable_notification(mut self, disable_notification: bool) -> Self {
 		self.disable_notification = Some(disable_notification);
 		self
 	}
-	/**Pass *True* if the photo needs to be covered with a spoiler animation*/
+	/** Pass *True* if the photo needs to be covered with a spoiler animation*/
 	pub fn has_spoiler(mut self, has_spoiler: bool) -> Self {
 		self.has_spoiler = Some(has_spoiler);
 		self
 	}
-	/**Unique identifier of the message effect to be added to the message; for private chats only*/
+	/** Unique identifier of the message effect to be added to the message; for private chats only*/
 	pub fn message_effect_id(mut self, message_effect_id: impl Into<String>) -> Self {
 		self.message_effect_id = Some(message_effect_id.into());
 		self
 	}
-	/**Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
+	/** Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
 	pub fn message_thread_id(mut self, message_thread_id: impl Into<i64>) -> Self {
 		self.message_thread_id = Some(message_thread_id.into());
 		self
 	}
-	/**Mode for parsing entities in the photo caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** Mode for parsing entities in the photo caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/**Protects the contents of the sent message from forwarding and saving*/
+	/** Protects the contents of the sent message from forwarding and saving*/
 	pub fn protect_content(mut self, protect_content: bool) -> Self {
 		self.protect_content = Some(protect_content);
 		self
 	}
-	/**Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
+	/** Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<ReplyMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/**Description of the message to reply to*/
+	/** Description of the message to reply to*/
 	pub fn reply_parameters(mut self, reply_parameters: impl Into<ReplyParameters>) -> Self {
 		self.reply_parameters = Some(reply_parameters.into());
 		self
 	}
-	/**Pass *True*, if the caption must be shown above the message media*/
+	/** Pass *True*, if the caption must be shown above the message media*/
 	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
 		self.show_caption_above_media = Some(show_caption_above_media);
 		self
@@ -15482,7 +15482,7 @@ impl Executable for SendPhoto {
 		parts.add_string("message_effect_id", self.message_effect_id);
 		parts.add_i64("message_thread_id", self.message_thread_id);
 		parts.add_string("parse_mode", self.parse_mode);
-		parts.add_asset("photo", self.photo);
+		parts.add_attachable("photo", self.photo);
 		parts.add_bool("protect_content", self.protect_content);
 		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
 		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
@@ -15570,37 +15570,37 @@ impl SendPoll {
 			reply_parameters: None,
 		}
 	}
-	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
+	/** Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub fn allow_paid_broadcast(mut self, allow_paid_broadcast: bool) -> Self {
 		self.allow_paid_broadcast = Some(allow_paid_broadcast);
 		self
 	}
-	/***True*, if the poll allows multiple answers, ignored for polls in quiz mode, defaults to *False**/
+	/** *True*, if the poll allows multiple answers, ignored for polls in quiz mode, defaults to *False**/
 	pub fn allows_multiple_answers(mut self, allows_multiple_answers: bool) -> Self {
 		self.allows_multiple_answers = Some(allows_multiple_answers);
 		self
 	}
-	/**Unique identifier of the business connection on behalf of which the message will be sent*/
+	/** Unique identifier of the business connection on behalf of which the message will be sent*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with *open\_period*.*/
+	/** Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with *open\_period*.*/
 	pub fn close_date(mut self, close_date: impl Into<i64>) -> Self {
 		self.close_date = Some(close_date.into());
 		self
 	}
-	/**0-based identifier of the correct answer option, required for polls in quiz mode*/
+	/** 0-based identifier of the correct answer option, required for polls in quiz mode*/
 	pub fn correct_option_id(mut self, correct_option_id: impl Into<i64>) -> Self {
 		self.correct_option_id = Some(correct_option_id.into());
 		self
 	}
-	/**Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
+	/** Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
 	pub fn disable_notification(mut self, disable_notification: bool) -> Self {
 		self.disable_notification = Some(disable_notification);
 		self
 	}
-	/**Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing*/
+	/** Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing*/
 	pub fn explanation(mut self, explanation: impl Into<String>) -> Self {
 		self.explanation = Some(explanation.into());
 		self
@@ -15609,37 +15609,37 @@ impl SendPoll {
 		self.explanation_entities.push(explanation_entity.into());
 		self
 	}
-	/**A JSON-serialized list of special entities that appear in the poll explanation. It can be specified instead of *explanation\_parse\_mode**/
+	/** A JSON-serialized list of special entities that appear in the poll explanation. It can be specified instead of *explanation\_parse\_mode**/
 	pub fn explanation_entities(mut self, explanation_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.explanation_entities = explanation_entities.into();
 		self
 	}
-	/**Mode for parsing entities in the explanation. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** Mode for parsing entities in the explanation. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn explanation_parse_mode(mut self, explanation_parse_mode: impl Into<String>) -> Self {
 		self.explanation_parse_mode = Some(explanation_parse_mode.into());
 		self
 	}
-	/***True*, if the poll needs to be anonymous, defaults to *True**/
+	/** *True*, if the poll needs to be anonymous, defaults to *True**/
 	pub fn is_anonymous(mut self, is_anonymous: bool) -> Self {
 		self.is_anonymous = Some(is_anonymous);
 		self
 	}
-	/**Pass *True* if the poll needs to be immediately closed. This can be useful for poll preview.*/
+	/** Pass *True* if the poll needs to be immediately closed. This can be useful for poll preview.*/
 	pub fn is_closed(mut self, is_closed: bool) -> Self {
 		self.is_closed = Some(is_closed);
 		self
 	}
-	/**Unique identifier of the message effect to be added to the message; for private chats only*/
+	/** Unique identifier of the message effect to be added to the message; for private chats only*/
 	pub fn message_effect_id(mut self, message_effect_id: impl Into<String>) -> Self {
 		self.message_effect_id = Some(message_effect_id.into());
 		self
 	}
-	/**Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
+	/** Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
 	pub fn message_thread_id(mut self, message_thread_id: impl Into<i64>) -> Self {
 		self.message_thread_id = Some(message_thread_id.into());
 		self
 	}
-	/**Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with *close\_date*.*/
+	/** Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with *close\_date*.*/
 	pub fn open_period(mut self, open_period: impl Into<i64>) -> Self {
 		self.open_period = Some(open_period.into());
 		self
@@ -15648,7 +15648,7 @@ impl SendPoll {
 		self.options.push(option.into());
 		self
 	}
-	/**Protects the contents of the sent message from forwarding and saving*/
+	/** Protects the contents of the sent message from forwarding and saving*/
 	pub fn protect_content(mut self, protect_content: bool) -> Self {
 		self.protect_content = Some(protect_content);
 		self
@@ -15657,27 +15657,27 @@ impl SendPoll {
 		self.question_entities.push(question_entity.into());
 		self
 	}
-	/**A JSON-serialized list of special entities that appear in the poll question. It can be specified instead of *question\_parse\_mode**/
+	/** A JSON-serialized list of special entities that appear in the poll question. It can be specified instead of *question\_parse\_mode**/
 	pub fn question_entities(mut self, question_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.question_entities = question_entities.into();
 		self
 	}
-	/**Mode for parsing entities in the question. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details. Currently, only custom emoji entities are allowed*/
+	/** Mode for parsing entities in the question. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details. Currently, only custom emoji entities are allowed*/
 	pub fn question_parse_mode(mut self, question_parse_mode: impl Into<String>) -> Self {
 		self.question_parse_mode = Some(question_parse_mode.into());
 		self
 	}
-	/**Poll type, “quiz” or “regular”, defaults to “regular”*/
+	/** Poll type, “quiz” or “regular”, defaults to “regular”*/
 	pub fn r#type(mut self, r#type: impl Into<String>) -> Self {
 		self.r#type = Some(r#type.into());
 		self
 	}
-	/**Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
+	/** Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<ReplyMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/**Description of the message to reply to*/
+	/** Description of the message to reply to*/
 	pub fn reply_parameters(mut self, reply_parameters: impl Into<ReplyParameters>) -> Self {
 		self.reply_parameters = Some(reply_parameters.into());
 		self
@@ -15758,47 +15758,47 @@ impl SendSticker {
 			sticker: sticker.into(),
 		}
 	}
-	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
+	/** Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub fn allow_paid_broadcast(mut self, allow_paid_broadcast: bool) -> Self {
 		self.allow_paid_broadcast = Some(allow_paid_broadcast);
 		self
 	}
-	/**Unique identifier of the business connection on behalf of which the message will be sent*/
+	/** Unique identifier of the business connection on behalf of which the message will be sent*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
+	/** Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
 	pub fn disable_notification(mut self, disable_notification: bool) -> Self {
 		self.disable_notification = Some(disable_notification);
 		self
 	}
-	/**Emoji associated with the sticker; only for just uploaded stickers*/
+	/** Emoji associated with the sticker; only for just uploaded stickers*/
 	pub fn emoji(mut self, emoji: impl Into<String>) -> Self {
 		self.emoji = Some(emoji.into());
 		self
 	}
-	/**Unique identifier of the message effect to be added to the message; for private chats only*/
+	/** Unique identifier of the message effect to be added to the message; for private chats only*/
 	pub fn message_effect_id(mut self, message_effect_id: impl Into<String>) -> Self {
 		self.message_effect_id = Some(message_effect_id.into());
 		self
 	}
-	/**Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
+	/** Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
 	pub fn message_thread_id(mut self, message_thread_id: impl Into<i64>) -> Self {
 		self.message_thread_id = Some(message_thread_id.into());
 		self
 	}
-	/**Protects the contents of the sent message from forwarding and saving*/
+	/** Protects the contents of the sent message from forwarding and saving*/
 	pub fn protect_content(mut self, protect_content: bool) -> Self {
 		self.protect_content = Some(protect_content);
 		self
 	}
-	/**Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
+	/** Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<ReplyMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/**Description of the message to reply to*/
+	/** Description of the message to reply to*/
 	pub fn reply_parameters(mut self, reply_parameters: impl Into<ReplyParameters>) -> Self {
 		self.reply_parameters = Some(reply_parameters.into());
 		self
@@ -15819,7 +15819,7 @@ impl Executable for SendSticker {
 		parts.add_bool("protect_content", self.protect_content);
 		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
 		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
-		parts.add_asset("sticker", self.sticker);
+		parts.add_attachable("sticker", self.sticker);
 		parts
 	}
 }
@@ -15885,62 +15885,62 @@ impl SendVenue {
 			title: title.into(),
 		}
 	}
-	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
+	/** Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub fn allow_paid_broadcast(mut self, allow_paid_broadcast: bool) -> Self {
 		self.allow_paid_broadcast = Some(allow_paid_broadcast);
 		self
 	}
-	/**Unique identifier of the business connection on behalf of which the message will be sent*/
+	/** Unique identifier of the business connection on behalf of which the message will be sent*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
+	/** Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
 	pub fn disable_notification(mut self, disable_notification: bool) -> Self {
 		self.disable_notification = Some(disable_notification);
 		self
 	}
-	/**Foursquare identifier of the venue*/
+	/** Foursquare identifier of the venue*/
 	pub fn foursquare_id(mut self, foursquare_id: impl Into<String>) -> Self {
 		self.foursquare_id = Some(foursquare_id.into());
 		self
 	}
-	/**Foursquare type of the venue, if known. (For example, “arts\_entertainment/default”, “arts\_entertainment/aquarium” or “food/icecream”.)*/
+	/** Foursquare type of the venue, if known. (For example, “arts\_entertainment/default”, “arts\_entertainment/aquarium” or “food/icecream”.)*/
 	pub fn foursquare_type(mut self, foursquare_type: impl Into<String>) -> Self {
 		self.foursquare_type = Some(foursquare_type.into());
 		self
 	}
-	/**Google Places identifier of the venue*/
+	/** Google Places identifier of the venue*/
 	pub fn google_place_id(mut self, google_place_id: impl Into<String>) -> Self {
 		self.google_place_id = Some(google_place_id.into());
 		self
 	}
-	/**Google Places type of the venue. (See [supported types](https://developers.google.com/places/web-service/supported_types).)*/
+	/** Google Places type of the venue. (See [supported types](https://developers.google.com/places/web-service/supported_types).)*/
 	pub fn google_place_type(mut self, google_place_type: impl Into<String>) -> Self {
 		self.google_place_type = Some(google_place_type.into());
 		self
 	}
-	/**Unique identifier of the message effect to be added to the message; for private chats only*/
+	/** Unique identifier of the message effect to be added to the message; for private chats only*/
 	pub fn message_effect_id(mut self, message_effect_id: impl Into<String>) -> Self {
 		self.message_effect_id = Some(message_effect_id.into());
 		self
 	}
-	/**Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
+	/** Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
 	pub fn message_thread_id(mut self, message_thread_id: impl Into<i64>) -> Self {
 		self.message_thread_id = Some(message_thread_id.into());
 		self
 	}
-	/**Protects the contents of the sent message from forwarding and saving*/
+	/** Protects the contents of the sent message from forwarding and saving*/
 	pub fn protect_content(mut self, protect_content: bool) -> Self {
 		self.protect_content = Some(protect_content);
 		self
 	}
-	/**Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
+	/** Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<ReplyMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/**Description of the message to reply to*/
+	/** Description of the message to reply to*/
 	pub fn reply_parameters(mut self, reply_parameters: impl Into<ReplyParameters>) -> Self {
 		self.reply_parameters = Some(reply_parameters.into());
 		self
@@ -16042,17 +16042,17 @@ impl SendVideo {
 			width: None,
 		}
 	}
-	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
+	/** Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub fn allow_paid_broadcast(mut self, allow_paid_broadcast: bool) -> Self {
 		self.allow_paid_broadcast = Some(allow_paid_broadcast);
 		self
 	}
-	/**Unique identifier of the business connection on behalf of which the message will be sent*/
+	/** Unique identifier of the business connection on behalf of which the message will be sent*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**Video caption (may also be used when resending videos by *file\_id*), 0-1024 characters after entities parsing*/
+	/** Video caption (may also be used when resending videos by *file\_id*), 0-1024 characters after entities parsing*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
 		self.caption = Some(caption.into());
 		self
@@ -16061,77 +16061,77 @@ impl SendVideo {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/**A JSON-serialized list of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** A JSON-serialized list of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/**Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
+	/** Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
 	pub fn disable_notification(mut self, disable_notification: bool) -> Self {
 		self.disable_notification = Some(disable_notification);
 		self
 	}
-	/**Duration of sent video in seconds*/
+	/** Duration of sent video in seconds*/
 	pub fn duration(mut self, duration: impl Into<i64>) -> Self {
 		self.duration = Some(duration.into());
 		self
 	}
-	/**Pass *True* if the video needs to be covered with a spoiler animation*/
+	/** Pass *True* if the video needs to be covered with a spoiler animation*/
 	pub fn has_spoiler(mut self, has_spoiler: bool) -> Self {
 		self.has_spoiler = Some(has_spoiler);
 		self
 	}
-	/**Video height*/
+	/** Video height*/
 	pub fn height(mut self, height: impl Into<i64>) -> Self {
 		self.height = Some(height.into());
 		self
 	}
-	/**Unique identifier of the message effect to be added to the message; for private chats only*/
+	/** Unique identifier of the message effect to be added to the message; for private chats only*/
 	pub fn message_effect_id(mut self, message_effect_id: impl Into<String>) -> Self {
 		self.message_effect_id = Some(message_effect_id.into());
 		self
 	}
-	/**Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
+	/** Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
 	pub fn message_thread_id(mut self, message_thread_id: impl Into<i64>) -> Self {
 		self.message_thread_id = Some(message_thread_id.into());
 		self
 	}
-	/**Mode for parsing entities in the video caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** Mode for parsing entities in the video caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/**Protects the contents of the sent message from forwarding and saving*/
+	/** Protects the contents of the sent message from forwarding and saving*/
 	pub fn protect_content(mut self, protect_content: bool) -> Self {
 		self.protect_content = Some(protect_content);
 		self
 	}
-	/**Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
+	/** Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<ReplyMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/**Description of the message to reply to*/
+	/** Description of the message to reply to*/
 	pub fn reply_parameters(mut self, reply_parameters: impl Into<ReplyParameters>) -> Self {
 		self.reply_parameters = Some(reply_parameters.into());
 		self
 	}
-	/**Pass *True*, if the caption must be shown above the message media*/
+	/** Pass *True*, if the caption must be shown above the message media*/
 	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
 		self.show_caption_above_media = Some(show_caption_above_media);
 		self
 	}
-	/**Pass *True* if the uploaded video is suitable for streaming*/
+	/** Pass *True* if the uploaded video is suitable for streaming*/
 	pub fn supports_streaming(mut self, supports_streaming: bool) -> Self {
 		self.supports_streaming = Some(supports_streaming);
 		self
 	}
-	/**Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
+	/** Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
 	pub fn thumbnail(mut self, thumbnail: impl Into<Asset>) -> Self {
 		self.thumbnail = Some(thumbnail.into());
 		self
 	}
-	/**Video width*/
+	/** Video width*/
 	pub fn width(mut self, width: impl Into<i64>) -> Self {
 		self.width = Some(width.into());
 		self
@@ -16159,8 +16159,8 @@ impl Executable for SendVideo {
 		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
 		parts.add_bool("show_caption_above_media", self.show_caption_above_media);
 		parts.add_bool("supports_streaming", self.supports_streaming);
-		parts.add_asset("thumbnail", self.thumbnail);
-		parts.add_asset("video", self.video);
+		if let Some(thumbnail) = self.thumbnail { parts.add_attachable("thumbnail", thumbnail) }
+		parts.add_attachable("video", self.video);
 		parts.add_i64("width", self.width);
 		parts
 	}
@@ -16215,57 +16215,57 @@ impl SendVideoNote {
 			video_note: video_note.into(),
 		}
 	}
-	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
+	/** Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub fn allow_paid_broadcast(mut self, allow_paid_broadcast: bool) -> Self {
 		self.allow_paid_broadcast = Some(allow_paid_broadcast);
 		self
 	}
-	/**Unique identifier of the business connection on behalf of which the message will be sent*/
+	/** Unique identifier of the business connection on behalf of which the message will be sent*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
+	/** Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
 	pub fn disable_notification(mut self, disable_notification: bool) -> Self {
 		self.disable_notification = Some(disable_notification);
 		self
 	}
-	/**Duration of sent video in seconds*/
+	/** Duration of sent video in seconds*/
 	pub fn duration(mut self, duration: impl Into<i64>) -> Self {
 		self.duration = Some(duration.into());
 		self
 	}
-	/**Video width and height, i.e. diameter of the video message*/
+	/** Video width and height, i.e. diameter of the video message*/
 	pub fn length(mut self, length: impl Into<i64>) -> Self {
 		self.length = Some(length.into());
 		self
 	}
-	/**Unique identifier of the message effect to be added to the message; for private chats only*/
+	/** Unique identifier of the message effect to be added to the message; for private chats only*/
 	pub fn message_effect_id(mut self, message_effect_id: impl Into<String>) -> Self {
 		self.message_effect_id = Some(message_effect_id.into());
 		self
 	}
-	/**Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
+	/** Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
 	pub fn message_thread_id(mut self, message_thread_id: impl Into<i64>) -> Self {
 		self.message_thread_id = Some(message_thread_id.into());
 		self
 	}
-	/**Protects the contents of the sent message from forwarding and saving*/
+	/** Protects the contents of the sent message from forwarding and saving*/
 	pub fn protect_content(mut self, protect_content: bool) -> Self {
 		self.protect_content = Some(protect_content);
 		self
 	}
-	/**Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
+	/** Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<ReplyMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/**Description of the message to reply to*/
+	/** Description of the message to reply to*/
 	pub fn reply_parameters(mut self, reply_parameters: impl Into<ReplyParameters>) -> Self {
 		self.reply_parameters = Some(reply_parameters.into());
 		self
 	}
-	/**Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
+	/** Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
 	pub fn thumbnail(mut self, thumbnail: impl Into<Asset>) -> Self {
 		self.thumbnail = Some(thumbnail.into());
 		self
@@ -16287,8 +16287,8 @@ impl Executable for SendVideoNote {
 		parts.add_bool("protect_content", self.protect_content);
 		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
 		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
-		parts.add_asset("thumbnail", self.thumbnail);
-		parts.add_asset("video_note", self.video_note);
+		if let Some(thumbnail) = self.thumbnail { parts.add_attachable("thumbnail", thumbnail) }
+		parts.add_attachable("video_note", self.video_note);
 		parts
 	}
 }
@@ -16345,17 +16345,17 @@ impl SendVoice {
 			voice: voice.into(),
 		}
 	}
-	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
+	/** Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub fn allow_paid_broadcast(mut self, allow_paid_broadcast: bool) -> Self {
 		self.allow_paid_broadcast = Some(allow_paid_broadcast);
 		self
 	}
-	/**Unique identifier of the business connection on behalf of which the message will be sent*/
+	/** Unique identifier of the business connection on behalf of which the message will be sent*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**Voice message caption, 0-1024 characters after entities parsing*/
+	/** Voice message caption, 0-1024 characters after entities parsing*/
 	pub fn caption(mut self, caption: impl Into<String>) -> Self {
 		self.caption = Some(caption.into());
 		self
@@ -16364,47 +16364,47 @@ impl SendVoice {
 		self.caption_entities.push(caption_entity.into());
 		self
 	}
-	/**A JSON-serialized list of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
+	/** A JSON-serialized list of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
 		self
 	}
-	/**Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
+	/** Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
 	pub fn disable_notification(mut self, disable_notification: bool) -> Self {
 		self.disable_notification = Some(disable_notification);
 		self
 	}
-	/**Duration of the voice message in seconds*/
+	/** Duration of the voice message in seconds*/
 	pub fn duration(mut self, duration: impl Into<i64>) -> Self {
 		self.duration = Some(duration.into());
 		self
 	}
-	/**Unique identifier of the message effect to be added to the message; for private chats only*/
+	/** Unique identifier of the message effect to be added to the message; for private chats only*/
 	pub fn message_effect_id(mut self, message_effect_id: impl Into<String>) -> Self {
 		self.message_effect_id = Some(message_effect_id.into());
 		self
 	}
-	/**Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
+	/** Unique identifier for the target message thread (topic) of the forum; for forum supergroups only*/
 	pub fn message_thread_id(mut self, message_thread_id: impl Into<i64>) -> Self {
 		self.message_thread_id = Some(message_thread_id.into());
 		self
 	}
-	/**Mode for parsing entities in the voice message caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
+	/** Mode for parsing entities in the voice message caption. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details.*/
 	pub fn parse_mode(mut self, parse_mode: impl Into<String>) -> Self {
 		self.parse_mode = Some(parse_mode.into());
 		self
 	}
-	/**Protects the contents of the sent message from forwarding and saving*/
+	/** Protects the contents of the sent message from forwarding and saving*/
 	pub fn protect_content(mut self, protect_content: bool) -> Self {
 		self.protect_content = Some(protect_content);
 		self
 	}
-	/**Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
+	/** Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<ReplyMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
 	}
-	/**Description of the message to reply to*/
+	/** Description of the message to reply to*/
 	pub fn reply_parameters(mut self, reply_parameters: impl Into<ReplyParameters>) -> Self {
 		self.reply_parameters = Some(reply_parameters.into());
 		self
@@ -16428,7 +16428,7 @@ impl Executable for SendVoice {
 		parts.add_bool("protect_content", self.protect_content);
 		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
 		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
-		parts.add_asset("voice", self.voice);
+		parts.add_attachable("voice", self.voice);
 		parts
 	}
 }
@@ -16481,7 +16481,7 @@ impl SetChatDescription {
 			description: None,
 		}
 	}
-	/**New chat description, 0-255 characters*/
+	/** New chat description, 0-255 characters*/
 	pub fn description(mut self, description: impl Into<String>) -> Self {
 		self.description = Some(description.into());
 		self
@@ -16514,12 +16514,12 @@ impl SetChatMenuButton {
 			menu_button: None,
 		}
 	}
-	/**Unique identifier for the target private chat. If not specified, default bot's menu button will be changed*/
+	/** Unique identifier for the target private chat. If not specified, default bot's menu button will be changed*/
 	pub fn chat_id(mut self, chat_id: impl Into<i64>) -> Self {
 		self.chat_id = Some(chat_id.into());
 		self
 	}
-	/**A JSON-serialized object for the bot's new menu button. Defaults to [MenuButtonDefault](https://core.telegram.org/bots/api/#menubuttondefault)*/
+	/** A JSON-serialized object for the bot's new menu button. Defaults to [MenuButtonDefault](https://core.telegram.org/bots/api/#menubuttondefault)*/
 	pub fn menu_button(mut self, menu_button: impl Into<MenuButton>) -> Self {
 		self.menu_button = Some(menu_button.into());
 		self
@@ -16555,7 +16555,7 @@ impl SetChatPermissions {
 			use_independent_chat_permissions: None,
 		}
 	}
-	/**Pass *True* if chat permissions are set independently. Otherwise, the *can\_send\_other\_messages* and *can\_add\_web\_page\_previews* permissions will imply the *can\_send\_messages*, *can\_send\_audios*, *can\_send\_documents*, *can\_send\_photos*, *can\_send\_videos*, *can\_send\_video\_notes*, and *can\_send\_voice\_notes* permissions; the *can\_send\_polls* permission will imply the *can\_send\_messages* permission.*/
+	/** Pass *True* if chat permissions are set independently. Otherwise, the *can\_send\_other\_messages* and *can\_add\_web\_page\_previews* permissions will imply the *can\_send\_messages*, *can\_send\_audios*, *can\_send\_documents*, *can\_send\_photos*, *can\_send\_videos*, *can\_send\_video\_notes*, and *can\_send\_voice\_notes* permissions; the *can\_send\_polls* permission will imply the *can\_send\_messages* permission.*/
 	pub fn use_independent_chat_permissions(mut self, use_independent_chat_permissions: bool) -> Self {
 		self.use_independent_chat_permissions = Some(use_independent_chat_permissions);
 		self
@@ -16596,7 +16596,7 @@ impl Executable for SetChatPhoto {
 	fn into_parts(self) -> FormParts {
 		let mut parts = FormParts::new(2);
 		parts.add_string("chat_id", self.chat_id.to_string());
-		parts.add_file("photo", self.photo);
+		parts.add_attachable("photo", self.photo);
 		parts
 	}
 }
@@ -16673,7 +16673,7 @@ impl SetCustomEmojiStickerSetThumbnail {
 			name: name.into(),
 		}
 	}
-	/**Custom emoji identifier of a sticker from the sticker set; pass an empty string to drop the thumbnail and use the first sticker as the thumbnail.*/
+	/** Custom emoji identifier of a sticker from the sticker set; pass an empty string to drop the thumbnail and use the first sticker as the thumbnail.*/
 	pub fn custom_emoji_id(mut self, custom_emoji_id: impl Into<String>) -> Self {
 		self.custom_emoji_id = Some(custom_emoji_id.into());
 		self
@@ -16721,27 +16721,27 @@ impl SetGameScore {
 			user_id: user_id.into(),
 		}
 	}
-	/**Required if *inline\_message\_id* is not specified. Unique identifier for the target chat*/
+	/** Required if *inline\_message\_id* is not specified. Unique identifier for the target chat*/
 	pub fn chat_id(mut self, chat_id: impl Into<i64>) -> Self {
 		self.chat_id = Some(chat_id.into());
 		self
 	}
-	/**Pass *True* if the game message should not be automatically edited to include the current scoreboard*/
+	/** Pass *True* if the game message should not be automatically edited to include the current scoreboard*/
 	pub fn disable_edit_message(mut self, disable_edit_message: bool) -> Self {
 		self.disable_edit_message = Some(disable_edit_message);
 		self
 	}
-	/**Pass *True* if the high score is allowed to decrease. This can be useful when fixing mistakes or banning cheaters*/
+	/** Pass *True* if the high score is allowed to decrease. This can be useful when fixing mistakes or banning cheaters*/
 	pub fn force(mut self, force: bool) -> Self {
 		self.force = Some(force);
 		self
 	}
-	/**Required if *chat\_id* and *message\_id* are not specified. Identifier of the inline message*/
+	/** Required if *chat\_id* and *message\_id* are not specified. Identifier of the inline message*/
 	pub fn inline_message_id(mut self, inline_message_id: impl Into<String>) -> Self {
 		self.inline_message_id = Some(inline_message_id.into());
 		self
 	}
-	/**Required if *inline\_message\_id* is not specified. Identifier of the sent message*/
+	/** Required if *inline\_message\_id* is not specified. Identifier of the sent message*/
 	pub fn message_id(mut self, message_id: impl Into<i64>) -> Self {
 		self.message_id = Some(message_id.into());
 		self
@@ -16785,7 +16785,7 @@ impl SetMessageReaction {
 			reaction: Vec::new(),
 		}
 	}
-	/**Pass *True* to set the reaction with a big animation*/
+	/** Pass *True* to set the reaction with a big animation*/
 	pub fn is_big(mut self, is_big: bool) -> Self {
 		self.is_big = Some(is_big);
 		self
@@ -16794,7 +16794,7 @@ impl SetMessageReaction {
 		self.reaction.push(reaction.into());
 		self
 	}
-	/**A JSON-serialized list of reaction types to set on the message. Currently, as non-premium users, bots can set up to one reaction per message. A custom emoji reaction can be used if it is either already present on the message or explicitly allowed by chat administrators. Paid reactions can't be used by bots.*/
+	/** A JSON-serialized list of reaction types to set on the message. Currently, as non-premium users, bots can set up to one reaction per message. A custom emoji reaction can be used if it is either already present on the message or explicitly allowed by chat administrators. Paid reactions can't be used by bots.*/
 	pub fn reaction(mut self, reaction: impl Into<Vec<ReactionType>>) -> Self {
 		self.reaction = reaction.into();
 		self
@@ -16836,12 +16836,12 @@ impl SetMyCommands {
 		self.commands.push(command.into());
 		self
 	}
-	/**A two-letter ISO 639-1 language code. If empty, commands will be applied to all users from the given scope, for whose language there are no dedicated commands*/
+	/** A two-letter ISO 639-1 language code. If empty, commands will be applied to all users from the given scope, for whose language there are no dedicated commands*/
 	pub fn language_code(mut self, language_code: impl Into<String>) -> Self {
 		self.language_code = Some(language_code.into());
 		self
 	}
-	/**A JSON-serialized object, describing scope of users for which the commands are relevant. Defaults to [BotCommandScopeDefault](https://core.telegram.org/bots/api/#botcommandscopedefault).*/
+	/** A JSON-serialized object, describing scope of users for which the commands are relevant. Defaults to [BotCommandScopeDefault](https://core.telegram.org/bots/api/#botcommandscopedefault).*/
 	pub fn scope(mut self, scope: impl Into<BotCommandScope>) -> Self {
 		self.scope = Some(scope.into());
 		self
@@ -16875,12 +16875,12 @@ impl SetMyDefaultAdministratorRights {
 			rights: None,
 		}
 	}
-	/**Pass *True* to change the default administrator rights of the bot in channels. Otherwise, the default administrator rights of the bot for groups and supergroups will be changed.*/
+	/** Pass *True* to change the default administrator rights of the bot in channels. Otherwise, the default administrator rights of the bot for groups and supergroups will be changed.*/
 	pub fn for_channels(mut self, for_channels: bool) -> Self {
 		self.for_channels = Some(for_channels);
 		self
 	}
-	/**A JSON-serialized object describing new default administrator rights. If not specified, the default administrator rights will be cleared.*/
+	/** A JSON-serialized object describing new default administrator rights. If not specified, the default administrator rights will be cleared.*/
 	pub fn rights(mut self, rights: impl Into<ChatAdministratorRights>) -> Self {
 		self.rights = Some(rights.into());
 		self
@@ -16913,12 +16913,12 @@ impl SetMyDescription {
 			language_code: None,
 		}
 	}
-	/**New bot description; 0-512 characters. Pass an empty string to remove the dedicated description for the given language.*/
+	/** New bot description; 0-512 characters. Pass an empty string to remove the dedicated description for the given language.*/
 	pub fn description(mut self, description: impl Into<String>) -> Self {
 		self.description = Some(description.into());
 		self
 	}
-	/**A two-letter ISO 639-1 language code. If empty, the description will be applied to all users for whose language there is no dedicated description.*/
+	/** A two-letter ISO 639-1 language code. If empty, the description will be applied to all users for whose language there is no dedicated description.*/
 	pub fn language_code(mut self, language_code: impl Into<String>) -> Self {
 		self.language_code = Some(language_code.into());
 		self
@@ -16951,12 +16951,12 @@ impl SetMyName {
 			name: None,
 		}
 	}
-	/**A two-letter ISO 639-1 language code. If empty, the name will be shown to all users for whose language there is no dedicated name.*/
+	/** A two-letter ISO 639-1 language code. If empty, the name will be shown to all users for whose language there is no dedicated name.*/
 	pub fn language_code(mut self, language_code: impl Into<String>) -> Self {
 		self.language_code = Some(language_code.into());
 		self
 	}
-	/**New bot name; 0-64 characters. Pass an empty string to remove the dedicated name for the given language.*/
+	/** New bot name; 0-64 characters. Pass an empty string to remove the dedicated name for the given language.*/
 	pub fn name(mut self, name: impl Into<String>) -> Self {
 		self.name = Some(name.into());
 		self
@@ -16989,12 +16989,12 @@ impl SetMyShortDescription {
 			short_description: None,
 		}
 	}
-	/**A two-letter ISO 639-1 language code. If empty, the short description will be applied to all users for whose language there is no dedicated short description.*/
+	/** A two-letter ISO 639-1 language code. If empty, the short description will be applied to all users for whose language there is no dedicated short description.*/
 	pub fn language_code(mut self, language_code: impl Into<String>) -> Self {
 		self.language_code = Some(language_code.into());
 		self
 	}
-	/**New short description for the bot; 0-120 characters. Pass an empty string to remove the dedicated short description for the given language.*/
+	/** New short description for the bot; 0-120 characters. Pass an empty string to remove the dedicated short description for the given language.*/
 	pub fn short_description(mut self, short_description: impl Into<String>) -> Self {
 		self.short_description = Some(short_description.into());
 		self
@@ -17097,7 +17097,7 @@ impl SetStickerKeywords {
 		self.keywords.push(keyword.into());
 		self
 	}
-	/**A JSON-serialized list of 0-20 search keywords for the sticker with total length of up to 64 characters*/
+	/** A JSON-serialized list of 0-20 search keywords for the sticker with total length of up to 64 characters*/
 	pub fn keywords(mut self, keywords: impl Into<Vec<String>>) -> Self {
 		self.keywords = keywords.into();
 		self
@@ -17130,7 +17130,7 @@ impl SetStickerMaskPosition {
 			sticker: sticker.into(),
 		}
 	}
-	/**A JSON-serialized object with the position where the mask should be placed on faces. Omit the parameter to remove the mask position.*/
+	/** A JSON-serialized object with the position where the mask should be placed on faces. Omit the parameter to remove the mask position.*/
 	pub fn mask_position(mut self, mask_position: impl Into<MaskPosition>) -> Self {
 		self.mask_position = Some(mask_position.into());
 		self
@@ -17197,7 +17197,7 @@ impl SetStickerSetThumbnail {
 			user_id: user_id.into(),
 		}
 	}
-	/**A **.WEBP** or **.PNG** image with the thumbnail, must be up to 128 kilobytes in size and have a width and height of exactly 100px, or a **.TGS** animation with a thumbnail up to 32 kilobytes in size (see [https://core.telegram.org/stickers#animation-requirements](https://core.telegram.org/stickers#animation-requirements) for animated sticker technical requirements), or a **.WEBM** video with the thumbnail up to 32 kilobytes in size; see [https://core.telegram.org/stickers#video-requirements](https://core.telegram.org/stickers#video-requirements) for video sticker technical requirements. Pass a *file\_id* as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files). Animated and video sticker set thumbnails can't be uploaded via HTTP URL. If omitted, then the thumbnail is dropped and the first sticker is used as the thumbnail.*/
+	/** A **.WEBP** or **.PNG** image with the thumbnail, must be up to 128 kilobytes in size and have a width and height of exactly 100px, or a **.TGS** animation with a thumbnail up to 32 kilobytes in size (see [https://core.telegram.org/stickers#animation-requirements](https://core.telegram.org/stickers#animation-requirements) for animated sticker technical requirements), or a **.WEBM** video with the thumbnail up to 32 kilobytes in size; see [https://core.telegram.org/stickers#video-requirements](https://core.telegram.org/stickers#video-requirements) for video sticker technical requirements. Pass a *file\_id* as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files). Animated and video sticker set thumbnails can't be uploaded via HTTP URL. If omitted, then the thumbnail is dropped and the first sticker is used as the thumbnail.*/
 	pub fn thumbnail(mut self, thumbnail: impl Into<Asset>) -> Self {
 		self.thumbnail = Some(thumbnail.into());
 		self
@@ -17210,7 +17210,7 @@ impl Executable for SetStickerSetThumbnail {
 		let mut parts = FormParts::new(4);
 		parts.add_string("format", self.format);
 		parts.add_string("name", self.name);
-		parts.add_asset("thumbnail", self.thumbnail);
+		if let Some(thumbnail) = self.thumbnail { parts.add_attachable("thumbnail", thumbnail) }
 		parts.add_i64("user_id", self.user_id);
 		parts
 	}
@@ -17263,12 +17263,12 @@ impl SetUserEmojiStatus {
 			user_id: user_id.into(),
 		}
 	}
-	/**Custom emoji identifier of the emoji status to set. Pass an empty string to remove the status.*/
+	/** Custom emoji identifier of the emoji status to set. Pass an empty string to remove the status.*/
 	pub fn emoji_status_custom_emoji_id(mut self, emoji_status_custom_emoji_id: impl Into<String>) -> Self {
 		self.emoji_status_custom_emoji_id = Some(emoji_status_custom_emoji_id.into());
 		self
 	}
-	/**Expiration date of the emoji status, if any*/
+	/** Expiration date of the emoji status, if any*/
 	pub fn emoji_status_expiration_date(mut self, emoji_status_expiration_date: impl Into<i64>) -> Self {
 		self.emoji_status_expiration_date = Some(emoji_status_expiration_date.into());
 		self
@@ -17324,33 +17324,33 @@ impl SetWebhook {
 		self.allowed_updates.push(allowed_update.into());
 		self
 	}
-	/**A JSON-serialized list of the update types you want your bot to receive. For example, specify `["message", "edited_channel_post", "callback_query"]` to only receive updates of these types. See [Update](https://core.telegram.org/bots/api/#update) for a complete list of available update types. Specify an empty list to receive all update types except *chat\_member*, *message\_reaction*, and *message\_reaction\_count* (default). If not specified, the previous setting will be used.  
+	/** A JSON-serialized list of the update types you want your bot to receive. For example, specify `["message", "edited_channel_post", "callback_query"]` to only receive updates of these types. See [Update](https://core.telegram.org/bots/api/#update) for a complete list of available update types. Specify an empty list to receive all update types except *chat\_member*, *message\_reaction*, and *message\_reaction\_count* (default). If not specified, the previous setting will be used.  
 	Please note that this parameter doesn't affect updates created before the call to the setWebhook, so unwanted updates may be received for a short period of time.*/
 	pub fn allowed_updates(mut self, allowed_updates: impl Into<Vec<String>>) -> Self {
 		self.allowed_updates = allowed_updates.into();
 		self
 	}
-	/**Upload your public key certificate so that the root certificate in use can be checked. See our [self-signed guide](https://core.telegram.org/bots/self-signed) for details.*/
+	/** Upload your public key certificate so that the root certificate in use can be checked. See our [self-signed guide](https://core.telegram.org/bots/self-signed) for details.*/
 	pub fn certificate(mut self, certificate: impl Into<InputFile>) -> Self {
 		self.certificate = Some(certificate.into());
 		self
 	}
-	/**Pass *True* to drop all pending updates*/
+	/** Pass *True* to drop all pending updates*/
 	pub fn drop_pending_updates(mut self, drop_pending_updates: bool) -> Self {
 		self.drop_pending_updates = Some(drop_pending_updates);
 		self
 	}
-	/**The fixed IP address which will be used to send webhook requests instead of the IP address resolved through DNS*/
+	/** The fixed IP address which will be used to send webhook requests instead of the IP address resolved through DNS*/
 	pub fn ip_address(mut self, ip_address: impl Into<String>) -> Self {
 		self.ip_address = Some(ip_address.into());
 		self
 	}
-	/**The maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery, 1-100. Defaults to *40*. Use lower values to limit the load on your bot's server, and higher values to increase your bot's throughput.*/
+	/** The maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery, 1-100. Defaults to *40*. Use lower values to limit the load on your bot's server, and higher values to increase your bot's throughput.*/
 	pub fn max_connections(mut self, max_connections: impl Into<i64>) -> Self {
 		self.max_connections = Some(max_connections.into());
 		self
 	}
-	/**A secret token to be sent in a header “X-Telegram-Bot-Api-Secret-Token” in every webhook request, 1-256 characters. Only characters `A-Z`, `a-z`, `0-9`, `_` and `-` are allowed. The header is useful to ensure that the request comes from a webhook set by you.*/
+	/** A secret token to be sent in a header “X-Telegram-Bot-Api-Secret-Token” in every webhook request, 1-256 characters. Only characters `A-Z`, `a-z`, `0-9`, `_` and `-` are allowed. The header is useful to ensure that the request comes from a webhook set by you.*/
 	pub fn secret_token(mut self, secret_token: impl Into<String>) -> Self {
 		self.secret_token = Some(secret_token.into());
 		self
@@ -17362,7 +17362,7 @@ impl Executable for SetWebhook {
 	fn into_parts(self) -> FormParts {
 		let mut parts = FormParts::new(7);
 		if self.allowed_updates.len() > 0 { parts.add_object("allowed_updates", self.allowed_updates) }
-		parts.add_file("certificate", self.certificate);
+		if let Some(certificate) = self.certificate { parts.add_attachable("certificate", certificate) }
 		parts.add_bool("drop_pending_updates", self.drop_pending_updates);
 		parts.add_string("ip_address", self.ip_address);
 		parts.add_i64("max_connections", self.max_connections);
@@ -17397,27 +17397,27 @@ impl StopMessageLiveLocation {
 			reply_markup: None,
 		}
 	}
-	/**Unique identifier of the business connection on behalf of which the message to be edited was sent*/
+	/** Unique identifier of the business connection on behalf of which the message to be edited was sent*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**Required if *inline\_message\_id* is not specified. Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
+	/** Required if *inline\_message\_id* is not specified. Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub fn chat_id(mut self, chat_id: impl Into<ChatId>) -> Self {
 		self.chat_id = Some(chat_id.into());
 		self
 	}
-	/**Required if *chat\_id* and *message\_id* are not specified. Identifier of the inline message*/
+	/** Required if *chat\_id* and *message\_id* are not specified. Identifier of the inline message*/
 	pub fn inline_message_id(mut self, inline_message_id: impl Into<String>) -> Self {
 		self.inline_message_id = Some(inline_message_id.into());
 		self
 	}
-	/**Required if *inline\_message\_id* is not specified. Identifier of the message with live location to stop*/
+	/** Required if *inline\_message\_id* is not specified. Identifier of the message with live location to stop*/
 	pub fn message_id(mut self, message_id: impl Into<i64>) -> Self {
 		self.message_id = Some(message_id.into());
 		self
 	}
-	/**A JSON-serialized object for a new [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards).*/
+	/** A JSON-serialized object for a new [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards).*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
@@ -17459,12 +17459,12 @@ impl StopPoll {
 			reply_markup: None,
 		}
 	}
-	/**Unique identifier of the business connection on behalf of which the message to be edited was sent*/
+	/** Unique identifier of the business connection on behalf of which the message to be edited was sent*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**A JSON-serialized object for a new message [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards).*/
+	/** A JSON-serialized object for a new message [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards).*/
 	pub fn reply_markup(mut self, reply_markup: impl Into<InlineKeyboardMarkup>) -> Self {
 		self.reply_markup = Some(reply_markup.into());
 		self
@@ -17502,7 +17502,7 @@ impl UnbanChatMember {
 			user_id: user_id.into(),
 		}
 	}
-	/**Do nothing if the user is not banned*/
+	/** Do nothing if the user is not banned*/
 	pub fn only_if_banned(mut self, only_if_banned: bool) -> Self {
 		self.only_if_banned = Some(only_if_banned);
 		self
@@ -17667,12 +17667,12 @@ impl UnpinChatMessage {
 			message_id: None,
 		}
 	}
-	/**Unique identifier of the business connection on behalf of which the message will be unpinned*/
+	/** Unique identifier of the business connection on behalf of which the message will be unpinned*/
 	pub fn business_connection_id(mut self, business_connection_id: impl Into<String>) -> Self {
 		self.business_connection_id = Some(business_connection_id.into());
 		self
 	}
-	/**Identifier of the message to unpin. Required if *business\_connection\_id* is specified. If not specified, the most recent pinned message (by sending date) will be unpinned.*/
+	/** Identifier of the message to unpin. Required if *business\_connection\_id* is specified. If not specified, the most recent pinned message (by sending date) will be unpinned.*/
 	pub fn message_id(mut self, message_id: impl Into<i64>) -> Self {
 		self.message_id = Some(message_id.into());
 		self
@@ -17715,7 +17715,7 @@ impl Executable for UploadStickerFile {
 	const METHOD_NAME: &str = "uploadStickerFile";
 	fn into_parts(self) -> FormParts {
 		let mut parts = FormParts::new(3);
-		parts.add_file("sticker", self.sticker);
+		parts.add_attachable("sticker", self.sticker);
 		parts.add_string("sticker_format", self.sticker_format);
 		parts.add_i64("user_id", self.user_id);
 		parts
@@ -17738,7 +17738,7 @@ impl VerifyChat {
 			custom_description: None,
 		}
 	}
-	/**Custom description for the verification; 0-70 characters. Must be empty if the organization isn't allowed to provide a custom verification description.*/
+	/** Custom description for the verification; 0-70 characters. Must be empty if the organization isn't allowed to provide a custom verification description.*/
 	pub fn custom_description(mut self, custom_description: impl Into<String>) -> Self {
 		self.custom_description = Some(custom_description.into());
 		self
@@ -17771,7 +17771,7 @@ impl VerifyUser {
 			user_id: user_id.into(),
 		}
 	}
-	/**Custom description for the verification; 0-70 characters. Must be empty if the organization isn't allowed to provide a custom verification description.*/
+	/** Custom description for the verification; 0-70 characters. Must be empty if the organization isn't allowed to provide a custom verification description.*/
 	pub fn custom_description(mut self, custom_description: impl Into<String>) -> Self {
 		self.custom_description = Some(custom_description.into());
 		self

@@ -1,3 +1,5 @@
+// This is one of most terrible code I wrote
+
 #![allow(unused_imports, unused_must_use)]
 #![feature(let_chains)]
 
@@ -38,7 +40,8 @@ struct TypeInfo {
 	name: String,
 	wrappers: Vec<TypeWrapper>,
 	has_ref: bool,
-	const_literal: Option<String>
+	const_literal: Option<String>,
+	maybe_file: bool
 }
 impl TypeInfo {
 	fn is_array(&self) -> bool {
@@ -124,11 +127,11 @@ fn get_plain_typeinfo(ty: &Type) -> TypeInfo {
 		},
 		_ => panic!("{ty:?} is not a plain type")
 	};
-	TypeInfo { name, has_ref, wrappers, const_literal: None }
+	TypeInfo { name, has_ref, wrappers, const_literal: None, maybe_file: ty.maybe_file_to_send() }
 }
 
 fn create_enum_variant(enum_name: &String, var: &Type) -> (String, StructField) {
-	let TypeInfo { name: var_ty_name, has_ref, .. } = get_plain_typeinfo(&var);
+	let TypeInfo { name: var_ty_name, has_ref, maybe_file, .. } = get_plain_typeinfo(&var);
 	let mut var_name = var_ty_name.to_pascal_case();
 	if enum_name == "ChatId" || enum_name == "FromChatId" {
 		if var_name == "String" { var_name = "Username".to_owned(); }
@@ -139,7 +142,7 @@ fn create_enum_variant(enum_name: &String, var: &Type) -> (String, StructField) 
 	}
 	(var_name, StructField { 
 		name: var_ty_name.clone(), 
-		typeinfo: TypeInfo { name: var_ty_name, has_ref, wrappers: Vec::new(), const_literal: None, }, 
+		typeinfo: TypeInfo { name: var_ty_name, has_ref, wrappers: Vec::new(), const_literal: None, maybe_file, }, 
 		optional: false, 
 		comment: String::new()
 	}) 
@@ -158,21 +161,21 @@ fn expand_typeinfo(state: &mut Registry, target: &Type, NewEnumInfo { mut name, 
 			// assuming that it is not recursive (does not contain inner `Or`s) 
 			if BLACKLISTED_TYPES.contains(&name.as_str()) {
 				println!("skipped blacklisted type {name}");
-				return TypeInfo { name: name.clone(), has_ref: true, wrappers: Vec::new(), const_literal: None }
+				return TypeInfo { name: name.clone(), has_ref: true, wrappers: Vec::new(), const_literal: None, maybe_file: target.maybe_file_to_send() }
 			}
 			let mut variants = vars.iter().map(|var| create_enum_variant(&name, var)).collect::<BTreeMap<_, _>>();
 			if variants.contains_key("InputFile") && variants.contains_key("String") {
 				variants.remove_entry("InputFile");				
 				variants.insert("File".to_string(), StructField { 
 					name: "InputFile".into(), 
-					typeinfo: TypeInfo { name: "InputFile".into(), has_ref: true, wrappers: Vec::new(), const_literal: None }, 
+					typeinfo: TypeInfo { name: "InputFile".into(), has_ref: true, wrappers: Vec::new(), const_literal: None, maybe_file: target.maybe_file_to_send() }, 
 					optional: false, 
 					comment: String::new()
 				});
 				variants.remove_entry("String");
 				variants.insert("Url".to_string(), StructField { 
 					name: "String".into(), 
-					typeinfo: TypeInfo { name: "String".into(), has_ref: true, wrappers: Vec::new(), const_literal: None }, 
+					typeinfo: TypeInfo { name: "String".into(), has_ref: true, wrappers: Vec::new(), const_literal: None, maybe_file: target.maybe_file_to_send() }, 
 					optional: false, 
 					comment: String::new()
 				});
@@ -195,7 +198,7 @@ fn expand_typeinfo(state: &mut Registry, target: &Type, NewEnumInfo { mut name, 
 				// 	panic!();
 				// }
 			};
-			TypeInfo { has_ref: true, name, wrappers: Vec::new(), const_literal: None }
+			TypeInfo { has_ref: true, name, wrappers: Vec::new(), const_literal: None, maybe_file:  target.maybe_file_to_send()  }
 		},
 		Type::Array(t) if matches!(*t.clone(), Type::Or(..)) => {
 			let mut inner = expand_typeinfo(state, t, NewEnumInfo { name, parent, serde, comment });
@@ -263,6 +266,7 @@ pub fn main() -> Result<()> {
 						typeinfo.wrappers = vec![];
 						typeinfo.has_ref = true;
 					}
+
 					check_const_literal(&mut typeinfo, &description);
 
 					let mut docs = Vec::from_iter([description]);
@@ -322,6 +326,7 @@ pub fn main() -> Result<()> {
 				outdef
 			}
 			ObjectData::Elements(vars) => {
+
 				let variants = vars.iter().map(|var| create_enum_variant(&object.name, var)).collect();
 				let outdef = Entity { 
 					name: escape_field_name(object.name.clone()), 
@@ -394,7 +399,7 @@ pub fn main() -> Result<()> {
 
 		let return_type_info;
 		if ["EditMessageCaption", "EditMessageLiveLocation", "EditMessageMedia", "EditMessageReplyMarkup", "EditMessageText"].contains(&method_name.as_str()) {
-			return_type_info = TypeInfo { name: "EditMessageResult".to_owned(), has_ref: true, wrappers: Vec::new(), const_literal: None };
+			return_type_info = TypeInfo { name: "EditMessageResult".to_owned(), has_ref: true, wrappers: Vec::new(), const_literal: None, maybe_file: false };
 		}
 		else {
 			return_type_info = expand_typeinfo(
@@ -541,19 +546,11 @@ fn print_entities(registry: Registry, out: &mut IndentedWriter<impl Write>) {
 					writeln!(out, "let mut parts = FormParts::new({capacity});");
 
 					for (name, sf) in args.iter() {
-						if sf.optional && sf.typeinfo.is_array() {
+						if sf.typeinfo.is_array() {
 							writeln!(out, r#"if self.{name}.len() > 0 {{ parts.add_object("{name}", self.{name}) }}"#);
 						}
-						else if sf.typeinfo.is_array() {
-							writeln!(out, r#"if self.{name}.len() > 0 {{ parts.add_object("{name}", self.{name}) }}"#);
-						}
-						else if ["String", "i64", "f32", "bool", "InputFile", "Asset"].contains(&sf.typeinfo.name.as_str()) {
-							if sf.typeinfo.name == "InputFile" {
-								writeln!(out, r#"parts.add_file("{name}", self.{name});"#);
-							}
-							else {
-								writeln!(out, r#"parts.add_{}("{name}", self.{name});"#, sf.typeinfo.name.to_snake_case());
-							}
+						else if ["String", "i64", "f32", "bool"].contains(&sf.typeinfo.name.as_str()) {
+							writeln!(out, r#"parts.add_{}("{name}", self.{name});"#, sf.typeinfo.name.to_snake_case());
 						}
 						else if let Some(e) = registry.get(&sf.typeinfo.name) && let EntityVariant::Enum { ref variants } = e.variant && variants.iter().all(|(vname, vfield)| !vfield.typeinfo.has_ref) {
 							if sf.optional {
@@ -565,10 +562,20 @@ fn print_entities(registry: Registry, out: &mut IndentedWriter<impl Write>) {
 						}
 						else {
 							if sf.optional {
-								writeln!(out, r#"if let Some({name}) = self.{name} {{ parts.add_object("{name}", {name}) }}"#);
+								if sf.typeinfo.maybe_file {
+									writeln!(out, r#"if let Some({name}) = self.{name} {{ parts.add_attachable("{name}", {name}) }}"#);
+								}
+								else {
+									writeln!(out, r#"if let Some({name}) = self.{name} {{ parts.add_object("{name}", {name}) }}"#);
+								}
 							}
 							else {
-								writeln!(out, r#"parts.add_object("{name}", self.{name});"#);
+								if sf.typeinfo.maybe_file {
+									writeln!(out, r#"parts.add_attachable("{name}", self.{name});"#);
+								}
+								else {
+									writeln!(out, r#"parts.add_object("{name}", self.{name});"#);
+								}
 							}
 						}
 
@@ -823,7 +830,7 @@ fn print_struct(entity: &Entity, fields: &BTreeMap<String, StructField>, out: &m
 
 
 		if !field.optional { continue; }
-		writeln!(out, "/**{}*/", field.comment);
+		writeln!(out, "/** {}*/", field.comment);
 		write!(out, "pub fn {0}(mut self, {0}: ", field.name);
 
  		let accept_type = field_typename(&StructField { optional: false, ..field.clone() }, entity);

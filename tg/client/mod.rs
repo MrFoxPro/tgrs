@@ -1,7 +1,9 @@
 // mod serializer; 
 // pub use serializer::*;
 
-mod form; pub use form::*;
+mod form; 
+pub use form::*;
+
 use std::{error::Error, fmt, future::Future};
 use serde::{de::DeserializeOwned, Deserialize};
 
@@ -28,9 +30,9 @@ enum RawResponse<T> {
 
 #[derive(Clone, Copy, Debug, Deserialize)]
 struct RawResponseParameters {
-	migrate_to_chat_id: Option<i64>,
+	pub migrate_to_chat_id: Option<i64>,
 	/// Number of seconds left to wait before the request can be repeated.
-	retry_after: Option<i64>,
+	pub retry_after: Option<i64>,
 }
 
 /// Represents an API Response.
