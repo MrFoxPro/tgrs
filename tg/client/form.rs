@@ -26,11 +26,11 @@ impl FormParts {
 	#[inline] pub fn add_object(&mut self, key: &'static str, v: impl Serialize) { 
 		self.inner.push((key.into(), serde_json::to_string(&v).unwrap().into()));
 	}
-	#[inline] pub fn add_file(&mut self, key: impl Into<Cow<'static, str>>, v: impl Into<Option<InputFile>>) {
+	#[inline] pub fn add_file(&mut self, v: impl Into<Option<InputFile>>) {
 		let Some(v) = v.into() else { return };
 		match v.inner {
-			InputFileInner::Bytes(bytes) => self.inner.push((key.into(), bytes.into())),
-			InputFileInner::Stream(Some(stream)) => self.inner.push((key.into(), stream.into())),
+			InputFileInner::Bytes(bytes) => self.inner.push((v.filename.into(), bytes.into())),
+			InputFileInner::Stream(Some(stream)) => self.inner.push((v.filename.into(), stream.into())),
 			_ => return
 		}
 	}
@@ -47,7 +47,11 @@ pub enum Part {
 }
 impl fmt::Debug for Part {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-		writeln!(f, "kek")
+		match self {
+			Part::Text(text) => writeln!(f, "Part::Text({text})"),
+			Part::Bytes(_)   => writeln!(f, "Part::Bytes(<...>)"),
+			Part::Stream(_)  => writeln!(f, "Part::Stream(<...>)"),
+		}
 	}
 }
 

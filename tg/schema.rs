@@ -10373,7 +10373,7 @@ impl Executable for AnswerInlineQuery {
 	const METHOD_NAME: &str = "answerInlineQuery";
 	fn into_parts(self) -> FormParts {
 		let mut parts = FormParts::new(6);
-		if let Some(button) = self.button { parts.add_object("button", button) }
+		if let Some(button) = self.button { parts.add_object("button", button); }
 		parts.add_i64("cache_time", self.cache_time);
 		parts.add_string("inline_query_id", self.inline_query_id);
 		parts.add_bool("is_personal", self.is_personal);
@@ -10790,8 +10790,8 @@ impl Executable for CopyMessage {
 		parts.add_i64("message_thread_id", self.message_thread_id);
 		parts.add_string("parse_mode", self.parse_mode);
 		parts.add_bool("protect_content", self.protect_content);
-		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
-		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters); }
 		parts.add_bool("show_caption_above_media", self.show_caption_above_media);
 		parts
 	}
@@ -11268,7 +11268,7 @@ impl Executable for CreateNewStickerSet {
 		parts.add_string("name", self.name);
 		parts.add_bool("needs_repainting", self.needs_repainting);
 		parts.add_string("sticker_type", self.sticker_type);
-		if self.stickers.len() > 0 { parts.add_object("stickers", self.stickers) }
+		parts.add_attachable("stickers", self.stickers);
 		parts.add_string("title", self.title);
 		parts.add_i64("user_id", self.user_id);
 		parts
@@ -11481,7 +11481,7 @@ impl Executable for DeleteMyCommands {
 	fn into_parts(self) -> FormParts {
 		let mut parts = FormParts::new(2);
 		parts.add_string("language_code", self.language_code);
-		if let Some(scope) = self.scope { parts.add_object("scope", scope) }
+		if let Some(scope) = self.scope { parts.add_object("scope", scope); }
 		parts
 	}
 }
@@ -11837,7 +11837,7 @@ impl Executable for EditMessageCaption {
 		parts.add_string("inline_message_id", self.inline_message_id);
 		parts.add_i64("message_id", self.message_id);
 		parts.add_string("parse_mode", self.parse_mode);
-		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
 		parts.add_bool("show_caption_above_media", self.show_caption_above_media);
 		parts
 	}
@@ -11947,7 +11947,7 @@ impl Executable for EditMessageLiveLocation {
 		parts.add_f32("longitude", self.longitude);
 		parts.add_i64("message_id", self.message_id);
 		parts.add_i64("proximity_alert_radius", self.proximity_alert_radius);
-		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
 		parts
 	}
 }
@@ -12016,7 +12016,7 @@ impl Executable for EditMessageMedia {
 		parts.add_string("inline_message_id", self.inline_message_id);
 		parts.add_attachable("media", self.media);
 		parts.add_i64("message_id", self.message_id);
-		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
 		parts
 	}
 }
@@ -12081,7 +12081,7 @@ impl Executable for EditMessageReplyMarkup {
 		parts.add_string("chat_id", self.chat_id.map(|x| x.to_string()));
 		parts.add_string("inline_message_id", self.inline_message_id);
 		parts.add_i64("message_id", self.message_id);
-		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
 		parts
 	}
 }
@@ -12177,10 +12177,10 @@ impl Executable for EditMessageText {
 		parts.add_string("chat_id", self.chat_id.map(|x| x.to_string()));
 		if self.entities.len() > 0 { parts.add_object("entities", self.entities) }
 		parts.add_string("inline_message_id", self.inline_message_id);
-		if let Some(link_preview_options) = self.link_preview_options { parts.add_object("link_preview_options", link_preview_options) }
+		if let Some(link_preview_options) = self.link_preview_options { parts.add_object("link_preview_options", link_preview_options); }
 		parts.add_i64("message_id", self.message_id);
 		parts.add_string("parse_mode", self.parse_mode);
-		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
 		parts.add_string("text", self.text);
 		parts
 	}
@@ -12712,7 +12712,7 @@ impl Executable for GetMyCommands {
 	fn into_parts(self) -> FormParts {
 		let mut parts = FormParts::new(2);
 		parts.add_string("language_code", self.language_code);
-		if let Some(scope) = self.scope { parts.add_object("scope", scope) }
+		if let Some(scope) = self.scope { parts.add_object("scope", scope); }
 		parts
 	}
 }
@@ -13806,10 +13806,10 @@ impl Executable for SendAnimation {
 		parts.add_i64("message_thread_id", self.message_thread_id);
 		parts.add_string("parse_mode", self.parse_mode);
 		parts.add_bool("protect_content", self.protect_content);
-		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
-		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters); }
 		parts.add_bool("show_caption_above_media", self.show_caption_above_media);
-		if let Some(thumbnail) = self.thumbnail { parts.add_attachable("thumbnail", thumbnail) }
+		if let Some(thumbnail) = self.thumbnail { parts.add_attachable("thumbnail", thumbnail); }
 		parts.add_i64("width", self.width);
 		parts
 	}
@@ -13976,9 +13976,9 @@ impl Executable for SendAudio {
 		parts.add_string("parse_mode", self.parse_mode);
 		parts.add_string("performer", self.performer);
 		parts.add_bool("protect_content", self.protect_content);
-		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
-		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
-		if let Some(thumbnail) = self.thumbnail { parts.add_attachable("thumbnail", thumbnail) }
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters); }
+		if let Some(thumbnail) = self.thumbnail { parts.add_attachable("thumbnail", thumbnail); }
 		parts.add_string("title", self.title);
 		parts
 	}
@@ -14149,8 +14149,8 @@ impl Executable for SendContact {
 		parts.add_i64("message_thread_id", self.message_thread_id);
 		parts.add_string("phone_number", self.phone_number);
 		parts.add_bool("protect_content", self.protect_content);
-		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
-		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters); }
 		parts.add_string("vcard", self.vcard);
 		parts
 	}
@@ -14255,8 +14255,8 @@ impl Executable for SendDice {
 		parts.add_string("message_effect_id", self.message_effect_id);
 		parts.add_i64("message_thread_id", self.message_thread_id);
 		parts.add_bool("protect_content", self.protect_content);
-		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
-		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters); }
 		parts
 	}
 }
@@ -14403,9 +14403,9 @@ impl Executable for SendDocument {
 		parts.add_i64("message_thread_id", self.message_thread_id);
 		parts.add_string("parse_mode", self.parse_mode);
 		parts.add_bool("protect_content", self.protect_content);
-		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
-		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
-		if let Some(thumbnail) = self.thumbnail { parts.add_attachable("thumbnail", thumbnail) }
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters); }
+		if let Some(thumbnail) = self.thumbnail { parts.add_attachable("thumbnail", thumbnail); }
 		parts
 	}
 }
@@ -14504,8 +14504,8 @@ impl Executable for SendGame {
 		parts.add_string("message_effect_id", self.message_effect_id);
 		parts.add_i64("message_thread_id", self.message_thread_id);
 		parts.add_bool("protect_content", self.protect_content);
-		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
-		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters); }
 		parts
 	}
 }
@@ -14826,8 +14826,8 @@ impl Executable for SendInvoice {
 		parts.add_bool("protect_content", self.protect_content);
 		parts.add_string("provider_data", self.provider_data);
 		parts.add_string("provider_token", self.provider_token);
-		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
-		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters); }
 		parts.add_bool("send_email_to_provider", self.send_email_to_provider);
 		parts.add_bool("send_phone_number_to_provider", self.send_phone_number_to_provider);
 		parts.add_string("start_parameter", self.start_parameter);
@@ -14971,8 +14971,8 @@ impl Executable for SendLocation {
 		parts.add_i64("message_thread_id", self.message_thread_id);
 		parts.add_bool("protect_content", self.protect_content);
 		parts.add_i64("proximity_alert_radius", self.proximity_alert_radius);
-		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
-		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters); }
 		parts
 	}
 }
@@ -15063,11 +15063,11 @@ impl Executable for SendMediaGroup {
 		parts.add_string("business_connection_id", self.business_connection_id);
 		parts.add_string("chat_id", self.chat_id.to_string());
 		parts.add_bool("disable_notification", self.disable_notification);
-		if self.media.len() > 0 { parts.add_object("media", self.media) }
+		parts.add_attachable("media", self.media);
 		parts.add_string("message_effect_id", self.message_effect_id);
 		parts.add_i64("message_thread_id", self.message_thread_id);
 		parts.add_bool("protect_content", self.protect_content);
-		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters); }
 		parts
 	}
 }
@@ -15191,13 +15191,13 @@ impl Executable for SendMessage {
 		parts.add_string("chat_id", self.chat_id.to_string());
 		parts.add_bool("disable_notification", self.disable_notification);
 		if self.entities.len() > 0 { parts.add_object("entities", self.entities) }
-		if let Some(link_preview_options) = self.link_preview_options { parts.add_object("link_preview_options", link_preview_options) }
+		if let Some(link_preview_options) = self.link_preview_options { parts.add_object("link_preview_options", link_preview_options); }
 		parts.add_string("message_effect_id", self.message_effect_id);
 		parts.add_i64("message_thread_id", self.message_thread_id);
 		parts.add_string("parse_mode", self.parse_mode);
 		parts.add_bool("protect_content", self.protect_content);
-		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
-		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters); }
 		parts.add_string("text", self.text);
 		parts
 	}
@@ -15330,12 +15330,12 @@ impl Executable for SendPaidMedia {
 		if self.caption_entities.len() > 0 { parts.add_object("caption_entities", self.caption_entities) }
 		parts.add_string("chat_id", self.chat_id.to_string());
 		parts.add_bool("disable_notification", self.disable_notification);
-		if self.media.len() > 0 { parts.add_object("media", self.media) }
+		parts.add_attachable("media", self.media);
 		parts.add_string("parse_mode", self.parse_mode);
 		parts.add_string("payload", self.payload);
 		parts.add_bool("protect_content", self.protect_content);
-		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
-		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters); }
 		parts.add_bool("show_caption_above_media", self.show_caption_above_media);
 		parts.add_i64("star_count", self.star_count);
 		parts
@@ -15484,8 +15484,8 @@ impl Executable for SendPhoto {
 		parts.add_string("parse_mode", self.parse_mode);
 		parts.add_attachable("photo", self.photo);
 		parts.add_bool("protect_content", self.protect_content);
-		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
-		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters); }
 		parts.add_bool("show_caption_above_media", self.show_caption_above_media);
 		parts
 	}
@@ -15709,8 +15709,8 @@ impl Executable for SendPoll {
 		if self.question_entities.len() > 0 { parts.add_object("question_entities", self.question_entities) }
 		parts.add_string("question_parse_mode", self.question_parse_mode);
 		parts.add_string("r#type", self.r#type);
-		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
-		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters); }
 		parts
 	}
 }
@@ -15817,8 +15817,8 @@ impl Executable for SendSticker {
 		parts.add_string("message_effect_id", self.message_effect_id);
 		parts.add_i64("message_thread_id", self.message_thread_id);
 		parts.add_bool("protect_content", self.protect_content);
-		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
-		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters); }
 		parts.add_attachable("sticker", self.sticker);
 		parts
 	}
@@ -15965,8 +15965,8 @@ impl Executable for SendVenue {
 		parts.add_string("message_effect_id", self.message_effect_id);
 		parts.add_i64("message_thread_id", self.message_thread_id);
 		parts.add_bool("protect_content", self.protect_content);
-		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
-		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters); }
 		parts.add_string("title", self.title);
 		parts
 	}
@@ -16155,11 +16155,11 @@ impl Executable for SendVideo {
 		parts.add_i64("message_thread_id", self.message_thread_id);
 		parts.add_string("parse_mode", self.parse_mode);
 		parts.add_bool("protect_content", self.protect_content);
-		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
-		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters); }
 		parts.add_bool("show_caption_above_media", self.show_caption_above_media);
 		parts.add_bool("supports_streaming", self.supports_streaming);
-		if let Some(thumbnail) = self.thumbnail { parts.add_attachable("thumbnail", thumbnail) }
+		if let Some(thumbnail) = self.thumbnail { parts.add_attachable("thumbnail", thumbnail); }
 		parts.add_attachable("video", self.video);
 		parts.add_i64("width", self.width);
 		parts
@@ -16285,9 +16285,9 @@ impl Executable for SendVideoNote {
 		parts.add_string("message_effect_id", self.message_effect_id);
 		parts.add_i64("message_thread_id", self.message_thread_id);
 		parts.add_bool("protect_content", self.protect_content);
-		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
-		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
-		if let Some(thumbnail) = self.thumbnail { parts.add_attachable("thumbnail", thumbnail) }
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters); }
+		if let Some(thumbnail) = self.thumbnail { parts.add_attachable("thumbnail", thumbnail); }
 		parts.add_attachable("video_note", self.video_note);
 		parts
 	}
@@ -16426,8 +16426,8 @@ impl Executable for SendVoice {
 		parts.add_i64("message_thread_id", self.message_thread_id);
 		parts.add_string("parse_mode", self.parse_mode);
 		parts.add_bool("protect_content", self.protect_content);
-		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
-		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters) }
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
+		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters); }
 		parts.add_attachable("voice", self.voice);
 		parts
 	}
@@ -16531,7 +16531,7 @@ impl Executable for SetChatMenuButton {
 	fn into_parts(self) -> FormParts {
 		let mut parts = FormParts::new(2);
 		parts.add_i64("chat_id", self.chat_id);
-		if let Some(menu_button) = self.menu_button { parts.add_object("menu_button", menu_button) }
+		if let Some(menu_button) = self.menu_button { parts.add_object("menu_button", menu_button); }
 		parts
 	}
 }
@@ -16854,7 +16854,7 @@ impl Executable for SetMyCommands {
 		let mut parts = FormParts::new(3);
 		if self.commands.len() > 0 { parts.add_object("commands", self.commands) }
 		parts.add_string("language_code", self.language_code);
-		if let Some(scope) = self.scope { parts.add_object("scope", scope) }
+		if let Some(scope) = self.scope { parts.add_object("scope", scope); }
 		parts
 	}
 }
@@ -16892,7 +16892,7 @@ impl Executable for SetMyDefaultAdministratorRights {
 	fn into_parts(self) -> FormParts {
 		let mut parts = FormParts::new(2);
 		parts.add_bool("for_channels", self.for_channels);
-		if let Some(rights) = self.rights { parts.add_object("rights", rights) }
+		if let Some(rights) = self.rights { parts.add_object("rights", rights); }
 		parts
 	}
 }
@@ -17141,7 +17141,7 @@ impl Executable for SetStickerMaskPosition {
 	const METHOD_NAME: &str = "setStickerMaskPosition";
 	fn into_parts(self) -> FormParts {
 		let mut parts = FormParts::new(2);
-		if let Some(mask_position) = self.mask_position { parts.add_object("mask_position", mask_position) }
+		if let Some(mask_position) = self.mask_position { parts.add_object("mask_position", mask_position); }
 		parts.add_string("sticker", self.sticker);
 		parts
 	}
@@ -17210,7 +17210,7 @@ impl Executable for SetStickerSetThumbnail {
 		let mut parts = FormParts::new(4);
 		parts.add_string("format", self.format);
 		parts.add_string("name", self.name);
-		if let Some(thumbnail) = self.thumbnail { parts.add_attachable("thumbnail", thumbnail) }
+		if let Some(thumbnail) = self.thumbnail { parts.add_attachable("thumbnail", thumbnail); }
 		parts.add_i64("user_id", self.user_id);
 		parts
 	}
@@ -17362,7 +17362,7 @@ impl Executable for SetWebhook {
 	fn into_parts(self) -> FormParts {
 		let mut parts = FormParts::new(7);
 		if self.allowed_updates.len() > 0 { parts.add_object("allowed_updates", self.allowed_updates) }
-		if let Some(certificate) = self.certificate { parts.add_attachable("certificate", certificate) }
+		if let Some(certificate) = self.certificate { parts.add_attachable("certificate", certificate); }
 		parts.add_bool("drop_pending_updates", self.drop_pending_updates);
 		parts.add_string("ip_address", self.ip_address);
 		parts.add_i64("max_connections", self.max_connections);
@@ -17432,7 +17432,7 @@ impl Executable for StopMessageLiveLocation {
 		parts.add_string("chat_id", self.chat_id.map(|x| x.to_string()));
 		parts.add_string("inline_message_id", self.inline_message_id);
 		parts.add_i64("message_id", self.message_id);
-		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
 		parts
 	}
 }
@@ -17478,7 +17478,7 @@ impl Executable for StopPoll {
 		parts.add_string("business_connection_id", self.business_connection_id);
 		parts.add_string("chat_id", self.chat_id.to_string());
 		parts.add_i64("message_id", self.message_id);
-		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup) }
+		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
 		parts
 	}
 }

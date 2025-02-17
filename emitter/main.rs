@@ -546,7 +546,7 @@ fn print_entities(registry: Registry, out: &mut IndentedWriter<impl Write>) {
 					writeln!(out, "let mut parts = FormParts::new({capacity});");
 
 					for (name, sf) in args.iter() {
-						if sf.typeinfo.is_array() {
+						if sf.typeinfo.is_array() && !sf.typeinfo.maybe_file {
 							writeln!(out, r#"if self.{name}.len() > 0 {{ parts.add_object("{name}", self.{name}) }}"#);
 						}
 						else if ["String", "i64", "f32", "bool"].contains(&sf.typeinfo.name.as_str()) {
@@ -562,21 +562,25 @@ fn print_entities(registry: Registry, out: &mut IndentedWriter<impl Write>) {
 						}
 						else {
 							if sf.optional {
-								if sf.typeinfo.maybe_file {
-									writeln!(out, r#"if let Some({name}) = self.{name} {{ parts.add_attachable("{name}", {name}) }}"#);
-								}
-								else {
-									writeln!(out, r#"if let Some({name}) = self.{name} {{ parts.add_object("{name}", {name}) }}"#);
-								}
+								write!(out, r#"if let Some({name}) = self.{name} {{ "#);
+							}
+
+							if sf.typeinfo.maybe_file {
+								write!(out, r#"parts.add_attachable"#);
 							}
 							else {
-								if sf.typeinfo.maybe_file {
-									writeln!(out, r#"parts.add_attachable("{name}", self.{name});"#);
-								}
-								else {
-									writeln!(out, r#"parts.add_object("{name}", self.{name});"#);
-								}
+								write!(out, r#"parts.add_object"#);
 							}
+
+							write!(out, r#"("{name}", "#);
+							if !sf.optional { write!(out, "self.{name}"); } else { write!(out, "{name}"); }  
+							write!(out, ");");
+
+							if sf.optional {
+								write!(out, r#" }}"#);
+							}
+
+							writeln!(out, "");
 						}
 
 

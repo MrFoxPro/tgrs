@@ -1940,6 +1940,7 @@ name = "tg"
 version = "0.0.0"
 dependencies = [
  "derive_more 1.0.0",
+ "fastrand",
  "futures-util",
  "itoa",
  "ryu",

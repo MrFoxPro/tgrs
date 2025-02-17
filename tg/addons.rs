@@ -21,33 +21,25 @@ pub const FILE_ANCHOR: &str = "<FILE>";
 
 #[derive(Debug, Clone, From)]
 pub struct InputFile {
-	pub file_name: Option<String>,
+	pub filename: String,
 	pub inner: InputFileInner,
 }
-impl InputFile {
-	pub fn new(inner: impl Into<InputFileInner>) -> Self {
-		InputFile { file_name: None, inner: inner.into() }
-	}
-	pub fn with_filename(inner: impl Into<InputFileInner>, filename: impl Into<String>) -> Self {
-		InputFile { file_name: Some(filename.into()), inner: inner.into() }
-	}
-}
-impl From<Vec<u8>> for InputFile {
-	fn from(value: Vec<u8>) -> Self { Self { file_name: None, inner: value.into() } }
-}
-impl From<Option<Box<dyn AsyncRead + Send + Sync + Unpin>>> for InputFile {
-	fn from(value: Option<Box<dyn AsyncRead + Send + Sync + Unpin>>) -> Self { Self { file_name: None, inner: value.into() } }
-}
-
 #[derive(From)]
 pub enum InputFileInner {
 	Bytes(Vec<u8>),
 	Stream(Option<Box<dyn AsyncRead + Send + Sync + Unpin>>),
 }
-
+impl InputFile {
+	pub fn new(inner: impl Into<InputFileInner>) -> Self {
+		InputFile { inner: inner.into(), filename: String::from(itoa::Buffer::new().format(fastrand::u16(..))) }
+	}
+	pub fn with_filename(inner: impl Into<InputFileInner>, filename: impl Into<String>) -> Self {
+		InputFile { inner: inner.into(), filename: filename.into() }
+	}
+}
 impl Serialize for InputFile {
 	fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
-		FILE_ANCHOR.serialize(serializer)
+		format!("attach://{}", self.filename).serialize(serializer)
 	}
 }
 impl Clone for InputFileInner {
@@ -66,11 +58,16 @@ impl fmt::Debug for InputFileInner {
 		}
 	}
 }
+impl From<Vec<u8>> for InputFile {
+	fn from(value: Vec<u8>) -> Self { Self::new(value) }
+}
+impl From<Option<Box<dyn AsyncRead + Send + Sync + Unpin>>> for InputFile {
+	fn from(value: Option<Box<dyn AsyncRead + Send + Sync + Unpin>>) -> Self { Self::new(value) }
+}
 impl Attachable for InputFile {
 	fn attach(self, key: &'static str, parts: &mut FormParts) {
-		let id = self.file_name.clone().unwrap_or_else(|| parts.inner.len().to_string());
-		parts.add_string(key, format!("attach://{id}"));
-		parts.add_file(id, self);
+		parts.add_string(key, format!("attach://{}", self.filename));
+		parts.add_file(self);
 	}
 }
 
@@ -85,14 +82,14 @@ impl Asset {
 	pub fn url(input: impl Into<String>) -> Self { Self::Url(input.into()) }
 }
 impl From<Vec<u8>> for Asset {
-	fn from(value: Vec<u8>) -> Self { Self::File(InputFile { file_name: None, inner: value.into() }) }
+	fn from(value: Vec<u8>) -> Self { Self::File(InputFile::new(value)) }
 }
 
 impl Serialize for Asset {
 	fn serialize<S: Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
 		match self {
 			Self::Url(url) => url.serialize(s),
-			Self::File(_) => FILE_ANCHOR.serialize(s)
+			Self::File(file) => file.serialize(s)
 		}
 	}
 }
@@ -105,53 +102,74 @@ impl Attachable for Asset {
 		}
 	}
 }
-
-impl Attachable for schema::InputSticker {
-	fn attach(self, key: &'static str, parts: &mut FormParts) {
-		let mut as_json = serde_json::to_string(&self).unwrap();
-		if let Asset::File(file) = self.sticker {
-			let file_id = file.file_name.clone().unwrap_or_else(|| parts.inner.len().to_string());
-			as_json = as_json.replacen(FILE_ANCHOR, &format!("attach://{file_id}"), 1);
-			parts.add_file(file_id.to_string(), file);
-		}
-		parts.add_string(key, as_json);
-	}
-}
-
 impl Attachable for schema::InputMedia {
 	fn attach(self, key: &'static str, parts: &mut FormParts) {
-		let mut as_json = serde_json::to_string(&self).unwrap();
+		parts.add_string(key, serde_json::to_string(&self).unwrap());
 		match self {
-			Self::Animation(InputMediaAnimation { media: Asset::File(file), .. }) 
-			| Self::Document(InputMediaDocument { media: Asset::File(file), .. })
-			| Self::Photo(InputMediaPhoto { media: Asset::File(file), .. })
-			| Self::Audio(InputMediaAudio { media: Asset::File(file), .. })
-			| Self::Video(InputMediaVideo { media: Asset::File(file), .. }) => {
-				let file_id = file.file_name.clone().unwrap_or_else(|| parts.inner.len().to_string());
-				as_json = as_json.replacen(FILE_ANCHOR, &format!("attach://{file_id}"), 1);
-				parts.add_file(file_id.to_string(), file);
+			InputMedia::Animation(InputMediaAnimation { media: Asset::File(file), .. }) 
+			| InputMedia::Document(InputMediaDocument { media: Asset::File(file), .. })
+			| InputMedia::Photo(InputMediaPhoto { media: Asset::File(file), .. })
+			| InputMedia::Audio(InputMediaAudio { media: Asset::File(file), .. })
+			| InputMedia::Video(InputMediaVideo { media: Asset::File(file), .. }) => {
+				parts.add_file(file);
 			}
 			_ => {}
 		}
-		parts.add_string(key, as_json);
 	}
 }
-
-
-// let as_json = as_json.
-// while let Some(index) = as_json[start..].find(FILE_ANCHOR) {
-// 	let actual_index = start + index;
-// 	result.push_str(&as_json[start..actual_index]);
-// 	start = actual_index + FILE_ANCHOR.len();
-
-// 	let file_key = format!("{base_id}-{rel_id}");
-// 	result.push_str(format!("attach://{file_key}").as_str());
-// 	parts.inner.push((file_key.into(), self_files.remove(rel_id).unwrap().into()));
-
-// 	rel_id += 1;
-// }
-
-// result.push_str(&as_json[start..]);
-// parts.add_string(key, result);
-
-// self.sticker.attach(key, parts);
+impl Attachable for Vec<schema::Media> {
+	fn attach(self, key: &'static str, parts: &mut FormParts) {
+		parts.add_string(key, serde_json::to_string(&self).unwrap());
+		for item in self.into_iter() {
+			match item {
+				Media::InputMediaDocument(InputMediaDocument { media: Asset::File(file), .. })
+				| Media::InputMediaPhoto(InputMediaPhoto { media: Asset::File(file), .. })
+				| Media::InputMediaAudio(InputMediaAudio { media: Asset::File(file), .. })
+				| Media::InputMediaVideo(InputMediaVideo { media: Asset::File(file), .. }) => {
+					parts.add_file(file);
+				}
+				_ => {}
+			}
+		}
+	}
+}
+impl Attachable for schema::InputSticker {
+	fn attach(self, key: &'static str, parts: &mut FormParts) {
+		parts.add_string(key, serde_json::to_string(&self).unwrap());
+		if let Asset::File(file) = self.sticker { parts.add_file(file); }
+	}
+}
+impl Attachable for Vec<schema::InputSticker> {
+	fn attach(self, key: &'static str, parts: &mut FormParts) {
+		parts.add_string(key, serde_json::to_string(&self).unwrap());
+		for item in self.into_iter() {
+			if let Asset::File(file) = item.sticker { parts.add_file(file); }
+		}
+	}
+}
+impl Attachable for schema::InputPaidMedia {
+	fn attach(self, key: &'static str, parts: &mut FormParts) {
+		parts.add_string(key, serde_json::to_string(&self).unwrap());
+		match self {
+			Self::Photo(InputPaidMediaPhoto { media: Asset::File(file), .. }) 
+			| Self::Video(InputPaidMediaVideo { media: Asset::File(file), .. }) => {
+				parts.add_file(file);
+			}
+			_ => {}
+		}
+	}
+}
+impl Attachable for Vec<schema::InputPaidMedia> {
+	fn attach(self, key: &'static str, parts: &mut FormParts) {
+		parts.add_string(key, serde_json::to_string(&self).unwrap());
+		for item in self.into_iter() {
+			match item {
+				InputPaidMedia::Photo(InputPaidMediaPhoto { media: Asset::File(file), .. }) 
+				| InputPaidMedia::Video(InputPaidMediaVideo { media: Asset::File(file), .. }) => {
+					parts.add_file(file);
+				}
+				_ => {}
+			}
+		}
+	}
+}
