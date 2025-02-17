@@ -531,7 +531,7 @@ fn print_entities(registry: Registry, out: &mut IndentedWriter<impl Write>) {
 				writeln!(out, "impl Executable for {} {{", entity.name);
 				out.indent();
 
-				writeln!(out, "type Response = {};", return_type.name);
+				writeln!(out, "type Response = {};", field_typename(&StructField { typeinfo: return_type, name: String::new(), optional: false, comment: String::new() }, entity));
 				writeln!(out, r#"const METHOD_NAME: &str = "{}";"#, api_name);
 				writeln!(out, "fn into_parts(self) -> FormParts {{");
 				out.indent();

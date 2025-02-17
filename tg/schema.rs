@@ -10854,7 +10854,7 @@ impl CopyMessages {
 	}
 }
 impl Executable for CopyMessages {
-	type Response = MessageId;
+	type Response = Vec<MessageId>;
 	const METHOD_NAME: &str = "copyMessages";
 	fn into_parts(self) -> FormParts {
 		let mut parts = FormParts::new(7);
@@ -12350,7 +12350,7 @@ impl ForwardMessages {
 	}
 }
 impl Executable for ForwardMessages {
-	type Response = MessageId;
+	type Response = Vec<MessageId>;
 	const METHOD_NAME: &str = "forwardMessages";
 	fn into_parts(self) -> FormParts {
 		let mut parts = FormParts::new(6);
@@ -12446,7 +12446,7 @@ impl GetChatAdministrators {
 	}
 }
 impl Executable for GetChatAdministrators {
-	type Response = ChatMember;
+	type Response = Vec<ChatMember>;
 	const METHOD_NAME: &str = "getChatAdministrators";
 	fn into_parts(self) -> FormParts {
 		let mut parts = FormParts::new(1);
@@ -12555,7 +12555,7 @@ impl GetCustomEmojiStickers {
 	}
 }
 impl Executable for GetCustomEmojiStickers {
-	type Response = Sticker;
+	type Response = Vec<Sticker>;
 	const METHOD_NAME: &str = "getCustomEmojiStickers";
 	fn into_parts(self) -> FormParts {
 		let mut parts = FormParts::new(1);
@@ -12600,7 +12600,7 @@ impl GetForumTopicIconStickers {
 	}
 }
 impl Executable for GetForumTopicIconStickers {
-	type Response = Sticker;
+	type Response = Vec<Sticker>;
 	const METHOD_NAME: &str = "getForumTopicIconStickers";
 	fn into_parts(self) -> FormParts {
 		FormParts::new(0)
@@ -12648,7 +12648,7 @@ impl GetGameHighScores {
 	}
 }
 impl Executable for GetGameHighScores {
-	type Response = GameHighScore;
+	type Response = Vec<GameHighScore>;
 	const METHOD_NAME: &str = "getGameHighScores";
 	fn into_parts(self) -> FormParts {
 		let mut parts = FormParts::new(4);
@@ -12707,7 +12707,7 @@ impl GetMyCommands {
 	}
 }
 impl Executable for GetMyCommands {
-	type Response = BotCommand;
+	type Response = Vec<BotCommand>;
 	const METHOD_NAME: &str = "getMyCommands";
 	fn into_parts(self) -> FormParts {
 		let mut parts = FormParts::new(2);
@@ -12947,7 +12947,7 @@ impl GetUpdates {
 	}
 }
 impl Executable for GetUpdates {
-	type Response = Update;
+	type Response = Vec<Update>;
 	const METHOD_NAME: &str = "getUpdates";
 	fn into_parts(self) -> FormParts {
 		let mut parts = FormParts::new(4);
@@ -15055,7 +15055,7 @@ impl SendMediaGroup {
 	}
 }
 impl Executable for SendMediaGroup {
-	type Response = Message;
+	type Response = Vec<Message>;
 	const METHOD_NAME: &str = "sendMediaGroup";
 	fn into_parts(self) -> FormParts {
 		let mut parts = FormParts::new(9);
