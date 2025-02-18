@@ -26,7 +26,7 @@ pub struct InputFile {
 }
 #[derive(From)]
 pub enum InputFileInner {
-	Bytes(Vec<u8>),
+	Bytes(bytes::Bytes),
 	Stream(Option<Box<dyn AsyncRead + Send + Sync + Unpin>>),
 }
 impl InputFile {
@@ -59,7 +59,10 @@ impl fmt::Debug for InputFileInner {
 	}
 }
 impl From<Vec<u8>> for InputFile {
-	fn from(value: Vec<u8>) -> Self { Self::new(value) }
+	fn from(value: Vec<u8>) -> Self { Self::new(bytes::Bytes::from(value)) }
+}
+impl From<bytes::Bytes> for InputFile {
+	fn from(value: bytes::Bytes) -> Self { Self::new(value) }
 }
 impl From<Option<Box<dyn AsyncRead + Send + Sync + Unpin>>> for InputFile {
 	fn from(value: Option<Box<dyn AsyncRead + Send + Sync + Unpin>>) -> Self { Self::new(value) }
@@ -82,7 +85,10 @@ impl Asset {
 	pub fn url(input: impl Into<String>) -> Self { Self::Url(input.into()) }
 }
 impl From<Vec<u8>> for Asset {
-	fn from(value: Vec<u8>) -> Self { Self::File(InputFile::new(value)) }
+	fn from(value: Vec<u8>) -> Self { Self::File(InputFile::new(bytes::Bytes::from(value))) }
+}
+impl From<bytes::Bytes> for Asset {
+	fn from(value: bytes::Bytes) -> Self { Self::File(InputFile::new(value)) }
 }
 
 impl Serialize for Asset {

@@ -42,7 +42,7 @@ impl FormParts {
 #[derive(From)]
 pub enum Part {
 	Text(Cow<'static, str>),
-	Bytes(Vec<u8>),
+	Bytes(bytes::Bytes),
 	Stream(Box<dyn AsyncRead + Send + Sync + Unpin>),
 }
 impl fmt::Debug for Part {
