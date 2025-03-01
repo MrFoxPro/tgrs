@@ -1,0 +1,29 @@
+[package]
+name = "tg-bot-api"
+version = "0.6.0"
+authors = ["Arsenii Lyashenko <arsenylyashenko.3@gmail.com>"]
+edition = "2018"
+license = "MIT OR Apache-2.0"
+description = "Telegram Bot API parser"
+repository = "https://github.com/ark0f/tg-bot-api"
+documentation = "https://docs.rs/ark0f/tg-bot-api"
+readme = "README.md"
+include = ["Cargo.toml", "LICENSE-*.md", "src/**/*"]
+keywords = ["telegram", "telegram-bot-api", "api", "parser"]
+categories = ["development-tools", "parsing"]
+
+[workspace]
+members = ["gh-pages-generator"]
+
+[dependencies]
+scraper = "0.18.1"
+ego-tree = "0.6.2"
+thiserror = "1.0.22"
+itertools = "0.12.1"
+chrono = "0.4.19"
+html2md = "0.2.10"
+semver = "1.0.22"
+percent-encoding = "2.1.0"
+logos = "0.14.0"
+log = "0.4.14"
+tendril = "0.4.2"
