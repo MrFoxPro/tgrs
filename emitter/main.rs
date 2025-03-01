@@ -20,6 +20,7 @@ const RESERVED_WORDS: &[&str] = &[
 
 const BLACKLISTED_TYPES: &[&str] = &[
 	"Message",
+	"MessageEntity",
 	"InputFile",
 	"Asset",
 ];
@@ -326,7 +327,6 @@ pub fn main() -> Result<()> {
 				outdef
 			}
 			ObjectData::Elements(vars) => {
-
 				let variants = vars.iter().map(|var| create_enum_variant(&object.name, var)).collect();
 				let outdef = Entity { 
 					name: escape_field_name(object.name.clone()), 

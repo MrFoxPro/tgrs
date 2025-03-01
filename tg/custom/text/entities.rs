@@ -9,39 +9,39 @@ use crate::User;
 
 /// Represents a collection of text entities.
 #[derive(Clone, Debug, Deserialize, Serialize)]
-#[serde(into = "Vec<TextEntity>", try_from = "Vec<RawTextEntity>")]
-pub struct TextEntities {
-    pub items: Vec<TextEntity>,
+#[serde(into = "Vec<MessageEntity>", try_from = "Vec<RawMessageEntity>")]
+pub struct MessageEntities {
+    pub items: Vec<MessageEntity>,
 }
 
-impl TextEntities {
-    pub fn push(&mut self, value: TextEntity) {
+impl MessageEntities {
+    pub fn push(&mut self, value: MessageEntity) {
         self.items.push(value);
     }
 }
 
-impl TryFrom<Vec<RawTextEntity>> for TextEntities {
-    type Error = TextEntityError;
+impl TryFrom<Vec<RawMessageEntity>> for MessageEntities {
+    type Error = MessageEntityError;
 
-    fn try_from(entities: Vec<RawTextEntity>) -> Result<Self, Self::Error> {
+    fn try_from(entities: Vec<RawMessageEntity>) -> Result<Self, Self::Error> {
         entities
             .into_iter()
             .map(TryFrom::try_from)
-            .collect::<Result<Vec<TextEntity>, _>>()
+            .collect::<Result<Vec<MessageEntity>, _>>()
             .map(|items| Self { items })
     }
 }
 
-impl FromIterator<TextEntity> for TextEntities {
-    fn from_iter<T: IntoIterator<Item = TextEntity>>(iter: T) -> Self {
+impl FromIterator<MessageEntity> for MessageEntities {
+    fn from_iter<T: IntoIterator<Item = MessageEntity>>(iter: T) -> Self {
         Self {
             items: iter.into_iter().collect(),
         }
     }
 }
 
-impl IntoIterator for TextEntities {
-    type Item = TextEntity;
+impl IntoIterator for MessageEntities {
+    type Item = MessageEntity;
     type IntoIter = std::vec::IntoIter<Self::Item>;
 
     fn into_iter(self) -> Self::IntoIter {
@@ -49,48 +49,48 @@ impl IntoIterator for TextEntities {
     }
 }
 
-impl<'a> IntoIterator for &'a TextEntities {
-    type Item = &'a TextEntity;
-    type IntoIter = std::slice::Iter<'a, TextEntity>;
+impl<'a> IntoIterator for &'a MessageEntities {
+    type Item = &'a MessageEntity;
+    type IntoIter = std::slice::Iter<'a, MessageEntity>;
 
     fn into_iter(self) -> Self::IntoIter {
         self.items.as_slice().iter()
     }
 }
 
-impl<'a> IntoIterator for &'a mut TextEntities {
-    type Item = &'a mut TextEntity;
-    type IntoIter = std::slice::IterMut<'a, TextEntity>;
+impl<'a> IntoIterator for &'a mut MessageEntities {
+    type Item = &'a mut MessageEntity;
+    type IntoIter = std::slice::IterMut<'a, MessageEntity>;
 
     fn into_iter(self) -> Self::IntoIter {
         self.items.as_mut_slice().iter_mut()
     }
 }
 
-impl Index<usize> for TextEntities {
-    type Output = TextEntity;
+impl Index<usize> for MessageEntities {
+    type Output = MessageEntity;
 
     fn index(&self, index: usize) -> &Self::Output {
         &self.items[index]
     }
 }
 
-impl IndexMut<usize> for TextEntities {
+impl IndexMut<usize> for MessageEntities {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
         &mut self.items[index]
     }
 }
 
-impl From<TextEntities> for Vec<TextEntity> {
-    fn from(entities: TextEntities) -> Self {
+impl From<MessageEntities> for Vec<MessageEntity> {
+    fn from(entities: MessageEntities) -> Self {
         entities.items
     }
 }
 
 /// Represents an entity in a text.
 #[derive(Clone, Debug, Deserialize, Serialize)]
-#[serde(try_from = "RawTextEntity", into = "RawTextEntity")]
-pub enum TextEntity {
+#[serde(try_from = "RawMessageEntity", into = "RawMessageEntity")]
+pub enum MessageEntity {
     Blockquote(TextEntityPosition),
     Bold(TextEntityPosition),
     BotCommand(TextEntityPosition),
@@ -126,18 +126,18 @@ pub enum TextEntity {
     Url(TextEntityPosition),
 }
 
-macro_rules! text_entity_factory {
+macro_rules! message_entity_factory {
     ($($method_name:ident => $enum_variant: ident),*) => {
         $(
-            pub fn $method_name<T: Into<TextEntityPosition>>(pos: T) -> TextEntity {
-                TextEntity::$enum_variant(pos.into())
+            pub fn $method_name<T: Into<TextEntityPosition>>(pos: T) -> MessageEntity {
+                MessageEntity::$enum_variant(pos.into())
             }
         )*
     };
 }
 
-impl TextEntity {
-    text_entity_factory!(
+impl MessageEntity {
+    message_entity_factory!(
         blockquote => Blockquote,
         bold => Bold,
         bot_command => BotCommand,
@@ -157,8 +157,8 @@ impl TextEntity {
     pub fn custom_emoji<P: Into<TextEntityPosition>, I: Into<String>>(
         pos: P,
         custom_emoji_id: I,
-    ) -> TextEntity {
-        TextEntity::CustomEmoji {
+    ) -> MessageEntity {
+        MessageEntity::CustomEmoji {
             position: pos.into(),
             custom_emoji_id: custom_emoji_id.into(),
         }
@@ -167,22 +167,22 @@ impl TextEntity {
     pub fn pre<P: Into<TextEntityPosition>, L: Into<String>>(
         pos: P,
         language: Option<L>,
-    ) -> TextEntity {
-        TextEntity::Pre {
+    ) -> MessageEntity {
+        MessageEntity::Pre {
             position: pos.into(),
             language: language.map(|x| x.into()),
         }
     }
 
-    pub fn text_link<P: Into<TextEntityPosition>, U: Into<String>>(pos: P, url: U) -> TextEntity {
-        TextEntity::TextLink {
+    pub fn text_link<P: Into<TextEntityPosition>, U: Into<String>>(pos: P, url: U) -> MessageEntity {
+        MessageEntity::TextLink {
             position: pos.into(),
             url: url.into(),
         }
     }
 
-    pub fn text_mention<P: Into<TextEntityPosition>>(pos: P, user: User) -> TextEntity {
-        TextEntity::TextMention {
+    pub fn text_mention<P: Into<TextEntityPosition>>(pos: P, user: User) -> MessageEntity {
+        MessageEntity::TextMention {
             position: pos.into(),
             user,
         }
@@ -190,17 +190,17 @@ impl TextEntity {
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
-struct RawTextEntity {
+struct RawMessageEntity {
     offset: u32,
     length: u32,
     #[serde(flatten)]
-    entity_type: RawTextEntityType,
+    entity_type: RawMessageEntityType,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 #[serde(tag = "type")]
-enum RawTextEntityType {
+enum RawMessageEntityType {
     Blockquote,
     Bold,
     BotCommand,
@@ -236,7 +236,7 @@ enum RawTextEntityType {
 
 /// Represents an error when parsing/serializing entities.
 #[derive(Debug)]
-pub enum TextEntityError {
+pub enum MessageEntityError {
     /// Custom emoji is required for custom_emoji entity.
     NoCustomEmoji,
     /// URL is required for `text_link` entity.
@@ -245,7 +245,7 @@ pub enum TextEntityError {
     NoUser,
 }
 
-impl Error for TextEntityError {
+impl Error for MessageEntityError {
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         match self {
             // Self::Serialize(err) => Some(err),
@@ -254,9 +254,9 @@ impl Error for TextEntityError {
     }
 }
 
-impl fmt::Display for TextEntityError {
+impl fmt::Display for MessageEntityError {
     fn fmt(&self, out: &mut fmt::Formatter) -> fmt::Result {
-        use self::TextEntityError::*;
+        use self::MessageEntityError::*;
         write!(
             out,
             "{}",
@@ -270,91 +270,91 @@ impl fmt::Display for TextEntityError {
     }
 }
 
-impl TryFrom<RawTextEntity> for TextEntity {
-    type Error = TextEntityError;
+impl TryFrom<RawMessageEntity> for MessageEntity {
+    type Error = MessageEntityError;
 
-    fn try_from(raw: RawTextEntity) -> Result<Self, Self::Error> {
+    fn try_from(raw: RawMessageEntity) -> Result<Self, Self::Error> {
         let position = TextEntityPosition {
             offset: raw.offset,
             length: raw.length,
         };
 
         Ok(match raw.entity_type {
-            RawTextEntityType::Blockquote => TextEntity::Blockquote(position),
-            RawTextEntityType::Bold => TextEntity::Bold(position),
-            RawTextEntityType::BotCommand => TextEntity::BotCommand(position),
-            RawTextEntityType::Cashtag => TextEntity::Cashtag(position),
-            RawTextEntityType::Code => TextEntity::Code(position),
-            RawTextEntityType::CustomEmoji { custom_emoji_id } => TextEntity::CustomEmoji {
+            RawMessageEntityType::Blockquote => MessageEntity::Blockquote(position),
+            RawMessageEntityType::Bold => MessageEntity::Bold(position),
+            RawMessageEntityType::BotCommand => MessageEntity::BotCommand(position),
+            RawMessageEntityType::Cashtag => MessageEntity::Cashtag(position),
+            RawMessageEntityType::Code => MessageEntity::Code(position),
+            RawMessageEntityType::CustomEmoji { custom_emoji_id } => MessageEntity::CustomEmoji {
                 position,
-                custom_emoji_id: custom_emoji_id.ok_or(TextEntityError::NoCustomEmoji)?,
+                custom_emoji_id: custom_emoji_id.ok_or(MessageEntityError::NoCustomEmoji)?,
             },
-            RawTextEntityType::Email => TextEntity::Email(position),
-            RawTextEntityType::ExpandableBlockquote => TextEntity::ExpandableBlockquote(position),
-            RawTextEntityType::Hashtag => TextEntity::Hashtag(position),
-            RawTextEntityType::Italic => TextEntity::Italic(position),
-            RawTextEntityType::Mention => TextEntity::Mention(position),
-            RawTextEntityType::PhoneNumber => TextEntity::PhoneNumber(position),
-            RawTextEntityType::Pre { language } => TextEntity::Pre { position, language },
-            RawTextEntityType::Spoiler => TextEntity::Spoiler(position),
-            RawTextEntityType::Strikethrough => TextEntity::Strikethrough(position),
-            RawTextEntityType::TextLink { url } => TextEntity::TextLink {
+            RawMessageEntityType::Email => MessageEntity::Email(position),
+            RawMessageEntityType::ExpandableBlockquote => MessageEntity::ExpandableBlockquote(position),
+            RawMessageEntityType::Hashtag => MessageEntity::Hashtag(position),
+            RawMessageEntityType::Italic => MessageEntity::Italic(position),
+            RawMessageEntityType::Mention => MessageEntity::Mention(position),
+            RawMessageEntityType::PhoneNumber => MessageEntity::PhoneNumber(position),
+            RawMessageEntityType::Pre { language } => MessageEntity::Pre { position, language },
+            RawMessageEntityType::Spoiler => MessageEntity::Spoiler(position),
+            RawMessageEntityType::Strikethrough => MessageEntity::Strikethrough(position),
+            RawMessageEntityType::TextLink { url } => MessageEntity::TextLink {
                 position,
-                url: url.ok_or(TextEntityError::NoUrl)?,
+                url: url.ok_or(MessageEntityError::NoUrl)?,
             },
-            RawTextEntityType::TextMention { user } => TextEntity::TextMention {
+            RawMessageEntityType::TextMention { user } => MessageEntity::TextMention {
                 position,
-                user: user.ok_or(TextEntityError::NoUser)?,
+                user: user.ok_or(MessageEntityError::NoUser)?,
             },
-            RawTextEntityType::Underline => TextEntity::Underline(position),
-            RawTextEntityType::Url => TextEntity::Url(position),
+            RawMessageEntityType::Underline => MessageEntity::Underline(position),
+            RawMessageEntityType::Url => MessageEntity::Url(position),
         })
     }
 }
 
-impl From<TextEntity> for RawTextEntity {
-    fn from(entity: TextEntity) -> Self {
+impl From<MessageEntity> for RawMessageEntity {
+    fn from(entity: MessageEntity) -> Self {
         macro_rules! raw {
             ($entity_type:ident($position:ident $( , $item:ident )?)) => {
-                RawTextEntity {
-                    entity_type: RawTextEntityType::$entity_type $( { $item: $item.into() } )?,
+                RawMessageEntity {
+                    entity_type: RawMessageEntityType::$entity_type $( { $item: $item.into() } )?,
                     offset: $position.offset as _,
                     length: $position.length as _,
                 }
             };
         }
         match entity {
-            TextEntity::Blockquote(p) => raw!(Blockquote(p)),
-            TextEntity::Bold(p) => raw!(Bold(p)),
-            TextEntity::BotCommand(p) => raw!(BotCommand(p)),
-            TextEntity::Cashtag(p) => raw!(Cashtag(p)),
-            TextEntity::Code(p) => raw!(Code(p)),
-            TextEntity::CustomEmoji {
+            MessageEntity::Blockquote(p) => raw!(Blockquote(p)),
+            MessageEntity::Bold(p) => raw!(Bold(p)),
+            MessageEntity::BotCommand(p) => raw!(BotCommand(p)),
+            MessageEntity::Cashtag(p) => raw!(Cashtag(p)),
+            MessageEntity::Code(p) => raw!(Code(p)),
+            MessageEntity::CustomEmoji {
                 position: p,
                 custom_emoji_id,
             } => raw!(CustomEmoji(p, custom_emoji_id)),
-            TextEntity::Email(p) => raw!(Email(p)),
-            TextEntity::ExpandableBlockquote(p) => raw!(ExpandableBlockquote(p)),
-            TextEntity::Hashtag(p) => raw!(Hashtag(p)),
-            TextEntity::Italic(p) => raw!(Italic(p)),
-            TextEntity::Mention(p) => raw!(Mention(p)),
-            TextEntity::PhoneNumber(p) => raw!(PhoneNumber(p)),
-            TextEntity::Pre {
+            MessageEntity::Email(p) => raw!(Email(p)),
+            MessageEntity::ExpandableBlockquote(p) => raw!(ExpandableBlockquote(p)),
+            MessageEntity::Hashtag(p) => raw!(Hashtag(p)),
+            MessageEntity::Italic(p) => raw!(Italic(p)),
+            MessageEntity::Mention(p) => raw!(Mention(p)),
+            MessageEntity::PhoneNumber(p) => raw!(PhoneNumber(p)),
+            MessageEntity::Pre {
                 position: p,
                 language,
             } => raw!(Pre(p, language)),
-            TextEntity::Spoiler(p) => raw!(Spoiler(p)),
-            TextEntity::Strikethrough(p) => raw!(Strikethrough(p)),
-            TextEntity::TextLink { position: p, url } => raw!(TextLink(p, url)),
-            TextEntity::TextMention { position: p, user } => raw!(TextMention(p, user)),
-            TextEntity::Underline(p) => raw!(Underline(p)),
-            TextEntity::Url(p) => raw!(Url(p)),
+            MessageEntity::Spoiler(p) => raw!(Spoiler(p)),
+            MessageEntity::Strikethrough(p) => raw!(Strikethrough(p)),
+            MessageEntity::TextLink { position: p, url } => raw!(TextLink(p, url)),
+            MessageEntity::TextMention { position: p, user } => raw!(TextMention(p, user)),
+            MessageEntity::Underline(p) => raw!(Underline(p)),
+            MessageEntity::Url(p) => raw!(Url(p)),
         }
     }
 }
 
 #[derive(Clone, Debug, PartialEq, PartialOrd)]
-pub struct TextEntityBotCommand {
+pub struct MessageEntityBotCommand {
     pub command: String,
     /// Username of a bot.
     pub bot_name: Option<String>,

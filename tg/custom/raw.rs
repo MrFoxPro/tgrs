@@ -2,7 +2,7 @@
 
 use std::fmt;
 use serde::{Deserialize, Deserializer, Serialize, Serializer, de::{Error, Unexpected}};
-use super::{Text, TextEntities};
+use super::{Text, MessageEntities};
 
 #[derive(Deserialize, Serialize)]
 pub struct RawBoostAdded {
@@ -22,7 +22,7 @@ impl RawBoostAdded {
 pub struct RawCaption {
     pub caption: String,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub caption_entities: Option<TextEntities>,
+    pub caption_entities: Option<MessageEntities>,
 }
 impl RawCaption {
     pub fn deserialize_value<'de, D: Deserializer<'de>>(deserializer: D) -> Result<Option<Text>, D::Error> {
@@ -62,7 +62,7 @@ impl RawFlag {
 pub struct RawText {
     pub text: String,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub entities: Option<TextEntities>,
+    pub entities: Option<MessageEntities>,
 }
 
 impl RawText {

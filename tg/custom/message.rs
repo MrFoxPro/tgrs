@@ -282,7 +282,7 @@ pub enum MessageData {
 	/**Message is a general file, information about the file*/
 	#[serde(untagged)]
 	Document {
-		audio: Document,
+		document: Document,
 		#[serde(
 			flatten,
 			deserialize_with = "RawCaption::deserialize_value",

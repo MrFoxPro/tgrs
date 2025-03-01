@@ -58,6 +58,9 @@ impl fmt::Debug for InputFileInner {
 		}
 	}
 }
+impl From<Vec<u8>> for InputFileInner {
+	fn from(value: Vec<u8>) -> Self { Self::Bytes(bytes::Bytes::from(value)) }
+}
 impl From<Vec<u8>> for InputFile {
 	fn from(value: Vec<u8>) -> Self { Self::new(bytes::Bytes::from(value)) }
 }

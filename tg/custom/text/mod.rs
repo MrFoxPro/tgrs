@@ -7,27 +7,27 @@ pub use entities::*;
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Text {
 	pub data: String,
-	pub entities: Option<TextEntities>,
+	pub entities: Option<MessageEntities>,
 }
 
 impl Text {
-	pub fn with_entities(mut self, value: TextEntities) -> Self {
+	pub fn with_entities(mut self, value: MessageEntities) -> Self {
 		self.entities = Some(value);
 		self
 	}
-	pub fn get_bot_commands(&self) -> Option<Vec<TextEntityBotCommand>> {
+	pub fn get_bot_commands(&self) -> Option<Vec<MessageEntityBotCommand>> {
 		self.entities.as_ref().map(|entities| {
 			let repr = TextRepr::from(self);
 			entities.into_iter().filter_map(|entity| {
-				let TextEntity::BotCommand(position) = entity else { return None };
+				let MessageEntity::BotCommand(position) = entity else { return None };
 				let entity_data = repr.get_entity_content(*position);
 				let parts = entity_data.as_str().splitn(2, '@').collect::<Vec<&str>>();
 				let len = parts.len();
 				assert!(len >= 1);
 				let command = parts[0].to_string();
 				let bot_name = if len == 2 { Some(parts[1].to_string()) } else { None };
-				Some(TextEntityBotCommand { command, bot_name })
-			}).collect::<Vec<TextEntityBotCommand>>()
+				Some(MessageEntityBotCommand { command, bot_name })
+			}).collect::<Vec<MessageEntityBotCommand>>()
 		})
 		.filter(|entities| !entities.is_empty())
 	}
