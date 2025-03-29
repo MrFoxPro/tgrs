@@ -204,7 +204,7 @@ pub enum BackgroundFill {
 
 https://core.telegram.org/bots/api/#backgroundfillfreeformgradient*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
 pub struct BackgroundFillFreeformGradient {
@@ -761,7 +761,7 @@ impl BusinessLocation {
 
 https://core.telegram.org/bots/api/#businessmessagesdeleted*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
 pub struct BusinessMessagesDeleted {
@@ -789,7 +789,7 @@ impl BusinessMessagesDeleted {
 
 https://core.telegram.org/bots/api/#businessopeninghours*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
 pub struct BusinessOpeningHours {
@@ -1232,7 +1232,7 @@ impl ChatBoostUpdated {
 
 https://core.telegram.org/bots/api/#chatfullinfo*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
@@ -2263,7 +2263,7 @@ impl ChatPhoto {
 
 https://core.telegram.org/bots/api/#chatshared*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
@@ -2507,7 +2507,7 @@ impl EncryptedCredentials {
 
 https://core.telegram.org/bots/api/#encryptedpassportelement*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
@@ -2602,7 +2602,7 @@ impl EncryptedPassportElement {
 
 https://core.telegram.org/bots/api/#externalreplyinfo*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
@@ -2996,7 +2996,7 @@ pub enum FromChatId {
 
 https://core.telegram.org/bots/api/#game*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
@@ -3134,7 +3134,7 @@ impl Gift {
 
 https://core.telegram.org/bots/api/#gifts*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
 pub struct Gifts {
@@ -3156,7 +3156,7 @@ impl Gifts {
 
 https://core.telegram.org/bots/api/#giveaway*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
@@ -3308,7 +3308,7 @@ impl GiveawayCreated {
 
 https://core.telegram.org/bots/api/#giveawaywinners*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
@@ -3534,7 +3534,7 @@ impl InlineKeyboardButton {
 
 https://core.telegram.org/bots/api/#inlinekeyboardmarkup*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct InlineKeyboardMarkup {
@@ -3725,7 +3725,7 @@ impl InlineQueryResultArticle {
 
 https://core.telegram.org/bots/api/#inlinequeryresultaudio*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
@@ -3818,7 +3818,7 @@ impl InlineQueryResultAudio {
 
 https://core.telegram.org/bots/api/#inlinequeryresultcachedaudio*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
@@ -3892,7 +3892,7 @@ impl InlineQueryResultCachedAudio {
 
 https://core.telegram.org/bots/api/#inlinequeryresultcacheddocument*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
@@ -3977,7 +3977,7 @@ impl InlineQueryResultCachedDocument {
 
 https://core.telegram.org/bots/api/#inlinequeryresultcachedgif*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
@@ -4067,7 +4067,7 @@ impl InlineQueryResultCachedGif {
 
 https://core.telegram.org/bots/api/#inlinequeryresultcachedmpeg4gif*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
@@ -4157,7 +4157,7 @@ impl InlineQueryResultCachedMpeg4Gif {
 
 https://core.telegram.org/bots/api/#inlinequeryresultcachedphoto*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
@@ -4296,7 +4296,7 @@ impl InlineQueryResultCachedSticker {
 
 https://core.telegram.org/bots/api/#inlinequeryresultcachedvideo*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
@@ -4389,7 +4389,7 @@ impl InlineQueryResultCachedVideo {
 
 https://core.telegram.org/bots/api/#inlinequeryresultcachedvoice*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
@@ -4550,7 +4550,7 @@ impl InlineQueryResultContact {
 
 https://core.telegram.org/bots/api/#inlinequeryresultdocument*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
@@ -4696,7 +4696,7 @@ impl InlineQueryResultGame {
 
 https://core.telegram.org/bots/api/#inlinequeryresultgif*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
@@ -4928,7 +4928,7 @@ impl InlineQueryResultLocation {
 
 https://core.telegram.org/bots/api/#inlinequeryresultmpeg4gif*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
@@ -5057,7 +5057,7 @@ impl InlineQueryResultMpeg4Gif {
 
 https://core.telegram.org/bots/api/#inlinequeryresultphoto*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
@@ -5282,7 +5282,7 @@ If an InlineQueryResultVideo message contains an embedded video (e.g., YouTube),
 
 https://core.telegram.org/bots/api/#inlinequeryresultvideo*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
@@ -5406,7 +5406,7 @@ impl InlineQueryResultVideo {
 
 https://core.telegram.org/bots/api/#inlinequeryresultvoice*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
@@ -5570,7 +5570,7 @@ impl InputContactMessageContent {
 
 https://core.telegram.org/bots/api/#inputinvoicemessagecontent*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
@@ -5806,7 +5806,7 @@ pub enum InputMedia {
 
 https://core.telegram.org/bots/api/#inputmediaanimation*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
@@ -5909,7 +5909,7 @@ impl InputMediaAnimation {
 
 https://core.telegram.org/bots/api/#inputmediaaudio*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
@@ -5996,7 +5996,7 @@ impl InputMediaAudio {
 
 https://core.telegram.org/bots/api/#inputmediadocument*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
@@ -6067,7 +6067,7 @@ impl InputMediaDocument {
 
 https://core.telegram.org/bots/api/#inputmediaphoto*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
@@ -6138,7 +6138,7 @@ impl InputMediaPhoto {
 
 https://core.telegram.org/bots/api/#inputmediavideo*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
@@ -6392,7 +6392,7 @@ impl InputPaidMediaVideo {
 
 https://core.telegram.org/bots/api/#inputpolloption*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
@@ -6433,7 +6433,7 @@ impl InputPollOption {
 
 https://core.telegram.org/bots/api/#inputsticker*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
@@ -6483,7 +6483,7 @@ impl InputSticker {
 
 https://core.telegram.org/bots/api/#inputtextmessagecontent*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
@@ -7315,7 +7315,7 @@ impl MessageOriginUser {
 
 https://core.telegram.org/bots/api/#messagereactioncountupdated*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
 pub struct MessageReactionCountUpdated {
@@ -7346,7 +7346,7 @@ impl MessageReactionCountUpdated {
 
 https://core.telegram.org/bots/api/#messagereactionupdated*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
@@ -7462,7 +7462,7 @@ pub enum PaidMedia {
 
 https://core.telegram.org/bots/api/#paidmediainfo*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
 pub struct PaidMediaInfo {
@@ -7487,7 +7487,7 @@ impl PaidMediaInfo {
 
 https://core.telegram.org/bots/api/#paidmediaphoto*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
 pub struct PaidMediaPhoto {
@@ -7593,7 +7593,7 @@ impl PaidMediaVideo {
 
 https://core.telegram.org/bots/api/#passportdata*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
 pub struct PassportData {
@@ -7699,7 +7699,7 @@ impl PassportElementErrorFile {
 
 https://core.telegram.org/bots/api/#passportelementerrorfiles*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Serialize)]
 pub struct PassportElementErrorFiles {
@@ -7836,7 +7836,7 @@ impl PassportElementErrorTranslationFile {
 
 https://core.telegram.org/bots/api/#passportelementerrortranslationfiles*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Serialize)]
 pub struct PassportElementErrorTranslationFiles {
@@ -7953,7 +7953,7 @@ impl PhotoSize {
 
 https://core.telegram.org/bots/api/#poll*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
@@ -8060,7 +8060,7 @@ impl Poll {
 
 https://core.telegram.org/bots/api/#pollanswer*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
@@ -8102,7 +8102,7 @@ impl PollAnswer {
 
 https://core.telegram.org/bots/api/#polloption*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
 pub struct PollOption {
@@ -8345,7 +8345,7 @@ impl RefundedPayment {
 
 https://core.telegram.org/bots/api/#replykeyboardmarkup*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
@@ -8462,7 +8462,7 @@ pub enum ReplyMarkup {
 
 https://core.telegram.org/bots/api/#replyparameters*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
@@ -8663,7 +8663,7 @@ pub enum SetGameScoreResult {
 
 https://core.telegram.org/bots/api/#shareduser*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
@@ -8748,7 +8748,7 @@ impl ShippingAddress {
 
 https://core.telegram.org/bots/api/#shippingoption*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Serialize)]
 pub struct ShippingOption {
@@ -8848,7 +8848,7 @@ impl StarTransaction {
 
 https://core.telegram.org/bots/api/#startransactions*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
 pub struct StarTransactions {
@@ -8973,7 +8973,7 @@ impl Sticker {
 
 https://core.telegram.org/bots/api/#stickerset*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
@@ -9168,7 +9168,7 @@ impl SwitchInlineQueryChosenChat {
 
 https://core.telegram.org/bots/api/#textquote*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
@@ -9372,7 +9372,7 @@ impl TransactionPartnerTelegramApi {
 
 https://core.telegram.org/bots/api/#transactionpartneruser*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
@@ -9758,7 +9758,7 @@ impl User {
 
 https://core.telegram.org/bots/api/#userchatboosts*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
 pub struct UserChatBoosts {
@@ -9780,7 +9780,7 @@ impl UserChatBoosts {
 
 https://core.telegram.org/bots/api/#userprofilephotos*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
 pub struct UserProfilePhotos {
@@ -9805,7 +9805,7 @@ impl UserProfilePhotos {
 
 https://core.telegram.org/bots/api/#usersshared*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
 pub struct UsersShared {
@@ -9886,7 +9886,7 @@ impl Venue {
 
 https://core.telegram.org/bots/api/#video*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
@@ -9984,7 +9984,7 @@ impl VideoChatEnded {
 
 https://core.telegram.org/bots/api/#videochatparticipantsinvited*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
 pub struct VideoChatParticipantsInvited {
@@ -10141,7 +10141,7 @@ impl WebAppInfo {
 
 https://core.telegram.org/bots/api/#webhookinfo*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]

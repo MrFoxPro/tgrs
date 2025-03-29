@@ -701,7 +701,7 @@ fn print_struct(entity: &Entity, fields: &BTreeMap<String, StructField>, out: &m
 		writeln!(out, "#[apply(");
 		out.indent();
 		if has_vecs {
-			writeln!(out, r#"Vec => #[serde(skip_serializing_if = "Vec::is_empty")],"#);
+			writeln!(out, r#"Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],"#);
 		}
 		if has_opts {
 			writeln!(out, r#"Option => #[serde(skip_serializing_if = "Option::is_none")],"#);

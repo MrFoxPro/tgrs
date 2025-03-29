@@ -11,7 +11,7 @@ mod original_message {
 
 https://core.telegram.org/bots/api/#message*/
 #[apply(
-	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
