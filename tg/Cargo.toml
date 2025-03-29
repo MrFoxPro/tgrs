@@ -15,12 +15,8 @@ ryu = { version = "1" }
 bytes = { version = "1", default-features = false, features = ["std"] }
 fastrand = { version = "2.3" }
 futures-util = { version = "0.3", default-features = false, features = ["io"] }
-# tokio-util = { version = "0.7", default-features = false, features = ["codec"] }
-# tokio = { version = "1.43", default-features = false }
-
-[dev-dependencies]
 
 [features]
+default = []
 custom-message = []
-
 # stream-file = ["dep:tokio", "dep:tokio-util"]
