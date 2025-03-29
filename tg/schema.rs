@@ -5,7 +5,7 @@ use serde_with::apply;
 use derive_more::{From, Display};
 use crate::{addons::*, custom::*, client::{Executable, FormParts}, InputFile};
 
-pub const SCHEMA_VERSION: &str = "8.2.0";
+pub const SCHEMA_VERSION: &str = "8.3.0";
 
 /**Contains information about the affiliate that received a commission via this transaction.
 
@@ -1255,6 +1255,9 @@ pub struct ChatFullInfo {
 	pub business_location: Option<BusinessLocation>,
 	/**For private chats with business accounts, the opening hours of the business*/
 	pub business_opening_hours: Option<BusinessOpeningHours>,
+	/**if gifts can be sent to the chat
+	Default value: true*/
+	pub can_send_gift: Option<bool>,
 	/**if paid media messages can be sent or forwarded to the channel chat. The field is available only for channel chats.
 	Default value: true*/
 	pub can_send_paid_media: Option<bool>,
@@ -1350,6 +1353,7 @@ impl ChatFullInfo {
 			business_intro: None,
 			business_location: None,
 			business_opening_hours: None,
+			can_send_gift: None,
 			can_send_paid_media: None,
 			can_set_sticker_set: None,
 			custom_emoji_sticker_set_name: None,
@@ -1433,6 +1437,12 @@ impl ChatFullInfo {
 	/** *Optional*. For private chats with business accounts, the opening hours of the business*/
 	pub fn business_opening_hours(mut self, business_opening_hours: impl Into<BusinessOpeningHours>) -> Self {
 		self.business_opening_hours = Some(business_opening_hours.into());
+		self
+	}
+	/** *Optional*. *True*, if gifts can be sent to the chat
+	Default value: true*/
+	pub fn can_send_gift(mut self, can_send_gift: bool) -> Self {
+		self.can_send_gift = Some(can_send_gift);
 		self
 	}
 	/** *Optional*. *True*, if paid media messages can be sent or forwarded to the channel chat. The field is available only for channel chats.
@@ -6139,6 +6149,8 @@ pub struct InputMediaVideo {
 	pub caption: Option<String>,
 	/**List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub caption_entities: Vec<MessageEntity>,
+	/**Cover for the video in the message. Pass a file\_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://\<file\_attach\_name\>” to upload a new one using multipart/form-data under \<file\_attach\_name\> name. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
+	pub cover: Option<Asset>,
 	/**Video duration in seconds*/
 	pub duration: Option<i64>,
 	/**Pass *True* if the video needs to be covered with a spoiler animation*/
@@ -6154,6 +6166,8 @@ pub struct InputMediaVideo {
 	pub r#type: &'static str,
 	/**Pass if the caption must be shown above the message media*/
 	pub show_caption_above_media: Option<bool>,
+	/**Start timestamp for the video in the message*/
+	pub start_timestamp: Option<i64>,
 	/**Pass *True* if the uploaded video is suitable for streaming*/
 	pub supports_streaming: Option<bool>,
 	/**Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
@@ -6166,6 +6180,7 @@ impl InputMediaVideo {
 		Self {
 			caption: None,
 			caption_entities: Vec::new(),
+			cover: None,
 			duration: None,
 			has_spoiler: None,
 			height: None,
@@ -6173,6 +6188,7 @@ impl InputMediaVideo {
 			parse_mode: None,
 			r#type: "video",
 			show_caption_above_media: None,
+			start_timestamp: None,
 			supports_streaming: None,
 			thumbnail: None,
 			width: None,
@@ -6192,6 +6208,11 @@ impl InputMediaVideo {
 	/** *Optional*. List of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
+		self
+	}
+	/** *Optional*. Cover for the video in the message. Pass a file\_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://\<file\_attach\_name\>” to upload a new one using multipart/form-data under \<file\_attach\_name\> name. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
+	pub fn cover(mut self, cover: impl Into<Asset>) -> Self {
+		self.cover = Some(cover.into());
 		self
 	}
 	/** *Optional*. Video duration in seconds*/
@@ -6217,6 +6238,11 @@ impl InputMediaVideo {
 	/** *Optional*. Pass *True*, if the caption must be shown above the message media*/
 	pub fn show_caption_above_media(mut self, show_caption_above_media: bool) -> Self {
 		self.show_caption_above_media = Some(show_caption_above_media);
+		self
+	}
+	/** *Optional*. Start timestamp for the video in the message*/
+	pub fn start_timestamp(mut self, start_timestamp: impl Into<i64>) -> Self {
+		self.start_timestamp = Some(start_timestamp.into());
 		self
 	}
 	/** *Optional*. Pass *True* if the uploaded video is suitable for streaming*/
@@ -6292,6 +6318,8 @@ https://core.telegram.org/bots/api/#inputpaidmediavideo*/
 )]
 #[derive(Clone, Debug, Serialize)]
 pub struct InputPaidMediaVideo {
+	/**Cover for the video in the message. Pass a file\_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://\<file\_attach\_name\>” to upload a new one using multipart/form-data under \<file\_attach\_name\> name. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
+	pub cover: Option<Asset>,
 	/**Video duration in seconds*/
 	pub duration: Option<i64>,
 	/**Video height*/
@@ -6301,6 +6329,8 @@ pub struct InputPaidMediaVideo {
 	/**Type of the media, must be *video*
 	Default: video*/
 	pub r#type: String,
+	/**Start timestamp for the video in the message*/
+	pub start_timestamp: Option<i64>,
 	/**Pass *True* if the uploaded video is suitable for streaming*/
 	pub supports_streaming: Option<bool>,
 	/**Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
@@ -6311,14 +6341,21 @@ pub struct InputPaidMediaVideo {
 impl InputPaidMediaVideo {
 	pub fn new(media: impl Into<Asset>, r#type: impl Into<String>) -> Self {
 		Self {
+			cover: None,
 			duration: None,
 			height: None,
 			media: media.into(),
 			r#type: r#type.into(),
+			start_timestamp: None,
 			supports_streaming: None,
 			thumbnail: None,
 			width: None,
 		}
+	}
+	/** *Optional*. Cover for the video in the message. Pass a file\_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://\<file\_attach\_name\>” to upload a new one using multipart/form-data under \<file\_attach\_name\> name. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
+	pub fn cover(mut self, cover: impl Into<Asset>) -> Self {
+		self.cover = Some(cover.into());
+		self
 	}
 	/** *Optional*. Video duration in seconds*/
 	pub fn duration(mut self, duration: impl Into<i64>) -> Self {
@@ -6328,6 +6365,11 @@ impl InputPaidMediaVideo {
 	/** *Optional*. Video height*/
 	pub fn height(mut self, height: impl Into<i64>) -> Self {
 		self.height = Some(height.into());
+		self
+	}
+	/** *Optional*. Start timestamp for the video in the message*/
+	pub fn start_timestamp(mut self, start_timestamp: impl Into<i64>) -> Self {
+		self.start_timestamp = Some(start_timestamp.into());
 		self
 	}
 	/** *Optional*. Pass *True* if the uploaded video is suitable for streaming*/
@@ -9169,6 +9211,7 @@ impl TextQuote {
 /**This object describes the source of a transaction, or its recipient for outgoing transactions. Currently, it can be one of
 
 * [TransactionPartnerUser](https://core.telegram.org/bots/api/#transactionpartneruser)
+* [TransactionPartnerChat](https://core.telegram.org/bots/api/#transactionpartnerchat)
 * [TransactionPartnerAffiliateProgram](https://core.telegram.org/bots/api/#transactionpartneraffiliateprogram)
 * [TransactionPartnerFragment](https://core.telegram.org/bots/api/#transactionpartnerfragment)
 * [TransactionPartnerTelegramAds](https://core.telegram.org/bots/api/#transactionpartnertelegramads)
@@ -9180,6 +9223,7 @@ https://core.telegram.org/bots/api/#transactionpartner*/
 #[serde(untagged)]
 pub enum TransactionPartner {
 	AffiliateProgram(TransactionPartnerAffiliateProgram),
+	Chat(TransactionPartnerChat),
 	Fragment(TransactionPartnerFragment),
 	Other(TransactionPartnerOther),
 	TelegramAds(TransactionPartnerTelegramAds),
@@ -9213,6 +9257,36 @@ impl TransactionPartnerAffiliateProgram {
 	/** *Optional*. Information about the bot that sponsored the affiliate program*/
 	pub fn sponsor_user(mut self, sponsor_user: impl Into<User>) -> Self {
 		self.sponsor_user = Some(sponsor_user.into());
+		self
+	}
+}
+/**Describes a transaction with a chat.
+
+https://core.telegram.org/bots/api/#transactionpartnerchat*/
+#[apply(
+	Option => #[serde(skip_serializing_if = "Option::is_none")],
+)]
+#[derive(Clone, Debug, Deserialize)]
+pub struct TransactionPartnerChat {
+	/**Information about the chat*/
+	pub chat: Chat,
+	/**The gift sent to the chat by the bot*/
+	pub gift: Option<Gift>,
+	/**Type of the transaction partner, always “chat”
+	Default: chat*/
+	pub r#type: String,
+}
+impl TransactionPartnerChat {
+	pub fn new(chat: impl Into<Chat>, r#type: impl Into<String>) -> Self {
+		Self {
+			chat: chat.into(),
+			gift: None,
+			r#type: r#type.into(),
+		}
+	}
+	/** *Optional*. The gift sent to the chat by the bot*/
+	pub fn gift(mut self, gift: impl Into<Gift>) -> Self {
+		self.gift = Some(gift.into());
 		self
 	}
 }
@@ -9812,10 +9886,13 @@ impl Venue {
 
 https://core.telegram.org/bots/api/#video*/
 #[apply(
+	Vec => #[serde(skip_serializing_if = "Vec::is_empty")],
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
 pub struct Video {
+	/**Available sizes of the cover of the video in the message*/
+	pub cover: Vec<PhotoSize>,
 	/**Duration of the video in seconds as defined by the sender*/
 	pub duration: i64,
 	/**Identifier for this file, which can be used to download or reuse the file*/
@@ -9830,6 +9907,8 @@ pub struct Video {
 	pub height: i64,
 	/**MIME type of the file as defined by the sender*/
 	pub mime_type: Option<String>,
+	/**Timestamp in seconds from which the video will play in the message*/
+	pub start_timestamp: Option<i64>,
 	/**Video thumbnail*/
 	pub thumbnail: Option<PhotoSize>,
 	/**Video width as defined by the sender*/
@@ -9838,6 +9917,7 @@ pub struct Video {
 impl Video {
 	pub fn new(duration: impl Into<i64>, file_id: impl Into<String>, file_unique_id: impl Into<String>, height: impl Into<i64>, width: impl Into<i64>) -> Self {
 		Self {
+			cover: Vec::new(),
 			duration: duration.into(),
 			file_id: file_id.into(),
 			file_name: None,
@@ -9845,9 +9925,19 @@ impl Video {
 			file_unique_id: file_unique_id.into(),
 			height: height.into(),
 			mime_type: None,
+			start_timestamp: None,
 			thumbnail: None,
 			width: width.into(),
 		}
+	}
+	pub fn add_cover(mut self, cover: impl Into<PhotoSize>) -> Self {
+		self.cover.push(cover.into());
+		self
+	}
+	/** *Optional*. Available sizes of the cover of the video in the message*/
+	pub fn cover(mut self, cover: impl Into<Vec<PhotoSize>>) -> Self {
+		self.cover = cover.into();
+		self
 	}
 	/** *Optional*. Original filename as defined by the sender*/
 	pub fn file_name(mut self, file_name: impl Into<String>) -> Self {
@@ -9862,6 +9952,11 @@ impl Video {
 	/** *Optional*. MIME type of the file as defined by the sender*/
 	pub fn mime_type(mut self, mime_type: impl Into<String>) -> Self {
 		self.mime_type = Some(mime_type.into());
+		self
+	}
+	/** *Optional*. Timestamp in seconds from which the video will play in the message*/
+	pub fn start_timestamp(mut self, start_timestamp: impl Into<i64>) -> Self {
+		self.start_timestamp = Some(start_timestamp.into());
 		self
 	}
 	/** *Optional*. Video thumbnail*/
@@ -10644,6 +10739,8 @@ pub struct CopyMessage {
 	pub reply_parameters: Option<ReplyParameters>,
 	/**Pass if the caption must be shown above the message media. Ignored if a new caption isn't specified.*/
 	pub show_caption_above_media: Option<bool>,
+	/**New start timestamp for the copied video in the message*/
+	pub video_start_timestamp: Option<i64>,
 }
 impl CopyMessage {
 	pub fn new(chat_id: impl Into<ChatId>, from_chat_id: impl Into<FromChatId>, message_id: impl Into<i64>) -> Self {
@@ -10661,6 +10758,7 @@ impl CopyMessage {
 			reply_markup: None,
 			reply_parameters: None,
 			show_caption_above_media: None,
+			video_start_timestamp: None,
 		}
 	}
 	/** Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
@@ -10717,12 +10815,17 @@ impl CopyMessage {
 		self.show_caption_above_media = Some(show_caption_above_media);
 		self
 	}
+	/** New start timestamp for the copied video in the message*/
+	pub fn video_start_timestamp(mut self, video_start_timestamp: impl Into<i64>) -> Self {
+		self.video_start_timestamp = Some(video_start_timestamp.into());
+		self
+	}
 }
 impl Executable for CopyMessage {
 	type Response = MessageId;
 	const METHOD_NAME: &str = "copyMessage";
 	fn into_parts(self) -> FormParts {
-		let mut parts = FormParts::new(13);
+		let mut parts = FormParts::new(14);
 		parts.add_bool("allow_paid_broadcast", self.allow_paid_broadcast);
 		parts.add_string("caption", self.caption);
 		if self.caption_entities.len() > 0 { parts.add_object("caption_entities", self.caption_entities) }
@@ -10736,6 +10839,7 @@ impl Executable for CopyMessage {
 		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
 		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters); }
 		parts.add_bool("show_caption_above_media", self.show_caption_above_media);
+		parts.add_i64("video_start_timestamp", self.video_start_timestamp);
 		parts
 	}
 }
@@ -12201,6 +12305,8 @@ pub struct ForwardMessage {
 	pub message_thread_id: Option<i64>,
 	/**Protects the contents of the forwarded message from forwarding and saving*/
 	pub protect_content: Option<bool>,
+	/**New start timestamp for the forwarded video in the message*/
+	pub video_start_timestamp: Option<i64>,
 }
 impl ForwardMessage {
 	pub fn new(chat_id: impl Into<ChatId>, from_chat_id: impl Into<FromChatId>, message_id: impl Into<i64>) -> Self {
@@ -12211,6 +12317,7 @@ impl ForwardMessage {
 			message_id: message_id.into(),
 			message_thread_id: None,
 			protect_content: None,
+			video_start_timestamp: None,
 		}
 	}
 	/** Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
@@ -12228,18 +12335,24 @@ impl ForwardMessage {
 		self.protect_content = Some(protect_content);
 		self
 	}
+	/** New start timestamp for the forwarded video in the message*/
+	pub fn video_start_timestamp(mut self, video_start_timestamp: impl Into<i64>) -> Self {
+		self.video_start_timestamp = Some(video_start_timestamp.into());
+		self
+	}
 }
 impl Executable for ForwardMessage {
 	type Response = Message;
 	const METHOD_NAME: &str = "forwardMessage";
 	fn into_parts(self) -> FormParts {
-		let mut parts = FormParts::new(6);
+		let mut parts = FormParts::new(7);
 		parts.add_string("chat_id", self.chat_id.to_string());
 		parts.add_bool("disable_notification", self.disable_notification);
 		parts.add_string("from_chat_id", self.from_chat_id.to_string());
 		parts.add_i64("message_id", self.message_id);
 		parts.add_i64("message_thread_id", self.message_thread_id);
 		parts.add_bool("protect_content", self.protect_content);
+		parts.add_i64("video_start_timestamp", self.video_start_timestamp);
 		parts
 	}
 }
@@ -12306,7 +12419,7 @@ impl Executable for ForwardMessages {
 		parts
 	}
 }
-/**Returns the list of gifts that can be sent by the bot to users. Requires no parameters. Returns a [Gifts](https://core.telegram.org/bots/api/#gifts) object.
+/**Returns the list of gifts that can be sent by the bot to users and channel chats. Requires no parameters. Returns a [Gifts](https://core.telegram.org/bots/api/#gifts) object.
 
 https://core.telegram.org/bots/api/#getavailablegifts*/
 #[derive(Clone, Debug)]
@@ -14452,41 +14565,49 @@ impl Executable for SendGame {
 		parts
 	}
 }
-/**Sends a gift to the given user. The gift can't be converted to Telegram Stars by the user. Returns *True* on success.
+/**Sends a gift to the given user or channel chat. The gift can't be converted to Telegram Stars by the receiver. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#sendgift*/
 #[derive(Clone, Debug)]
 pub struct SendGift {
+	/**Required if *user\_id* is not specified. Unique identifier for the chat or username of the channel (in the format `@channelusername`) that will receive the gift.*/
+	pub chat_id: Option<ChatId>,
 	/**Identifier of the gift*/
 	pub gift_id: String,
 	/**Pass *True* to pay for the gift upgrade from the bot's balance, thereby making the upgrade free for the receiver*/
 	pub pay_for_upgrade: Option<bool>,
-	/**Text that will be shown along with the gift; 0-255 characters*/
+	/**Text that will be shown along with the gift; 0-128 characters*/
 	pub text: Option<String>,
 	/**A JSON-serialized list of special entities that appear in the gift text. It can be specified instead of *text\_parse\_mode*. Entities other than “bold”, “italic”, “underline”, “strikethrough”, “spoiler”, and “custom\_emoji” are ignored.*/
 	pub text_entities: Vec<MessageEntity>,
 	/**Mode for parsing entities in the text. See [formatting options](https://core.telegram.org/bots/api/#formatting-options) for more details. Entities other than “bold”, “italic”, “underline”, “strikethrough”, “spoiler”, and “custom\_emoji” are ignored.*/
 	pub text_parse_mode: Option<String>,
-	/**Unique identifier of the target user that will receive the gift*/
-	pub user_id: i64,
+	/**Required if *chat\_id* is not specified. Unique identifier of the target user who will receive the gift.*/
+	pub user_id: Option<i64>,
 }
 impl SendGift {
-	pub fn new(gift_id: impl Into<String>, user_id: impl Into<i64>) -> Self {
+	pub fn new(gift_id: impl Into<String>) -> Self {
 		Self {
+			chat_id: None,
 			gift_id: gift_id.into(),
 			pay_for_upgrade: None,
 			text: None,
 			text_entities: Vec::new(),
 			text_parse_mode: None,
-			user_id: user_id.into(),
+			user_id: None,
 		}
+	}
+	/** Required if *user\_id* is not specified. Unique identifier for the chat or username of the channel (in the format `@channelusername`) that will receive the gift.*/
+	pub fn chat_id(mut self, chat_id: impl Into<ChatId>) -> Self {
+		self.chat_id = Some(chat_id.into());
+		self
 	}
 	/** Pass *True* to pay for the gift upgrade from the bot's balance, thereby making the upgrade free for the receiver*/
 	pub fn pay_for_upgrade(mut self, pay_for_upgrade: bool) -> Self {
 		self.pay_for_upgrade = Some(pay_for_upgrade);
 		self
 	}
-	/** Text that will be shown along with the gift; 0-255 characters*/
+	/** Text that will be shown along with the gift; 0-128 characters*/
 	pub fn text(mut self, text: impl Into<String>) -> Self {
 		self.text = Some(text.into());
 		self
@@ -14505,12 +14626,18 @@ impl SendGift {
 		self.text_parse_mode = Some(text_parse_mode.into());
 		self
 	}
+	/** Required if *chat\_id* is not specified. Unique identifier of the target user who will receive the gift.*/
+	pub fn user_id(mut self, user_id: impl Into<i64>) -> Self {
+		self.user_id = Some(user_id.into());
+		self
+	}
 }
 impl Executable for SendGift {
 	type Response = bool;
 	const METHOD_NAME: &str = "sendGift";
 	fn into_parts(self) -> FormParts {
-		let mut parts = FormParts::new(6);
+		let mut parts = FormParts::new(7);
+		parts.add_string("chat_id", self.chat_id.map(|x| x.to_string()));
 		parts.add_string("gift_id", self.gift_id);
 		parts.add_bool("pay_for_upgrade", self.pay_for_upgrade);
 		parts.add_string("text", self.text);
@@ -15929,6 +16056,8 @@ pub struct SendVideo {
 	pub caption_entities: Vec<MessageEntity>,
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
+	/**Cover for the video in the message. Pass a file\_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://\<file\_attach\_name\>” to upload a new one using multipart/form-data under \<file\_attach\_name\> name. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
+	pub cover: Option<Asset>,
 	/**Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
 	pub disable_notification: Option<bool>,
 	/**Duration of sent video in seconds*/
@@ -15951,6 +16080,8 @@ pub struct SendVideo {
 	pub reply_parameters: Option<ReplyParameters>,
 	/**Pass if the caption must be shown above the message media*/
 	pub show_caption_above_media: Option<bool>,
+	/**Start timestamp for the video in the message*/
+	pub start_timestamp: Option<i64>,
 	/**Pass *True* if the uploaded video is suitable for streaming*/
 	pub supports_streaming: Option<bool>,
 	/**Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://\<file\_attach\_name\>” if the thumbnail was uploaded using multipart/form-data under \<file\_attach\_name\>. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
@@ -15968,6 +16099,7 @@ impl SendVideo {
 			caption: None,
 			caption_entities: Vec::new(),
 			chat_id: chat_id.into(),
+			cover: None,
 			disable_notification: None,
 			duration: None,
 			has_spoiler: None,
@@ -15979,6 +16111,7 @@ impl SendVideo {
 			reply_markup: None,
 			reply_parameters: None,
 			show_caption_above_media: None,
+			start_timestamp: None,
 			supports_streaming: None,
 			thumbnail: None,
 			video: video.into(),
@@ -16007,6 +16140,11 @@ impl SendVideo {
 	/** A JSON-serialized list of special entities that appear in the caption, which can be specified instead of *parse\_mode**/
 	pub fn caption_entities(mut self, caption_entities: impl Into<Vec<MessageEntity>>) -> Self {
 		self.caption_entities = caption_entities.into();
+		self
+	}
+	/** Cover for the video in the message. Pass a file\_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://\<file\_attach\_name\>” to upload a new one using multipart/form-data under \<file\_attach\_name\> name. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
+	pub fn cover(mut self, cover: impl Into<Asset>) -> Self {
+		self.cover = Some(cover.into());
 		self
 	}
 	/** Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.*/
@@ -16064,6 +16202,11 @@ impl SendVideo {
 		self.show_caption_above_media = Some(show_caption_above_media);
 		self
 	}
+	/** Start timestamp for the video in the message*/
+	pub fn start_timestamp(mut self, start_timestamp: impl Into<i64>) -> Self {
+		self.start_timestamp = Some(start_timestamp.into());
+		self
+	}
 	/** Pass *True* if the uploaded video is suitable for streaming*/
 	pub fn supports_streaming(mut self, supports_streaming: bool) -> Self {
 		self.supports_streaming = Some(supports_streaming);
@@ -16084,12 +16227,13 @@ impl Executable for SendVideo {
 	type Response = Message;
 	const METHOD_NAME: &str = "sendVideo";
 	fn into_parts(self) -> FormParts {
-		let mut parts = FormParts::new(20);
+		let mut parts = FormParts::new(22);
 		parts.add_bool("allow_paid_broadcast", self.allow_paid_broadcast);
 		parts.add_string("business_connection_id", self.business_connection_id);
 		parts.add_string("caption", self.caption);
 		if self.caption_entities.len() > 0 { parts.add_object("caption_entities", self.caption_entities) }
 		parts.add_string("chat_id", self.chat_id.to_string());
+		if let Some(cover) = self.cover { parts.add_attachable("cover", cover); }
 		parts.add_bool("disable_notification", self.disable_notification);
 		parts.add_i64("duration", self.duration);
 		parts.add_bool("has_spoiler", self.has_spoiler);
@@ -16101,6 +16245,7 @@ impl Executable for SendVideo {
 		if let Some(reply_markup) = self.reply_markup { parts.add_object("reply_markup", reply_markup); }
 		if let Some(reply_parameters) = self.reply_parameters { parts.add_object("reply_parameters", reply_parameters); }
 		parts.add_bool("show_caption_above_media", self.show_caption_above_media);
+		parts.add_i64("start_timestamp", self.start_timestamp);
 		parts.add_bool("supports_streaming", self.supports_streaming);
 		if let Some(thumbnail) = self.thumbnail { parts.add_attachable("thumbnail", thumbnail); }
 		parts.add_attachable("video", self.video);
@@ -16705,7 +16850,7 @@ impl Executable for SetGameScore {
 		parts
 	}
 }
-/**Use this method to change the chosen reactions on a message. Service messages can't be reacted to. Automatically forwarded messages from a channel to its discussion group have the same available reactions as messages in the channel. Bots can't use paid reactions. Returns *True* on success.
+/**Use this method to change the chosen reactions on a message. Service messages of some types can't be reacted to. Automatically forwarded messages from a channel to its discussion group have the same available reactions as messages in the channel. Bots can't use paid reactions. Returns *True* on success.
 
 https://core.telegram.org/bots/api/#setmessagereaction*/
 #[derive(Clone, Debug)]
