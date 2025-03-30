@@ -623,7 +623,7 @@ fn print_entities(registry: Registry, out: &mut IndentedWriter<impl Write>) {
 				print_derive(&entity, out);
 				if entity.serde.ser || entity.serde.de { 
 					if entity.name == "ChatMember" {
-						writeln!(out, r#"#[serde(rename_all = "snake_case", tag = "status")]"#);
+						writeln!(out, r#"#[serde(tag = "status", rename_all = "snake_case")]"#);
 					}
 					else {
 						writeln!(out, "#[serde(untagged)]");
