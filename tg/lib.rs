@@ -1,4 +1,4 @@
-#![feature(assert_matches)]
+#![feature(assert_matches, default_field_values)]
 
 pub mod client;
 
@@ -10,3 +10,6 @@ pub use custom::*;
 
 mod schema;
 pub use schema::*;
+
+#[cfg(test)]
+mod test;

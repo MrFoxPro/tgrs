@@ -8,7 +8,7 @@ path = "lib.rs"
 [dependencies]
 derive_more = { version = "1", features = ["from", "display"] }
 serde = { version = "1", features = ["alloc", "derive"] }
-serde_with = { version = "3.12" }
+serde_with = { version = "3" }
 serde_json = { version = "1" }
 itoa = { version = "1" }
 ryu = { version = "1" }

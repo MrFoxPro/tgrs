@@ -9,3 +9,5 @@ FormData is used for all requests to simplify entities encoding process.
 To do:
 - decide what to do with streams
 - decide what to do with file content as raw bytes (for now using bytes::Bytes)
+
+https://stackoverflow.com/questions/65258367/serde-tag-x-but-keep-the-tag-in-the-struct

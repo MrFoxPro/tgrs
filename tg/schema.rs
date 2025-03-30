@@ -194,7 +194,7 @@ impl Audio {
 
 https://core.telegram.org/bots/api/#backgroundfill*/
 #[derive(Clone, Debug, Deserialize, From)]
-#[serde(untagged)]
+#[serde(untagged, rename_all = "snake_case")]
 pub enum BackgroundFill {
 	FreeformGradient(BackgroundFillFreeformGradient),
 	Gradient(BackgroundFillGradient),
@@ -279,7 +279,7 @@ impl BackgroundFillSolid {
 
 https://core.telegram.org/bots/api/#backgroundtype*/
 #[derive(Clone, Debug, Deserialize, From)]
-#[serde(untagged)]
+#[serde(untagged, rename_all = "snake_case")]
 pub enum BackgroundType {
 	ChatTheme(BackgroundTypeChatTheme),
 	Fill(BackgroundTypeFill),
@@ -483,7 +483,7 @@ impl BotCommand {
 
 https://core.telegram.org/bots/api/#botcommandscope*/
 #[derive(Clone, Debug, Serialize, From)]
-#[serde(untagged)]
+#[serde(untagged, rename_all = "snake_case")]
 pub enum BotCommandScope {
 	AllChatAdministrators(BotCommandScopeAllChatAdministrators),
 	AllGroupChats(BotCommandScopeAllGroupChats),
@@ -1118,7 +1118,7 @@ impl ChatBoostRemoved {
 
 https://core.telegram.org/bots/api/#chatboostsource*/
 #[derive(Clone, Debug, Deserialize, From)]
-#[serde(untagged)]
+#[serde(untagged, rename_all = "snake_case")]
 pub enum ChatBoostSource {
 	GiftCode(ChatBoostSourceGiftCode),
 	Giveaway(ChatBoostSourceGiveaway),
@@ -1619,7 +1619,7 @@ impl ChatFullInfo {
 }
 /**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 #[derive(Clone, Debug, Serialize, From, Display)]
-#[serde(untagged)]
+#[serde(untagged, rename_all = "snake_case")]
 pub enum ChatId {
 	Id(i64),
 	Username(String),
@@ -1779,10 +1779,10 @@ https://core.telegram.org/bots/api/#chatmember*/
 #[serde(tag = "status", rename_all = "snake_case")]
 pub enum ChatMember {
 	Administrator(ChatMemberAdministrator),
-	Kicked(ChatMemberBanned),
+	Banned(#[serde(rename = "kicked")] ChatMemberBanned),
 	Left(ChatMemberLeft),
 	Member(ChatMemberMember),
-	Creator(ChatMemberOwner),
+	Owner(#[serde(rename = "creator")] ChatMemberOwner),
 	Restricted(ChatMemberRestricted),
 }
 /**Represents a [chat member](https://core.telegram.org/bots/api/#chatmember) that has some additional privileges.
@@ -1827,14 +1827,11 @@ pub struct ChatMemberAdministrator {
 	pub custom_title: Option<String>,
 	/**if the user's presence in the chat is hidden*/
 	pub is_anonymous: bool,
-	/**The member's status in the chat, always “administrator”
-	Default: administrator*/
-	pub status: String,
 	/**Information about the user*/
 	pub user: User,
 }
 impl ChatMemberAdministrator {
-	pub fn new(can_be_edited: bool, can_change_info: bool, can_delete_messages: bool, can_delete_stories: bool, can_edit_stories: bool, can_invite_users: bool, can_manage_chat: bool, can_manage_video_chats: bool, can_post_stories: bool, can_promote_members: bool, can_restrict_members: bool, is_anonymous: bool, status: impl Into<String>, user: impl Into<User>) -> Self {
+	pub fn new(can_be_edited: bool, can_change_info: bool, can_delete_messages: bool, can_delete_stories: bool, can_edit_stories: bool, can_invite_users: bool, can_manage_chat: bool, can_manage_video_chats: bool, can_post_stories: bool, can_promote_members: bool, can_restrict_members: bool, is_anonymous: bool, user: impl Into<User>) -> Self {
 		Self {
 			can_be_edited: can_be_edited,
 			can_change_info: can_change_info,
@@ -1853,7 +1850,6 @@ impl ChatMemberAdministrator {
 			can_restrict_members: can_restrict_members,
 			custom_title: None,
 			is_anonymous: is_anonymous,
-			status: status.into(),
 			user: user.into(),
 		}
 	}
@@ -1888,18 +1884,14 @@ impl ChatMemberAdministrator {
 https://core.telegram.org/bots/api/#chatmemberbanned*/
 #[derive(Clone, Debug, Deserialize)]
 pub struct ChatMemberBanned {
-	/**The member's status in the chat, always “kicked”
-	Default: kicked*/
-	pub status: String,
 	/**Date when restrictions will be lifted for this user; Unix time. If 0, then the user is banned forever*/
 	pub until_date: i64,
 	/**Information about the user*/
 	pub user: User,
 }
 impl ChatMemberBanned {
-	pub fn new(status: impl Into<String>, until_date: impl Into<i64>, user: impl Into<User>) -> Self {
+	pub fn new(until_date: impl Into<i64>, user: impl Into<User>) -> Self {
 		Self {
-			status: status.into(),
 			until_date: until_date.into(),
 			user: user.into(),
 		}
@@ -1910,16 +1902,12 @@ impl ChatMemberBanned {
 https://core.telegram.org/bots/api/#chatmemberleft*/
 #[derive(Clone, Debug, Deserialize)]
 pub struct ChatMemberLeft {
-	/**The member's status in the chat, always “left”
-	Default: left*/
-	pub status: String,
 	/**Information about the user*/
 	pub user: User,
 }
 impl ChatMemberLeft {
-	pub fn new(status: impl Into<String>, user: impl Into<User>) -> Self {
+	pub fn new(user: impl Into<User>) -> Self {
 		Self {
-			status: status.into(),
 			user: user.into(),
 		}
 	}
@@ -1932,18 +1920,14 @@ https://core.telegram.org/bots/api/#chatmembermember*/
 )]
 #[derive(Clone, Debug, Deserialize)]
 pub struct ChatMemberMember {
-	/**The member's status in the chat, always “member”
-	Default: member*/
-	pub status: String,
 	/**Date when the user's subscription will expire; Unix time*/
 	pub until_date: Option<i64>,
 	/**Information about the user*/
 	pub user: User,
 }
 impl ChatMemberMember {
-	pub fn new(status: impl Into<String>, user: impl Into<User>) -> Self {
+	pub fn new(user: impl Into<User>) -> Self {
 		Self {
-			status: status.into(),
 			until_date: None,
 			user: user.into(),
 		}
@@ -1966,18 +1950,14 @@ pub struct ChatMemberOwner {
 	pub custom_title: Option<String>,
 	/**if the user's presence in the chat is hidden*/
 	pub is_anonymous: bool,
-	/**The member's status in the chat, always “creator”
-	Default: creator*/
-	pub status: String,
 	/**Information about the user*/
 	pub user: User,
 }
 impl ChatMemberOwner {
-	pub fn new(is_anonymous: bool, status: impl Into<String>, user: impl Into<User>) -> Self {
+	pub fn new(is_anonymous: bool, user: impl Into<User>) -> Self {
 		Self {
 			custom_title: None,
 			is_anonymous: is_anonymous,
-			status: status.into(),
 			user: user.into(),
 		}
 	}
@@ -2022,16 +2002,13 @@ pub struct ChatMemberRestricted {
 	pub can_send_voice_notes: bool,
 	/**if the user is a member of the chat at the moment of the request*/
 	pub is_member: bool,
-	/**The member's status in the chat, always “restricted”
-	Default: restricted*/
-	pub status: String,
 	/**Date when restrictions will be lifted for this user; Unix time. If 0, then the user is restricted forever*/
 	pub until_date: i64,
 	/**Information about the user*/
 	pub user: User,
 }
 impl ChatMemberRestricted {
-	pub fn new(can_add_web_page_previews: bool, can_change_info: bool, can_invite_users: bool, can_manage_topics: bool, can_pin_messages: bool, can_send_audios: bool, can_send_documents: bool, can_send_messages: bool, can_send_other_messages: bool, can_send_photos: bool, can_send_polls: bool, can_send_video_notes: bool, can_send_videos: bool, can_send_voice_notes: bool, is_member: bool, status: impl Into<String>, until_date: impl Into<i64>, user: impl Into<User>) -> Self {
+	pub fn new(can_add_web_page_previews: bool, can_change_info: bool, can_invite_users: bool, can_manage_topics: bool, can_pin_messages: bool, can_send_audios: bool, can_send_documents: bool, can_send_messages: bool, can_send_other_messages: bool, can_send_photos: bool, can_send_polls: bool, can_send_video_notes: bool, can_send_videos: bool, can_send_voice_notes: bool, is_member: bool, until_date: impl Into<i64>, user: impl Into<User>) -> Self {
 		Self {
 			can_add_web_page_previews: can_add_web_page_previews,
 			can_change_info: can_change_info,
@@ -2048,7 +2025,6 @@ impl ChatMemberRestricted {
 			can_send_videos: can_send_videos,
 			can_send_voice_notes: can_send_voice_notes,
 			is_member: is_member,
-			status: status.into(),
 			until_date: until_date.into(),
 			user: user.into(),
 		}
@@ -2987,7 +2963,7 @@ https://core.telegram.org/bots/api/#forumtopicreopened*/
 pub type ForumTopicReopened = ();
 /**Unique identifier for the chat where the original messages were sent (or channel username in the format `@channelusername`)*/
 #[derive(Clone, Debug, Serialize, From, Display)]
-#[serde(untagged)]
+#[serde(untagged, rename_all = "snake_case")]
 pub enum FromChatId {
 	Id(i64),
 	Username(String),
@@ -3622,7 +3598,7 @@ impl InlineQuery {
 
 https://core.telegram.org/bots/api/#inlinequeryresult*/
 #[derive(Clone, Debug, Serialize, From)]
-#[serde(untagged)]
+#[serde(untagged, rename_all = "snake_case")]
 pub enum InlineQueryResult {
 	Article(InlineQueryResultArticle),
 	Audio(InlineQueryResultAudio),
@@ -5794,7 +5770,7 @@ impl InputLocationMessageContent {
 
 https://core.telegram.org/bots/api/#inputmedia*/
 #[derive(Clone, Debug, Serialize, From)]
-#[serde(untagged)]
+#[serde(untagged, rename_all = "snake_case")]
 pub enum InputMedia {
 	Animation(InputMediaAnimation),
 	Audio(InputMediaAudio),
@@ -6271,7 +6247,7 @@ impl InputMediaVideo {
 
 https://core.telegram.org/bots/api/#inputmessagecontent*/
 #[derive(Clone, Debug, Serialize, From)]
-#[serde(untagged)]
+#[serde(untagged, rename_all = "snake_case")]
 pub enum InputMessageContent {
 	InputContactMessageContent(InputContactMessageContent),
 	InputInvoiceMessageContent(InputInvoiceMessageContent),
@@ -6286,7 +6262,7 @@ pub enum InputMessageContent {
 
 https://core.telegram.org/bots/api/#inputpaidmedia*/
 #[derive(Clone, Debug, Serialize, From)]
-#[serde(untagged)]
+#[serde(untagged, rename_all = "snake_case")]
 pub enum InputPaidMedia {
 	Photo(InputPaidMediaPhoto),
 	Video(InputPaidMediaVideo),
@@ -7070,14 +7046,14 @@ impl MaskPosition {
 
 https://core.telegram.org/bots/api/#maybeinaccessiblemessage*/
 #[derive(Clone, Debug, Deserialize, From)]
-#[serde(untagged)]
+#[serde(untagged, rename_all = "snake_case")]
 pub enum MaybeInaccessibleMessage {
 	InaccessibleMessage(InaccessibleMessage),
 	Message(Box<Message>),
 }
 /**A JSON-serialized array describing messages to be sent, must include 2-10 items*/
 #[derive(Clone, Debug, Serialize, From)]
-#[serde(untagged)]
+#[serde(untagged, rename_all = "snake_case")]
 pub enum Media {
 	InputMediaAudio(InputMediaAudio),
 	InputMediaDocument(InputMediaDocument),
@@ -7092,7 +7068,7 @@ pub enum Media {
 
 https://core.telegram.org/bots/api/#menubutton*/
 #[derive(Clone, Debug, Serialize, Deserialize, From)]
-#[serde(untagged)]
+#[serde(untagged, rename_all = "snake_case")]
 pub enum MenuButton {
 	Commands(MenuButtonCommands),
 	Default(MenuButtonDefault),
@@ -7191,7 +7167,7 @@ impl MessageId {
 
 https://core.telegram.org/bots/api/#messageorigin*/
 #[derive(Clone, Debug, Deserialize, From)]
-#[serde(untagged)]
+#[serde(untagged, rename_all = "snake_case")]
 pub enum MessageOrigin {
 	Channel(MessageOriginChannel),
 	Chat(MessageOriginChat),
@@ -7452,7 +7428,7 @@ impl OrderInfo {
 
 https://core.telegram.org/bots/api/#paidmedia*/
 #[derive(Clone, Debug, Deserialize, From)]
-#[serde(untagged)]
+#[serde(untagged, rename_all = "snake_case")]
 pub enum PaidMedia {
 	Photo(PaidMediaPhoto),
 	Preview(PaidMediaPreview),
@@ -7628,7 +7604,7 @@ impl PassportData {
 
 https://core.telegram.org/bots/api/#passportelementerror*/
 #[derive(Clone, Debug, Serialize)]
-#[serde(untagged)]
+#[serde(untagged, rename_all = "snake_case")]
 pub enum PassportElementError {
 	DataField(PassportElementErrorDataField),
 	File(PassportElementErrorFile),
@@ -8244,7 +8220,7 @@ impl ReactionCount {
 
 https://core.telegram.org/bots/api/#reactiontype*/
 #[derive(Clone, Debug, Serialize, Deserialize, From)]
-#[serde(untagged)]
+#[serde(untagged, rename_all = "snake_case")]
 pub enum ReactionType {
 	CustomEmoji(ReactionTypeCustomEmoji),
 	Emoji(ReactionTypeEmoji),
@@ -8451,7 +8427,7 @@ impl ReplyKeyboardRemove {
 }
 /**Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
 #[derive(Clone, Debug, Serialize, From)]
-#[serde(untagged)]
+#[serde(untagged, rename_all = "snake_case")]
 pub enum ReplyMarkup {
 	ForceReply(ForceReply),
 	InlineKeyboardMarkup(InlineKeyboardMarkup),
@@ -8569,7 +8545,7 @@ impl ResponseParameters {
 
 https://core.telegram.org/bots/api/#revenuewithdrawalstate*/
 #[derive(Clone, Debug, Deserialize, From)]
-#[serde(untagged)]
+#[serde(untagged, rename_all = "snake_case")]
 pub enum RevenueWithdrawalState {
 	Failed(RevenueWithdrawalStateFailed),
 	Pending(RevenueWithdrawalStatePending),
@@ -8654,7 +8630,7 @@ impl SentWebAppMessage {
 }
 /**setGameScore return value*/
 #[derive(Clone, Debug, Deserialize, From)]
-#[serde(untagged)]
+#[serde(untagged, rename_all = "snake_case")]
 pub enum SetGameScoreResult {
 	Bool(bool),
 	Message(Message),
@@ -9012,7 +8988,7 @@ impl StickerSet {
 }
 /**stopMessageLiveLocation return value*/
 #[derive(Clone, Debug, Deserialize, From)]
-#[serde(untagged)]
+#[serde(untagged, rename_all = "snake_case")]
 pub enum StopMessageLiveLocationResult {
 	Bool(bool),
 	Message(Message),
@@ -9220,7 +9196,7 @@ impl TextQuote {
 
 https://core.telegram.org/bots/api/#transactionpartner*/
 #[derive(Clone, Debug, Deserialize, From)]
-#[serde(untagged)]
+#[serde(untagged, rename_all = "snake_case")]
 pub enum TransactionPartner {
 	AffiliateProgram(TransactionPartnerAffiliateProgram),
 	Chat(TransactionPartnerChat),

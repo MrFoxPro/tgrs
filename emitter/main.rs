@@ -86,6 +86,7 @@ enum EntityVariant {
 		fields: BTreeMap<String, StructField>,
 	},
 	Enum {
+		internal_tag: Option<&'static str>,
 		variants: BTreeMap<String, StructField>,
 	},
 	Method {
@@ -187,7 +188,7 @@ fn expand_typeinfo(state: &mut Registry, target: &Type, NewEnumInfo { mut name, 
 				name: name.clone(),
 				serde,
 				parents: parent.map(|p| Vec::from_iter([p])).unwrap_or(Vec::new()),
-				variant: EntityVariant::Enum { variants },
+				variant: EntityVariant::Enum { variants, internal_tag: None },
 				comment: comment.clone(),
 			};
 			if let Some(pdef) = state.insert(name.clone(), def.clone()) {
@@ -328,12 +329,17 @@ pub fn main() -> Result<()> {
 			}
 			ObjectData::Elements(vars) => {
 				let variants = vars.iter().map(|var| create_enum_variant(&object.name, var)).collect();
+
+				let internal_tag = match object.name.as_str() {
+					"ChatMember" => "status".into(),
+					_ => None,
+				};
 				let outdef = Entity { 
 					name: escape_field_name(object.name.clone()), 
 					parents: Vec::new(),
 					comment,
 					serde: SerdeInfo { ser: false, de: false },
-					variant: EntityVariant::Enum { variants }
+					variant: EntityVariant::Enum { variants, internal_tag }
 				};
 				outdef
 			}
@@ -434,7 +440,7 @@ pub fn main() -> Result<()> {
 	let registry_clone = registry.clone();
 	for entity in registry_clone.values() {	
 		match entity.variant {
-			EntityVariant::Object { ref fields } | EntityVariant::Method { args: ref fields, .. } | EntityVariant::Enum { variants: ref fields } => {
+			EntityVariant::Object { ref fields } | EntityVariant::Method { args: ref fields, .. } | EntityVariant::Enum { variants: ref fields, .. } => {
 				for f in fields.values() {
 					if let Some(fentity) = registry.get_mut(&f.typeinfo.name) && !fentity.parents.contains(&entity.name) {
 						fentity.parents.push(entity.name.clone());
@@ -523,10 +529,10 @@ fn print_entities(registry: Registry, out: &mut IndentedWriter<impl Write>) {
 				writeln!(out, "pub type {} = ();", entity.name);
 			}
 			EntityVariant::Object { fields } => {
-				print_struct(&entity, &fields, out);
+				print_struct(&registry, &entity, &fields, out);
 			}
 			EntityVariant::Method { kind, args, return_type, api_name } => {
-				print_struct(&entity, &args, out);
+				print_struct(&registry, &entity, &args, out);
 
 				writeln!(out, "impl Executable for {} {{", entity.name);
 				out.indent();
@@ -552,7 +558,7 @@ fn print_entities(registry: Registry, out: &mut IndentedWriter<impl Write>) {
 						else if ["String", "i64", "f32", "bool"].contains(&sf.typeinfo.name.as_str()) {
 							writeln!(out, r#"parts.add_{}("{name}", self.{name});"#, sf.typeinfo.name.to_snake_case());
 						}
-						else if let Some(e) = registry.get(&sf.typeinfo.name) && let EntityVariant::Enum { ref variants } = e.variant && variants.iter().all(|(vname, vfield)| !vfield.typeinfo.has_ref) {
+						else if let Some(e) = registry.get(&sf.typeinfo.name) && let EntityVariant::Enum { ref variants, .. } = e.variant && variants.iter().all(|(vname, vfield)| !vfield.typeinfo.has_ref) {
 							if sf.optional {
 								writeln!(out, r#"parts.add_string("{name}", self.{name}.map(|x| x.to_string()));"#);
 							}
@@ -619,27 +625,30 @@ fn print_entities(registry: Registry, out: &mut IndentedWriter<impl Write>) {
 
 				// writeln!(out, r#"method!({}, "{}", {});"#, entity.name, api_name, return_type.name);
 			}
-			EntityVariant::Enum { variants } => {
+			EntityVariant::Enum { variants, internal_tag } => {
 				print_derive(&entity, out);
 				if entity.serde.ser || entity.serde.de { 
-					if entity.name == "ChatMember" {
-						writeln!(out, r#"#[serde(tag = "status", rename_all = "snake_case")]"#);
+					if let Some(internal_tag) = internal_tag {
+						writeln!(out, r#"#[serde(tag = "{internal_tag}", rename_all = "snake_case")]"#);
 					}
 					else {
-						writeln!(out, "#[serde(untagged)]");
+						writeln!(out, r#"#[serde(untagged, rename_all = "snake_case")]"#);
 					}
 				}
 				writeln!(out, "pub enum {} {{", entity.name);
 				out.indent();
 				// writeln!(out, "#[default]");
-				for (mut varname, vartype) in variants.into_iter() {
+				for (varname, vartype) in variants.into_iter() {
 					let mut vartypename = vartype.name;
 					if entity.name == "MaybeInaccessibleMessage" && vartypename == "Message" {
 						vartypename = format!("Box<{}>", vartypename);
 					}
 					if entity.name == "ChatMember" {
-						if varname == "Owner" { varname = "Creator".into(); }
-						else if varname == "Banned" { varname = "Kicked".into(); }
+						match varname.as_str() {
+							"Banned" => vartypename = format!(r#"#[serde(rename = "kicked")] {vartypename}"#).to_string(),
+							"Owner" =>  vartypename = format!(r#"#[serde(rename = "creator")] {vartypename}"#).to_string(),
+							_ => {}
+						}
 					}
 					writeln!(out, "{varname}({}),", vartypename);
 				}
@@ -659,7 +668,7 @@ fn print_derive(entity: &Entity, out: &mut IndentedWriter<impl Write>) {
 	if entity.serde.ser { derives.push("Serialize"); }
 	if entity.serde.de { derives.push("Deserialize"); }
 
-	if let EntityVariant::Enum { ref variants } = entity.variant  {
+	if let EntityVariant::Enum { ref variants, internal_tag, .. } = entity.variant  {
 		if !variants.contains_key("File") && !variants.contains_key("Url") {
 			derives.push("From");
 		}
@@ -701,7 +710,7 @@ fn field_typename(field: &StructField, root: &Entity) -> String {
 	return typename
 }
 
-fn print_struct(entity: &Entity, fields: &BTreeMap<String, StructField>, out: &mut IndentedWriter<impl Write>) {
+fn print_struct(registry: &Registry, entity: &Entity, fields: &BTreeMap<String, StructField>, out: &mut IndentedWriter<impl Write>) {
 	let (mut has_vecs, mut has_opts) = (false, false);
 	fields.values().for_each(|f| {
 		if f.optional && !f.typeinfo.is_array() { has_opts = true }
@@ -731,7 +740,15 @@ fn print_struct(entity: &Entity, fields: &BTreeMap<String, StructField>, out: &m
 	// else { 
 		// writeln!(out, ";");
 	// }
+	let mut to_skip = Vec::new();
 	for field in fields.clone().into_values() {
+		let parents = entity.parents.iter().filter_map(|parent| registry.get(parent)).collect::<Vec<_>>();
+		if parents.into_iter().any(|parent| { match parent.variant { EntityVariant::Enum { internal_tag: Some(tag), .. } => tag == field.name, _ => false } }) {
+			println!("skipping field {}.{} as it is tag", entity.name, field.name);
+			to_skip.push(field.name);
+			continue;
+		}
+
 		let mut comment = field.comment.clone();
 		if field.optional { 
 			comment = comment.replace("*Optional*. ", ""); 
@@ -772,7 +789,7 @@ fn print_struct(entity: &Entity, fields: &BTreeMap<String, StructField>, out: &m
 	writeln!(out, "\nimpl {} {{", entity.name);
 	out.indent();
 		write!(out, "pub fn new(");
-		let new_args = ctor_args.iter().filter(|(f, _)| !f.optional && f.typeinfo.const_literal.is_none()).collect::<Vec<_>>();
+		let new_args = ctor_args.iter().filter(|(f, _)| !f.optional && f.typeinfo.const_literal.is_none() && !to_skip.contains(&f.name)).collect::<Vec<_>>();
 		let total = new_args.len();
 		for (i, (field, arg)) in new_args.into_iter().enumerate() {
 			write!(out, "{}: ", field.name);
@@ -790,6 +807,7 @@ fn print_struct(entity: &Entity, fields: &BTreeMap<String, StructField>, out: &m
 			writeln!(out, "Self {{");
 			out.indent();
 			for (f, a) in ctor_args.iter() {
+				if to_skip.contains(&f.name) { continue; }
 				let mut v: String;
 				if let Some(ref const_value) = f.typeinfo.const_literal {
 					v = format!(r#""{}""#, const_value);
