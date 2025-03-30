@@ -621,7 +621,14 @@ fn print_entities(registry: Registry, out: &mut IndentedWriter<impl Write>) {
 			}
 			EntityVariant::Enum { variants } => {
 				print_derive(&entity, out);
-				if entity.serde.ser || entity.serde.de { writeln!(out, "#[serde(untagged)]"); }
+				if entity.serde.ser || entity.serde.de { 
+					if entity.name == "ChatMember" {
+						writeln!(out, r#"#[serde(tag = "status")]"#);
+					}
+					else {
+						writeln!(out, "#[serde(untagged)]");
+					}
+				}
 				writeln!(out, "pub enum {} {{", entity.name);
 				out.indent();
 				// writeln!(out, "#[default]");
