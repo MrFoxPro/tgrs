@@ -1779,7 +1779,7 @@ https://core.telegram.org/bots/api/#chatmember*/
 #[serde(rename_all = "snake_case", tag = "status")]
 pub enum ChatMember {
 	Administrator(ChatMemberAdministrator),
-	Banned(ChatMemberBanned),
+	Kicked(ChatMemberBanned),
 	Left(ChatMemberLeft),
 	Member(ChatMemberMember),
 	Owner(ChatMemberOwner),

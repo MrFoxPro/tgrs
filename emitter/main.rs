@@ -632,14 +632,14 @@ fn print_entities(registry: Registry, out: &mut IndentedWriter<impl Write>) {
 				writeln!(out, "pub enum {} {{", entity.name);
 				out.indent();
 				// writeln!(out, "#[default]");
-				for (varname, vartype) in variants.into_iter() {
+				for (mut varname, vartype) in variants.into_iter() {
 					let mut vartypename = vartype.name;
 					if entity.name == "MaybeInaccessibleMessage" && vartypename == "Message" {
 						vartypename = format!("Box<{}>", vartypename);
 					}
 					if entity.name == "ChatMember" {
-						if vartypename == "Owned" { vartypename = "Creator".into(); }
-						else if vartypename == "Banned" { vartypename = "Kicked".into(); }
+						if varname == "Owned" { varname = "Creator".into(); }
+						else if varname == "Banned" { varname = "Kicked".into(); }
 					}
 					writeln!(out, "{varname}({}),", vartypename);
 				}
