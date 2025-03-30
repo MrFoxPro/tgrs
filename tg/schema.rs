@@ -1776,7 +1776,7 @@ impl ChatLocation {
 
 https://core.telegram.org/bots/api/#chatmember*/
 #[derive(Clone, Debug, Deserialize, From)]
-#[serde(tag = "status", rename_all = "snake_case")]
+#[serde(rename_all = "snake_case", tag = "status")]
 pub enum ChatMember {
 	Administrator(ChatMemberAdministrator),
 	Banned(ChatMemberBanned),

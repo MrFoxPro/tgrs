@@ -623,7 +623,7 @@ fn print_entities(registry: Registry, out: &mut IndentedWriter<impl Write>) {
 				print_derive(&entity, out);
 				if entity.serde.ser || entity.serde.de { 
 					if entity.name == "ChatMember" {
-						writeln!(out, r#"#[serde(tag = "status", rename_all = "snake_case")]"#);
+						writeln!(out, r#"#[serde(rename_all = "snake_case", tag = "status")]"#);
 					}
 					else {
 						writeln!(out, "#[serde(untagged)]");
@@ -636,6 +636,10 @@ fn print_entities(registry: Registry, out: &mut IndentedWriter<impl Write>) {
 					let mut vartypename = vartype.name;
 					if entity.name == "MaybeInaccessibleMessage" && vartypename == "Message" {
 						vartypename = format!("Box<{}>", vartypename);
+					}
+					if entity.name == "ChatMember" {
+						if vartypename == "Owned" { vartypename = "Creator".into(); }
+						else if vartypename == "Banned" { vartypename = "Kicked".into(); }
 					}
 					writeln!(out, "{varname}({}),", vartypename);
 				}
