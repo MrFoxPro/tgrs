@@ -1,3 +1,5 @@
+#![feature(assert_matches)]
+
 pub mod client;
 
 mod addons;

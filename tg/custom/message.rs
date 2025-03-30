@@ -734,7 +734,9 @@ impl Message {
 pub use custom_message::*;
 #[cfg(feature = "custom-message")]
 mod custom_message {
-	use serde::Deserialize;
+	use std::assert_matches::assert_matches;
+
+use serde::Deserialize;
 	use serde_with::apply;
 	use serde_json::Value as JValue;
 	use crate::*;
@@ -920,9 +922,6 @@ mod custom_message {
 		/**Message is an invoice for a [payment](https://core.telegram.org/bots/api/#payments), information about the invoice. [More about payments »](https://core.telegram.org/bots/api/#payments)*/
 		Invoice(Invoice),
 
-		/**A member was removed from the group, information about them (this member may be the bot itself)*/
-		LeftChatMember(User),
-
 		/**Message is a shared location, information about the location*/
 		Location(Location),
 		
@@ -931,9 +930,6 @@ mod custom_message {
 
 		/**The group has been migrated to a supergroup with the specified identifier. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier.*/
 		MigrateToChatId(i64),
-
-		/**New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)*/
-		NewChatMembers(Vec<User>),
 
 		/**A chat photo was change to this value*/
 		NewChatPhoto(Vec<PhotoSize>),
@@ -970,10 +966,7 @@ mod custom_message {
 
 		/**Service message: the supergroup has been created. This field can't be received in a message coming through updates, because bot can't be a member of a supergroup when it is created. It can only be found in reply\_to\_message if someone replies to a very first message in a directly created supergroup.
 		Default value: true*/
-		#[serde(
-			deserialize_with = "RawFlag::deserialize_value",
-			serialize_with = "RawFlag::serialize_value"
-		)]
+		#[serde(deserialize_with = "RawFlag::deserialize_value", serialize_with = "RawFlag::serialize_value")]
 		SupergroupChatCreated,
 
 		/**Service message: users were shared with the bot*/
@@ -995,10 +988,7 @@ mod custom_message {
 		VideoChatScheduled(VideoChatScheduled),
 
 		/**Service message: video chat started*/
-		#[serde(
-			deserialize_with = "RawEmpty::deserialize_value",
-			serialize_with = "RawEmpty::serialize_value"
-		)]
+		#[serde(deserialize_with = "RawEmpty::deserialize_value", serialize_with = "RawEmpty::serialize_value")]
 		VideoChatStarted,
 
 		/**Service message: data sent by a Web App*/
@@ -1007,6 +997,13 @@ mod custom_message {
 		/**Service message: the user allowed the bot to write messages after adding it to the attachment or side menu, launching a Web App from a link, or accepting an explicit request from a Web App sent by the method [requestWriteAccess](https://core.telegram.org/bots/webapps#initializing-mini-apps)*/
 		WriteAccessAllowed(WriteAccessAllowed),
 
+		/**A member was removed from the group, information about them (this member may be the bot itself)*/
+		#[serde(untagged)]
+		LeftChatMember { left_chat_member: User, #[serde(flatten)] _deprecated: JValue },
+
+		/**New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)*/
+		#[serde(untagged)]
+		NewChatMembers { new_chat_members: Vec<User>, #[serde(flatten)] _deprecated: JValue }, 
 		/**Message is an audio file, information about the file*/
 		#[serde(untagged)]
 		Audio {
@@ -1019,12 +1016,7 @@ mod custom_message {
 		#[serde(untagged)]
 		Document {
 			document: Document,
-			#[serde(
-				flatten,
-				deserialize_with = "RawCaption::deserialize_value",
-				serialize_with = "RawCaption::serialize_value",
-				skip_serializing_if = "Option::is_none"
-			)]
+			#[serde(flatten, deserialize_with = "RawCaption::deserialize_value", serialize_with = "RawCaption::serialize_value", skip_serializing_if = "Option::is_none")]
 			caption: Option<Text>,
 		},
 
@@ -1032,38 +1024,36 @@ mod custom_message {
 		#[serde(untagged)]
 		Photo {
 			photo: Vec<PhotoSize>,
-			#[serde(
-				flatten,
-				deserialize_with = "RawCaption::deserialize_value",
-				serialize_with = "RawCaption::serialize_value",
-				skip_serializing_if = "Option::is_none"
-			)]
+			#[serde(flatten, deserialize_with = "RawCaption::deserialize_value", serialize_with = "RawCaption::serialize_value", skip_serializing_if = "Option::is_none")]
 			caption: Option<Text>,
 		},
 
 		/**Message is a video, information about the video*/
 		#[serde(untagged)]
-		Video {
-			video: Video,
-			caption: Option<Text>,
-		},
+		Video { video: Video, caption: Option<Text> },
 
 		/**Message is a voice message, information about the file*/
 		#[serde(untagged)]
-		Voice {
-			voice: Video,
-			caption: Option<Text>,
-		},
+		Voice { voice: Video, caption: Option<Text> },
 
 		/**For text messages, the actual UTF-8 text of the message*/
-		#[serde(
-			deserialize_with = "RawText::deserialize_value",
-			serialize_with = "RawText::serialize_value",
-			untagged
-		)]
+		#[serde(untagged, deserialize_with = "RawText::deserialize_value", serialize_with = "RawText::serialize_value")]
 		Text(Text),
 
 		#[serde(untagged)]
 		Unknown(JValue),
+	}
+}
+
+#[cfg(all(test, feature = "custom-message"))]
+mod tests {
+	use std::assert_matches::{self, debug_assert_matches};
+	use crate::*;
+	#[test]
+	fn test_deserialize() {
+		let json = "{\"update_id\":634617701,\n\"message\":{\"message_id\":30,\"from\":{\"id\":205601187,\"is_bot\":false,\"first_name\":\"d\",\"username\":\"mrfoxpro\",\"language_code\":\"en\"},\"chat\":{\"id\":-1002291315165,\"title\":\"ChatBoss test group\",\"type\":\"supergroup\"},\"date\":1743316782,\"left_chat_participant\":{\"id\":8179542492,\"is_bot\":true,\"first_name\":\"Chat Boss\",\"username\":\"boss_by_colleagtion_bot\"},\"left_chat_member\":{\"id\":8179542492,\"is_bot\":true,\"first_name\":\"Chat Boss\",\"username\":\"boss_by_colleagtion_bot\"}}}";
+		let update = serde_json::from_str::<Update>(json).unwrap();
+		let msg_data = update.message.unwrap().data;
+		debug_assert_matches!(msg_data, MessageData::LeftChatMember {..});
 	}
 }
