@@ -1782,7 +1782,7 @@ pub enum ChatMember {
 	Kicked(ChatMemberBanned),
 	Left(ChatMemberLeft),
 	Member(ChatMemberMember),
-	Owner(ChatMemberOwner),
+	Creator(ChatMemberOwner),
 	Restricted(ChatMemberRestricted),
 }
 /**Represents a [chat member](https://core.telegram.org/bots/api/#chatmember) that has some additional privileges.

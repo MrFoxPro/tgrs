@@ -638,7 +638,7 @@ fn print_entities(registry: Registry, out: &mut IndentedWriter<impl Write>) {
 						vartypename = format!("Box<{}>", vartypename);
 					}
 					if entity.name == "ChatMember" {
-						if varname == "Owned" { varname = "Creator".into(); }
+						if varname == "Owner" { varname = "Creator".into(); }
 						else if varname == "Banned" { varname = "Kicked".into(); }
 					}
 					writeln!(out, "{varname}({}),", vartypename);
