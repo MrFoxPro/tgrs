@@ -677,7 +677,17 @@ fn print_derive(entity: &Entity, out: &mut IndentedWriter<impl Write>) {
 		}
 	}
 
-	writeln!(out, "#[derive({})]", derives.join(", "));	
+	writeln!(out, "#[derive({})]", derives.join(", "));
+
+	if !entity.serde.ser && !entity.serde.de {
+		writeln!(out, r#"#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]"#);	
+	}
+	else if !entity.serde.ser && entity.serde.de {
+		writeln!(out, r#"#[cfg_attr(feature = "serde-all", serde(Serialize))]"#);	
+	}
+	else if entity.serde.ser && !entity.serde.de {
+		writeln!(out, r#"#[cfg_attr(feature = "serde-all", serde(Deserialize))]"#);	
+	}
 }
 
 fn field_typename(field: &StructField, root: &Entity) -> String {

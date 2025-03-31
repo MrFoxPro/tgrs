@@ -19,4 +19,5 @@ futures-util = { version = "0.3", default-features = false, features = ["io"] }
 [features]
 default = []
 custom-message = []
+serde-all = []
 # stream-file = ["dep:tokio", "dep:tokio-util"]
