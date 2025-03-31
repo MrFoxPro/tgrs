@@ -645,8 +645,8 @@ fn print_entities(registry: Registry, out: &mut IndentedWriter<impl Write>) {
 					}
 					if entity.name == "ChatMember" {
 						match varname.as_str() {
-							"Banned" => vartypename = format!(r#"#[serde(rename = "kicked")] {vartypename}"#).to_string(),
-							"Owner" =>  vartypename = format!(r#"#[serde(rename = "creator")] {vartypename}"#).to_string(),
+							"Banned" => { writeln!(out, r#"#[serde(rename = "kicked")]"#); }
+							"Owner"  => { writeln!(out, r#"#[serde(rename = "creator")]"#); }
 							_ => {}
 						}
 					}

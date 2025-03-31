@@ -1779,10 +1779,12 @@ https://core.telegram.org/bots/api/#chatmember*/
 #[serde(tag = "status", rename_all = "snake_case")]
 pub enum ChatMember {
 	Administrator(ChatMemberAdministrator),
-	Banned(#[serde(rename = "kicked")] ChatMemberBanned),
+	#[serde(rename = "kicked")]
+	Banned(ChatMemberBanned),
 	Left(ChatMemberLeft),
 	Member(ChatMemberMember),
-	Owner(#[serde(rename = "creator")] ChatMemberOwner),
+	#[serde(rename = "creator")]
+	Owner(ChatMemberOwner),
 	Restricted(ChatMemberRestricted),
 }
 /**Represents a [chat member](https://core.telegram.org/bots/api/#chatmember) that has some additional privileges.
