@@ -14,7 +14,7 @@ https://core.telegram.org/bots/api/#affiliateinfo*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct AffiliateInfo {
 	/**The chat that received an affiliate commission if it was received by a chat*/
 	pub affiliate_chat: Option<Chat>,
@@ -60,7 +60,7 @@ https://core.telegram.org/bots/api/#animation*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct Animation {
 	/**Duration of the video in seconds as defined by the sender*/
 	pub duration: i64,
@@ -123,7 +123,7 @@ https://core.telegram.org/bots/api/#audio*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct Audio {
 	/**Duration of the audio in seconds as defined by the sender*/
 	pub duration: i64,
@@ -197,7 +197,7 @@ impl Audio {
 
 https://core.telegram.org/bots/api/#backgroundfill*/
 #[derive(Clone, Debug, Deserialize, From)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 #[serde(untagged, rename_all = "snake_case")]
 pub enum BackgroundFill {
 	FreeformGradient(BackgroundFillFreeformGradient),
@@ -211,7 +211,7 @@ https://core.telegram.org/bots/api/#backgroundfillfreeformgradient*/
 	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct BackgroundFillFreeformGradient {
 	/**A list of the 3 or 4 base colors that are used to generate the freeform gradient in the RGB24 format*/
 	pub colors: Vec<i64>,
@@ -235,7 +235,7 @@ impl BackgroundFillFreeformGradient {
 
 https://core.telegram.org/bots/api/#backgroundfillgradient*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct BackgroundFillGradient {
 	/**Bottom color of the gradient in the RGB24 format*/
 	pub bottom_color: i64,
@@ -261,7 +261,7 @@ impl BackgroundFillGradient {
 
 https://core.telegram.org/bots/api/#backgroundfillsolid*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct BackgroundFillSolid {
 	/**The color of the background fill in the RGB24 format*/
 	pub color: i64,
@@ -286,7 +286,7 @@ impl BackgroundFillSolid {
 
 https://core.telegram.org/bots/api/#backgroundtype*/
 #[derive(Clone, Debug, Deserialize, From)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 #[serde(untagged, rename_all = "snake_case")]
 pub enum BackgroundType {
 	ChatTheme(BackgroundTypeChatTheme),
@@ -298,7 +298,7 @@ pub enum BackgroundType {
 
 https://core.telegram.org/bots/api/#backgroundtypechattheme*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct BackgroundTypeChatTheme {
 	/**Type of the background, always “chat\_theme”
 	Default: chat_theme*/
@@ -318,7 +318,7 @@ impl BackgroundTypeChatTheme {
 
 https://core.telegram.org/bots/api/#backgroundtypefill*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct BackgroundTypeFill {
 	/**Dimming of the background in dark themes, as a percentage; 0-100*/
 	pub dark_theme_dimming: i64,
@@ -344,7 +344,7 @@ https://core.telegram.org/bots/api/#backgroundtypepattern*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct BackgroundTypePattern {
 	/**Document with the pattern*/
 	pub document: Document,
@@ -393,7 +393,7 @@ https://core.telegram.org/bots/api/#backgroundtypewallpaper*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct BackgroundTypeWallpaper {
 	/**Dimming of the background in dark themes, as a percentage; 0-100*/
 	pub dark_theme_dimming: i64,
@@ -439,7 +439,7 @@ https://core.telegram.org/bots/api/#birthdate*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct Birthdate {
 	/**Day of the user's birth; 1-31*/
 	pub day: i64,
@@ -496,7 +496,7 @@ impl BotCommand {
 
 https://core.telegram.org/bots/api/#botcommandscope*/
 #[derive(Clone, Debug, Serialize, From)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 #[serde(untagged, rename_all = "snake_case")]
 pub enum BotCommandScope {
 	AllChatAdministrators(BotCommandScopeAllChatAdministrators),
@@ -511,7 +511,7 @@ pub enum BotCommandScope {
 
 https://core.telegram.org/bots/api/#botcommandscopeallchatadministrators*/
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct BotCommandScopeAllChatAdministrators {
 	/**Scope type, must be *all\_chat\_administrators*
 	Default: all_chat_administrators*/
@@ -528,7 +528,7 @@ impl BotCommandScopeAllChatAdministrators {
 
 https://core.telegram.org/bots/api/#botcommandscopeallgroupchats*/
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct BotCommandScopeAllGroupChats {
 	/**Scope type, must be *all\_group\_chats*
 	Default: all_group_chats*/
@@ -545,7 +545,7 @@ impl BotCommandScopeAllGroupChats {
 
 https://core.telegram.org/bots/api/#botcommandscopeallprivatechats*/
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct BotCommandScopeAllPrivateChats {
 	/**Scope type, must be *all\_private\_chats*
 	Default: all_private_chats*/
@@ -562,7 +562,7 @@ impl BotCommandScopeAllPrivateChats {
 
 https://core.telegram.org/bots/api/#botcommandscopechat*/
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct BotCommandScopeChat {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -582,7 +582,7 @@ impl BotCommandScopeChat {
 
 https://core.telegram.org/bots/api/#botcommandscopechatadministrators*/
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct BotCommandScopeChatAdministrators {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -602,7 +602,7 @@ impl BotCommandScopeChatAdministrators {
 
 https://core.telegram.org/bots/api/#botcommandscopechatmember*/
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct BotCommandScopeChatMember {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -625,7 +625,7 @@ impl BotCommandScopeChatMember {
 
 https://core.telegram.org/bots/api/#botcommandscopedefault*/
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct BotCommandScopeDefault {
 	/**Scope type, must be *default*
 	Default: default*/
@@ -642,7 +642,7 @@ impl BotCommandScopeDefault {
 
 https://core.telegram.org/bots/api/#botdescription*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct BotDescription {
 	/**The bot's description*/
 	pub description: String,
@@ -658,7 +658,7 @@ impl BotDescription {
 
 https://core.telegram.org/bots/api/#botname*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct BotName {
 	/**The bot's name*/
 	pub name: String,
@@ -674,7 +674,7 @@ impl BotName {
 
 https://core.telegram.org/bots/api/#botshortdescription*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct BotShortDescription {
 	/**The bot's short description*/
 	pub short_description: String,
@@ -690,7 +690,7 @@ impl BotShortDescription {
 
 https://core.telegram.org/bots/api/#businessconnection*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct BusinessConnection {
 	/**True, if the bot can act on behalf of the business account in chats that were active in the last 24 hours*/
 	pub can_reply: bool,
@@ -724,7 +724,7 @@ https://core.telegram.org/bots/api/#businessintro*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct BusinessIntro {
 	/**Message text of the business intro*/
 	pub message: Option<String>,
@@ -764,7 +764,7 @@ https://core.telegram.org/bots/api/#businesslocation*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct BusinessLocation {
 	/**Address of the business*/
 	pub address: String,
@@ -791,7 +791,7 @@ https://core.telegram.org/bots/api/#businessmessagesdeleted*/
 	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct BusinessMessagesDeleted {
 	/**Unique identifier of the business connection*/
 	pub business_connection_id: String,
@@ -820,7 +820,7 @@ https://core.telegram.org/bots/api/#businessopeninghours*/
 	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct BusinessOpeningHours {
 	/**List of time intervals describing business opening hours*/
 	pub opening_hours: Vec<BusinessOpeningHoursInterval>,
@@ -843,7 +843,7 @@ impl BusinessOpeningHours {
 
 https://core.telegram.org/bots/api/#businessopeninghoursinterval*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct BusinessOpeningHoursInterval {
 	/**The minute's sequence number in a week, starting on Monday, marking the end of the time interval during which the business is open; 0 - 8 \* 24 \* 60*/
 	pub closing_minute: i64,
@@ -869,7 +869,7 @@ https://core.telegram.org/bots/api/#callbackquery*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct CallbackQuery {
 	/**Global identifier, uniquely corresponding to the chat to which the message with the callback button was sent. Useful for high scores in [games](https://core.telegram.org/bots/api/#games).*/
 	pub chat_instance: String,
@@ -926,7 +926,7 @@ https://core.telegram.org/bots/api/#chat*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct Chat {
 	/**First name of the other party in a private chat*/
 	pub first_name: Option<String>,
@@ -1068,7 +1068,7 @@ impl ChatAdministratorRights {
 
 https://core.telegram.org/bots/api/#chatbackground*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ChatBackground {
 	/**Type of the background*/
 	pub r#type: BackgroundType,
@@ -1084,7 +1084,7 @@ impl ChatBackground {
 
 https://core.telegram.org/bots/api/#chatboost*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ChatBoost {
 	/**Point in time (Unix timestamp) when the chat was boosted*/
 	pub add_date: i64,
@@ -1109,7 +1109,7 @@ impl ChatBoost {
 
 https://core.telegram.org/bots/api/#chatboostadded*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ChatBoostAdded {
 	/**Number of boosts added by the user*/
 	pub boost_count: i64,
@@ -1125,7 +1125,7 @@ impl ChatBoostAdded {
 
 https://core.telegram.org/bots/api/#chatboostremoved*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ChatBoostRemoved {
 	/**Unique identifier of the boost*/
 	pub boost_id: String,
@@ -1154,7 +1154,7 @@ impl ChatBoostRemoved {
 
 https://core.telegram.org/bots/api/#chatboostsource*/
 #[derive(Clone, Debug, Deserialize, From)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 #[serde(untagged, rename_all = "snake_case")]
 pub enum ChatBoostSource {
 	GiftCode(ChatBoostSourceGiftCode),
@@ -1165,7 +1165,7 @@ pub enum ChatBoostSource {
 
 https://core.telegram.org/bots/api/#chatboostsourcegiftcode*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ChatBoostSourceGiftCode {
 	/**Source of the boost, always “gift\_code”
 	Default: gift_code*/
@@ -1188,7 +1188,7 @@ https://core.telegram.org/bots/api/#chatboostsourcegiveaway*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ChatBoostSourceGiveaway {
 	/**Identifier of a message in the chat with the giveaway; the message could have been deleted already. May be 0 if the message isn't sent yet.*/
 	pub giveaway_message_id: i64,
@@ -1234,7 +1234,7 @@ impl ChatBoostSourceGiveaway {
 
 https://core.telegram.org/bots/api/#chatboostsourcepremium*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ChatBoostSourcePremium {
 	/**Source of the boost, always “premium”
 	Default: premium*/
@@ -1254,7 +1254,7 @@ impl ChatBoostSourcePremium {
 
 https://core.telegram.org/bots/api/#chatboostupdated*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ChatBoostUpdated {
 	/**Information about the chat boost*/
 	pub boost: ChatBoost,
@@ -1277,7 +1277,7 @@ https://core.telegram.org/bots/api/#chatfullinfo*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ChatFullInfo {
 	/**Identifier of the accent color for the chat name and backgrounds of the chat photo, reply header, and link preview. See [accent colors](https://core.telegram.org/bots/api/#accent-colors) for more details.*/
 	pub accent_color_id: i64,
@@ -1661,7 +1661,7 @@ impl ChatFullInfo {
 }
 /**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 #[derive(Clone, Debug, Serialize, From, Display)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 #[serde(untagged, rename_all = "snake_case")]
 pub enum ChatId {
 	Id(i64),
@@ -1674,7 +1674,7 @@ https://core.telegram.org/bots/api/#chatinvitelink*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ChatInviteLink {
 	/**if users joining the chat via the link need to be approved by chat administrators*/
 	pub creates_join_request: bool,
@@ -1753,7 +1753,7 @@ https://core.telegram.org/bots/api/#chatjoinrequest*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ChatJoinRequest {
 	/**Bio of the user.*/
 	pub bio: Option<String>,
@@ -1794,7 +1794,7 @@ impl ChatJoinRequest {
 
 https://core.telegram.org/bots/api/#chatlocation*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ChatLocation {
 	/**Location address; 1-64 characters, as defined by the chat owner
 	Min len: 1
@@ -1822,7 +1822,7 @@ impl ChatLocation {
 
 https://core.telegram.org/bots/api/#chatmember*/
 #[derive(Clone, Debug, Deserialize, From)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 #[serde(tag = "status", rename_all = "snake_case")]
 pub enum ChatMember {
 	Administrator(ChatMemberAdministrator),
@@ -1841,7 +1841,7 @@ https://core.telegram.org/bots/api/#chatmemberadministrator*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ChatMemberAdministrator {
 	/**if the bot is allowed to edit administrator privileges of that user*/
 	pub can_be_edited: bool,
@@ -1933,7 +1933,7 @@ impl ChatMemberAdministrator {
 
 https://core.telegram.org/bots/api/#chatmemberbanned*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ChatMemberBanned {
 	/**Date when restrictions will be lifted for this user; Unix time. If 0, then the user is banned forever*/
 	pub until_date: i64,
@@ -1952,7 +1952,7 @@ impl ChatMemberBanned {
 
 https://core.telegram.org/bots/api/#chatmemberleft*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ChatMemberLeft {
 	/**Information about the user*/
 	pub user: User,
@@ -1971,7 +1971,7 @@ https://core.telegram.org/bots/api/#chatmembermember*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ChatMemberMember {
 	/**Date when the user's subscription will expire; Unix time*/
 	pub until_date: Option<i64>,
@@ -1998,7 +1998,7 @@ https://core.telegram.org/bots/api/#chatmemberowner*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ChatMemberOwner {
 	/**Custom title for this user*/
 	pub custom_title: Option<String>,
@@ -2025,7 +2025,7 @@ impl ChatMemberOwner {
 
 https://core.telegram.org/bots/api/#chatmemberrestricted*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ChatMemberRestricted {
 	/**if the user is allowed to add web page previews to their messages*/
 	pub can_add_web_page_previews: bool,
@@ -2092,7 +2092,7 @@ https://core.telegram.org/bots/api/#chatmemberupdated*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ChatMemberUpdated {
 	/**Chat the user belongs to*/
 	pub chat: Chat,
@@ -2271,7 +2271,7 @@ impl ChatPermissions {
 
 https://core.telegram.org/bots/api/#chatphoto*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ChatPhoto {
 	/**File identifier of big (640x640) chat photo. This file\_id can be used only for photo download and only for as long as the photo is not changed.*/
 	pub big_file_id: String,
@@ -2300,7 +2300,7 @@ https://core.telegram.org/bots/api/#chatshared*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ChatShared {
 	/**Identifier of the shared chat. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier. The bot may not have access to the chat and could be unable to use this identifier, unless the chat is already known to the bot by some other means.*/
 	pub chat_id: i64,
@@ -2350,7 +2350,7 @@ https://core.telegram.org/bots/api/#choseninlineresult*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ChosenInlineResult {
 	/**The user that chose the result*/
 	pub from: User,
@@ -2391,7 +2391,7 @@ https://core.telegram.org/bots/api/#contact*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct Contact {
 	/**Contact's first name*/
 	pub first_name: String,
@@ -2451,7 +2451,7 @@ impl CopyTextButton {
 
 https://core.telegram.org/bots/api/#dice*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct Dice {
 	/**Emoji on which the dice throw animation is based*/
 	pub emoji: String,
@@ -2473,7 +2473,7 @@ https://core.telegram.org/bots/api/#document*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct Document {
 	/**Identifier for this file, which can be used to download or reuse the file*/
 	pub file_id: String,
@@ -2524,7 +2524,7 @@ impl Document {
 
 https://core.telegram.org/bots/api/#encryptedcredentials*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct EncryptedCredentials {
 	/**Base64-encoded encrypted JSON-serialized data with unique user's payload, data hashes and secrets required for [EncryptedPassportElement](https://core.telegram.org/bots/api/#encryptedpassportelement) decryption and authentication*/
 	pub data: String,
@@ -2550,7 +2550,7 @@ https://core.telegram.org/bots/api/#encryptedpassportelement*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct EncryptedPassportElement {
 	/**Base64-encoded encrypted Telegram Passport element data provided by the user; available only for “personal\_details”, “passport”, “driver\_license”, “identity\_card”, “internal\_passport” and “address” types. Can be decrypted and verified using the accompanying [EncryptedCredentials](https://core.telegram.org/bots/api/#encryptedcredentials).*/
 	pub data: Option<String>,
@@ -2646,7 +2646,7 @@ https://core.telegram.org/bots/api/#externalreplyinfo*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ExternalReplyInfo {
 	/**Message is an animation, information about the animation*/
 	pub animation: Option<Animation>,
@@ -2857,7 +2857,7 @@ https://core.telegram.org/bots/api/#file*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct File {
 	/**Identifier for this file, which can be used to download or reuse the file*/
 	pub file_id: String,
@@ -2895,7 +2895,7 @@ https://core.telegram.org/bots/api/#forcereply*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct ForceReply {
 	/**Shows reply interface to the user, as if they manually selected the bot's message and tapped 'Reply'
 	Default value: true*/
@@ -2935,7 +2935,7 @@ https://core.telegram.org/bots/api/#forumtopic*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ForumTopic {
 	/**Color of the topic icon in RGB format*/
 	pub icon_color: i64,
@@ -2972,7 +2972,7 @@ https://core.telegram.org/bots/api/#forumtopiccreated*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ForumTopicCreated {
 	/**Color of the topic icon in RGB format*/
 	pub icon_color: i64,
@@ -3002,7 +3002,7 @@ https://core.telegram.org/bots/api/#forumtopicedited*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ForumTopicEdited {
 	/**New identifier of the custom emoji shown as the topic icon, if it was edited; an empty string if the icon was removed*/
 	pub icon_custom_emoji_id: Option<String>,
@@ -3033,7 +3033,7 @@ https://core.telegram.org/bots/api/#forumtopicreopened*/
 pub type ForumTopicReopened = ();
 /**Unique identifier for the chat where the original messages were sent (or channel username in the format `@channelusername`)*/
 #[derive(Clone, Debug, Serialize, From, Display)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 #[serde(untagged, rename_all = "snake_case")]
 pub enum FromChatId {
 	Id(i64),
@@ -3047,7 +3047,7 @@ https://core.telegram.org/bots/api/#game*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct Game {
 	/**Animation that will be displayed in the game message in chats. Upload via [BotFather](https://t.me/botfather)*/
 	pub animation: Option<Animation>,
@@ -3105,7 +3105,7 @@ impl Game {
 
 https://core.telegram.org/bots/api/#gamehighscore*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct GameHighScore {
 	/**Position in high score table for the game*/
 	pub position: i64,
@@ -3138,7 +3138,7 @@ https://core.telegram.org/bots/api/#gift*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct Gift {
 	/**Unique identifier of the gift*/
 	pub id: String,
@@ -3187,7 +3187,7 @@ https://core.telegram.org/bots/api/#gifts*/
 	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct Gifts {
 	/**The list of gifts*/
 	pub gifts: Vec<Gift>,
@@ -3211,7 +3211,7 @@ https://core.telegram.org/bots/api/#giveaway*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct Giveaway {
 	/**The list of chats which the user must join to participate in the giveaway*/
 	pub chats: Vec<Chat>,
@@ -3296,7 +3296,7 @@ https://core.telegram.org/bots/api/#giveawaycompleted*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct GiveawayCompleted {
 	/**Message with the giveaway that was completed, if it wasn't deleted*/
 	pub giveaway_message: Option<Box<Message>>,
@@ -3341,7 +3341,7 @@ https://core.telegram.org/bots/api/#giveawaycreated*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct GiveawayCreated {
 	/**The number of Telegram Stars to be split between giveaway winners; for Telegram Star giveaways only*/
 	pub prize_star_count: Option<i64>,
@@ -3366,7 +3366,7 @@ https://core.telegram.org/bots/api/#giveawaywinners*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct GiveawayWinners {
 	/**The number of other chats the user had to join in order to be eligible for the giveaway*/
 	pub additional_chat_count: Option<i64>,
@@ -3458,7 +3458,7 @@ impl GiveawayWinners {
 
 https://core.telegram.org/bots/api/#inaccessiblemessage*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct InaccessibleMessage {
 	/**Chat the message belonged to*/
 	pub chat: Chat,
@@ -3615,7 +3615,7 @@ https://core.telegram.org/bots/api/#inlinequery*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct InlineQuery {
 	/**Type of the chat from which the inline query was sent. Can be either “sender” for a private chat with the inline query sender, “private”, “group”, “supergroup”, or “channel”. The chat type should be always known for requests sent from official clients and most third-party clients, unless the request was sent from a secret chat
 	One of: sender, private, group, supergroup, channel*/
@@ -3679,7 +3679,7 @@ impl InlineQuery {
 
 https://core.telegram.org/bots/api/#inlinequeryresult*/
 #[derive(Clone, Debug, Serialize, From)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 #[serde(untagged, rename_all = "snake_case")]
 pub enum InlineQueryResult {
 	Article(InlineQueryResultArticle),
@@ -3710,7 +3710,7 @@ https://core.telegram.org/bots/api/#inlinequeryresultarticle*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InlineQueryResultArticle {
 	/**Short description of the result*/
 	pub description: Option<String>,
@@ -3788,7 +3788,7 @@ https://core.telegram.org/bots/api/#inlinequeryresultaudio*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InlineQueryResultAudio {
 	/**Audio duration in seconds*/
 	pub audio_duration: Option<i64>,
@@ -3882,7 +3882,7 @@ https://core.telegram.org/bots/api/#inlinequeryresultcachedaudio*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InlineQueryResultCachedAudio {
 	/**A valid file identifier for the audio file*/
 	pub audio_file_id: String,
@@ -3957,7 +3957,7 @@ https://core.telegram.org/bots/api/#inlinequeryresultcacheddocument*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InlineQueryResultCachedDocument {
 	/**Caption of the document to be sent, 0-1024 characters after entities parsing
 	Min len: 0
@@ -4043,7 +4043,7 @@ https://core.telegram.org/bots/api/#inlinequeryresultcachedgif*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InlineQueryResultCachedGif {
 	/**Caption of the GIF file to be sent, 0-1024 characters after entities parsing
 	Min len: 0
@@ -4134,7 +4134,7 @@ https://core.telegram.org/bots/api/#inlinequeryresultcachedmpeg4gif*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InlineQueryResultCachedMpeg4Gif {
 	/**Caption of the MPEG-4 file to be sent, 0-1024 characters after entities parsing
 	Min len: 0
@@ -4225,7 +4225,7 @@ https://core.telegram.org/bots/api/#inlinequeryresultcachedphoto*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InlineQueryResultCachedPhoto {
 	/**Caption of the photo to be sent, 0-1024 characters after entities parsing
 	Min len: 0
@@ -4323,7 +4323,7 @@ https://core.telegram.org/bots/api/#inlinequeryresultcachedsticker*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InlineQueryResultCachedSticker {
 	/**Unique identifier for this result, 1-64 bytes*/
 	pub id: String,
@@ -4366,7 +4366,7 @@ https://core.telegram.org/bots/api/#inlinequeryresultcachedvideo*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InlineQueryResultCachedVideo {
 	/**Caption of the video to be sent, 0-1024 characters after entities parsing
 	Min len: 0
@@ -4460,7 +4460,7 @@ https://core.telegram.org/bots/api/#inlinequeryresultcachedvoice*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InlineQueryResultCachedVoice {
 	/**Caption, 0-1024 characters after entities parsing
 	Min len: 0
@@ -4537,7 +4537,7 @@ https://core.telegram.org/bots/api/#inlinequeryresultcontact*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InlineQueryResultContact {
 	/**Contact's first name*/
 	pub first_name: String,
@@ -4623,7 +4623,7 @@ https://core.telegram.org/bots/api/#inlinequeryresultdocument*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InlineQueryResultDocument {
 	/**Caption of the document to be sent, 0-1024 characters after entities parsing
 	Min len: 0
@@ -4736,7 +4736,7 @@ https://core.telegram.org/bots/api/#inlinequeryresultgame*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InlineQueryResultGame {
 	/**Short name of the game*/
 	pub game_short_name: String,
@@ -4771,7 +4771,7 @@ https://core.telegram.org/bots/api/#inlinequeryresultgif*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InlineQueryResultGif {
 	/**Caption of the GIF file to be sent, 0-1024 characters after entities parsing
 	Min len: 0
@@ -4900,7 +4900,7 @@ https://core.telegram.org/bots/api/#inlinequeryresultlocation*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InlineQueryResultLocation {
 	/**For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.*/
 	pub heading: Option<i64>,
@@ -5005,7 +5005,7 @@ https://core.telegram.org/bots/api/#inlinequeryresultmpeg4gif*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InlineQueryResultMpeg4Gif {
 	/**Caption of the MPEG-4 file to be sent, 0-1024 characters after entities parsing
 	Min len: 0
@@ -5135,7 +5135,7 @@ https://core.telegram.org/bots/api/#inlinequeryresultphoto*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InlineQueryResultPhoto {
 	/**Caption of the photo to be sent, 0-1024 characters after entities parsing
 	Min len: 0
@@ -5252,7 +5252,7 @@ https://core.telegram.org/bots/api/#inlinequeryresultvenue*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InlineQueryResultVenue {
 	/**Address of the venue*/
 	pub address: String,
@@ -5362,7 +5362,7 @@ https://core.telegram.org/bots/api/#inlinequeryresultvideo*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InlineQueryResultVideo {
 	/**Caption of the video to be sent, 0-1024 characters after entities parsing
 	Min len: 0
@@ -5487,7 +5487,7 @@ https://core.telegram.org/bots/api/#inlinequeryresultvoice*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InlineQueryResultVoice {
 	/**Caption, 0-1024 characters after entities parsing
 	Min len: 0
@@ -5572,7 +5572,7 @@ https://core.telegram.org/bots/api/#inlinequeryresultsbutton*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InlineQueryResultsButton {
 	/**[Deep-linking](https://core.telegram.org/bots/features#deep-linking) parameter for the /start message sent to the bot when a user presses the button. 1-64 characters, only `A-Z`, `a-z`, `0-9`, `_` and `-` are allowed.  
 
@@ -5615,7 +5615,7 @@ https://core.telegram.org/bots/api/#inputcontactmessagecontent*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InputContactMessageContent {
 	/**Contact's first name*/
 	pub first_name: String,
@@ -5654,7 +5654,7 @@ https://core.telegram.org/bots/api/#inputinvoicemessagecontent*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InputInvoiceMessageContent {
 	/**Three-letter ISO 4217 currency code, see [more on currencies](https://core.telegram.org/bots/payments#supported-currencies). Pass “XTR” for payments in [Telegram Stars](https://t.me/BotNews/90).*/
 	pub currency: String,
@@ -5819,7 +5819,7 @@ https://core.telegram.org/bots/api/#inputlocationmessagecontent*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InputLocationMessageContent {
 	/**For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.*/
 	pub heading: Option<i64>,
@@ -5876,7 +5876,7 @@ impl InputLocationMessageContent {
 
 https://core.telegram.org/bots/api/#inputmedia*/
 #[derive(Clone, Debug, Serialize, From)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 #[serde(untagged, rename_all = "snake_case")]
 pub enum InputMedia {
 	Animation(InputMediaAnimation),
@@ -5893,7 +5893,7 @@ https://core.telegram.org/bots/api/#inputmediaanimation*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InputMediaAnimation {
 	/**Caption of the animation to be sent, 0-1024 characters after entities parsing
 	Min len: 0
@@ -5997,7 +5997,7 @@ https://core.telegram.org/bots/api/#inputmediaaudio*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InputMediaAudio {
 	/**Caption of the audio to be sent, 0-1024 characters after entities parsing
 	Min len: 0
@@ -6085,7 +6085,7 @@ https://core.telegram.org/bots/api/#inputmediadocument*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InputMediaDocument {
 	/**Caption of the document to be sent, 0-1024 characters after entities parsing
 	Min len: 0
@@ -6157,7 +6157,7 @@ https://core.telegram.org/bots/api/#inputmediaphoto*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InputMediaPhoto {
 	/**Caption of the photo to be sent, 0-1024 characters after entities parsing
 	Min len: 0
@@ -6229,7 +6229,7 @@ https://core.telegram.org/bots/api/#inputmediavideo*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InputMediaVideo {
 	/**Caption of the video to be sent, 0-1024 characters after entities parsing
 	Min len: 0
@@ -6359,7 +6359,7 @@ impl InputMediaVideo {
 
 https://core.telegram.org/bots/api/#inputmessagecontent*/
 #[derive(Clone, Debug, Serialize, From)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 #[serde(untagged, rename_all = "snake_case")]
 pub enum InputMessageContent {
 	InputContactMessageContent(InputContactMessageContent),
@@ -6375,7 +6375,7 @@ pub enum InputMessageContent {
 
 https://core.telegram.org/bots/api/#inputpaidmedia*/
 #[derive(Clone, Debug, Serialize, From)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 #[serde(untagged, rename_all = "snake_case")]
 pub enum InputPaidMedia {
 	Photo(InputPaidMediaPhoto),
@@ -6385,7 +6385,7 @@ pub enum InputPaidMedia {
 
 https://core.telegram.org/bots/api/#inputpaidmediaphoto*/
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InputPaidMediaPhoto {
 	/**File to send. Pass a file\_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://\<file\_attach\_name\>” to upload a new one using multipart/form-data under \<file\_attach\_name\> name. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
 	pub media: Asset,
@@ -6408,7 +6408,7 @@ https://core.telegram.org/bots/api/#inputpaidmediavideo*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InputPaidMediaVideo {
 	/**Cover for the video in the message. Pass a file\_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://\<file\_attach\_name\>” to upload a new one using multipart/form-data under \<file\_attach\_name\> name. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
 	pub cover: Option<Asset>,
@@ -6488,7 +6488,7 @@ https://core.telegram.org/bots/api/#inputpolloption*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InputPollOption {
 	/**Option text, 1-100 characters
 	Min len: 1
@@ -6530,7 +6530,7 @@ https://core.telegram.org/bots/api/#inputsticker*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InputSticker {
 	/**List of 1-20 emoji associated with the sticker*/
 	pub emoji_list: Vec<String>,
@@ -6581,7 +6581,7 @@ https://core.telegram.org/bots/api/#inputtextmessagecontent*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InputTextMessageContent {
 	/**List of special entities that appear in message text, which can be specified instead of *parse\_mode**/
 	pub entities: Vec<MessageEntity>,
@@ -6630,7 +6630,7 @@ https://core.telegram.org/bots/api/#inputvenuemessagecontent*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct InputVenueMessageContent {
 	/**Address of the venue*/
 	pub address: String,
@@ -6687,7 +6687,7 @@ impl InputVenueMessageContent {
 
 https://core.telegram.org/bots/api/#invoice*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct Invoice {
 	/**Three-letter ISO 4217 [currency](https://core.telegram.org/bots/payments#supported-currencies) code, or “XTR” for payments in [Telegram Stars](https://t.me/BotNews/90)*/
 	pub currency: String,
@@ -6718,7 +6718,7 @@ https://core.telegram.org/bots/api/#keyboardbutton*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct KeyboardButton {
 	/***Optional.* If specified, pressing the button will open a list of suitable chats. Tapping on a chat will send its identifier to the bot in a “chat\_shared” service message. Available in private chats only.*/
 	pub request_chat: Option<KeyboardButtonRequestChat>,
@@ -6785,7 +6785,7 @@ https://core.telegram.org/bots/api/#keyboardbuttonpolltype*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct KeyboardButtonPollType {
 	/**If *quiz* is passed, the user will be allowed to create only polls in the quiz mode. If *regular* is passed, only regular polls will be allowed. Otherwise, the user will be allowed to create a poll of any type.*/
 	pub r#type: Option<String>,
@@ -6809,7 +6809,7 @@ https://core.telegram.org/bots/api/#keyboardbuttonrequestchat*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct KeyboardButtonRequestChat {
 	/**A JSON-serialized object listing the required administrator rights of the bot in the chat. The rights must be a subset of *user\_administrator\_rights*. If not specified, no additional restrictions are applied.*/
 	pub bot_administrator_rights: Option<ChatAdministratorRights>,
@@ -6903,7 +6903,7 @@ https://core.telegram.org/bots/api/#keyboardbuttonrequestusers*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct KeyboardButtonRequestUsers {
 	/**The maximum number of users to be selected; 1-10. Defaults to 1.
 	Default value: 1*/
@@ -6969,7 +6969,7 @@ impl KeyboardButtonRequestUsers {
 
 https://core.telegram.org/bots/api/#labeledprice*/
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct LabeledPrice {
 	/**Price of the product in the *smallest units* of the [currency](https://core.telegram.org/bots/payments#supported-currencies) (integer, **not** float/double). For example, for a price of `US$ 1.45` pass `amount = 145`. See the *exp* parameter in [currencies.json](https://core.telegram.org/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).*/
 	pub amount: i64,
@@ -7046,7 +7046,7 @@ https://core.telegram.org/bots/api/#location*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct Location {
 	/**The direction in which user is moving, in degrees; 1-360. For active live locations only.*/
 	pub heading: Option<i64>,
@@ -7173,7 +7173,7 @@ impl MaskPosition {
 
 https://core.telegram.org/bots/api/#maybeinaccessiblemessage*/
 #[derive(Clone, Debug, Deserialize, From)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 #[serde(untagged, rename_all = "snake_case")]
 pub enum MaybeInaccessibleMessage {
 	InaccessibleMessage(InaccessibleMessage),
@@ -7181,7 +7181,7 @@ pub enum MaybeInaccessibleMessage {
 }
 /**A JSON-serialized array describing messages to be sent, must include 2-10 items*/
 #[derive(Clone, Debug, Serialize, From)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 #[serde(untagged, rename_all = "snake_case")]
 pub enum Media {
 	InputMediaAudio(InputMediaAudio),
@@ -7261,7 +7261,7 @@ impl MenuButtonWebApp {
 
 https://core.telegram.org/bots/api/#messageautodeletetimerchanged*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct MessageAutoDeleteTimerChanged {
 	/**New auto-delete time for messages in the chat; in seconds*/
 	pub message_auto_delete_time: i64,
@@ -7277,7 +7277,7 @@ impl MessageAutoDeleteTimerChanged {
 
 https://core.telegram.org/bots/api/#messageid*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct MessageId {
 	/**Unique message identifier. In specific instances (e.g., message containing a video sent to a big chat), the server might automatically schedule a message instead of sending it immediately. In such cases, this field will be 0 and the relevant message will be unusable until it is actually sent*/
 	pub message_id: i64,
@@ -7298,7 +7298,7 @@ impl MessageId {
 
 https://core.telegram.org/bots/api/#messageorigin*/
 #[derive(Clone, Debug, Deserialize, From)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 #[serde(untagged, rename_all = "snake_case")]
 pub enum MessageOrigin {
 	Channel(MessageOriginChannel),
@@ -7313,7 +7313,7 @@ https://core.telegram.org/bots/api/#messageoriginchannel*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct MessageOriginChannel {
 	/**Signature of the original post author*/
 	pub author_signature: Option<String>,
@@ -7350,7 +7350,7 @@ https://core.telegram.org/bots/api/#messageoriginchat*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct MessageOriginChat {
 	/**For messages originally sent by an anonymous chat administrator, original message author signature*/
 	pub author_signature: Option<String>,
@@ -7381,7 +7381,7 @@ impl MessageOriginChat {
 
 https://core.telegram.org/bots/api/#messageoriginhiddenuser*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct MessageOriginHiddenUser {
 	/**Date the message was sent originally in Unix time*/
 	pub date: i64,
@@ -7404,7 +7404,7 @@ impl MessageOriginHiddenUser {
 
 https://core.telegram.org/bots/api/#messageoriginuser*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct MessageOriginUser {
 	/**Date the message was sent originally in Unix time*/
 	pub date: i64,
@@ -7430,7 +7430,7 @@ https://core.telegram.org/bots/api/#messagereactioncountupdated*/
 	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct MessageReactionCountUpdated {
 	/**The chat containing the message*/
 	pub chat: Chat,
@@ -7463,7 +7463,7 @@ https://core.telegram.org/bots/api/#messagereactionupdated*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct MessageReactionUpdated {
 	/**The chat on behalf of which the reaction was changed, if the user is anonymous*/
 	pub actor_chat: Option<Chat>,
@@ -7518,7 +7518,7 @@ https://core.telegram.org/bots/api/#orderinfo*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct OrderInfo {
 	/**User email*/
 	pub email: Option<String>,
@@ -7567,7 +7567,7 @@ impl OrderInfo {
 
 https://core.telegram.org/bots/api/#paidmedia*/
 #[derive(Clone, Debug, Deserialize, From)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 #[serde(untagged, rename_all = "snake_case")]
 pub enum PaidMedia {
 	Photo(PaidMediaPhoto),
@@ -7581,7 +7581,7 @@ https://core.telegram.org/bots/api/#paidmediainfo*/
 	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct PaidMediaInfo {
 	/**Information about the paid media*/
 	pub paid_media: Vec<PaidMedia>,
@@ -7607,7 +7607,7 @@ https://core.telegram.org/bots/api/#paidmediaphoto*/
 	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct PaidMediaPhoto {
 	/**The photo*/
 	pub photo: Vec<PhotoSize>,
@@ -7634,7 +7634,7 @@ https://core.telegram.org/bots/api/#paidmediapreview*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct PaidMediaPreview {
 	/**Duration of the media in seconds as defined by the sender*/
 	pub duration: Option<i64>,
@@ -7675,7 +7675,7 @@ impl PaidMediaPreview {
 
 https://core.telegram.org/bots/api/#paidmediapurchased*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct PaidMediaPurchased {
 	/**User who purchased the media*/
 	pub from: User,
@@ -7694,7 +7694,7 @@ impl PaidMediaPurchased {
 
 https://core.telegram.org/bots/api/#paidmediavideo*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct PaidMediaVideo {
 	/**Type of the paid media, always “video”
 	Default: video*/
@@ -7717,7 +7717,7 @@ https://core.telegram.org/bots/api/#passportdata*/
 	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct PassportData {
 	/**Encrypted credentials required to decrypt the data*/
 	pub credentials: EncryptedCredentials,
@@ -7750,7 +7750,7 @@ impl PassportData {
 
 https://core.telegram.org/bots/api/#passportelementerror*/
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 #[serde(untagged, rename_all = "snake_case")]
 pub enum PassportElementError {
 	DataField(PassportElementErrorDataField),
@@ -7767,7 +7767,7 @@ pub enum PassportElementError {
 
 https://core.telegram.org/bots/api/#passportelementerrordatafield*/
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct PassportElementErrorDataField {
 	/**Base64-encoded data hash*/
 	pub data_hash: String,
@@ -7797,7 +7797,7 @@ impl PassportElementErrorDataField {
 
 https://core.telegram.org/bots/api/#passportelementerrorfile*/
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct PassportElementErrorFile {
 	/**Base64-encoded file hash*/
 	pub file_hash: String,
@@ -7827,7 +7827,7 @@ https://core.telegram.org/bots/api/#passportelementerrorfiles*/
 	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct PassportElementErrorFiles {
 	/**List of base64-encoded file hashes*/
 	pub file_hashes: Vec<String>,
@@ -7858,7 +7858,7 @@ impl PassportElementErrorFiles {
 
 https://core.telegram.org/bots/api/#passportelementerrorfrontside*/
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct PassportElementErrorFrontSide {
 	/**Base64-encoded hash of the file with the front side of the document*/
 	pub file_hash: String,
@@ -7885,7 +7885,7 @@ impl PassportElementErrorFrontSide {
 
 https://core.telegram.org/bots/api/#passportelementerrorreverseside*/
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct PassportElementErrorReverseSide {
 	/**Base64-encoded hash of the file with the reverse side of the document*/
 	pub file_hash: String,
@@ -7912,7 +7912,7 @@ impl PassportElementErrorReverseSide {
 
 https://core.telegram.org/bots/api/#passportelementerrorselfie*/
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct PassportElementErrorSelfie {
 	/**Base64-encoded hash of the file with the selfie*/
 	pub file_hash: String,
@@ -7939,7 +7939,7 @@ impl PassportElementErrorSelfie {
 
 https://core.telegram.org/bots/api/#passportelementerrortranslationfile*/
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct PassportElementErrorTranslationFile {
 	/**Base64-encoded file hash*/
 	pub file_hash: String,
@@ -7969,7 +7969,7 @@ https://core.telegram.org/bots/api/#passportelementerrortranslationfiles*/
 	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct PassportElementErrorTranslationFiles {
 	/**List of base64-encoded file hashes*/
 	pub file_hashes: Vec<String>,
@@ -8000,7 +8000,7 @@ impl PassportElementErrorTranslationFiles {
 
 https://core.telegram.org/bots/api/#passportelementerrorunspecified*/
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct PassportElementErrorUnspecified {
 	/**Base64-encoded element hash*/
 	pub element_hash: String,
@@ -8026,7 +8026,7 @@ impl PassportElementErrorUnspecified {
 
 https://core.telegram.org/bots/api/#passportfile*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct PassportFile {
 	/**Unix time when the file was uploaded*/
 	pub file_date: i64,
@@ -8054,7 +8054,7 @@ https://core.telegram.org/bots/api/#photosize*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct PhotoSize {
 	/**Identifier for this file, which can be used to download or reuse the file*/
 	pub file_id: String,
@@ -8091,7 +8091,7 @@ https://core.telegram.org/bots/api/#poll*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct Poll {
 	/**if the poll allows multiple answers*/
 	pub allows_multiple_answers: bool,
@@ -8199,7 +8199,7 @@ https://core.telegram.org/bots/api/#pollanswer*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct PollAnswer {
 	/**0-based identifiers of chosen answer options. May be empty if the vote was retracted.*/
 	pub option_ids: Vec<i64>,
@@ -8241,7 +8241,7 @@ https://core.telegram.org/bots/api/#polloption*/
 	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct PollOption {
 	/**Option text, 1-100 characters
 	Min len: 1
@@ -8277,7 +8277,7 @@ https://core.telegram.org/bots/api/#precheckoutquery*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct PreCheckoutQuery {
 	/**Three-letter ISO 4217 [currency](https://core.telegram.org/bots/payments#supported-currencies) code, or “XTR” for payments in [Telegram Stars](https://t.me/BotNews/90)*/
 	pub currency: String,
@@ -8321,7 +8321,7 @@ impl PreCheckoutQuery {
 
 https://core.telegram.org/bots/api/#preparedinlinemessage*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct PreparedInlineMessage {
 	/**Expiration date of the prepared message, in Unix time. Expired prepared messages can no longer be used*/
 	pub expiration_date: i64,
@@ -8340,7 +8340,7 @@ impl PreparedInlineMessage {
 
 https://core.telegram.org/bots/api/#proximityalerttriggered*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ProximityAlertTriggered {
 	/**The distance between the users*/
 	pub distance: i64,
@@ -8362,7 +8362,7 @@ impl ProximityAlertTriggered {
 
 https://core.telegram.org/bots/api/#reactioncount*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ReactionCount {
 	/**Type of the reaction*/
 	pub r#type: ReactionType,
@@ -8453,7 +8453,7 @@ https://core.telegram.org/bots/api/#refundedpayment*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct RefundedPayment {
 	/**Three-letter ISO 4217 [currency](https://core.telegram.org/bots/payments#supported-currencies) code, or “XTR” for payments in [Telegram Stars](https://t.me/BotNews/90). Currently, always “XTR”
 	Default: XTR*/
@@ -8491,7 +8491,7 @@ https://core.telegram.org/bots/api/#replykeyboardmarkup*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct ReplyKeyboardMarkup {
 	/**The placeholder to be shown in the input field when the keyboard is active; 1-64 characters
 	Min len: 1
@@ -8568,7 +8568,7 @@ https://core.telegram.org/bots/api/#replykeyboardremove*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct ReplyKeyboardRemove {
 	/**Requests clients to remove the custom keyboard (user will not be able to summon this keyboard; if you want to hide the keyboard from sight but keep it accessible, use *one\_time\_keyboard* in [ReplyKeyboardMarkup](https://core.telegram.org/bots/api/#replykeyboardmarkup))
 	Default value: true*/
@@ -8595,7 +8595,7 @@ impl ReplyKeyboardRemove {
 }
 /**Additional interface options. A JSON-serialized object for an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards), [custom reply keyboard](https://core.telegram.org/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user*/
 #[derive(Clone, Debug, Serialize, From)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 #[serde(untagged, rename_all = "snake_case")]
 pub enum ReplyMarkup {
 	ForceReply(ForceReply),
@@ -8611,7 +8611,7 @@ https://core.telegram.org/bots/api/#replyparameters*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct ReplyParameters {
 	/**Pass *True* if the message should be sent even if the specified message to be replied to is not found. Always *False* for replies in another chat or forum topic. Always *True* for messages sent on behalf of a business account.*/
 	pub allow_sending_without_reply: Option<bool>,
@@ -8683,7 +8683,7 @@ impl ReplyParameters {
 
 https://core.telegram.org/bots/api/#responseparameters*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct ResponseParameters {
 	/**The group has been migrated to a supergroup with the specified identifier. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier.*/
 	pub migrate_to_chat_id: Option<i64>,
@@ -8716,7 +8716,7 @@ impl ResponseParameters {
 
 https://core.telegram.org/bots/api/#revenuewithdrawalstate*/
 #[derive(Clone, Debug, Deserialize, From)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 #[serde(untagged, rename_all = "snake_case")]
 pub enum RevenueWithdrawalState {
 	Failed(RevenueWithdrawalStateFailed),
@@ -8727,7 +8727,7 @@ pub enum RevenueWithdrawalState {
 
 https://core.telegram.org/bots/api/#revenuewithdrawalstatefailed*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct RevenueWithdrawalStateFailed {
 	/**Type of the state, always “failed”
 	Default: failed*/
@@ -8744,7 +8744,7 @@ impl RevenueWithdrawalStateFailed {
 
 https://core.telegram.org/bots/api/#revenuewithdrawalstatepending*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct RevenueWithdrawalStatePending {
 	/**Type of the state, always “pending”
 	Default: pending*/
@@ -8761,7 +8761,7 @@ impl RevenueWithdrawalStatePending {
 
 https://core.telegram.org/bots/api/#revenuewithdrawalstatesucceeded*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct RevenueWithdrawalStateSucceeded {
 	/**Date the withdrawal was completed in Unix time*/
 	pub date: i64,
@@ -8787,7 +8787,7 @@ https://core.telegram.org/bots/api/#sentwebappmessage*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct SentWebAppMessage {
 	/**Identifier of the sent inline message. Available only if there is an [inline keyboard](https://core.telegram.org/bots/api/#inlinekeyboardmarkup) attached to the message.*/
 	pub inline_message_id: Option<String>,
@@ -8806,7 +8806,7 @@ impl SentWebAppMessage {
 }
 /**setGameScore return value*/
 #[derive(Clone, Debug, Deserialize, From)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 #[serde(untagged, rename_all = "snake_case")]
 pub enum SetGameScoreResult {
 	Bool(bool),
@@ -8820,7 +8820,7 @@ https://core.telegram.org/bots/api/#shareduser*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct SharedUser {
 	/**First name of the user, if the name was requested by the bot*/
 	pub first_name: Option<String>,
@@ -8872,7 +8872,7 @@ impl SharedUser {
 
 https://core.telegram.org/bots/api/#shippingaddress*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ShippingAddress {
 	/**City*/
 	pub city: String,
@@ -8906,7 +8906,7 @@ https://core.telegram.org/bots/api/#shippingoption*/
 	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Serialize)]
-#[cfg_attr(feature = "serde-all", serde(Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Deserialize))]
 pub struct ShippingOption {
 	/**Shipping option identifier*/
 	pub id: String,
@@ -8932,7 +8932,7 @@ impl ShippingOption {
 
 https://core.telegram.org/bots/api/#shippingquery*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct ShippingQuery {
 	/**User who sent the query*/
 	pub from: User,
@@ -8960,7 +8960,7 @@ https://core.telegram.org/bots/api/#startransaction*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct StarTransaction {
 	/**Integer amount of Telegram Stars transferred by the transaction*/
 	pub amount: i64,
@@ -9009,7 +9009,7 @@ https://core.telegram.org/bots/api/#startransactions*/
 	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct StarTransactions {
 	/**The list of transactions*/
 	pub transactions: Vec<StarTransaction>,
@@ -9032,7 +9032,7 @@ https://core.telegram.org/bots/api/#sticker*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct Sticker {
 	/**For custom emoji stickers, unique identifier of the custom emoji*/
 	pub custom_emoji_id: Option<String>,
@@ -9137,7 +9137,7 @@ https://core.telegram.org/bots/api/#stickerset*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct StickerSet {
 	/**Sticker set name*/
 	pub name: String,
@@ -9173,7 +9173,7 @@ impl StickerSet {
 }
 /**stopMessageLiveLocation return value*/
 #[derive(Clone, Debug, Deserialize, From)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 #[serde(untagged, rename_all = "snake_case")]
 pub enum StopMessageLiveLocationResult {
 	Bool(bool),
@@ -9183,7 +9183,7 @@ pub enum StopMessageLiveLocationResult {
 
 https://core.telegram.org/bots/api/#story*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct Story {
 	/**Chat that posted the story*/
 	pub chat: Chat,
@@ -9205,7 +9205,7 @@ https://core.telegram.org/bots/api/#successfulpayment*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct SuccessfulPayment {
 	/**Three-letter ISO 4217 [currency](https://core.telegram.org/bots/payments#supported-currencies) code, or “XTR” for payments in [Telegram Stars](https://t.me/BotNews/90)*/
 	pub currency: String,
@@ -9336,7 +9336,7 @@ https://core.telegram.org/bots/api/#textquote*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct TextQuote {
 	/**Special entities that appear in the quote. Currently, only *bold*, *italic*, *underline*, *strikethrough*, *spoiler*, and *custom\_emoji* entities are kept in quotes.*/
 	pub entities: Vec<MessageEntity>,
@@ -9385,7 +9385,7 @@ impl TextQuote {
 
 https://core.telegram.org/bots/api/#transactionpartner*/
 #[derive(Clone, Debug, Deserialize, From)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 #[serde(untagged, rename_all = "snake_case")]
 pub enum TransactionPartner {
 	AffiliateProgram(TransactionPartnerAffiliateProgram),
@@ -9403,7 +9403,7 @@ https://core.telegram.org/bots/api/#transactionpartneraffiliateprogram*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct TransactionPartnerAffiliateProgram {
 	/**The number of Telegram Stars received by the bot for each 1000 Telegram Stars received by the affiliate program sponsor from referred users*/
 	pub commission_per_mille: i64,
@@ -9434,7 +9434,7 @@ https://core.telegram.org/bots/api/#transactionpartnerchat*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct TransactionPartnerChat {
 	/**Information about the chat*/
 	pub chat: Chat,
@@ -9465,7 +9465,7 @@ https://core.telegram.org/bots/api/#transactionpartnerfragment*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct TransactionPartnerFragment {
 	/**Type of the transaction partner, always “fragment”
 	Default: fragment*/
@@ -9490,7 +9490,7 @@ impl TransactionPartnerFragment {
 
 https://core.telegram.org/bots/api/#transactionpartnerother*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct TransactionPartnerOther {
 	/**Type of the transaction partner, always “other”
 	Default: other*/
@@ -9507,7 +9507,7 @@ impl TransactionPartnerOther {
 
 https://core.telegram.org/bots/api/#transactionpartnertelegramads*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct TransactionPartnerTelegramAds {
 	/**Type of the transaction partner, always “telegram\_ads”
 	Default: telegram_ads*/
@@ -9524,7 +9524,7 @@ impl TransactionPartnerTelegramAds {
 
 https://core.telegram.org/bots/api/#transactionpartnertelegramapi*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct TransactionPartnerTelegramApi {
 	/**Type of the transaction partner, always “telegram\_api”
 	Default: telegram_api*/
@@ -9548,7 +9548,7 @@ https://core.telegram.org/bots/api/#transactionpartneruser*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct TransactionPartnerUser {
 	/**Information about the affiliate that received a commission via this transaction*/
 	pub affiliate: Option<AffiliateInfo>,
@@ -9624,7 +9624,7 @@ https://core.telegram.org/bots/api/#update*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct Update {
 	/**The bot was connected to or disconnected from a business account, or a user edited an existing connection with the bot*/
 	pub business_connection: Option<BusinessConnection>,
@@ -9935,7 +9935,7 @@ https://core.telegram.org/bots/api/#userchatboosts*/
 	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct UserChatBoosts {
 	/**The list of boosts added to the chat by the user*/
 	pub boosts: Vec<ChatBoost>,
@@ -9958,7 +9958,7 @@ https://core.telegram.org/bots/api/#userprofilephotos*/
 	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct UserProfilePhotos {
 	/**Requested profile pictures (in up to 4 sizes each)*/
 	pub photos: Vec<Vec<PhotoSize>>,
@@ -9984,7 +9984,7 @@ https://core.telegram.org/bots/api/#usersshared*/
 	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct UsersShared {
 	/**Identifier of the request*/
 	pub request_id: i64,
@@ -10010,7 +10010,7 @@ https://core.telegram.org/bots/api/#venue*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct Venue {
 	/**Address of the venue*/
 	pub address: String,
@@ -10068,7 +10068,7 @@ https://core.telegram.org/bots/api/#video*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct Video {
 	/**Available sizes of the cover of the video in the message*/
 	pub cover: Vec<PhotoSize>,
@@ -10148,7 +10148,7 @@ impl Video {
 
 https://core.telegram.org/bots/api/#videochatended*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct VideoChatEnded {
 	/**Video chat duration in seconds*/
 	pub duration: i64,
@@ -10167,7 +10167,7 @@ https://core.telegram.org/bots/api/#videochatparticipantsinvited*/
 	Vec => #[serde(skip_serializing_if = "Vec::is_empty", default)],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct VideoChatParticipantsInvited {
 	/**New members that were invited to the video chat*/
 	pub users: Vec<User>,
@@ -10187,7 +10187,7 @@ impl VideoChatParticipantsInvited {
 
 https://core.telegram.org/bots/api/#videochatscheduled*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct VideoChatScheduled {
 	/**Point in time (Unix timestamp) when the video chat is supposed to be started by a chat administrator*/
 	pub start_date: i64,
@@ -10210,7 +10210,7 @@ https://core.telegram.org/bots/api/#videonote*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct VideoNote {
 	/**Duration of the video in seconds as defined by the sender*/
 	pub duration: i64,
@@ -10254,7 +10254,7 @@ https://core.telegram.org/bots/api/#voice*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct Voice {
 	/**Duration of the audio in seconds as defined by the sender*/
 	pub duration: i64,
@@ -10292,7 +10292,7 @@ impl Voice {
 
 https://core.telegram.org/bots/api/#webappdata*/
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct WebAppData {
 	/**Text of the *web\_app* keyboard button from which the Web App was opened. Be aware that a bad client can send arbitrary data in this field.*/
 	pub button_text: String,
@@ -10330,7 +10330,7 @@ https://core.telegram.org/bots/api/#webhookinfo*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct WebhookInfo {
 	/**A list of update types the bot is subscribed to. Defaults to all update types except *chat\_member**/
 	pub allowed_updates: Vec<String>,
@@ -10407,7 +10407,7 @@ https://core.telegram.org/bots/api/#writeaccessallowed*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
-#[cfg_attr(feature = "serde-all", serde(Serialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct WriteAccessAllowed {
 	/**True, if the access was granted when the bot was added to the attachment or side menu*/
 	pub from_attachment_menu: Option<bool>,
@@ -10444,7 +10444,7 @@ impl WriteAccessAllowed {
 
 https://core.telegram.org/bots/api/#addstickertoset*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct AddStickerToSet {
 	/**Sticker set name*/
 	pub name: String,
@@ -10479,7 +10479,7 @@ Alternatively, the user can be redirected to the specified Game URL. For this op
 
 https://core.telegram.org/bots/api/#answercallbackquery*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct AnswerCallbackQuery {
 	/**The maximum amount of time in seconds that the result of the callback query may be cached client-side. Telegram apps will support caching starting in version 3.14. Defaults to 0.*/
 	pub cache_time: Option<i64>,
@@ -10545,7 +10545,7 @@ No more than **50** results per query are allowed.
 
 https://core.telegram.org/bots/api/#answerinlinequery*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct AnswerInlineQuery {
 	/**A JSON-serialized object describing a button to be shown above inline query results*/
 	pub button: Option<InlineQueryResultsButton>,
@@ -10614,7 +10614,7 @@ impl Executable for AnswerInlineQuery {
 
 https://core.telegram.org/bots/api/#answerprecheckoutquery*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct AnswerPreCheckoutQuery {
 	/**Required if *ok* is *False*. Error message in human readable form that explains the reason for failure to proceed with the checkout (e.g. "Sorry, somebody just bought the last of our amazing black T-shirts while you were busy filling out your payment details. Please choose a different color or garment!"). Telegram will display this message to the user.*/
 	pub error_message: Option<String>,
@@ -10652,7 +10652,7 @@ impl Executable for AnswerPreCheckoutQuery {
 
 https://core.telegram.org/bots/api/#answershippingquery*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct AnswerShippingQuery {
 	/**Required if *ok* is *False*. Error message in human readable form that explains why it is impossible to complete the order (e.g. “Sorry, delivery to your desired address is unavailable”). Telegram will display this message to the user.*/
 	pub error_message: Option<String>,
@@ -10703,7 +10703,7 @@ impl Executable for AnswerShippingQuery {
 
 https://core.telegram.org/bots/api/#answerwebappquery*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct AnswerWebAppQuery {
 	/**A JSON-serialized object describing the message to be sent*/
 	pub result: InlineQueryResult,
@@ -10732,7 +10732,7 @@ impl Executable for AnswerWebAppQuery {
 
 https://core.telegram.org/bots/api/#approvechatjoinrequest*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct ApproveChatJoinRequest {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -10761,7 +10761,7 @@ impl Executable for ApproveChatJoinRequest {
 
 https://core.telegram.org/bots/api/#banchatmember*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct BanChatMember {
 	/**Unique identifier for the target group or username of the target supergroup or channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -10808,7 +10808,7 @@ impl Executable for BanChatMember {
 
 https://core.telegram.org/bots/api/#banchatsenderchat*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct BanChatSenderChat {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -10837,7 +10837,7 @@ impl Executable for BanChatSenderChat {
 
 https://core.telegram.org/bots/api/#close*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct Close {
 }
 impl Close {
@@ -10857,7 +10857,7 @@ impl Executable for Close {
 
 https://core.telegram.org/bots/api/#closeforumtopic*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct CloseForumTopic {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -10886,7 +10886,7 @@ impl Executable for CloseForumTopic {
 
 https://core.telegram.org/bots/api/#closegeneralforumtopic*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct CloseGeneralForumTopic {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -10911,7 +10911,7 @@ impl Executable for CloseGeneralForumTopic {
 
 https://core.telegram.org/bots/api/#copymessage*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct CopyMessage {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -11047,7 +11047,7 @@ impl Executable for CopyMessage {
 
 https://core.telegram.org/bots/api/#copymessages*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct CopyMessages {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -11120,7 +11120,7 @@ impl Executable for CopyMessages {
 
 https://core.telegram.org/bots/api/#createchatinvitelink*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct CreateChatInviteLink {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -11181,7 +11181,7 @@ impl Executable for CreateChatInviteLink {
 
 https://core.telegram.org/bots/api/#createchatsubscriptioninvitelink*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct CreateChatSubscriptionInviteLink {
 	/**Unique identifier for the target channel chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -11223,7 +11223,7 @@ impl Executable for CreateChatSubscriptionInviteLink {
 
 https://core.telegram.org/bots/api/#createforumtopic*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct CreateForumTopic {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -11270,7 +11270,7 @@ impl Executable for CreateForumTopic {
 
 https://core.telegram.org/bots/api/#createinvoicelink*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct CreateInvoiceLink {
 	/**Unique identifier of the business connection on behalf of which the link will be created. For payments in [Telegram Stars](https://t.me/BotNews/90) only.*/
 	pub business_connection_id: Option<String>,
@@ -11472,7 +11472,7 @@ impl Executable for CreateInvoiceLink {
 
 https://core.telegram.org/bots/api/#createnewstickerset*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct CreateNewStickerSet {
 	/**Short name of sticker set, to be used in `t.me/addstickers/` URLs (e.g., *animals*). Can contain only English letters, digits and underscores. Must begin with a letter, can't contain consecutive underscores and must end in `"_by_<bot_username>"`. `<bot_username>` is case insensitive. 1-64 characters.*/
 	pub name: String,
@@ -11531,7 +11531,7 @@ impl Executable for CreateNewStickerSet {
 
 https://core.telegram.org/bots/api/#declinechatjoinrequest*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct DeclineChatJoinRequest {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -11560,7 +11560,7 @@ impl Executable for DeclineChatJoinRequest {
 
 https://core.telegram.org/bots/api/#deletechatphoto*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct DeleteChatPhoto {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -11585,7 +11585,7 @@ impl Executable for DeleteChatPhoto {
 
 https://core.telegram.org/bots/api/#deletechatstickerset*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct DeleteChatStickerSet {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -11610,7 +11610,7 @@ impl Executable for DeleteChatStickerSet {
 
 https://core.telegram.org/bots/api/#deleteforumtopic*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct DeleteForumTopic {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -11648,7 +11648,7 @@ Returns *True* on success.
 
 https://core.telegram.org/bots/api/#deletemessage*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct DeleteMessage {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -11677,7 +11677,7 @@ impl Executable for DeleteMessage {
 
 https://core.telegram.org/bots/api/#deletemessages*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct DeleteMessages {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -11710,7 +11710,7 @@ impl Executable for DeleteMessages {
 
 https://core.telegram.org/bots/api/#deletemycommands*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct DeleteMyCommands {
 	/**A two-letter ISO 639-1 language code. If empty, commands will be applied to all users from the given scope, for whose language there are no dedicated commands*/
 	pub language_code: Option<String>,
@@ -11749,7 +11749,7 @@ impl Executable for DeleteMyCommands {
 
 https://core.telegram.org/bots/api/#deletestickerfromset*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct DeleteStickerFromSet {
 	/**File identifier of the sticker*/
 	pub sticker: String,
@@ -11774,7 +11774,7 @@ impl Executable for DeleteStickerFromSet {
 
 https://core.telegram.org/bots/api/#deletestickerset*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct DeleteStickerSet {
 	/**Sticker set name*/
 	pub name: String,
@@ -11799,7 +11799,7 @@ impl Executable for DeleteStickerSet {
 
 https://core.telegram.org/bots/api/#deletewebhook*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct DeleteWebhook {
 	/**Pass *True* to drop all pending updates*/
 	pub drop_pending_updates: Option<bool>,
@@ -11829,7 +11829,7 @@ impl Executable for DeleteWebhook {
 
 https://core.telegram.org/bots/api/#editchatinvitelink*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct EditChatInviteLink {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -11894,7 +11894,7 @@ impl Executable for EditChatInviteLink {
 
 https://core.telegram.org/bots/api/#editchatsubscriptioninvitelink*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct EditChatSubscriptionInviteLink {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -11932,7 +11932,7 @@ impl Executable for EditChatSubscriptionInviteLink {
 
 https://core.telegram.org/bots/api/#editforumtopic*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct EditForumTopic {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -11979,7 +11979,7 @@ impl Executable for EditForumTopic {
 
 https://core.telegram.org/bots/api/#editgeneralforumtopic*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct EditGeneralForumTopic {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -12008,7 +12008,7 @@ impl Executable for EditGeneralForumTopic {
 
 https://core.telegram.org/bots/api/#editmessagecaption*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct EditMessageCaption {
 	/**Unique identifier of the business connection on behalf of which the message to be edited was sent*/
 	pub business_connection_id: Option<String>,
@@ -12114,7 +12114,7 @@ impl Executable for EditMessageCaption {
 
 https://core.telegram.org/bots/api/#editmessagelivelocation*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct EditMessageLiveLocation {
 	/**Unique identifier of the business connection on behalf of which the message to be edited was sent*/
 	pub business_connection_id: Option<String>,
@@ -12224,7 +12224,7 @@ impl Executable for EditMessageLiveLocation {
 
 https://core.telegram.org/bots/api/#editmessagemedia*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct EditMessageMedia {
 	/**Unique identifier of the business connection on behalf of which the message to be edited was sent*/
 	pub business_connection_id: Option<String>,
@@ -12294,7 +12294,7 @@ impl Executable for EditMessageMedia {
 
 https://core.telegram.org/bots/api/#editmessagereplymarkup*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct EditMessageReplyMarkup {
 	/**Unique identifier of the business connection on behalf of which the message to be edited was sent*/
 	pub business_connection_id: Option<String>,
@@ -12360,7 +12360,7 @@ impl Executable for EditMessageReplyMarkup {
 
 https://core.telegram.org/bots/api/#editmessagetext*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct EditMessageText {
 	/**Unique identifier of the business connection on behalf of which the message to be edited was sent*/
 	pub business_connection_id: Option<String>,
@@ -12461,7 +12461,7 @@ impl Executable for EditMessageText {
 
 https://core.telegram.org/bots/api/#edituserstarsubscription*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct EditUserStarSubscription {
 	/**Pass *True* to cancel extension of the user subscription; the subscription must be active up to the end of the current subscription period. Pass *False* to allow the user to re-enable a subscription that was previously canceled by the bot.*/
 	pub is_canceled: bool,
@@ -12494,7 +12494,7 @@ impl Executable for EditUserStarSubscription {
 
 https://core.telegram.org/bots/api/#exportchatinvitelink*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct ExportChatInviteLink {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -12519,7 +12519,7 @@ impl Executable for ExportChatInviteLink {
 
 https://core.telegram.org/bots/api/#forwardmessage*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct ForwardMessage {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -12588,7 +12588,7 @@ impl Executable for ForwardMessage {
 
 https://core.telegram.org/bots/api/#forwardmessages*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct ForwardMessages {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -12652,7 +12652,7 @@ impl Executable for ForwardMessages {
 
 https://core.telegram.org/bots/api/#getavailablegifts*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct GetAvailableGifts {
 }
 impl GetAvailableGifts {
@@ -12672,7 +12672,7 @@ impl Executable for GetAvailableGifts {
 
 https://core.telegram.org/bots/api/#getbusinessconnection*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct GetBusinessConnection {
 	/**Unique identifier of the business connection*/
 	pub business_connection_id: String,
@@ -12697,7 +12697,7 @@ impl Executable for GetBusinessConnection {
 
 https://core.telegram.org/bots/api/#getchat*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct GetChat {
 	/**Unique identifier for the target chat or username of the target supergroup or channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -12722,7 +12722,7 @@ impl Executable for GetChat {
 
 https://core.telegram.org/bots/api/#getchatadministrators*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct GetChatAdministrators {
 	/**Unique identifier for the target chat or username of the target supergroup or channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -12747,7 +12747,7 @@ impl Executable for GetChatAdministrators {
 
 https://core.telegram.org/bots/api/#getchatmember*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct GetChatMember {
 	/**Unique identifier for the target chat or username of the target supergroup or channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -12776,7 +12776,7 @@ impl Executable for GetChatMember {
 
 https://core.telegram.org/bots/api/#getchatmembercount*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct GetChatMemberCount {
 	/**Unique identifier for the target chat or username of the target supergroup or channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -12801,7 +12801,7 @@ impl Executable for GetChatMemberCount {
 
 https://core.telegram.org/bots/api/#getchatmenubutton*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct GetChatMenuButton {
 	/**Unique identifier for the target private chat. If not specified, default bot's menu button will be returned*/
 	pub chat_id: Option<i64>,
@@ -12831,7 +12831,7 @@ impl Executable for GetChatMenuButton {
 
 https://core.telegram.org/bots/api/#getcustomemojistickers*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct GetCustomEmojiStickers {
 	/**A JSON-serialized list of custom emoji identifiers. At most 200 custom emoji identifiers can be specified.*/
 	pub custom_emoji_ids: Vec<String>,
@@ -12860,7 +12860,7 @@ impl Executable for GetCustomEmojiStickers {
 
 https://core.telegram.org/bots/api/#getfile*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct GetFile {
 	/**File identifier to get information about*/
 	pub file_id: String,
@@ -12885,7 +12885,7 @@ impl Executable for GetFile {
 
 https://core.telegram.org/bots/api/#getforumtopiciconstickers*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct GetForumTopicIconStickers {
 }
 impl GetForumTopicIconStickers {
@@ -12907,7 +12907,7 @@ This method will currently return scores for the target user, plus two of their 
 
 https://core.telegram.org/bots/api/#getgamehighscores*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct GetGameHighScores {
 	/**Required if *inline\_message\_id* is not specified. Unique identifier for the target chat*/
 	pub chat_id: Option<i64>,
@@ -12959,7 +12959,7 @@ impl Executable for GetGameHighScores {
 
 https://core.telegram.org/bots/api/#getme*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct GetMe {
 }
 impl GetMe {
@@ -12979,7 +12979,7 @@ impl Executable for GetMe {
 
 https://core.telegram.org/bots/api/#getmycommands*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct GetMyCommands {
 	/**A two-letter ISO 639-1 language code or an empty string*/
 	pub language_code: Option<String>,
@@ -13018,7 +13018,7 @@ impl Executable for GetMyCommands {
 
 https://core.telegram.org/bots/api/#getmydefaultadministratorrights*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct GetMyDefaultAdministratorRights {
 	/**Pass *True* to get default administrator rights of the bot in channels. Otherwise, default administrator rights of the bot for groups and supergroups will be returned.*/
 	pub for_channels: Option<bool>,
@@ -13048,7 +13048,7 @@ impl Executable for GetMyDefaultAdministratorRights {
 
 https://core.telegram.org/bots/api/#getmydescription*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct GetMyDescription {
 	/**A two-letter ISO 639-1 language code or an empty string*/
 	pub language_code: Option<String>,
@@ -13078,7 +13078,7 @@ impl Executable for GetMyDescription {
 
 https://core.telegram.org/bots/api/#getmyname*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct GetMyName {
 	/**A two-letter ISO 639-1 language code or an empty string*/
 	pub language_code: Option<String>,
@@ -13108,7 +13108,7 @@ impl Executable for GetMyName {
 
 https://core.telegram.org/bots/api/#getmyshortdescription*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct GetMyShortDescription {
 	/**A two-letter ISO 639-1 language code or an empty string*/
 	pub language_code: Option<String>,
@@ -13138,7 +13138,7 @@ impl Executable for GetMyShortDescription {
 
 https://core.telegram.org/bots/api/#getstartransactions*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct GetStarTransactions {
 	/**The maximum number of transactions to be retrieved. Values between 1-100 are accepted. Defaults to 100.*/
 	pub limit: Option<i64>,
@@ -13177,7 +13177,7 @@ impl Executable for GetStarTransactions {
 
 https://core.telegram.org/bots/api/#getstickerset*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct GetStickerSet {
 	/**Name of the sticker set*/
 	pub name: String,
@@ -13202,7 +13202,7 @@ impl Executable for GetStickerSet {
 
 https://core.telegram.org/bots/api/#getupdates*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct GetUpdates {
 	/**A JSON-serialized list of the update types you want your bot to receive. For example, specify `["message", "edited_channel_post", "callback_query"]` to only receive updates of these types. See [Update](https://core.telegram.org/bots/api/#update) for a complete list of available update types. Specify an empty list to receive all update types except *chat\_member*, *message\_reaction*, and *message\_reaction\_count* (default). If not specified, the previous setting will be used.  
 
@@ -13267,7 +13267,7 @@ impl Executable for GetUpdates {
 
 https://core.telegram.org/bots/api/#getuserchatboosts*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct GetUserChatBoosts {
 	/**Unique identifier for the chat or username of the channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -13296,7 +13296,7 @@ impl Executable for GetUserChatBoosts {
 
 https://core.telegram.org/bots/api/#getuserprofilephotos*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct GetUserProfilePhotos {
 	/**Limits the number of photos to be retrieved. Values between 1-100 are accepted. Defaults to 100.*/
 	pub limit: Option<i64>,
@@ -13339,7 +13339,7 @@ impl Executable for GetUserProfilePhotos {
 
 https://core.telegram.org/bots/api/#getwebhookinfo*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct GetWebhookInfo {
 }
 impl GetWebhookInfo {
@@ -13359,7 +13359,7 @@ impl Executable for GetWebhookInfo {
 
 https://core.telegram.org/bots/api/#hidegeneralforumtopic*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct HideGeneralForumTopic {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -13384,7 +13384,7 @@ impl Executable for HideGeneralForumTopic {
 
 https://core.telegram.org/bots/api/#leavechat*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct LeaveChat {
 	/**Unique identifier for the target chat or username of the target supergroup or channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -13409,7 +13409,7 @@ impl Executable for LeaveChat {
 
 https://core.telegram.org/bots/api/#logout*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct LogOut {
 }
 impl LogOut {
@@ -13429,7 +13429,7 @@ impl Executable for LogOut {
 
 https://core.telegram.org/bots/api/#pinchatmessage*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct PinChatMessage {
 	/**Unique identifier of the business connection on behalf of which the message will be pinned*/
 	pub business_connection_id: Option<String>,
@@ -13476,7 +13476,7 @@ impl Executable for PinChatMessage {
 
 https://core.telegram.org/bots/api/#promotechatmember*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct PromoteChatMember {
 	/**Pass *True* if the administrator can change chat title, photo and other settings*/
 	pub can_change_info: Option<bool>,
@@ -13640,7 +13640,7 @@ impl Executable for PromoteChatMember {
 
 https://core.telegram.org/bots/api/#refundstarpayment*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct RefundStarPayment {
 	/**Telegram payment identifier*/
 	pub telegram_payment_charge_id: String,
@@ -13669,7 +13669,7 @@ impl Executable for RefundStarPayment {
 
 https://core.telegram.org/bots/api/#removechatverification*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct RemoveChatVerification {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -13694,7 +13694,7 @@ impl Executable for RemoveChatVerification {
 
 https://core.telegram.org/bots/api/#removeuserverification*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct RemoveUserVerification {
 	/**Unique identifier of the target user*/
 	pub user_id: i64,
@@ -13719,7 +13719,7 @@ impl Executable for RemoveUserVerification {
 
 https://core.telegram.org/bots/api/#reopenforumtopic*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct ReopenForumTopic {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -13748,7 +13748,7 @@ impl Executable for ReopenForumTopic {
 
 https://core.telegram.org/bots/api/#reopengeneralforumtopic*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct ReopenGeneralForumTopic {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -13773,7 +13773,7 @@ impl Executable for ReopenGeneralForumTopic {
 
 https://core.telegram.org/bots/api/#replacestickerinset*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct ReplaceStickerInSet {
 	/**Sticker set name*/
 	pub name: String,
@@ -13810,7 +13810,7 @@ impl Executable for ReplaceStickerInSet {
 
 https://core.telegram.org/bots/api/#restrictchatmember*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct RestrictChatMember {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -13861,7 +13861,7 @@ impl Executable for RestrictChatMember {
 
 https://core.telegram.org/bots/api/#revokechatinvitelink*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct RevokeChatInviteLink {
 	/**Unique identifier of the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -13890,7 +13890,7 @@ impl Executable for RevokeChatInviteLink {
 
 https://core.telegram.org/bots/api/#savepreparedinlinemessage*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SavePreparedInlineMessage {
 	/**Pass *True* if the message can be sent to private chats with bots*/
 	pub allow_bot_chats: Option<bool>,
@@ -13955,7 +13955,7 @@ impl Executable for SavePreparedInlineMessage {
 
 https://core.telegram.org/bots/api/#sendanimation*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SendAnimation {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -14143,7 +14143,7 @@ For sending voice messages, use the [sendVoice](https://core.telegram.org/bots/a
 
 https://core.telegram.org/bots/api/#sendaudio*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SendAudio {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -14315,7 +14315,7 @@ We only recommend using this method when a response from the bot will take a **n
 
 https://core.telegram.org/bots/api/#sendchataction*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SendChatAction {
 	/**Type of action to broadcast. Choose one, depending on what the user is about to receive: *typing* for [text messages](https://core.telegram.org/bots/api/#sendmessage), *upload\_photo* for [photos](https://core.telegram.org/bots/api/#sendphoto), *record\_video* or *upload\_video* for [videos](https://core.telegram.org/bots/api/#sendvideo), *record\_voice* or *upload\_voice* for [voice notes](https://core.telegram.org/bots/api/#sendvoice), *upload\_document* for [general files](https://core.telegram.org/bots/api/#senddocument), *choose\_sticker* for [stickers](https://core.telegram.org/bots/api/#sendsticker), *find\_location* for [location data](https://core.telegram.org/bots/api/#sendlocation), *record\_video\_note* or *upload\_video\_note* for [video notes](https://core.telegram.org/bots/api/#sendvideonote).*/
 	pub action: String,
@@ -14362,7 +14362,7 @@ impl Executable for SendChatAction {
 
 https://core.telegram.org/bots/api/#sendcontact*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SendContact {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -14485,7 +14485,7 @@ impl Executable for SendContact {
 
 https://core.telegram.org/bots/api/#senddice*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SendDice {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -14591,7 +14591,7 @@ impl Executable for SendDice {
 
 https://core.telegram.org/bots/api/#senddocument*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SendDocument {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -14741,7 +14741,7 @@ impl Executable for SendDocument {
 
 https://core.telegram.org/bots/api/#sendgame*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SendGame {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -14842,7 +14842,7 @@ impl Executable for SendGame {
 
 https://core.telegram.org/bots/api/#sendgift*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SendGift {
 	/**Required if *user\_id* is not specified. Unique identifier for the chat or username of the channel (in the format `@channelusername`) that will receive the gift.*/
 	pub chat_id: Option<ChatId>,
@@ -14925,7 +14925,7 @@ impl Executable for SendGift {
 
 https://core.telegram.org/bots/api/#sendinvoice*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SendInvoice {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -15185,7 +15185,7 @@ impl Executable for SendInvoice {
 
 https://core.telegram.org/bots/api/#sendlocation*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SendLocation {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -15326,7 +15326,7 @@ impl Executable for SendLocation {
 
 https://core.telegram.org/bots/api/#sendmediagroup*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SendMediaGroup {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -15422,7 +15422,7 @@ impl Executable for SendMediaGroup {
 
 https://core.telegram.org/bots/api/#sendmessage*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SendMessage {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -15554,7 +15554,7 @@ impl Executable for SendMessage {
 
 https://core.telegram.org/bots/api/#sendpaidmedia*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SendPaidMedia {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -15694,7 +15694,7 @@ impl Executable for SendPaidMedia {
 
 https://core.telegram.org/bots/api/#sendphoto*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SendPhoto {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -15844,7 +15844,7 @@ impl Executable for SendPhoto {
 
 https://core.telegram.org/bots/api/#sendpoll*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SendPoll {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -16069,7 +16069,7 @@ impl Executable for SendPoll {
 
 https://core.telegram.org/bots/api/#sendsticker*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SendSticker {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -16179,7 +16179,7 @@ impl Executable for SendSticker {
 
 https://core.telegram.org/bots/api/#sendvenue*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SendVenue {
 	/**Address of the venue*/
 	pub address: String,
@@ -16328,7 +16328,7 @@ impl Executable for SendVenue {
 
 https://core.telegram.org/bots/api/#sendvideo*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SendVideo {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -16541,7 +16541,7 @@ impl Executable for SendVideo {
 
 https://core.telegram.org/bots/api/#sendvideonote*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SendVideoNote {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -16669,7 +16669,7 @@ impl Executable for SendVideoNote {
 
 https://core.telegram.org/bots/api/#sendvoice*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SendVoice {
 	/**Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance*/
 	pub allow_paid_broadcast: Option<bool>,
@@ -16810,7 +16810,7 @@ impl Executable for SendVoice {
 
 https://core.telegram.org/bots/api/#setchatadministratorcustomtitle*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SetChatAdministratorCustomTitle {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -16843,7 +16843,7 @@ impl Executable for SetChatAdministratorCustomTitle {
 
 https://core.telegram.org/bots/api/#setchatdescription*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SetChatDescription {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -16877,7 +16877,7 @@ impl Executable for SetChatDescription {
 
 https://core.telegram.org/bots/api/#setchatmenubutton*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SetChatMenuButton {
 	/**Unique identifier for the target private chat. If not specified, default bot's menu button will be changed*/
 	pub chat_id: Option<i64>,
@@ -16916,7 +16916,7 @@ impl Executable for SetChatMenuButton {
 
 https://core.telegram.org/bots/api/#setchatpermissions*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SetChatPermissions {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -16954,7 +16954,7 @@ impl Executable for SetChatPermissions {
 
 https://core.telegram.org/bots/api/#setchatphoto*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SetChatPhoto {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -16983,7 +16983,7 @@ impl Executable for SetChatPhoto {
 
 https://core.telegram.org/bots/api/#setchatstickerset*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SetChatStickerSet {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -17012,7 +17012,7 @@ impl Executable for SetChatStickerSet {
 
 https://core.telegram.org/bots/api/#setchattitle*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SetChatTitle {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -17041,7 +17041,7 @@ impl Executable for SetChatTitle {
 
 https://core.telegram.org/bots/api/#setcustomemojistickersetthumbnail*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SetCustomEmojiStickerSetThumbnail {
 	/**Custom emoji identifier of a sticker from the sticker set; pass an empty string to drop the thumbnail and use the first sticker as the thumbnail.*/
 	pub custom_emoji_id: Option<String>,
@@ -17075,7 +17075,7 @@ impl Executable for SetCustomEmojiStickerSetThumbnail {
 
 https://core.telegram.org/bots/api/#setgamescore*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SetGameScore {
 	/**Required if *inline\_message\_id* is not specified. Unique identifier for the target chat*/
 	pub chat_id: Option<i64>,
@@ -17149,7 +17149,7 @@ impl Executable for SetGameScore {
 
 https://core.telegram.org/bots/api/#setmessagereaction*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SetMessageReaction {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -17200,7 +17200,7 @@ impl Executable for SetMessageReaction {
 
 https://core.telegram.org/bots/api/#setmycommands*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SetMyCommands {
 	/**A JSON-serialized list of bot commands to be set as the list of the bot's commands. At most 100 commands can be specified.*/
 	pub commands: Vec<BotCommand>,
@@ -17247,7 +17247,7 @@ impl Executable for SetMyCommands {
 
 https://core.telegram.org/bots/api/#setmydefaultadministratorrights*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SetMyDefaultAdministratorRights {
 	/**Pass *True* to change the default administrator rights of the bot in channels. Otherwise, the default administrator rights of the bot for groups and supergroups will be changed.*/
 	pub for_channels: Option<bool>,
@@ -17286,7 +17286,7 @@ impl Executable for SetMyDefaultAdministratorRights {
 
 https://core.telegram.org/bots/api/#setmydescription*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SetMyDescription {
 	/**New bot description; 0-512 characters. Pass an empty string to remove the dedicated description for the given language.*/
 	pub description: Option<String>,
@@ -17325,7 +17325,7 @@ impl Executable for SetMyDescription {
 
 https://core.telegram.org/bots/api/#setmyname*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SetMyName {
 	/**A two-letter ISO 639-1 language code. If empty, the name will be shown to all users for whose language there is no dedicated name.*/
 	pub language_code: Option<String>,
@@ -17364,7 +17364,7 @@ impl Executable for SetMyName {
 
 https://core.telegram.org/bots/api/#setmyshortdescription*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SetMyShortDescription {
 	/**A two-letter ISO 639-1 language code. If empty, the short description will be applied to all users for whose language there is no dedicated short description.*/
 	pub language_code: Option<String>,
@@ -17405,7 +17405,7 @@ Use this if the data submitted by the user doesn't satisfy the standards your se
 
 https://core.telegram.org/bots/api/#setpassportdataerrors*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SetPassportDataErrors {
 	/**A JSON-serialized array describing the errors*/
 	pub errors: Vec<PassportElementError>,
@@ -17438,7 +17438,7 @@ impl Executable for SetPassportDataErrors {
 
 https://core.telegram.org/bots/api/#setstickeremojilist*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SetStickerEmojiList {
 	/**A JSON-serialized list of 1-20 emoji associated with the sticker*/
 	pub emoji_list: Vec<String>,
@@ -17471,7 +17471,7 @@ impl Executable for SetStickerEmojiList {
 
 https://core.telegram.org/bots/api/#setstickerkeywords*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SetStickerKeywords {
 	/**A JSON-serialized list of 0-20 search keywords for the sticker with total length of up to 64 characters*/
 	pub keywords: Vec<String>,
@@ -17509,7 +17509,7 @@ impl Executable for SetStickerKeywords {
 
 https://core.telegram.org/bots/api/#setstickermaskposition*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SetStickerMaskPosition {
 	/**A JSON-serialized object with the position where the mask should be placed on faces. Omit the parameter to remove the mask position.*/
 	pub mask_position: Option<MaskPosition>,
@@ -17543,7 +17543,7 @@ impl Executable for SetStickerMaskPosition {
 
 https://core.telegram.org/bots/api/#setstickerpositioninset*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SetStickerPositionInSet {
 	/**New sticker position in the set, zero-based*/
 	pub position: i64,
@@ -17572,7 +17572,7 @@ impl Executable for SetStickerPositionInSet {
 
 https://core.telegram.org/bots/api/#setstickersetthumbnail*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SetStickerSetThumbnail {
 	/**Format of the thumbnail, must be one of “static” for a **.WEBP** or **.PNG** image, “animated” for a **.TGS** animation, or “video” for a **.WEBM** video*/
 	pub format: String,
@@ -17614,7 +17614,7 @@ impl Executable for SetStickerSetThumbnail {
 
 https://core.telegram.org/bots/api/#setstickersettitle*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SetStickerSetTitle {
 	/**Sticker set name*/
 	pub name: String,
@@ -17643,7 +17643,7 @@ impl Executable for SetStickerSetTitle {
 
 https://core.telegram.org/bots/api/#setuseremojistatus*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SetUserEmojiStatus {
 	/**Custom emoji identifier of the emoji status to set. Pass an empty string to remove the status.*/
 	pub emoji_status_custom_emoji_id: Option<String>,
@@ -17688,7 +17688,7 @@ If you'd like to make sure that the webhook was set by you, you can specify secr
 
 https://core.telegram.org/bots/api/#setwebhook*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct SetWebhook {
 	/**A JSON-serialized list of the update types you want your bot to receive. For example, specify `["message", "edited_channel_post", "callback_query"]` to only receive updates of these types. See [Update](https://core.telegram.org/bots/api/#update) for a complete list of available update types. Specify an empty list to receive all update types except *chat\_member*, *message\_reaction*, and *message\_reaction\_count* (default). If not specified, the previous setting will be used.  
 	Please note that this parameter doesn't affect updates created before the call to the setWebhook, so unwanted updates may be received for a short period of time.*/
@@ -17773,7 +17773,7 @@ impl Executable for SetWebhook {
 
 https://core.telegram.org/bots/api/#stopmessagelivelocation*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct StopMessageLiveLocation {
 	/**Unique identifier of the business connection on behalf of which the message to be edited was sent*/
 	pub business_connection_id: Option<String>,
@@ -17839,7 +17839,7 @@ impl Executable for StopMessageLiveLocation {
 
 https://core.telegram.org/bots/api/#stoppoll*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct StopPoll {
 	/**Unique identifier of the business connection on behalf of which the message to be edited was sent*/
 	pub business_connection_id: Option<String>,
@@ -17886,7 +17886,7 @@ impl Executable for StopPoll {
 
 https://core.telegram.org/bots/api/#unbanchatmember*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct UnbanChatMember {
 	/**Unique identifier for the target group or username of the target supergroup or channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -17924,7 +17924,7 @@ impl Executable for UnbanChatMember {
 
 https://core.telegram.org/bots/api/#unbanchatsenderchat*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct UnbanChatSenderChat {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -17953,7 +17953,7 @@ impl Executable for UnbanChatSenderChat {
 
 https://core.telegram.org/bots/api/#unhidegeneralforumtopic*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct UnhideGeneralForumTopic {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -17978,7 +17978,7 @@ impl Executable for UnhideGeneralForumTopic {
 
 https://core.telegram.org/bots/api/#unpinallchatmessages*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct UnpinAllChatMessages {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -18003,7 +18003,7 @@ impl Executable for UnpinAllChatMessages {
 
 https://core.telegram.org/bots/api/#unpinallforumtopicmessages*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct UnpinAllForumTopicMessages {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -18032,7 +18032,7 @@ impl Executable for UnpinAllForumTopicMessages {
 
 https://core.telegram.org/bots/api/#unpinallgeneralforumtopicmessages*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct UnpinAllGeneralForumTopicMessages {
 	/**Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)*/
 	pub chat_id: ChatId,
@@ -18057,7 +18057,7 @@ impl Executable for UnpinAllGeneralForumTopicMessages {
 
 https://core.telegram.org/bots/api/#unpinchatmessage*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct UnpinChatMessage {
 	/**Unique identifier of the business connection on behalf of which the message will be unpinned*/
 	pub business_connection_id: Option<String>,
@@ -18100,7 +18100,7 @@ impl Executable for UnpinChatMessage {
 
 https://core.telegram.org/bots/api/#uploadstickerfile*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct UploadStickerFile {
 	/**A file with the sticker in .WEBP, .PNG, .TGS, or .WEBM format. See [https://core.telegram.org/stickers](https://core.telegram.org/stickers) for technical requirements. [More information on Sending Files »](https://core.telegram.org/bots/api/#sending-files)*/
 	pub sticker: InputFile,
@@ -18133,7 +18133,7 @@ impl Executable for UploadStickerFile {
 
 https://core.telegram.org/bots/api/#verifychat*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct VerifyChat {
 	/**Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)*/
 	pub chat_id: ChatId,
@@ -18167,7 +18167,7 @@ impl Executable for VerifyChat {
 
 https://core.telegram.org/bots/api/#verifyuser*/
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]
 pub struct VerifyUser {
 	/**Custom description for the verification; 0-70 characters. Must be empty if the organization isn't allowed to provide a custom verification description.*/
 	pub custom_description: Option<String>,

@@ -680,13 +680,13 @@ fn print_derive(entity: &Entity, out: &mut IndentedWriter<impl Write>) {
 	writeln!(out, "#[derive({})]", derives.join(", "));
 
 	if !entity.serde.ser && !entity.serde.de {
-		writeln!(out, r#"#[cfg_attr(feature = "serde-all", serde(Serialize, Deserialize))]"#);	
+		writeln!(out, r#"#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]"#);	
 	}
 	else if !entity.serde.ser && entity.serde.de {
-		writeln!(out, r#"#[cfg_attr(feature = "serde-all", serde(Serialize))]"#);	
+		writeln!(out, r#"#[cfg_attr(feature = "serde-all", derive(Serialize))]"#);	
 	}
 	else if entity.serde.ser && !entity.serde.de {
-		writeln!(out, r#"#[cfg_attr(feature = "serde-all", serde(Deserialize))]"#);	
+		writeln!(out, r#"#[cfg_attr(feature = "serde-all", derive(Deserialize))]"#);	
 	}
 }
 
