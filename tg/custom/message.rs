@@ -3,7 +3,7 @@
 pub use original_message::*;
 #[cfg(not(feature = "custom-message"))]
 mod original_message {
-	use serde::Deserialize;
+	use serde::{Serialize, Deserialize};
 	use serde_with::apply;
 	use crate::*;
 
