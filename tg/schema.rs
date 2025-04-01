@@ -284,7 +284,7 @@ impl Audio {
 https://core.telegram.org/bots/api/#backgroundfill*/
 #[derive(Clone, Debug, Deserialize, From)]
 #[cfg_attr(feature = "serde-all", derive(Serialize))]
-#[serde(untagged, rename_all = "snake_case")]
+#[serde(tag = "type", rename_all = "snake_case")]
 pub enum BackgroundFill {
 	FreeformGradient(BackgroundFillFreeformGradient),
 	Gradient(BackgroundFillGradient),
@@ -303,14 +303,14 @@ pub struct BackgroundFillFreeformGradient {
 	pub colors: Vec<i64>,
 	/**Type of the background fill, always “freeform\_gradient”
 	Default: freeform_gradient*/
-	#[serde(skip_deserializing, default = "consts::background_fill_freeform_gradient_type")]
+	#[serde(skip, default = "consts::background_fill_freeform_gradient_type")]
 	pub r#type: &'static str,
 }
 impl BackgroundFillFreeformGradient {
 	pub fn new(colors: impl Into<Vec<i64>>) -> Self {
 		Self {
 			colors: colors.into(),
-			r#type: consts::background_fill_freeform_gradient_type(),
+			r#type: "freeform_gradient",
 		}
 	}
 	pub fn add_color(mut self, color: impl Into<i64>) -> Self {
@@ -332,7 +332,7 @@ pub struct BackgroundFillGradient {
 	pub top_color: i64,
 	/**Type of the background fill, always “gradient”
 	Default: gradient*/
-	#[serde(skip_deserializing, default = "consts::background_fill_gradient_type")]
+	#[serde(skip, default = "consts::background_fill_gradient_type")]
 	pub r#type: &'static str,
 }
 impl BackgroundFillGradient {
@@ -341,7 +341,7 @@ impl BackgroundFillGradient {
 			bottom_color: bottom_color.into(),
 			rotation_angle: rotation_angle.into(),
 			top_color: top_color.into(),
-			r#type: consts::background_fill_gradient_type(),
+			r#type: "gradient",
 		}
 	}
 }
@@ -355,14 +355,14 @@ pub struct BackgroundFillSolid {
 	pub color: i64,
 	/**Type of the background fill, always “solid”
 	Default: solid*/
-	#[serde(skip_deserializing, default = "consts::background_fill_solid_type")]
+	#[serde(skip, default = "consts::background_fill_solid_type")]
 	pub r#type: &'static str,
 }
 impl BackgroundFillSolid {
 	pub fn new(color: impl Into<i64>) -> Self {
 		Self {
 			color: color.into(),
-			r#type: consts::background_fill_solid_type(),
+			r#type: "solid",
 		}
 	}
 }
@@ -376,7 +376,7 @@ impl BackgroundFillSolid {
 https://core.telegram.org/bots/api/#backgroundtype*/
 #[derive(Clone, Debug, Deserialize, From)]
 #[cfg_attr(feature = "serde-all", derive(Serialize))]
-#[serde(untagged, rename_all = "snake_case")]
+#[serde(tag = "type", rename_all = "snake_case")]
 pub enum BackgroundType {
 	ChatTheme(BackgroundTypeChatTheme),
 	Fill(BackgroundTypeFill),
@@ -393,14 +393,14 @@ pub struct BackgroundTypeChatTheme {
 	pub theme_name: String,
 	/**Type of the background, always “chat\_theme”
 	Default: chat_theme*/
-	#[serde(skip_deserializing, default = "consts::background_type_chat_theme_type")]
+	#[serde(skip, default = "consts::background_type_chat_theme_type")]
 	pub r#type: &'static str,
 }
 impl BackgroundTypeChatTheme {
 	pub fn new(theme_name: impl Into<String>) -> Self {
 		Self {
 			theme_name: theme_name.into(),
-			r#type: consts::background_type_chat_theme_type(),
+			r#type: "chat_theme",
 		}
 	}
 }
@@ -416,7 +416,7 @@ pub struct BackgroundTypeFill {
 	pub fill: BackgroundFill,
 	/**Type of the background, always “fill”
 	Default: fill*/
-	#[serde(skip_deserializing, default = "consts::background_type_fill_type")]
+	#[serde(skip, default = "consts::background_type_fill_type")]
 	pub r#type: &'static str,
 }
 impl BackgroundTypeFill {
@@ -424,7 +424,7 @@ impl BackgroundTypeFill {
 		Self {
 			dark_theme_dimming: dark_theme_dimming.into(),
 			fill: fill.into(),
-			r#type: consts::background_type_fill_type(),
+			r#type: "fill",
 		}
 	}
 }
@@ -451,7 +451,7 @@ pub struct BackgroundTypePattern {
 	pub is_moving: Option<bool>,
 	/**Type of the background, always “pattern”
 	Default: pattern*/
-	#[serde(skip_deserializing, default = "consts::background_type_pattern_type")]
+	#[serde(skip, default = "consts::background_type_pattern_type")]
 	pub r#type: &'static str,
 }
 impl BackgroundTypePattern {
@@ -462,7 +462,7 @@ impl BackgroundTypePattern {
 			intensity: intensity.into(),
 			is_inverted: None,
 			is_moving: None,
-			r#type: consts::background_type_pattern_type(),
+			r#type: "pattern",
 		}
 	}
 	/** *Optional*. *True*, if the background fill must be applied only to the pattern itself. All other pixels are black in this case. For dark themes only
@@ -499,7 +499,7 @@ pub struct BackgroundTypeWallpaper {
 	pub is_moving: Option<bool>,
 	/**Type of the background, always “wallpaper”
 	Default: wallpaper*/
-	#[serde(skip_deserializing, default = "consts::background_type_wallpaper_type")]
+	#[serde(skip, default = "consts::background_type_wallpaper_type")]
 	pub r#type: &'static str,
 }
 impl BackgroundTypeWallpaper {
@@ -509,7 +509,7 @@ impl BackgroundTypeWallpaper {
 			document: document.into(),
 			is_blurred: None,
 			is_moving: None,
-			r#type: consts::background_type_wallpaper_type(),
+			r#type: "wallpaper",
 		}
 	}
 	/** *Optional*. *True*, if the wallpaper is downscaled to fit in a 450x450 square and then box-blurred with radius 12
@@ -590,7 +590,7 @@ impl BotCommand {
 https://core.telegram.org/bots/api/#botcommandscope*/
 #[derive(Clone, Debug, Serialize, From)]
 #[cfg_attr(feature = "serde-all", derive(Deserialize))]
-#[serde(untagged, rename_all = "snake_case")]
+#[serde(tag = "type", rename_all = "snake_case")]
 pub enum BotCommandScope {
 	AllChatAdministrators(BotCommandScopeAllChatAdministrators),
 	AllGroupChats(BotCommandScopeAllGroupChats),
@@ -608,13 +608,13 @@ https://core.telegram.org/bots/api/#botcommandscopeallchatadministrators*/
 pub struct BotCommandScopeAllChatAdministrators {
 	/**Scope type, must be *all\_chat\_administrators*
 	Default: all_chat_administrators*/
-	#[serde(skip_deserializing, default = "consts::bot_command_scope_all_chat_administrators_type")]
+	#[serde(skip, default = "consts::bot_command_scope_all_chat_administrators_type")]
 	pub r#type: &'static str,
 }
 impl BotCommandScopeAllChatAdministrators {
 	pub fn new() -> Self {
 		Self {
-			r#type: consts::bot_command_scope_all_chat_administrators_type(),
+			r#type: "all_chat_administrators",
 		}
 	}
 }
@@ -626,13 +626,13 @@ https://core.telegram.org/bots/api/#botcommandscopeallgroupchats*/
 pub struct BotCommandScopeAllGroupChats {
 	/**Scope type, must be *all\_group\_chats*
 	Default: all_group_chats*/
-	#[serde(skip_deserializing, default = "consts::bot_command_scope_all_group_chats_type")]
+	#[serde(skip, default = "consts::bot_command_scope_all_group_chats_type")]
 	pub r#type: &'static str,
 }
 impl BotCommandScopeAllGroupChats {
 	pub fn new() -> Self {
 		Self {
-			r#type: consts::bot_command_scope_all_group_chats_type(),
+			r#type: "all_group_chats",
 		}
 	}
 }
@@ -644,13 +644,13 @@ https://core.telegram.org/bots/api/#botcommandscopeallprivatechats*/
 pub struct BotCommandScopeAllPrivateChats {
 	/**Scope type, must be *all\_private\_chats*
 	Default: all_private_chats*/
-	#[serde(skip_deserializing, default = "consts::bot_command_scope_all_private_chats_type")]
+	#[serde(skip, default = "consts::bot_command_scope_all_private_chats_type")]
 	pub r#type: &'static str,
 }
 impl BotCommandScopeAllPrivateChats {
 	pub fn new() -> Self {
 		Self {
-			r#type: consts::bot_command_scope_all_private_chats_type(),
+			r#type: "all_private_chats",
 		}
 	}
 }
@@ -664,14 +664,14 @@ pub struct BotCommandScopeChat {
 	pub chat_id: ChatId,
 	/**Scope type, must be *chat*
 	Default: chat*/
-	#[serde(skip_deserializing, default = "consts::bot_command_scope_chat_type")]
+	#[serde(skip, default = "consts::bot_command_scope_chat_type")]
 	pub r#type: &'static str,
 }
 impl BotCommandScopeChat {
 	pub fn new(chat_id: impl Into<ChatId>) -> Self {
 		Self {
 			chat_id: chat_id.into(),
-			r#type: consts::bot_command_scope_chat_type(),
+			r#type: "chat",
 		}
 	}
 }
@@ -685,14 +685,14 @@ pub struct BotCommandScopeChatAdministrators {
 	pub chat_id: ChatId,
 	/**Scope type, must be *chat\_administrators*
 	Default: chat_administrators*/
-	#[serde(skip_deserializing, default = "consts::bot_command_scope_chat_administrators_type")]
+	#[serde(skip, default = "consts::bot_command_scope_chat_administrators_type")]
 	pub r#type: &'static str,
 }
 impl BotCommandScopeChatAdministrators {
 	pub fn new(chat_id: impl Into<ChatId>) -> Self {
 		Self {
 			chat_id: chat_id.into(),
-			r#type: consts::bot_command_scope_chat_administrators_type(),
+			r#type: "chat_administrators",
 		}
 	}
 }
@@ -706,7 +706,7 @@ pub struct BotCommandScopeChatMember {
 	pub chat_id: ChatId,
 	/**Scope type, must be *chat\_member*
 	Default: chat_member*/
-	#[serde(skip_deserializing, default = "consts::bot_command_scope_chat_member_type")]
+	#[serde(skip, default = "consts::bot_command_scope_chat_member_type")]
 	pub r#type: &'static str,
 	/**Unique identifier of the target user*/
 	pub user_id: i64,
@@ -715,7 +715,7 @@ impl BotCommandScopeChatMember {
 	pub fn new(chat_id: impl Into<ChatId>, user_id: impl Into<i64>) -> Self {
 		Self {
 			chat_id: chat_id.into(),
-			r#type: consts::bot_command_scope_chat_member_type(),
+			r#type: "chat_member",
 			user_id: user_id.into(),
 		}
 	}
@@ -728,13 +728,13 @@ https://core.telegram.org/bots/api/#botcommandscopedefault*/
 pub struct BotCommandScopeDefault {
 	/**Scope type, must be *default*
 	Default: default*/
-	#[serde(skip_deserializing, default = "consts::bot_command_scope_default_type")]
+	#[serde(skip, default = "consts::bot_command_scope_default_type")]
 	pub r#type: &'static str,
 }
 impl BotCommandScopeDefault {
 	pub fn new() -> Self {
 		Self {
-			r#type: consts::bot_command_scope_default_type(),
+			r#type: "default",
 		}
 	}
 }
@@ -1255,7 +1255,7 @@ impl ChatBoostRemoved {
 https://core.telegram.org/bots/api/#chatboostsource*/
 #[derive(Clone, Debug, Deserialize, From)]
 #[cfg_attr(feature = "serde-all", derive(Serialize))]
-#[serde(untagged, rename_all = "snake_case")]
+#[serde(tag = "source", rename_all = "snake_case")]
 pub enum ChatBoostSource {
 	GiftCode(ChatBoostSourceGiftCode),
 	Giveaway(ChatBoostSourceGiveaway),
@@ -1269,7 +1269,7 @@ https://core.telegram.org/bots/api/#chatboostsourcegiftcode*/
 pub struct ChatBoostSourceGiftCode {
 	/**Source of the boost, always “gift\_code”
 	Default: gift_code*/
-	#[serde(skip_deserializing, default = "consts::chat_boost_source_gift_code_source")]
+	#[serde(skip, default = "consts::chat_boost_source_gift_code_source")]
 	pub source: &'static str,
 	/**User for which the gift code was created*/
 	pub user: User,
@@ -1277,7 +1277,7 @@ pub struct ChatBoostSourceGiftCode {
 impl ChatBoostSourceGiftCode {
 	pub fn new(user: impl Into<User>) -> Self {
 		Self {
-			source: consts::chat_boost_source_gift_code_source(),
+			source: "gift_code",
 			user: user.into(),
 		}
 	}
@@ -1300,7 +1300,7 @@ pub struct ChatBoostSourceGiveaway {
 	pub prize_star_count: Option<i64>,
 	/**Source of the boost, always “giveaway”
 	Default: giveaway*/
-	#[serde(skip_deserializing, default = "consts::chat_boost_source_giveaway_source")]
+	#[serde(skip, default = "consts::chat_boost_source_giveaway_source")]
 	pub source: &'static str,
 	/**User that won the prize in the giveaway if any; for Telegram Premium giveaways only*/
 	pub user: Option<User>,
@@ -1311,7 +1311,7 @@ impl ChatBoostSourceGiveaway {
 			giveaway_message_id: giveaway_message_id.into(),
 			is_unclaimed: None,
 			prize_star_count: None,
-			source: consts::chat_boost_source_giveaway_source(),
+			source: "giveaway",
 			user: None,
 		}
 	}
@@ -1340,7 +1340,7 @@ https://core.telegram.org/bots/api/#chatboostsourcepremium*/
 pub struct ChatBoostSourcePremium {
 	/**Source of the boost, always “premium”
 	Default: premium*/
-	#[serde(skip_deserializing, default = "consts::chat_boost_source_premium_source")]
+	#[serde(skip, default = "consts::chat_boost_source_premium_source")]
 	pub source: &'static str,
 	/**User that boosted the chat*/
 	pub user: User,
@@ -1348,7 +1348,7 @@ pub struct ChatBoostSourcePremium {
 impl ChatBoostSourcePremium {
 	pub fn new(user: impl Into<User>) -> Self {
 		Self {
-			source: consts::chat_boost_source_premium_source(),
+			source: "premium",
 			user: user.into(),
 		}
 	}
@@ -3813,7 +3813,7 @@ impl InlineQuery {
 https://core.telegram.org/bots/api/#inlinequeryresult*/
 #[derive(Clone, Debug, Serialize, From)]
 #[cfg_attr(feature = "serde-all", derive(Deserialize))]
-#[serde(untagged, rename_all = "snake_case")]
+#[serde(tag = "type", rename_all = "snake_case")]
 pub enum InlineQueryResult {
 	Article(InlineQueryResultArticle),
 	Audio(InlineQueryResultAudio),
@@ -3863,7 +3863,7 @@ pub struct InlineQueryResultArticle {
 	pub title: String,
 	/**Type of the result, must be *article*
 	Default: article*/
-	#[serde(skip_deserializing, default = "consts::inline_query_result_article_type")]
+	#[serde(skip, default = "consts::inline_query_result_article_type")]
 	pub r#type: &'static str,
 	/**URL of the result*/
 	pub url: Option<String>,
@@ -3879,7 +3879,7 @@ impl InlineQueryResultArticle {
 			thumbnail_url: None,
 			thumbnail_width: None,
 			title: title.into(),
-			r#type: consts::inline_query_result_article_type(),
+			r#type: "article",
 			url: None,
 		}
 	}
@@ -3948,7 +3948,7 @@ pub struct InlineQueryResultAudio {
 	pub title: String,
 	/**Type of the result, must be *audio*
 	Default: audio*/
-	#[serde(skip_deserializing, default = "consts::inline_query_result_audio_type")]
+	#[serde(skip, default = "consts::inline_query_result_audio_type")]
 	pub r#type: &'static str,
 }
 impl InlineQueryResultAudio {
@@ -3964,7 +3964,7 @@ impl InlineQueryResultAudio {
 			performer: None,
 			reply_markup: None,
 			title: title.into(),
-			r#type: consts::inline_query_result_audio_type(),
+			r#type: "audio",
 		}
 	}
 	/** *Optional*. Audio duration in seconds*/
@@ -4037,7 +4037,7 @@ pub struct InlineQueryResultCachedAudio {
 	pub reply_markup: Option<InlineKeyboardMarkup>,
 	/**Type of the result, must be *audio*
 	Default: audio*/
-	#[serde(skip_deserializing, default = "consts::inline_query_result_cached_audio_type")]
+	#[serde(skip, default = "consts::inline_query_result_cached_audio_type")]
 	pub r#type: &'static str,
 }
 impl InlineQueryResultCachedAudio {
@@ -4050,7 +4050,7 @@ impl InlineQueryResultCachedAudio {
 			input_message_content: None,
 			parse_mode: None,
 			reply_markup: None,
-			r#type: consts::inline_query_result_cached_audio_type(),
+			r#type: "audio",
 		}
 	}
 	/** *Optional*. Caption, 0-1024 characters after entities parsing
@@ -4117,7 +4117,7 @@ pub struct InlineQueryResultCachedDocument {
 	pub title: String,
 	/**Type of the result, must be *document*
 	Default: document*/
-	#[serde(skip_deserializing, default = "consts::inline_query_result_cached_document_type")]
+	#[serde(skip, default = "consts::inline_query_result_cached_document_type")]
 	pub r#type: &'static str,
 }
 impl InlineQueryResultCachedDocument {
@@ -4132,7 +4132,7 @@ impl InlineQueryResultCachedDocument {
 			parse_mode: None,
 			reply_markup: None,
 			title: title.into(),
-			r#type: consts::inline_query_result_cached_document_type(),
+			r#type: "document",
 		}
 	}
 	/** *Optional*. Caption of the document to be sent, 0-1024 characters after entities parsing
@@ -4204,7 +4204,7 @@ pub struct InlineQueryResultCachedGif {
 	pub title: Option<String>,
 	/**Type of the result, must be *gif*
 	Default: gif*/
-	#[serde(skip_deserializing, default = "consts::inline_query_result_cached_gif_type")]
+	#[serde(skip, default = "consts::inline_query_result_cached_gif_type")]
 	pub r#type: &'static str,
 }
 impl InlineQueryResultCachedGif {
@@ -4219,7 +4219,7 @@ impl InlineQueryResultCachedGif {
 			reply_markup: None,
 			show_caption_above_media: None,
 			title: None,
-			r#type: consts::inline_query_result_cached_gif_type(),
+			r#type: "gif",
 		}
 	}
 	/** *Optional*. Caption of the GIF file to be sent, 0-1024 characters after entities parsing
@@ -4296,7 +4296,7 @@ pub struct InlineQueryResultCachedMpeg4Gif {
 	pub title: Option<String>,
 	/**Type of the result, must be *mpeg4\_gif*
 	Default: mpeg4_gif*/
-	#[serde(skip_deserializing, default = "consts::inline_query_result_cached_mpeg4_gif_type")]
+	#[serde(skip, default = "consts::inline_query_result_cached_mpeg4_gif_type")]
 	pub r#type: &'static str,
 }
 impl InlineQueryResultCachedMpeg4Gif {
@@ -4311,7 +4311,7 @@ impl InlineQueryResultCachedMpeg4Gif {
 			reply_markup: None,
 			show_caption_above_media: None,
 			title: None,
-			r#type: consts::inline_query_result_cached_mpeg4_gif_type(),
+			r#type: "mpeg4_gif",
 		}
 	}
 	/** *Optional*. Caption of the MPEG-4 file to be sent, 0-1024 characters after entities parsing
@@ -4390,7 +4390,7 @@ pub struct InlineQueryResultCachedPhoto {
 	pub title: Option<String>,
 	/**Type of the result, must be *photo*
 	Default: photo*/
-	#[serde(skip_deserializing, default = "consts::inline_query_result_cached_photo_type")]
+	#[serde(skip, default = "consts::inline_query_result_cached_photo_type")]
 	pub r#type: &'static str,
 }
 impl InlineQueryResultCachedPhoto {
@@ -4406,7 +4406,7 @@ impl InlineQueryResultCachedPhoto {
 			reply_markup: None,
 			show_caption_above_media: None,
 			title: None,
-			r#type: consts::inline_query_result_cached_photo_type(),
+			r#type: "photo",
 		}
 	}
 	/** *Optional*. Caption of the photo to be sent, 0-1024 characters after entities parsing
@@ -4475,7 +4475,7 @@ pub struct InlineQueryResultCachedSticker {
 	pub sticker_file_id: String,
 	/**Type of the result, must be *sticker*
 	Default: sticker*/
-	#[serde(skip_deserializing, default = "consts::inline_query_result_cached_sticker_type")]
+	#[serde(skip, default = "consts::inline_query_result_cached_sticker_type")]
 	pub r#type: &'static str,
 }
 impl InlineQueryResultCachedSticker {
@@ -4485,7 +4485,7 @@ impl InlineQueryResultCachedSticker {
 			input_message_content: None,
 			reply_markup: None,
 			sticker_file_id: sticker_file_id.into(),
-			r#type: consts::inline_query_result_cached_sticker_type(),
+			r#type: "sticker",
 		}
 	}
 	/** *Optional*. Content of the message to be sent instead of the sticker*/
@@ -4531,7 +4531,7 @@ pub struct InlineQueryResultCachedVideo {
 	pub title: String,
 	/**Type of the result, must be *video*
 	Default: video*/
-	#[serde(skip_deserializing, default = "consts::inline_query_result_cached_video_type")]
+	#[serde(skip, default = "consts::inline_query_result_cached_video_type")]
 	pub r#type: &'static str,
 	/**A valid file identifier for the video file*/
 	pub video_file_id: String,
@@ -4548,7 +4548,7 @@ impl InlineQueryResultCachedVideo {
 			reply_markup: None,
 			show_caption_above_media: None,
 			title: title.into(),
-			r#type: consts::inline_query_result_cached_video_type(),
+			r#type: "video",
 			video_file_id: video_file_id.into(),
 		}
 	}
@@ -4622,7 +4622,7 @@ pub struct InlineQueryResultCachedVoice {
 	pub title: String,
 	/**Type of the result, must be *voice*
 	Default: voice*/
-	#[serde(skip_deserializing, default = "consts::inline_query_result_cached_voice_type")]
+	#[serde(skip, default = "consts::inline_query_result_cached_voice_type")]
 	pub r#type: &'static str,
 	/**A valid file identifier for the voice message*/
 	pub voice_file_id: String,
@@ -4637,7 +4637,7 @@ impl InlineQueryResultCachedVoice {
 			parse_mode: None,
 			reply_markup: None,
 			title: title.into(),
-			r#type: consts::inline_query_result_cached_voice_type(),
+			r#type: "voice",
 			voice_file_id: voice_file_id.into(),
 		}
 	}
@@ -4702,7 +4702,7 @@ pub struct InlineQueryResultContact {
 	pub thumbnail_width: Option<i64>,
 	/**Type of the result, must be *contact*
 	Default: contact*/
-	#[serde(skip_deserializing, default = "consts::inline_query_result_contact_type")]
+	#[serde(skip, default = "consts::inline_query_result_contact_type")]
 	pub r#type: &'static str,
 	/**Additional data about the contact in the form of a [vCard](https://en.wikipedia.org/wiki/VCard), 0-2048 bytes*/
 	pub vcard: Option<String>,
@@ -4719,7 +4719,7 @@ impl InlineQueryResultContact {
 			thumbnail_height: None,
 			thumbnail_url: None,
 			thumbnail_width: None,
-			r#type: consts::inline_query_result_contact_type(),
+			r#type: "contact",
 			vcard: None,
 		}
 	}
@@ -4800,7 +4800,7 @@ pub struct InlineQueryResultDocument {
 	pub title: String,
 	/**Type of the result, must be *document*
 	Default: document*/
-	#[serde(skip_deserializing, default = "consts::inline_query_result_document_type")]
+	#[serde(skip, default = "consts::inline_query_result_document_type")]
 	pub r#type: &'static str,
 }
 impl InlineQueryResultDocument {
@@ -4819,7 +4819,7 @@ impl InlineQueryResultDocument {
 			thumbnail_url: None,
 			thumbnail_width: None,
 			title: title.into(),
-			r#type: consts::inline_query_result_document_type(),
+			r#type: "document",
 		}
 	}
 	/** *Optional*. Caption of the document to be sent, 0-1024 characters after entities parsing
@@ -4891,7 +4891,7 @@ pub struct InlineQueryResultGame {
 	pub reply_markup: Option<InlineKeyboardMarkup>,
 	/**Type of the result, must be *game*
 	Default: game*/
-	#[serde(skip_deserializing, default = "consts::inline_query_result_game_type")]
+	#[serde(skip, default = "consts::inline_query_result_game_type")]
 	pub r#type: &'static str,
 }
 impl InlineQueryResultGame {
@@ -4900,7 +4900,7 @@ impl InlineQueryResultGame {
 			game_short_name: game_short_name.into(),
 			id: id.into(),
 			reply_markup: None,
-			r#type: consts::inline_query_result_game_type(),
+			r#type: "game",
 		}
 	}
 	/** *Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
@@ -4953,7 +4953,7 @@ pub struct InlineQueryResultGif {
 	pub title: Option<String>,
 	/**Type of the result, must be *gif*
 	Default: gif*/
-	#[serde(skip_deserializing, default = "consts::inline_query_result_gif_type")]
+	#[serde(skip, default = "consts::inline_query_result_gif_type")]
 	pub r#type: &'static str,
 }
 impl InlineQueryResultGif {
@@ -4973,7 +4973,7 @@ impl InlineQueryResultGif {
 			thumbnail_mime_type: None,
 			thumbnail_url: thumbnail_url.into(),
 			title: None,
-			r#type: consts::inline_query_result_gif_type(),
+			r#type: "gif",
 		}
 	}
 	/** *Optional*. Caption of the GIF file to be sent, 0-1024 characters after entities parsing
@@ -5077,7 +5077,7 @@ pub struct InlineQueryResultLocation {
 	pub title: String,
 	/**Type of the result, must be *location*
 	Default: location*/
-	#[serde(skip_deserializing, default = "consts::inline_query_result_location_type")]
+	#[serde(skip, default = "consts::inline_query_result_location_type")]
 	pub r#type: &'static str,
 }
 impl InlineQueryResultLocation {
@@ -5096,7 +5096,7 @@ impl InlineQueryResultLocation {
 			thumbnail_url: None,
 			thumbnail_width: None,
 			title: title.into(),
-			r#type: consts::inline_query_result_location_type(),
+			r#type: "location",
 		}
 	}
 	/** *Optional*. For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.*/
@@ -5189,7 +5189,7 @@ pub struct InlineQueryResultMpeg4Gif {
 	pub title: Option<String>,
 	/**Type of the result, must be *mpeg4\_gif*
 	Default: mpeg4_gif*/
-	#[serde(skip_deserializing, default = "consts::inline_query_result_mpeg4_gif_type")]
+	#[serde(skip, default = "consts::inline_query_result_mpeg4_gif_type")]
 	pub r#type: &'static str,
 }
 impl InlineQueryResultMpeg4Gif {
@@ -5209,7 +5209,7 @@ impl InlineQueryResultMpeg4Gif {
 			thumbnail_mime_type: None,
 			thumbnail_url: thumbnail_url.into(),
 			title: None,
-			r#type: consts::inline_query_result_mpeg4_gif_type(),
+			r#type: "mpeg4_gif",
 		}
 	}
 	/** *Optional*. Caption of the MPEG-4 file to be sent, 0-1024 characters after entities parsing
@@ -5316,7 +5316,7 @@ pub struct InlineQueryResultPhoto {
 	pub title: Option<String>,
 	/**Type of the result, must be *photo*
 	Default: photo*/
-	#[serde(skip_deserializing, default = "consts::inline_query_result_photo_type")]
+	#[serde(skip, default = "consts::inline_query_result_photo_type")]
 	pub r#type: &'static str,
 }
 impl InlineQueryResultPhoto {
@@ -5335,7 +5335,7 @@ impl InlineQueryResultPhoto {
 			show_caption_above_media: None,
 			thumbnail_url: thumbnail_url.into(),
 			title: None,
-			r#type: consts::inline_query_result_photo_type(),
+			r#type: "photo",
 		}
 	}
 	/** *Optional*. Caption of the photo to be sent, 0-1024 characters after entities parsing
@@ -5434,7 +5434,7 @@ pub struct InlineQueryResultVenue {
 	pub title: String,
 	/**Type of the result, must be *venue*
 	Default: venue*/
-	#[serde(skip_deserializing, default = "consts::inline_query_result_venue_type")]
+	#[serde(skip, default = "consts::inline_query_result_venue_type")]
 	pub r#type: &'static str,
 }
 impl InlineQueryResultVenue {
@@ -5454,7 +5454,7 @@ impl InlineQueryResultVenue {
 			thumbnail_url: None,
 			thumbnail_width: None,
 			title: title.into(),
-			r#type: consts::inline_query_result_venue_type(),
+			r#type: "venue",
 		}
 	}
 	/** *Optional*. Foursquare identifier of the venue if known*/
@@ -5542,7 +5542,7 @@ pub struct InlineQueryResultVideo {
 	pub title: String,
 	/**Type of the result, must be *video*
 	Default: video*/
-	#[serde(skip_deserializing, default = "consts::inline_query_result_video_type")]
+	#[serde(skip, default = "consts::inline_query_result_video_type")]
 	pub r#type: &'static str,
 	/**Video duration in seconds*/
 	pub video_duration: Option<i64>,
@@ -5567,7 +5567,7 @@ impl InlineQueryResultVideo {
 			show_caption_above_media: None,
 			thumbnail_url: thumbnail_url.into(),
 			title: title.into(),
-			r#type: consts::inline_query_result_video_type(),
+			r#type: "video",
 			video_duration: None,
 			video_height: None,
 			video_url: video_url.into(),
@@ -5659,7 +5659,7 @@ pub struct InlineQueryResultVoice {
 	pub title: String,
 	/**Type of the result, must be *voice*
 	Default: voice*/
-	#[serde(skip_deserializing, default = "consts::inline_query_result_voice_type")]
+	#[serde(skip, default = "consts::inline_query_result_voice_type")]
 	pub r#type: &'static str,
 	/**Recording duration in seconds*/
 	pub voice_duration: Option<i64>,
@@ -5676,7 +5676,7 @@ impl InlineQueryResultVoice {
 			parse_mode: None,
 			reply_markup: None,
 			title: title.into(),
-			r#type: consts::inline_query_result_voice_type(),
+			r#type: "voice",
 			voice_duration: None,
 			voice_url: voice_url.into(),
 		}
@@ -6030,7 +6030,7 @@ impl InputLocationMessageContent {
 https://core.telegram.org/bots/api/#inputmedia*/
 #[derive(Clone, Debug, Serialize, From)]
 #[cfg_attr(feature = "serde-all", derive(Deserialize))]
-#[serde(untagged, rename_all = "snake_case")]
+#[serde(tag = "type", rename_all = "snake_case")]
 pub enum InputMedia {
 	Animation(InputMediaAnimation),
 	Audio(InputMediaAudio),
@@ -6070,7 +6070,7 @@ pub struct InputMediaAnimation {
 	pub thumbnail: Option<Asset>,
 	/**Type of the result, must be *animation*
 	Default: animation*/
-	#[serde(skip_deserializing, default = "consts::input_media_animation_type")]
+	#[serde(skip, default = "consts::input_media_animation_type")]
 	pub r#type: &'static str,
 	/**Animation width*/
 	pub width: Option<i64>,
@@ -6087,7 +6087,7 @@ impl InputMediaAnimation {
 			parse_mode: None,
 			show_caption_above_media: None,
 			thumbnail: None,
-			r#type: consts::input_media_animation_type(),
+			r#type: "animation",
 			width: None,
 		}
 	}
@@ -6173,7 +6173,7 @@ pub struct InputMediaAudio {
 	pub title: Option<String>,
 	/**Type of the result, must be *audio*
 	Default: audio*/
-	#[serde(skip_deserializing, default = "consts::input_media_audio_type")]
+	#[serde(skip, default = "consts::input_media_audio_type")]
 	pub r#type: &'static str,
 }
 impl InputMediaAudio {
@@ -6187,7 +6187,7 @@ impl InputMediaAudio {
 			performer: None,
 			thumbnail: None,
 			title: None,
-			r#type: consts::input_media_audio_type(),
+			r#type: "audio",
 		}
 	}
 	/** *Optional*. Caption of the audio to be sent, 0-1024 characters after entities parsing
@@ -6258,7 +6258,7 @@ pub struct InputMediaDocument {
 	pub thumbnail: Option<Asset>,
 	/**Type of the result, must be *document*
 	Default: document*/
-	#[serde(skip_deserializing, default = "consts::input_media_document_type")]
+	#[serde(skip, default = "consts::input_media_document_type")]
 	pub r#type: &'static str,
 }
 impl InputMediaDocument {
@@ -6270,7 +6270,7 @@ impl InputMediaDocument {
 			media: media.into(),
 			parse_mode: None,
 			thumbnail: None,
-			r#type: consts::input_media_document_type(),
+			r#type: "document",
 		}
 	}
 	/** *Optional*. Caption of the document to be sent, 0-1024 characters after entities parsing
@@ -6331,7 +6331,7 @@ pub struct InputMediaPhoto {
 	pub show_caption_above_media: Option<bool>,
 	/**Type of the result, must be *photo*
 	Default: photo*/
-	#[serde(skip_deserializing, default = "consts::input_media_photo_type")]
+	#[serde(skip, default = "consts::input_media_photo_type")]
 	pub r#type: &'static str,
 }
 impl InputMediaPhoto {
@@ -6343,7 +6343,7 @@ impl InputMediaPhoto {
 			media: media.into(),
 			parse_mode: None,
 			show_caption_above_media: None,
-			r#type: consts::input_media_photo_type(),
+			r#type: "photo",
 		}
 	}
 	/** *Optional*. Caption of the photo to be sent, 0-1024 characters after entities parsing
@@ -6416,7 +6416,7 @@ pub struct InputMediaVideo {
 	pub thumbnail: Option<Asset>,
 	/**Type of the result, must be *video*
 	Default: video*/
-	#[serde(skip_deserializing, default = "consts::input_media_video_type")]
+	#[serde(skip, default = "consts::input_media_video_type")]
 	pub r#type: &'static str,
 	/**Video width*/
 	pub width: Option<i64>,
@@ -6436,7 +6436,7 @@ impl InputMediaVideo {
 			start_timestamp: None,
 			supports_streaming: None,
 			thumbnail: None,
-			r#type: consts::input_media_video_type(),
+			r#type: "video",
 			width: None,
 		}
 	}
@@ -6534,7 +6534,7 @@ pub enum InputMessageContent {
 https://core.telegram.org/bots/api/#inputpaidmedia*/
 #[derive(Clone, Debug, Serialize, From)]
 #[cfg_attr(feature = "serde-all", derive(Deserialize))]
-#[serde(untagged, rename_all = "snake_case")]
+#[serde(tag = "type", rename_all = "snake_case")]
 pub enum InputPaidMedia {
 	Photo(InputPaidMediaPhoto),
 	Video(InputPaidMediaVideo),
@@ -6549,14 +6549,14 @@ pub struct InputPaidMediaPhoto {
 	pub media: Asset,
 	/**Type of the media, must be *photo*
 	Default: photo*/
-	#[serde(skip_deserializing, default = "consts::input_paid_media_photo_type")]
+	#[serde(skip, default = "consts::input_paid_media_photo_type")]
 	pub r#type: &'static str,
 }
 impl InputPaidMediaPhoto {
 	pub fn new(media: impl Into<Asset>) -> Self {
 		Self {
 			media: media.into(),
-			r#type: consts::input_paid_media_photo_type(),
+			r#type: "photo",
 		}
 	}
 }
@@ -6585,7 +6585,7 @@ pub struct InputPaidMediaVideo {
 	pub thumbnail: Option<Asset>,
 	/**Type of the media, must be *video*
 	Default: video*/
-	#[serde(skip_deserializing, default = "consts::input_paid_media_video_type")]
+	#[serde(skip, default = "consts::input_paid_media_video_type")]
 	pub r#type: &'static str,
 	/**Video width*/
 	pub width: Option<i64>,
@@ -6600,7 +6600,7 @@ impl InputPaidMediaVideo {
 			start_timestamp: None,
 			supports_streaming: None,
 			thumbnail: None,
-			r#type: consts::input_paid_media_video_type(),
+			r#type: "video",
 			width: None,
 		}
 	}
@@ -7342,7 +7342,7 @@ pub enum MaybeInaccessibleMessage {
 /**A JSON-serialized array describing messages to be sent, must include 2-10 items*/
 #[derive(Clone, Debug, Serialize, From)]
 #[cfg_attr(feature = "serde-all", derive(Deserialize))]
-#[serde(untagged, rename_all = "snake_case")]
+#[serde(tag = "type", rename_all = "snake_case")]
 pub enum Media {
 	InputMediaAudio(InputMediaAudio),
 	InputMediaDocument(InputMediaDocument),
@@ -7357,7 +7357,7 @@ pub enum Media {
 
 https://core.telegram.org/bots/api/#menubutton*/
 #[derive(Clone, Debug, Serialize, Deserialize, From)]
-#[serde(untagged, rename_all = "snake_case")]
+#[serde(tag = "type", rename_all = "snake_case")]
 pub enum MenuButton {
 	Commands(MenuButtonCommands),
 	Default(MenuButtonDefault),
@@ -7370,13 +7370,13 @@ https://core.telegram.org/bots/api/#menubuttoncommands*/
 pub struct MenuButtonCommands {
 	/**Type of the button, must be *commands*
 	Default: commands*/
-	#[serde(skip_deserializing, default = "consts::menu_button_commands_type")]
+	#[serde(skip, default = "consts::menu_button_commands_type")]
 	pub r#type: &'static str,
 }
 impl MenuButtonCommands {
 	pub fn new() -> Self {
 		Self {
-			r#type: consts::menu_button_commands_type(),
+			r#type: "commands",
 		}
 	}
 }
@@ -7387,13 +7387,13 @@ https://core.telegram.org/bots/api/#menubuttondefault*/
 pub struct MenuButtonDefault {
 	/**Type of the button, must be *default*
 	Default: default*/
-	#[serde(skip_deserializing, default = "consts::menu_button_default_type")]
+	#[serde(skip, default = "consts::menu_button_default_type")]
 	pub r#type: &'static str,
 }
 impl MenuButtonDefault {
 	pub fn new() -> Self {
 		Self {
-			r#type: consts::menu_button_default_type(),
+			r#type: "default",
 		}
 	}
 }
@@ -7406,7 +7406,7 @@ pub struct MenuButtonWebApp {
 	pub text: String,
 	/**Type of the button, must be *web\_app*
 	Default: web_app*/
-	#[serde(skip_deserializing, default = "consts::menu_button_web_app_type")]
+	#[serde(skip, default = "consts::menu_button_web_app_type")]
 	pub r#type: &'static str,
 	/**Description of the Web App that will be launched when the user presses the button. The Web App will be able to send an arbitrary message on behalf of the user using the method [answerWebAppQuery](https://core.telegram.org/bots/api/#answerwebappquery). Alternatively, a `t.me` link to a Web App of the bot can be specified in the object instead of the Web App's URL, in which case the Web App will be opened as if the user pressed the link.*/
 	pub web_app: WebAppInfo,
@@ -7415,7 +7415,7 @@ impl MenuButtonWebApp {
 	pub fn new(text: impl Into<String>, web_app: impl Into<WebAppInfo>) -> Self {
 		Self {
 			text: text.into(),
-			r#type: consts::menu_button_web_app_type(),
+			r#type: "web_app",
 			web_app: web_app.into(),
 		}
 	}
@@ -7462,7 +7462,7 @@ impl MessageId {
 https://core.telegram.org/bots/api/#messageorigin*/
 #[derive(Clone, Debug, Deserialize, From)]
 #[cfg_attr(feature = "serde-all", derive(Serialize))]
-#[serde(untagged, rename_all = "snake_case")]
+#[serde(tag = "type", rename_all = "snake_case")]
 pub enum MessageOrigin {
 	Channel(MessageOriginChannel),
 	Chat(MessageOriginChat),
@@ -7488,7 +7488,7 @@ pub struct MessageOriginChannel {
 	pub message_id: i64,
 	/**Type of the message origin, always “channel”
 	Default: channel*/
-	#[serde(skip_deserializing, default = "consts::message_origin_channel_type")]
+	#[serde(skip, default = "consts::message_origin_channel_type")]
 	pub r#type: &'static str,
 }
 impl MessageOriginChannel {
@@ -7498,7 +7498,7 @@ impl MessageOriginChannel {
 			chat: chat.into(),
 			date: date.into(),
 			message_id: message_id.into(),
-			r#type: consts::message_origin_channel_type(),
+			r#type: "channel",
 		}
 	}
 	/** *Optional*. Signature of the original post author*/
@@ -7524,7 +7524,7 @@ pub struct MessageOriginChat {
 	pub sender_chat: Chat,
 	/**Type of the message origin, always “chat”
 	Default: chat*/
-	#[serde(skip_deserializing, default = "consts::message_origin_chat_type")]
+	#[serde(skip, default = "consts::message_origin_chat_type")]
 	pub r#type: &'static str,
 }
 impl MessageOriginChat {
@@ -7533,7 +7533,7 @@ impl MessageOriginChat {
 			author_signature: None,
 			date: date.into(),
 			sender_chat: sender_chat.into(),
-			r#type: consts::message_origin_chat_type(),
+			r#type: "chat",
 		}
 	}
 	/** *Optional*. For messages originally sent by an anonymous chat administrator, original message author signature*/
@@ -7554,7 +7554,7 @@ pub struct MessageOriginHiddenUser {
 	pub sender_user_name: String,
 	/**Type of the message origin, always “hidden\_user”
 	Default: hidden_user*/
-	#[serde(skip_deserializing, default = "consts::message_origin_hidden_user_type")]
+	#[serde(skip, default = "consts::message_origin_hidden_user_type")]
 	pub r#type: &'static str,
 }
 impl MessageOriginHiddenUser {
@@ -7562,7 +7562,7 @@ impl MessageOriginHiddenUser {
 		Self {
 			date: date.into(),
 			sender_user_name: sender_user_name.into(),
-			r#type: consts::message_origin_hidden_user_type(),
+			r#type: "hidden_user",
 		}
 	}
 }
@@ -7578,7 +7578,7 @@ pub struct MessageOriginUser {
 	pub sender_user: User,
 	/**Type of the message origin, always “user”
 	Default: user*/
-	#[serde(skip_deserializing, default = "consts::message_origin_user_type")]
+	#[serde(skip, default = "consts::message_origin_user_type")]
 	pub r#type: &'static str,
 }
 impl MessageOriginUser {
@@ -7586,7 +7586,7 @@ impl MessageOriginUser {
 		Self {
 			date: date.into(),
 			sender_user: sender_user.into(),
-			r#type: consts::message_origin_user_type(),
+			r#type: "user",
 		}
 	}
 }
@@ -7735,7 +7735,7 @@ impl OrderInfo {
 https://core.telegram.org/bots/api/#paidmedia*/
 #[derive(Clone, Debug, Deserialize, From)]
 #[cfg_attr(feature = "serde-all", derive(Serialize))]
-#[serde(untagged, rename_all = "snake_case")]
+#[serde(tag = "type", rename_all = "snake_case")]
 pub enum PaidMedia {
 	Photo(PaidMediaPhoto),
 	Preview(PaidMediaPreview),
@@ -7780,14 +7780,14 @@ pub struct PaidMediaPhoto {
 	pub photo: Vec<PhotoSize>,
 	/**Type of the paid media, always “photo”
 	Default: photo*/
-	#[serde(skip_deserializing, default = "consts::paid_media_photo_type")]
+	#[serde(skip, default = "consts::paid_media_photo_type")]
 	pub r#type: &'static str,
 }
 impl PaidMediaPhoto {
 	pub fn new(photo: impl Into<Vec<PhotoSize>>) -> Self {
 		Self {
 			photo: photo.into(),
-			r#type: consts::paid_media_photo_type(),
+			r#type: "photo",
 		}
 	}
 	pub fn add_photo(mut self, photo: impl Into<PhotoSize>) -> Self {
@@ -7810,7 +7810,7 @@ pub struct PaidMediaPreview {
 	pub height: Option<i64>,
 	/**Type of the paid media, always “preview”
 	Default: preview*/
-	#[serde(skip_deserializing, default = "consts::paid_media_preview_type")]
+	#[serde(skip, default = "consts::paid_media_preview_type")]
 	pub r#type: &'static str,
 	/**Media width as defined by the sender*/
 	pub width: Option<i64>,
@@ -7820,7 +7820,7 @@ impl PaidMediaPreview {
 		Self {
 			duration: None,
 			height: None,
-			r#type: consts::paid_media_preview_type(),
+			r#type: "preview",
 			width: None,
 		}
 	}
@@ -7867,7 +7867,7 @@ https://core.telegram.org/bots/api/#paidmediavideo*/
 pub struct PaidMediaVideo {
 	/**Type of the paid media, always “video”
 	Default: video*/
-	#[serde(skip_deserializing, default = "consts::paid_media_video_type")]
+	#[serde(skip, default = "consts::paid_media_video_type")]
 	pub r#type: &'static str,
 	/**The video*/
 	pub video: Video,
@@ -7875,7 +7875,7 @@ pub struct PaidMediaVideo {
 impl PaidMediaVideo {
 	pub fn new(video: impl Into<Video>) -> Self {
 		Self {
-			r#type: consts::paid_media_video_type(),
+			r#type: "video",
 			video: video.into(),
 		}
 	}
@@ -7921,7 +7921,7 @@ impl PassportData {
 https://core.telegram.org/bots/api/#passportelementerror*/
 #[derive(Clone, Debug, Serialize)]
 #[cfg_attr(feature = "serde-all", derive(Deserialize))]
-#[serde(untagged, rename_all = "snake_case")]
+#[serde(tag = "source", rename_all = "snake_case")]
 pub enum PassportElementError {
 	DataField(PassportElementErrorDataField),
 	File(PassportElementErrorFile),
@@ -7947,7 +7947,7 @@ pub struct PassportElementErrorDataField {
 	pub message: String,
 	/**Error source, must be *data*
 	Default: data*/
-	#[serde(skip_deserializing, default = "consts::passport_element_error_data_field_source")]
+	#[serde(skip, default = "consts::passport_element_error_data_field_source")]
 	pub source: &'static str,
 	/**The section of the user's Telegram Passport which has the error, one of “personal\_details”, “passport”, “driver\_license”, “identity\_card”, “internal\_passport”, “address”
 	One of: personal_details, passport, driver_license, identity_card, internal_passport, address*/
@@ -7959,7 +7959,7 @@ impl PassportElementErrorDataField {
 			data_hash: data_hash.into(),
 			field_name: field_name.into(),
 			message: message.into(),
-			source: consts::passport_element_error_data_field_source(),
+			source: "data",
 			r#type: r#type.into(),
 		}
 	}
@@ -7976,7 +7976,7 @@ pub struct PassportElementErrorFile {
 	pub message: String,
 	/**Error source, must be *file*
 	Default: file*/
-	#[serde(skip_deserializing, default = "consts::passport_element_error_file_source")]
+	#[serde(skip, default = "consts::passport_element_error_file_source")]
 	pub source: &'static str,
 	/**The section of the user's Telegram Passport which has the issue, one of “utility\_bill”, “bank\_statement”, “rental\_agreement”, “passport\_registration”, “temporary\_registration”
 	One of: utility_bill, bank_statement, rental_agreement, passport_registration, temporary_registration*/
@@ -7987,7 +7987,7 @@ impl PassportElementErrorFile {
 		Self {
 			file_hash: file_hash.into(),
 			message: message.into(),
-			source: consts::passport_element_error_file_source(),
+			source: "file",
 			r#type: r#type.into(),
 		}
 	}
@@ -8007,7 +8007,7 @@ pub struct PassportElementErrorFiles {
 	pub message: String,
 	/**Error source, must be *files*
 	Default: files*/
-	#[serde(skip_deserializing, default = "consts::passport_element_error_files_source")]
+	#[serde(skip, default = "consts::passport_element_error_files_source")]
 	pub source: &'static str,
 	/**The section of the user's Telegram Passport which has the issue, one of “utility\_bill”, “bank\_statement”, “rental\_agreement”, “passport\_registration”, “temporary\_registration”
 	One of: utility_bill, bank_statement, rental_agreement, passport_registration, temporary_registration*/
@@ -8018,7 +8018,7 @@ impl PassportElementErrorFiles {
 		Self {
 			file_hashes: file_hashes.into(),
 			message: message.into(),
-			source: consts::passport_element_error_files_source(),
+			source: "files",
 			r#type: r#type.into(),
 		}
 	}
@@ -8039,7 +8039,7 @@ pub struct PassportElementErrorFrontSide {
 	pub message: String,
 	/**Error source, must be *front\_side*
 	Default: front_side*/
-	#[serde(skip_deserializing, default = "consts::passport_element_error_front_side_source")]
+	#[serde(skip, default = "consts::passport_element_error_front_side_source")]
 	pub source: &'static str,
 	/**The section of the user's Telegram Passport which has the issue, one of “passport”, “driver\_license”, “identity\_card”, “internal\_passport”
 	One of: passport, driver_license, identity_card, internal_passport*/
@@ -8050,7 +8050,7 @@ impl PassportElementErrorFrontSide {
 		Self {
 			file_hash: file_hash.into(),
 			message: message.into(),
-			source: consts::passport_element_error_front_side_source(),
+			source: "front_side",
 			r#type: r#type.into(),
 		}
 	}
@@ -8067,7 +8067,7 @@ pub struct PassportElementErrorReverseSide {
 	pub message: String,
 	/**Error source, must be *reverse\_side*
 	Default: reverse_side*/
-	#[serde(skip_deserializing, default = "consts::passport_element_error_reverse_side_source")]
+	#[serde(skip, default = "consts::passport_element_error_reverse_side_source")]
 	pub source: &'static str,
 	/**The section of the user's Telegram Passport which has the issue, one of “driver\_license”, “identity\_card”
 	One of: driver_license, identity_card*/
@@ -8078,7 +8078,7 @@ impl PassportElementErrorReverseSide {
 		Self {
 			file_hash: file_hash.into(),
 			message: message.into(),
-			source: consts::passport_element_error_reverse_side_source(),
+			source: "reverse_side",
 			r#type: r#type.into(),
 		}
 	}
@@ -8095,7 +8095,7 @@ pub struct PassportElementErrorSelfie {
 	pub message: String,
 	/**Error source, must be *selfie*
 	Default: selfie*/
-	#[serde(skip_deserializing, default = "consts::passport_element_error_selfie_source")]
+	#[serde(skip, default = "consts::passport_element_error_selfie_source")]
 	pub source: &'static str,
 	/**The section of the user's Telegram Passport which has the issue, one of “passport”, “driver\_license”, “identity\_card”, “internal\_passport”
 	One of: passport, driver_license, identity_card, internal_passport*/
@@ -8106,7 +8106,7 @@ impl PassportElementErrorSelfie {
 		Self {
 			file_hash: file_hash.into(),
 			message: message.into(),
-			source: consts::passport_element_error_selfie_source(),
+			source: "selfie",
 			r#type: r#type.into(),
 		}
 	}
@@ -8123,7 +8123,7 @@ pub struct PassportElementErrorTranslationFile {
 	pub message: String,
 	/**Error source, must be *translation\_file*
 	Default: translation_file*/
-	#[serde(skip_deserializing, default = "consts::passport_element_error_translation_file_source")]
+	#[serde(skip, default = "consts::passport_element_error_translation_file_source")]
 	pub source: &'static str,
 	/**Type of element of the user's Telegram Passport which has the issue, one of “passport”, “driver\_license”, “identity\_card”, “internal\_passport”, “utility\_bill”, “bank\_statement”, “rental\_agreement”, “passport\_registration”, “temporary\_registration”
 	One of: passport, driver_license, identity_card, internal_passport, utility_bill, bank_statement, rental_agreement, passport_registration, temporary_registration*/
@@ -8134,7 +8134,7 @@ impl PassportElementErrorTranslationFile {
 		Self {
 			file_hash: file_hash.into(),
 			message: message.into(),
-			source: consts::passport_element_error_translation_file_source(),
+			source: "translation_file",
 			r#type: r#type.into(),
 		}
 	}
@@ -8154,7 +8154,7 @@ pub struct PassportElementErrorTranslationFiles {
 	pub message: String,
 	/**Error source, must be *translation\_files*
 	Default: translation_files*/
-	#[serde(skip_deserializing, default = "consts::passport_element_error_translation_files_source")]
+	#[serde(skip, default = "consts::passport_element_error_translation_files_source")]
 	pub source: &'static str,
 	/**Type of element of the user's Telegram Passport which has the issue, one of “passport”, “driver\_license”, “identity\_card”, “internal\_passport”, “utility\_bill”, “bank\_statement”, “rental\_agreement”, “passport\_registration”, “temporary\_registration”
 	One of: passport, driver_license, identity_card, internal_passport, utility_bill, bank_statement, rental_agreement, passport_registration, temporary_registration*/
@@ -8165,7 +8165,7 @@ impl PassportElementErrorTranslationFiles {
 		Self {
 			file_hashes: file_hashes.into(),
 			message: message.into(),
-			source: consts::passport_element_error_translation_files_source(),
+			source: "translation_files",
 			r#type: r#type.into(),
 		}
 	}
@@ -8186,7 +8186,7 @@ pub struct PassportElementErrorUnspecified {
 	pub message: String,
 	/**Error source, must be *unspecified*
 	Default: unspecified*/
-	#[serde(skip_deserializing, default = "consts::passport_element_error_unspecified_source")]
+	#[serde(skip, default = "consts::passport_element_error_unspecified_source")]
 	pub source: &'static str,
 	/**Type of element of the user's Telegram Passport which has the issue*/
 	pub r#type: String,
@@ -8196,7 +8196,7 @@ impl PassportElementErrorUnspecified {
 		Self {
 			element_hash: element_hash.into(),
 			message: message.into(),
-			source: consts::passport_element_error_unspecified_source(),
+			source: "unspecified",
 			r#type: r#type.into(),
 		}
 	}
@@ -8564,7 +8564,7 @@ impl ReactionCount {
 
 https://core.telegram.org/bots/api/#reactiontype*/
 #[derive(Clone, Debug, Serialize, Deserialize, From)]
-#[serde(untagged, rename_all = "snake_case")]
+#[serde(tag = "type", rename_all = "snake_case")]
 pub enum ReactionType {
 	CustomEmoji(ReactionTypeCustomEmoji),
 	Emoji(ReactionTypeEmoji),
@@ -8579,14 +8579,14 @@ pub struct ReactionTypeCustomEmoji {
 	pub custom_emoji_id: String,
 	/**Type of the reaction, always “custom\_emoji”
 	Default: custom_emoji*/
-	#[serde(skip_deserializing, default = "consts::reaction_type_custom_emoji_type")]
+	#[serde(skip, default = "consts::reaction_type_custom_emoji_type")]
 	pub r#type: &'static str,
 }
 impl ReactionTypeCustomEmoji {
 	pub fn new(custom_emoji_id: impl Into<String>) -> Self {
 		Self {
 			custom_emoji_id: custom_emoji_id.into(),
-			r#type: consts::reaction_type_custom_emoji_type(),
+			r#type: "custom_emoji",
 		}
 	}
 }
@@ -8600,14 +8600,14 @@ pub struct ReactionTypeEmoji {
 	pub emoji: String,
 	/**Type of the reaction, always “emoji”
 	Default: emoji*/
-	#[serde(skip_deserializing, default = "consts::reaction_type_emoji_type")]
+	#[serde(skip, default = "consts::reaction_type_emoji_type")]
 	pub r#type: &'static str,
 }
 impl ReactionTypeEmoji {
 	pub fn new(emoji: impl Into<String>) -> Self {
 		Self {
 			emoji: emoji.into(),
-			r#type: consts::reaction_type_emoji_type(),
+			r#type: "emoji",
 		}
 	}
 }
@@ -8618,13 +8618,13 @@ https://core.telegram.org/bots/api/#reactiontypepaid*/
 pub struct ReactionTypePaid {
 	/**Type of the reaction, always “paid”
 	Default: paid*/
-	#[serde(skip_deserializing, default = "consts::reaction_type_paid_type")]
+	#[serde(skip, default = "consts::reaction_type_paid_type")]
 	pub r#type: &'static str,
 }
 impl ReactionTypePaid {
 	pub fn new() -> Self {
 		Self {
-			r#type: consts::reaction_type_paid_type(),
+			r#type: "paid",
 		}
 	}
 }
@@ -8900,7 +8900,7 @@ impl ResponseParameters {
 https://core.telegram.org/bots/api/#revenuewithdrawalstate*/
 #[derive(Clone, Debug, Deserialize, From)]
 #[cfg_attr(feature = "serde-all", derive(Serialize))]
-#[serde(untagged, rename_all = "snake_case")]
+#[serde(tag = "type", rename_all = "snake_case")]
 pub enum RevenueWithdrawalState {
 	Failed(RevenueWithdrawalStateFailed),
 	Pending(RevenueWithdrawalStatePending),
@@ -8914,13 +8914,13 @@ https://core.telegram.org/bots/api/#revenuewithdrawalstatefailed*/
 pub struct RevenueWithdrawalStateFailed {
 	/**Type of the state, always “failed”
 	Default: failed*/
-	#[serde(skip_deserializing, default = "consts::revenue_withdrawal_state_failed_type")]
+	#[serde(skip, default = "consts::revenue_withdrawal_state_failed_type")]
 	pub r#type: &'static str,
 }
 impl RevenueWithdrawalStateFailed {
 	pub fn new() -> Self {
 		Self {
-			r#type: consts::revenue_withdrawal_state_failed_type(),
+			r#type: "failed",
 		}
 	}
 }
@@ -8932,13 +8932,13 @@ https://core.telegram.org/bots/api/#revenuewithdrawalstatepending*/
 pub struct RevenueWithdrawalStatePending {
 	/**Type of the state, always “pending”
 	Default: pending*/
-	#[serde(skip_deserializing, default = "consts::revenue_withdrawal_state_pending_type")]
+	#[serde(skip, default = "consts::revenue_withdrawal_state_pending_type")]
 	pub r#type: &'static str,
 }
 impl RevenueWithdrawalStatePending {
 	pub fn new() -> Self {
 		Self {
-			r#type: consts::revenue_withdrawal_state_pending_type(),
+			r#type: "pending",
 		}
 	}
 }
@@ -8952,7 +8952,7 @@ pub struct RevenueWithdrawalStateSucceeded {
 	pub date: i64,
 	/**Type of the state, always “succeeded”
 	Default: succeeded*/
-	#[serde(skip_deserializing, default = "consts::revenue_withdrawal_state_succeeded_type")]
+	#[serde(skip, default = "consts::revenue_withdrawal_state_succeeded_type")]
 	pub r#type: &'static str,
 	/**An HTTPS URL that can be used to see transaction details*/
 	pub url: String,
@@ -8961,7 +8961,7 @@ impl RevenueWithdrawalStateSucceeded {
 	pub fn new(date: impl Into<i64>, url: impl Into<String>) -> Self {
 		Self {
 			date: date.into(),
-			r#type: consts::revenue_withdrawal_state_succeeded_type(),
+			r#type: "succeeded",
 			url: url.into(),
 		}
 	}
@@ -9572,7 +9572,7 @@ impl TextQuote {
 https://core.telegram.org/bots/api/#transactionpartner*/
 #[derive(Clone, Debug, Deserialize, From)]
 #[cfg_attr(feature = "serde-all", derive(Serialize))]
-#[serde(untagged, rename_all = "snake_case")]
+#[serde(tag = "type", rename_all = "snake_case")]
 pub enum TransactionPartner {
 	AffiliateProgram(TransactionPartnerAffiliateProgram),
 	Chat(TransactionPartnerChat),
@@ -9597,7 +9597,7 @@ pub struct TransactionPartnerAffiliateProgram {
 	pub sponsor_user: Option<User>,
 	/**Type of the transaction partner, always “affiliate\_program”
 	Default: affiliate_program*/
-	#[serde(skip_deserializing, default = "consts::transaction_partner_affiliate_program_type")]
+	#[serde(skip, default = "consts::transaction_partner_affiliate_program_type")]
 	pub r#type: &'static str,
 }
 impl TransactionPartnerAffiliateProgram {
@@ -9605,7 +9605,7 @@ impl TransactionPartnerAffiliateProgram {
 		Self {
 			commission_per_mille: commission_per_mille.into(),
 			sponsor_user: None,
-			r#type: consts::transaction_partner_affiliate_program_type(),
+			r#type: "affiliate_program",
 		}
 	}
 	/** *Optional*. Information about the bot that sponsored the affiliate program*/
@@ -9629,7 +9629,7 @@ pub struct TransactionPartnerChat {
 	pub gift: Option<Gift>,
 	/**Type of the transaction partner, always “chat”
 	Default: chat*/
-	#[serde(skip_deserializing, default = "consts::transaction_partner_chat_type")]
+	#[serde(skip, default = "consts::transaction_partner_chat_type")]
 	pub r#type: &'static str,
 }
 impl TransactionPartnerChat {
@@ -9637,7 +9637,7 @@ impl TransactionPartnerChat {
 		Self {
 			chat: chat.into(),
 			gift: None,
-			r#type: consts::transaction_partner_chat_type(),
+			r#type: "chat",
 		}
 	}
 	/** *Optional*. The gift sent to the chat by the bot*/
@@ -9657,7 +9657,7 @@ https://core.telegram.org/bots/api/#transactionpartnerfragment*/
 pub struct TransactionPartnerFragment {
 	/**Type of the transaction partner, always “fragment”
 	Default: fragment*/
-	#[serde(skip_deserializing, default = "consts::transaction_partner_fragment_type")]
+	#[serde(skip, default = "consts::transaction_partner_fragment_type")]
 	pub r#type: &'static str,
 	/**State of the transaction if the transaction is outgoing*/
 	pub withdrawal_state: Option<RevenueWithdrawalState>,
@@ -9665,7 +9665,7 @@ pub struct TransactionPartnerFragment {
 impl TransactionPartnerFragment {
 	pub fn new() -> Self {
 		Self {
-			r#type: consts::transaction_partner_fragment_type(),
+			r#type: "fragment",
 			withdrawal_state: None,
 		}
 	}
@@ -9683,13 +9683,13 @@ https://core.telegram.org/bots/api/#transactionpartnerother*/
 pub struct TransactionPartnerOther {
 	/**Type of the transaction partner, always “other”
 	Default: other*/
-	#[serde(skip_deserializing, default = "consts::transaction_partner_other_type")]
+	#[serde(skip, default = "consts::transaction_partner_other_type")]
 	pub r#type: &'static str,
 }
 impl TransactionPartnerOther {
 	pub fn new() -> Self {
 		Self {
-			r#type: consts::transaction_partner_other_type(),
+			r#type: "other",
 		}
 	}
 }
@@ -9701,13 +9701,13 @@ https://core.telegram.org/bots/api/#transactionpartnertelegramads*/
 pub struct TransactionPartnerTelegramAds {
 	/**Type of the transaction partner, always “telegram\_ads”
 	Default: telegram_ads*/
-	#[serde(skip_deserializing, default = "consts::transaction_partner_telegram_ads_type")]
+	#[serde(skip, default = "consts::transaction_partner_telegram_ads_type")]
 	pub r#type: &'static str,
 }
 impl TransactionPartnerTelegramAds {
 	pub fn new() -> Self {
 		Self {
-			r#type: consts::transaction_partner_telegram_ads_type(),
+			r#type: "telegram_ads",
 		}
 	}
 }
@@ -9721,14 +9721,14 @@ pub struct TransactionPartnerTelegramApi {
 	pub request_count: i64,
 	/**Type of the transaction partner, always “telegram\_api”
 	Default: telegram_api*/
-	#[serde(skip_deserializing, default = "consts::transaction_partner_telegram_api_type")]
+	#[serde(skip, default = "consts::transaction_partner_telegram_api_type")]
 	pub r#type: &'static str,
 }
 impl TransactionPartnerTelegramApi {
 	pub fn new(request_count: impl Into<i64>) -> Self {
 		Self {
 			request_count: request_count.into(),
-			r#type: consts::transaction_partner_telegram_api_type(),
+			r#type: "telegram_api",
 		}
 	}
 }
@@ -9756,7 +9756,7 @@ pub struct TransactionPartnerUser {
 	pub subscription_period: Option<i64>,
 	/**Type of the transaction partner, always “user”
 	Default: user*/
-	#[serde(skip_deserializing, default = "consts::transaction_partner_user_type")]
+	#[serde(skip, default = "consts::transaction_partner_user_type")]
 	pub r#type: &'static str,
 	/**Information about the user*/
 	pub user: User,
@@ -9770,7 +9770,7 @@ impl TransactionPartnerUser {
 			paid_media: Vec::new(),
 			paid_media_payload: None,
 			subscription_period: None,
-			r#type: consts::transaction_partner_user_type(),
+			r#type: "user",
 			user: user.into(),
 		}
 	}

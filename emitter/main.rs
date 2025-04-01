@@ -86,7 +86,7 @@ enum EntityVariant {
 		fields: BTreeMap<String, StructField>,
 	},
 	Enum {
-		internal_tag: Option<&'static str>,
+		internal_tag: Option<String>,
 		variants: BTreeMap<String, StructField>,
 	},
 	Method {
@@ -331,18 +331,14 @@ pub fn main() -> Result<()> {
 				outdef
 			}
 			ObjectData::Elements(vars) => {
-				let variants = vars.iter().map(|var| create_enum_variant(&object.name, var)).collect();
+				let variants = vars.iter().map(|var| create_enum_variant(&object.name, var)).collect::<BTreeMap<_, _>>();
 
-				let internal_tag = match object.name.as_str() {
-					"ChatMember" => "status".into(),
-					_ => None,
-				};
 				let outdef = Entity { 
 					name: object.name.clone(), 
 					parents: Vec::new(),
 					comment,
 					serde: SerdeInfo { ser: false, de: false },
-					variant: EntityVariant::Enum { variants, internal_tag }
+					variant: EntityVariant::Enum { variants, internal_tag: None }
 				};
 				outdef
 			}
@@ -358,7 +354,7 @@ pub fn main() -> Result<()> {
 			}
 		};
 		if registry.values().any(|e| e.eq(&entity)) {
-			println!("skipping duplicating {}", entity.name);
+			println!("skipping duplicate {}", entity.name);
 			continue;
 		}
 		assert!(registry.insert(object.name.clone(), entity).is_none());
@@ -464,6 +460,7 @@ pub fn main() -> Result<()> {
 		}
 	}
 
+	// mark method and method args with serde seriliazation tag
 	let registry_clone = registry.clone();
 	for entity in registry.values_mut() {
 		match entity.variant {
@@ -482,6 +479,41 @@ pub fn main() -> Result<()> {
 		}
 	}
 
+	// find internal tags
+	let registry_clone = registry.clone();
+	for entity in registry.values_mut() {
+		let EntityVariant::Enum { ref variants, ref mut internal_tag } = entity.variant else { continue; };
+
+		let mut tag_candidates = BTreeMap::<String, u16>::new();
+		for variant in variants.values() {
+			let Some(inner_struct) = registry_clone.get(&variant.typeinfo.name)
+			else {
+				// println!("missing variant struct {}.{}", entity.name, variant.name);
+				continue;
+			};
+
+			let fields = match &inner_struct.variant {
+				EntityVariant::Object { fields } => fields,
+				_ => {
+					eprintln!("enum contains non-structs");
+					break;
+				}
+			};
+			for field in fields.values() {
+				if field.typeinfo.const_literal.is_some() {
+					tag_candidates.entry(field.name.clone()).and_modify(|entry| *entry += 1).or_insert(1);
+				}
+			}
+		}
+
+		if let Some((candidate_field_name, _)) = tag_candidates.into_iter().max_by_key(|&(_, v)| v).filter(|(candidate, count)| *count == variants.len() as u16) {
+			println!("selected tag `{}` for enum {}", candidate_field_name, entity.name);
+			*internal_tag = Some(candidate_field_name);
+		}
+	}
+
+
+	// propagate serde info 
 	let registry = registry.into_iter().map(|(k, v)| (k, Rc::new(RefCell::new(v)))).collect::<BTreeMap<_, _>>();
 	for entity in registry.values() {
 		let mut entity = entity.borrow_mut();
@@ -702,7 +734,7 @@ fn print_derive(entity: &Entity, out: &mut IndentedWriter<impl Write>) {
 	if entity.serde.ser { derives.push("Serialize");   }
 	if entity.serde.de  { derives.push("Deserialize"); }
 
-	if let EntityVariant::Enum { ref variants, internal_tag, .. } = entity.variant  {
+	if let EntityVariant::Enum { variants, internal_tag, .. } = &entity.variant  {
 		if !variants.contains_key("File") && !variants.contains_key("Url") {
 			derives.push("From");
 		}
@@ -788,7 +820,7 @@ fn print_struct(registry: &Registry, entity: &Entity, fields: &BTreeMap<String, 
 	for field in fields.clone().into_values() {
 		let mut is_tag = false;
 		let parents = entity.parents.iter().filter_map(|parent| registry.get(parent)).collect::<Vec<_>>();
-		if parents.into_iter().any(|parent| { match parent.variant { EntityVariant::Enum { internal_tag: Some(tag), .. } => tag == field.name, _ => false } }) {
+		if parents.into_iter().any(|parent| { match &parent.variant { EntityVariant::Enum { internal_tag: Some(tag), .. } => *tag == field.name, _ => false } }) {
 			tag_fields.push(field.name.clone());
 			is_tag = true;
 			// continue;
@@ -802,7 +834,7 @@ fn print_struct(registry: &Registry, entity: &Entity, fields: &BTreeMap<String, 
 			comment = comment.replace("*True*, if", "if");
 		}
 		writeln!(out, "/**{comment}*/");
-		
+
 		if let Some(ref literal) = field.typeinfo.const_literal {
 			let const_name = format!("{}_{}", entity.name.to_snake_case(), field.name.to_snake_case());
 			write!(out, "#[serde(");
