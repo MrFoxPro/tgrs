@@ -15,6 +15,7 @@ https://core.telegram.org/bots/api/#message*/
 	Option => #[serde(skip_serializing_if = "Option::is_none")],
 )]
 #[derive(Clone, Debug, Deserialize)]
+#[cfg_attr(feature = "serde-all", derive(Serialize))]
 pub struct Message {
 	/**Message is an animation, information about the animation. For backward compatibility, when this field is set, the *document* field will also be set*/
 	pub animation: Option<Animation>,
@@ -734,13 +735,12 @@ impl Message {
 pub use custom_message::*;
 #[cfg(feature = "custom-message")]
 mod custom_message {
+	use self::raw::*;
+	use crate::*;
 	use std::assert_matches::assert_matches;
-
-use serde::Deserialize;
+	use serde::{Serialize, Deserialize};
 	use serde_with::apply;
 	use serde_json::Value as JValue;
-	use crate::*;
-	use self::raw::*;
 
 	/**This object represents a message.
 
@@ -750,6 +750,7 @@ use serde::Deserialize;
 		Option => #[serde(skip_serializing_if = "Option::is_none")],
 	)]
 	#[derive(Clone, Debug, Deserialize)]
+	#[cfg_attr(feature = "serde-all", derive(Serialize))]
 	pub struct Message {
 		/**Signature of the post author for messages in channels, or the custom title of an anonymous group administrator*/
 		pub author_signature: Option<String>,
@@ -844,6 +845,7 @@ use serde::Deserialize;
 	}
 
 	#[derive(Clone, Debug, Deserialize)]
+	#[cfg_attr(feature = "serde-all", derive(Serialize))]
 	#[serde(rename_all = "snake_case")]
 	pub enum MessageData {
 		/**Message is an animation, information about the animation. For backward compatibility, when this field is set, the *document* field will also be set*/

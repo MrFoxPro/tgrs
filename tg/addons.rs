@@ -24,8 +24,10 @@ pub struct InputFile {
 	pub filename: String,
 	pub inner: InputFileInner,
 }
-#[derive(From)]
+#[derive(Default, From)]
 pub enum InputFileInner {
+	#[default] 
+	Empty,
 	Bytes(bytes::Bytes),
 	Stream(Option<Box<dyn AsyncRead + Send + Sync + Unpin>>),
 }
@@ -42,11 +44,18 @@ impl Serialize for InputFile {
 		format!("attach://{}", self.filename).serialize(serializer)
 	}
 }
+impl<'de> Deserialize<'de> for InputFile {
+	fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+		serde::de::IgnoredAny::deserialize(deserializer)?;
+		Ok(InputFile { filename: String::new(), inner: InputFileInner::Empty })
+	}
+}
 impl Clone for InputFileInner {
 	fn clone(&self) -> Self {
 		match self {
 			Self::Bytes(data) => Self::Bytes(data.clone()),
-			Self::Stream(_) => Self::Stream(None)
+			Self::Stream(_) => Self::Stream(None),
+			Self::Empty => Self::Empty,
 		}
 	}
 }
@@ -55,6 +64,7 @@ impl fmt::Debug for InputFileInner {
 		match self {
 			Self::Bytes(_) => writeln!(f, "InputFile::Bytes(<data>)"),
 			Self::Stream(_) => writeln!(f, "InputFile::Stream(<stream>)"),
+			Self::Empty => writeln!(f, "InputFile::Empty"),
 		}
 	}
 }
@@ -78,7 +88,7 @@ impl Attachable for InputFile {
 }
 
 /** Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass `attach://<file_attach_name>` to upload a new one using `multipart/form-data` under `file_attach_name` name */
-#[derive(Clone, Debug, From)]
+#[derive(Clone, Debug, From, Deserialize)]
 pub enum Asset {
 	File(InputFile),
 	Url(String),

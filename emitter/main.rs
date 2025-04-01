@@ -99,11 +99,12 @@ enum EntityVariant {
 
 type Registry = BTreeMap<String, Entity>;
 
-fn escape_field_name(mut name: String) -> String {
+fn escape_field_name(name: &String) -> String {
+	let mut name = name.clone();
 	if RESERVED_WORDS.contains(&name.as_str()) {
 		name = format!("r#{name}");
 	}
-	return name
+	return name;
 }
 
 fn get_plain_typeinfo(ty: &Type) -> TypeInfo {
@@ -211,10 +212,12 @@ fn expand_typeinfo(state: &mut Registry, target: &Type, NewEnumInfo { mut name, 
 	}
 }
 	
-const CONST_FIELD_PREFIX: &str = "Type of the result, must be ";
-fn check_const_literal(ty: &mut TypeInfo, description: &String) {
-	if description.starts_with(CONST_FIELD_PREFIX) {
-		let name = description[CONST_FIELD_PREFIX.len()+1..description.len()-1].replace(r#"\"#, "").to_string();
+fn check_const_literal(ty: &mut TypeInfo, description: &String, kind: &tg_bot_api::Type) {
+	if let Type::String { default: Some(default), one_of, .. } = kind && one_of.len() < 2 && (description.contains(", always ")  || description.contains("must be ")) {
+		ty.const_literal = Some(default.clone());		
+	}
+	else if description.starts_with("Type of the result, must be ") {
+		let name = description["Type of the result, must be ".len()+1..description.len()-1].replace(r#"\"#, "").to_string();
 		ty.const_literal = name.into();
 	}
 }
@@ -269,7 +272,7 @@ pub fn main() -> Result<()> {
 						typeinfo.has_ref = true;
 					}
 
-					check_const_literal(&mut typeinfo, &description);
+					check_const_literal(&mut typeinfo, &description, &kind);
 
 					let mut docs = Vec::from_iter([description]);
 					match kind.clone() {
@@ -312,7 +315,7 @@ pub fn main() -> Result<()> {
 					};
 					let sfield = StructField { 
 						typeinfo, 
-						name: escape_field_name(name),
+						name: name,
 						optional: !required,
 						comment: docs.join("\n")
 					};
@@ -335,7 +338,7 @@ pub fn main() -> Result<()> {
 					_ => None,
 				};
 				let outdef = Entity { 
-					name: escape_field_name(object.name.clone()), 
+					name: object.name.clone(), 
 					parents: Vec::new(),
 					comment,
 					serde: SerdeInfo { ser: false, de: false },
@@ -390,9 +393,9 @@ pub fn main() -> Result<()> {
 							serde: SerdeInfo { ser: false, de: false }
 						}
 					);
-					check_const_literal(&mut typeinfo, &description);
+					check_const_literal(&mut typeinfo, &description, &kind);
 					let def = StructField {
-						name: escape_field_name(name.clone()), 
+						name: name.clone(), 
 						typeinfo,
 						optional: !required,
 						comment: description,
@@ -500,7 +503,28 @@ pub fn main() -> Result<()> {
 		}
 	}
 
-	let registry = registry.into_iter().map(|(k, v)| (k, Rc::try_unwrap(v).unwrap().into_inner())).collect();
+	let registry = registry.into_iter().map(|(k, v)| (k, Rc::try_unwrap(v).unwrap().into_inner())).collect::<BTreeMap<_, _>>();
+
+	writeln!(out, "// FIXME https://github.com/serde-rs/serde/issues/368");
+	writeln!(out, "pub mod consts {{");
+	out.indent();
+
+	for entity in registry.values() {
+		let fields = match &entity.variant {
+			EntityVariant::Object { fields } | EntityVariant::Method { args: fields, .. } => fields,
+			_ => continue
+		};
+		for field in fields.values() {
+			if let Some(ref literal) = field.typeinfo.const_literal {
+				writeln!(out, r#"pub const fn {}_{}() -> &'static str {{ "{}" }}"#, entity.name.to_snake_case(), field.name.to_snake_case(), literal);
+			}
+		}
+	}
+
+	out.unindent();
+	writeln!(out, "}}");
+
+
 	print_entities(registry, &mut out);
 
 	// Command::new("rustfmt")
@@ -544,14 +568,16 @@ fn print_entities(registry: Registry, out: &mut IndentedWriter<impl Write>) {
 
 				let mut capacity = 0;
 				for arg in args.values() {
-					 if ["InputFile", "Asset"].contains(&arg.name.as_str()) { capacity += 2; } 
-					 else { capacity += 1 }
+					if ["InputFile", "Asset"].contains(&arg.name.as_str()) { capacity += 2; } 
+					else { capacity += 1 }
 				}
 
 				if !args.is_empty() {
 					writeln!(out, "let mut parts = FormParts::new({capacity});");
 
-					for (name, sf) in args.iter() {
+					for sf in args.values() {
+						let name = escape_field_name(&sf.name);
+
 						if sf.typeinfo.is_array() && !sf.typeinfo.maybe_file {
 							writeln!(out, r#"if self.{name}.len() > 0 {{ parts.add_object("{name}", self.{name}) }}"#);
 						}
@@ -627,13 +653,21 @@ fn print_entities(registry: Registry, out: &mut IndentedWriter<impl Write>) {
 			}
 			EntityVariant::Enum { variants, internal_tag } => {
 				print_derive(&entity, out);
-				if entity.serde.ser || entity.serde.de { 
+				if entity.serde.ser || entity.serde.de {
+					write!(out, r#"#[serde("#);
 					if let Some(internal_tag) = internal_tag {
-						writeln!(out, r#"#[serde(tag = "{internal_tag}", rename_all = "snake_case")]"#);
+						write!(out, r#"tag = "{internal_tag}""#);
 					}
 					else {
-						writeln!(out, r#"#[serde(untagged, rename_all = "snake_case")]"#);
+						write!(out, r#"untagged"#);
 					}
+					// if entity.serde.de {
+					// 	let mut inner_entities = variants.iter().filter_map(|(_, variant)| registry.get(&variant.name)).filter_map(|entity| match &entity.variant { EntityVariant::Object { fields } => Some(fields), _ => None }).flatten();
+					// 	if inner_entities.any(|(_field_name, field)| field.typeinfo.const_literal.is_some()) {
+					// 		write!(out, r#", bound(deserialize = "'de: 'static")"#);
+					// 	}
+					// }
+					writeln!(out, r#", rename_all = "snake_case")]"#);
 				}
 				writeln!(out, "pub enum {} {{", entity.name);
 				out.indent();
@@ -665,8 +699,8 @@ fn print_derive(entity: &Entity, out: &mut IndentedWriter<impl Write>) {
 		"Debug",
 		// "Default"
 	]);
-	if entity.serde.ser { derives.push("Serialize"); }
-	if entity.serde.de { derives.push("Deserialize"); }
+	if entity.serde.ser { derives.push("Serialize");   }
+	if entity.serde.de  { derives.push("Deserialize"); }
 
 	if let EntityVariant::Enum { ref variants, internal_tag, .. } = entity.variant  {
 		if !variants.contains_key("File") && !variants.contains_key("Url") {
@@ -750,13 +784,14 @@ fn print_struct(registry: &Registry, entity: &Entity, fields: &BTreeMap<String, 
 	// else { 
 		// writeln!(out, ";");
 	// }
-	let mut to_skip = Vec::new();
+	let mut tag_fields = Vec::new();
 	for field in fields.clone().into_values() {
+		let mut is_tag = false;
 		let parents = entity.parents.iter().filter_map(|parent| registry.get(parent)).collect::<Vec<_>>();
 		if parents.into_iter().any(|parent| { match parent.variant { EntityVariant::Enum { internal_tag: Some(tag), .. } => tag == field.name, _ => false } }) {
-			println!("skipping field {}.{} as it is tag", entity.name, field.name);
-			to_skip.push(field.name);
-			continue;
+			tag_fields.push(field.name.clone());
+			is_tag = true;
+			// continue;
 		}
 
 		let mut comment = field.comment.clone();
@@ -767,9 +802,15 @@ fn print_struct(registry: &Registry, entity: &Entity, fields: &BTreeMap<String, 
 			comment = comment.replace("*True*, if", "if");
 		}
 		writeln!(out, "/**{comment}*/");
-
+		
+		if let Some(ref literal) = field.typeinfo.const_literal {
+			let const_name = format!("{}_{}", entity.name.to_snake_case(), field.name.to_snake_case());
+			write!(out, "#[serde(");
+			if is_tag { write!(out, "skip, "); } else { write!(out, "skip_deserializing, "); }
+			writeln!(out, r#"default = "consts::{const_name}")]"#);
+		}
 		let typename = field_typename(&field, entity);
-		writeln!(out, "pub {}: {},", field.name, typename);
+		writeln!(out, "pub {}: {},", escape_field_name(&field.name), typename);
 	}
 	// if fields.len() > 0 {
 		// if entity.serde.ser || entity.serde.de {
@@ -799,10 +840,10 @@ fn print_struct(registry: &Registry, entity: &Entity, fields: &BTreeMap<String, 
 	writeln!(out, "\nimpl {} {{", entity.name);
 	out.indent();
 		write!(out, "pub fn new(");
-		let new_args = ctor_args.iter().filter(|(f, _)| !f.optional && f.typeinfo.const_literal.is_none() && !to_skip.contains(&f.name)).collect::<Vec<_>>();
+		let new_args = ctor_args.iter().filter(|(f, _)| !f.optional && f.typeinfo.const_literal.is_none() && !tag_fields.contains(&f.name)).collect::<Vec<_>>();
 		let total = new_args.len();
 		for (i, (field, arg)) in new_args.into_iter().enumerate() {
-			write!(out, "{}: ", field.name);
+			write!(out, "{}: ", escape_field_name(&field.name));
 			if arg.into {
 				write!(out, "impl Into<{}>", field_typename(field, entity));
 			}
@@ -816,19 +857,22 @@ fn print_struct(registry: &Registry, entity: &Entity, fields: &BTreeMap<String, 
 
 			writeln!(out, "Self {{");
 			out.indent();
-			for (f, a) in ctor_args.iter() {
-				if to_skip.contains(&f.name) { continue; }
-				let mut v: String;
-				if let Some(ref const_value) = f.typeinfo.const_literal {
-					v = format!(r#""{}""#, const_value);
+			for (field, ctor_arg) in ctor_args.iter() {
+				if tag_fields.contains(&field.name) && let Some(ref literal) = field.typeinfo.const_literal { 
+					writeln!(out, r#"{}: "{}","#, escape_field_name(&field.name), literal);
+					continue;
 				}
-				else if !f.optional { v = f.name.clone(); }
+				let mut v: String;
+				if let Some(ref literal) = field.typeinfo.const_literal {
+					v = format!(r#"consts::{}_{}()"#, entity.name.to_snake_case(), field.name.to_snake_case());
+				}
+				else if !field.optional { v = escape_field_name(&field.name); }
 				else {
-					if f.typeinfo.is_array() { v = "Vec::new()".to_owned(); }
+					if field.typeinfo.is_array() { v = "Vec::new()".to_owned(); }
 					else { v = "None".to_owned(); }
 				}
-				if !f.optional && a.into { v = format!("{}.into()", v); }
-				writeln!(out, "{}: {},", f.name, v);
+				if !field.optional && ctor_arg.into { v = format!("{}.into()", v); }
+				writeln!(out, "{}: {},", escape_field_name(&field.name), v);
 			}
 			// writeln!(out, "parts: FormParts::new(),");
 			out.unindent();
@@ -854,7 +898,7 @@ fn print_struct(registry: &Registry, entity: &Entity, fields: &BTreeMap<String, 
 			writeln!(out, ") -> Self {{");
 
 			out.indent();
-			write!(out, "self.{}.push(", field.name);
+			write!(out, "self.{}.push(", escape_field_name(&field.name));
 			if arg.into && !field.typeinfo.is_array() {
 				write!(out, "Some({}.into())", pluralized_field_name);
 			}
@@ -874,7 +918,7 @@ fn print_struct(registry: &Registry, entity: &Entity, fields: &BTreeMap<String, 
 
 		if !field.optional { continue; }
 		writeln!(out, "/** {}*/", field.comment);
-		write!(out, "pub fn {0}(mut self, {0}: ", field.name);
+		write!(out, "pub fn {0}(mut self, {0}: ", escape_field_name(&field.name));
 
  		let accept_type = field_typename(&StructField { optional: false, ..field.clone() }, entity);
  		if arg.into { write!(out, "impl Into<{}>", accept_type); }
@@ -882,15 +926,15 @@ fn print_struct(registry: &Registry, entity: &Entity, fields: &BTreeMap<String, 
 		writeln!(out, ") -> Self {{");
 
 		out.indent();
-		write!(out, "self.{} = ", field.name);
+		write!(out, "self.{} = ", escape_field_name(&field.name));
 		if arg.into && !field.typeinfo.is_array() {
-			write!(out, "Some({}.into())", field.name);
+			write!(out, "Some({}.into())", escape_field_name(&field.name));
 		}
 		else if field.typeinfo.is_array() {
-			write!(out, "{}.into()", field.name);
+			write!(out, "{}.into()", escape_field_name(&field.name));
 		}
 		else {
-			write!(out, "Some({})", field.name);
+			write!(out, "Some({})", escape_field_name(&field.name));
 		}
 
 		writeln!(out, ";");
