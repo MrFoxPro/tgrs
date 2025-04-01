@@ -495,7 +495,7 @@ pub fn main() -> Result<()> {
 			let fields = match &inner_struct.variant {
 				EntityVariant::Object { fields } => fields,
 				_ => {
-					eprintln!("enum contains non-structs");
+					eprintln!("enum {} contains non-structs", entity.name);
 					break;
 				}
 			};
@@ -507,7 +507,7 @@ pub fn main() -> Result<()> {
 		}
 
 		if let Some((candidate_field_name, _)) = tag_candidates.into_iter().max_by_key(|&(_, v)| v).filter(|(candidate, count)| *count == variants.len() as u16) {
-			println!("selected tag `{}` for enum {}", candidate_field_name, entity.name);
+			println!("enum {} -> tag `{}`", entity.name, candidate_field_name);
 			*internal_tag = Some(candidate_field_name);
 		}
 	}
