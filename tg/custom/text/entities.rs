@@ -6,9 +6,9 @@ use serde_with::apply;
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct MessageEntity {
 	#[serde(flatten)]
-	pub position: TextEntityPosition,
+	pub pos: TextEntityPosition,
 	#[serde(flatten)]
-	pub entity_type: MessageEntityType,
+	pub kind: MessageEntityType,
 }
 #[derive(Copy, Clone, Debug, PartialEq, PartialOrd, Deserialize, Serialize)]
 pub struct TextEntityPosition {

@@ -22,9 +22,9 @@ impl Text {
 		let repr = TextRepr::from(self);
 		let mut commands = Vec::with_capacity(self.entities.len());
 		for entity in self.entities.iter() {
-			let MessageEntityType::BotCommand = entity.entity_type else { continue };
+			let MessageEntityType::BotCommand = entity.kind else { continue };
 
-			let entity_data = repr.get_entity_content(entity.position);
+			let entity_data = repr.get_entity_content(entity.pos);
 			let parts = entity_data.as_str().splitn(2, '@').collect::<Vec<&str>>();
 			let len = parts.len();
 			
