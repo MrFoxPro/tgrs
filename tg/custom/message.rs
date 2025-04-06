@@ -1049,7 +1049,7 @@ mod custom_message {
 
 #[cfg(all(test, feature = "custom-message"))]
 mod tests {
-	use std::assert_matches::{self, debug_assert_matches};
+	use std::assert_matches::debug_assert_matches;
 	use crate::*;
 	#[test]
 	fn test_deserialize() {

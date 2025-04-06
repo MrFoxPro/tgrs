@@ -233,6 +233,10 @@ pub fn main() -> Result<()> {
 	let mut out = IndentedWriter::new(std::fs::File::create("./tg/schema.rs")?, indent::IndentConfig::Tab);
 
 	writeln!(out, "/* @generated */\n");
+	
+	// writeln!(out, r#"#[cfg(feature = "bincode")]"#);
+	// writeln!(out, "use bincode::{{Encode, Decode}};");
+	
 	writeln!(out, "use serde::{{Serialize, Deserialize}};");
 	writeln!(out, "use serde_with::apply;");
 	writeln!(out, "use derive_more::{{From, Display}};");
@@ -745,11 +749,13 @@ fn print_derive(entity: &Entity, out: &mut IndentedWriter<impl Write>) {
 
 	writeln!(out, "#[derive({})]", derives.join(", "));
 
+	// writeln!(out, r#"#[cfg_attr(feature = "bincode", derive(Encode, Decode))]"#);
+	
 	if !entity.serde.ser && !entity.serde.de {
 		writeln!(out, r#"#[cfg_attr(feature = "serde-all", derive(Serialize, Deserialize))]"#);	
 	}
 	else if !entity.serde.ser && entity.serde.de {
-		writeln!(out, r#"#[cfg_attr(feature = "serde-all", derive(Serialize))]"#);	
+		writeln!(out, r#"#[cfg_attr(feature = "serde-all", derive(Serialize))]"#);
 	}
 	else if entity.serde.ser && !entity.serde.de {
 		writeln!(out, r#"#[cfg_attr(feature = "serde-all", derive(Deserialize))]"#);	

@@ -1,7 +1,6 @@
-use core::fmt;
-use std::{error::Error, string::FromUtf16Error};
 use crate::Message;
-use super::{MessageEntities, Text};
+use super::Text;
+use std::{fmt, error::Error, string::FromUtf16Error};
 
 #[derive(Clone, Debug)]
 pub struct Command {
@@ -11,16 +10,15 @@ pub struct Command {
 }
 impl TryFrom<Message> for Command {
 	type Error = CommandError;
-
 	fn try_from(message: Message) -> Result<Self, Self::Error> {
 		#[cfg(not(feature = "custom-message"))]
 		let target = message.text.as_ref()
-			.map(|text| Text { data: text.clone(), entities: MessageEntities { items: message.entities.clone() }.into() })
+			.map(|text| Text { data: text.clone(), entities: message.entities.clone() })
 			.map(|text| (text.get_bot_commands(), text));
 		#[cfg(feature = "custom-message")]
 		let target = message.get_text().map(|text| (text.get_bot_commands(), text));
 		match target {
-			Some((Some(commands), text)) => {
+			Some((commands, text)) if commands.len() > 0 => {
 				// just take first command and ignore others
 				let command = &commands[0];
 				let name = command.command.clone();
@@ -30,10 +28,10 @@ impl TryFrom<Message> for Command {
 				let length = name.len() + command.bot_name.as_ref().map(|x| x.len() + 1).unwrap_or(0);
 				let pos = offset + length;
 				// pos is UTF-16 offset
-				let raw_args: Vec<u16> = text.data.encode_utf16().skip(pos).collect();
+				let raw_args = text.data.encode_utf16().skip(pos).collect::<Vec<u16>>();
 				let raw_args = String::from_utf16(&raw_args)?;
 				let args = raw_args.split_whitespace().map(ToOwned::to_owned).collect();
-				Ok(Command { name, args, message })
+				return Ok(Command { name, args, message });
 			}
 			_ => Err(CommandError::NotFound),
 		}
@@ -62,9 +60,7 @@ impl Error for CommandError {
 }
 impl fmt::Display for CommandError {
 	fn fmt(&self, out: &mut fmt::Formatter) -> fmt::Result {
-		write!(
-			out,
-			"failed to parse command: {}",
+		write!(out, "failed to parse command: {}",
 			match self {
 				CommandError::NotFound => String::from("not found"),
 				CommandError::Utf16(err) => err.to_string(),

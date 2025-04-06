@@ -15,9 +15,11 @@ ryu = { version = "1" }
 bytes = { version = "1", default-features = false, features = ["std"] }
 fastrand = { version = "2.3" }
 futures-util = { version = "0.3", default-features = false, features = ["io"] }
+# bincode = { version = "2", optional = true }
 
 [features]
 default = []
 custom-message = []
 serde-all = []
+# bincode = ["dep:bincode"]
 # stream-file = ["dep:tokio", "dep:tokio-util"]
