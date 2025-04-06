@@ -13,12 +13,12 @@ pub struct MessageEntity {
 #[derive(Copy, Clone, Debug, PartialEq, PartialOrd, Deserialize, Serialize)]
 pub struct TextEntityPosition {
 	/// Offset in UTF-16 code units to the start of the entity.
-	pub offset: u32,
-	pub length: u32,
+	pub offset: usize,
+	pub length: usize,
 }
 
-impl From<Range<u32>> for TextEntityPosition {
-	fn from(range: Range<u32>) -> Self {
+impl From<Range<usize>> for TextEntityPosition {
+	fn from(range: Range<usize>) -> Self {
 		Self { offset: range.start, length: range.end - range.start }
 	}
 }
