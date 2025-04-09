@@ -737,7 +737,6 @@ pub use custom_message::*;
 mod custom_message {
 	use self::raw::*;
 	use crate::*;
-	use std::assert_matches::assert_matches;
 	use serde::{Serialize, Deserialize};
 	use serde_with::apply;
 	use serde_json::Value as JValue;

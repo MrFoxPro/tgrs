@@ -238,6 +238,7 @@ pub fn main() -> Result<()> {
 	// writeln!(out, "use bincode::{{Encode, Decode}};");
 	
 	writeln!(out, "use serde::{{Serialize, Deserialize}};");
+	writeln!(out, "use serde_json::Value as JValue;");
 	writeln!(out, "use serde_with::apply;");
 	writeln!(out, "use derive_more::{{From, Display}};");
 	writeln!(out, "use crate::{{addons::*, custom::*, client::{{Executable, FormParts}}, InputFile}};");
@@ -586,7 +587,7 @@ fn print_entities(registry: Registry, out: &mut IndentedWriter<impl Write>) {
 
 		match entity.variant.clone() {
 			EntityVariant::Unknown => {
-				writeln!(out, "pub type {} = ();", entity.name);
+				writeln!(out, "pub type {} = JValue;", entity.name);
 			}
 			EntityVariant::Object { fields } => {
 				print_struct(&registry, &entity, &fields, out);

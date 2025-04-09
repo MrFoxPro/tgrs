@@ -1,6 +1,7 @@
 /* @generated */
 
 use serde::{Serialize, Deserialize};
+use serde_json::Value as JValue;
 use serde_with::apply;
 use derive_more::{From, Display};
 use crate::{addons::*, custom::*, client::{Executable, FormParts}, InputFile};
@@ -961,7 +962,7 @@ impl BusinessOpeningHoursInterval {
 /**A placeholder, currently holds no information. Use [BotFather](https://t.me/botfather) to set up your game.
 
 https://core.telegram.org/bots/api/#callbackgame*/
-pub type CallbackGame = ();
+pub type CallbackGame = JValue;
 /**This object represents an incoming callback query from a callback button in an [inline keyboard](https://core.telegram.org/bots/features#inline-keyboards). If the button that originated the query was attached to a message sent by the bot, the field *message* will be present. If the button was attached to a message sent via the bot (in [inline mode](https://core.telegram.org/bots/api/#inline-mode)), the field *inline\_message\_id* will be present. Exactly one of the fields *data* or *game\_short\_name* will be present.
 
 https://core.telegram.org/bots/api/#callbackquery*/
@@ -3097,7 +3098,7 @@ impl ForumTopic {
 /**This object represents a service message about a forum topic closed in the chat. Currently holds no information.
 
 https://core.telegram.org/bots/api/#forumtopicclosed*/
-pub type ForumTopicClosed = ();
+pub type ForumTopicClosed = JValue;
 /**This object represents a service message about a new forum topic created in the chat.
 
 https://core.telegram.org/bots/api/#forumtopiccreated*/
@@ -3163,7 +3164,7 @@ impl ForumTopicEdited {
 /**This object represents a service message about a forum topic reopened in the chat. Currently holds no information.
 
 https://core.telegram.org/bots/api/#forumtopicreopened*/
-pub type ForumTopicReopened = ();
+pub type ForumTopicReopened = JValue;
 /**Unique identifier for the chat where the original messages were sent (or channel username in the format `@channelusername`)*/
 #[derive(Clone, Debug, Serialize, From, Display)]
 #[cfg_attr(feature = "serde-all", derive(Deserialize))]
@@ -3259,11 +3260,11 @@ impl GameHighScore {
 /**This object represents a service message about General forum topic hidden in the chat. Currently holds no information.
 
 https://core.telegram.org/bots/api/#generalforumtopichidden*/
-pub type GeneralForumTopicHidden = ();
+pub type GeneralForumTopicHidden = JValue;
 /**This object represents a service message about General forum topic unhidden in the chat. Currently holds no information.
 
 https://core.telegram.org/bots/api/#generalforumtopicunhidden*/
-pub type GeneralForumTopicUnhidden = ();
+pub type GeneralForumTopicUnhidden = JValue;
 /**This object represents a gift that can be sent by the bot.
 
 https://core.telegram.org/bots/api/#gift*/
@@ -10395,7 +10396,7 @@ impl VideoChatScheduled {
 /**This object represents a service message about a video chat started in the chat. Currently holds no information.
 
 https://core.telegram.org/bots/api/#videochatstarted*/
-pub type VideoChatStarted = ();
+pub type VideoChatStarted = JValue;
 /**This object represents a [video message](https://telegram.org/blog/video-messages-and-telescope) (available in Telegram apps as of [v.4.0](https://telegram.org/blog/video-messages-and-telescope)).
 
 https://core.telegram.org/bots/api/#videonote*/
