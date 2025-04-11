@@ -19,7 +19,7 @@ futures-util = { version = "0.3", default-features = false, features = ["io"] }
 
 [features]
 default = []
-# custom-message = []
+custom-message = []
 serde-all = []
 # bincode = ["dep:bincode"]
 # stream-file = ["dep:tokio", "dep:tokio-util"]

@@ -19,7 +19,7 @@ const RESERVED_WORDS: &[&str] = &[
 ];
 
 const BLACKLISTED_TYPES: &[&str] = &[
-	// "Message",
+	"Message",
 	"MessageEntity",
 	"InputFile",
 	"Asset",
@@ -692,7 +692,7 @@ fn print_entities(registry: Registry, out: &mut IndentedWriter<impl Write>) {
 				print_derive(&entity, out);
 				if entity.serde.ser || entity.serde.de {
 					write!(out, r#"#[serde("#);
-					if let Some(internal_tag) = internal_tag {
+					if let Some(ref internal_tag) = internal_tag {
 						write!(out, r#"tag = "{internal_tag}""#);
 					}
 					else {
@@ -706,6 +706,20 @@ fn print_entities(registry: Registry, out: &mut IndentedWriter<impl Write>) {
 					// }
 					writeln!(out, r#", rename_all = "snake_case")]"#);
 				}
+				let mut variants = variants.into_iter().collect::<Vec<_>>();
+
+				if internal_tag.is_none() {
+					variants.sort_by_key(|x| {
+						let Some(inner) = registry.get(&x.1.name)
+						else { return 0 };
+						return match &inner.variant {
+							EntityVariant::Object { fields } | EntityVariant::Enum { variants: fields, .. } | EntityVariant::Method { args: fields, .. } => fields.len(),
+							EntityVariant::Unknown => 0,
+						}
+					});
+					variants.reverse();
+				}
+
 				writeln!(out, "pub enum {} {{", entity.name);
 				out.indent();
 				// writeln!(out, "#[default]");
