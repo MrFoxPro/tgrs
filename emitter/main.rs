@@ -19,7 +19,7 @@ const RESERVED_WORDS: &[&str] = &[
 ];
 
 const BLACKLISTED_TYPES: &[&str] = &[
-	"Message",
+	// "Message",
 	"MessageEntity",
 	"InputFile",
 	"Asset",
