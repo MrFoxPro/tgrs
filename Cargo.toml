@@ -1,4 +1,4 @@
 [workspace]
-members = ["emitter", "tg"]
+members = ["emitter", "tg", "custom_debug_derive"]
 exclude = ["tg-bot-api"]
 resolver = "2"

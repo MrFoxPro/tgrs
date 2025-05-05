@@ -2,11 +2,21 @@ use std::assert_matches::debug_assert_matches;
 use serde_json::from_str;
 use crate::*;
 
+#[test]
+fn custom_debug() {
+	#[derive(custom_debug_derive::Debug)]
+	struct X {
+		pub string: String,
+		pub string_opt: Option<String>,
+	}
+	let x = X { string: String::new(), string_opt: None };
+	println!("{x:?}");
+}
 
 #[test]
 fn test_chatmember_banned() {
 		let json = r#"
-		{
+		{z
 		  "status": "kicked",
 		  "until_date": 8179542492,
 		  "user": {

@@ -242,6 +242,10 @@ pub fn main() -> Result<()> {
 	writeln!(out, "use serde_with::apply;");
 	writeln!(out, "use derive_more::{{From, Display}};");
 	writeln!(out, "use crate::{{addons::*, custom::*, client::{{Executable, FormParts}}, InputFile}};");
+	
+	writeln!(out, r#"#[cfg(feature = "custom-debug")]"#);
+	writeln!(out, "use custom_debug_derive::Debug;");
+	
 	writeln!(out, "");
 	writeln!(out, r#"pub const SCHEMA_VERSION: &str = "{}";"#, parsed.version.to_string());
 	writeln!(out, "");
@@ -856,7 +860,7 @@ fn print_struct(registry: &Registry, entity: &Entity, fields: &BTreeMap<String, 
 		}
 		writeln!(out, "/**{comment}*/");
 
-		if let Some(ref literal) = field.typeinfo.const_literal {
+		if let Some(ref _literal) = field.typeinfo.const_literal {
 			let const_name = format!("{}_{}", entity.name.to_snake_case(), field.name.to_snake_case());
 			write!(out, "#[serde(");
 			if is_tag { write!(out, "skip, "); } else { write!(out, "skip_deserializing, "); }
@@ -911,12 +915,13 @@ fn print_struct(registry: &Registry, entity: &Entity, fields: &BTreeMap<String, 
 			writeln!(out, "Self {{");
 			out.indent();
 			for (field, ctor_arg) in ctor_args.iter() {
-				if tag_fields.contains(&field.name) && let Some(ref literal) = field.typeinfo.const_literal { 
-					writeln!(out, r#"{}: "{}","#, escape_field_name(&field.name), literal);
+				if tag_fields.contains(&field.name) && let Some(ref _literal) = field.typeinfo.const_literal { 
+					let const_name = format!("{}_{}", entity.name.to_snake_case(), field.name.to_snake_case());
+					writeln!(out, r#"{}: consts::{}(),"#, escape_field_name(&field.name), const_name);
 					continue;
 				}
 				let mut v: String;
-				if let Some(ref literal) = field.typeinfo.const_literal {
+				if let Some(ref _literal) = field.typeinfo.const_literal {
 					v = format!(r#"consts::{}_{}()"#, entity.name.to_snake_case(), field.name.to_snake_case());
 				}
 				else if !field.optional { v = escape_field_name(&field.name); }

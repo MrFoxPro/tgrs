@@ -15,11 +15,14 @@ ryu = { version = "1" }
 bytes = { version = "1", default-features = false, features = ["std"] }
 fastrand = { version = "2.3" }
 futures-util = { version = "0.3", default-features = false, features = ["io"] }
+custom_debug_derive = { optional = true, path = "../custom_debug_derive" }
+
 # bincode = { version = "2", optional = true }
 
 [features]
 default = []
 custom-message = []
 serde-all = []
+custom-debug = ["dep:custom_debug_derive"]
 # bincode = ["dep:bincode"]
 # stream-file = ["dep:tokio", "dep:tokio-util"]

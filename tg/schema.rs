@@ -5,6 +5,8 @@ use serde_json::Value as JValue;
 use serde_with::apply;
 use derive_more::{From, Display};
 use crate::{addons::*, custom::*, client::{Executable, FormParts}, InputFile};
+#[cfg(feature = "custom-debug")]
+use custom_debug_derive::Debug;
 
 pub const SCHEMA_VERSION: &str = "8.3.0";
 
@@ -311,7 +313,7 @@ impl BackgroundFillFreeformGradient {
 	pub fn new(colors: impl Into<Vec<i64>>) -> Self {
 		Self {
 			colors: colors.into(),
-			r#type: "freeform_gradient",
+			r#type: consts::background_fill_freeform_gradient_type(),
 		}
 	}
 	pub fn add_color(mut self, color: impl Into<i64>) -> Self {
@@ -342,7 +344,7 @@ impl BackgroundFillGradient {
 			bottom_color: bottom_color.into(),
 			rotation_angle: rotation_angle.into(),
 			top_color: top_color.into(),
-			r#type: "gradient",
+			r#type: consts::background_fill_gradient_type(),
 		}
 	}
 }
@@ -363,7 +365,7 @@ impl BackgroundFillSolid {
 	pub fn new(color: impl Into<i64>) -> Self {
 		Self {
 			color: color.into(),
-			r#type: "solid",
+			r#type: consts::background_fill_solid_type(),
 		}
 	}
 }
@@ -401,7 +403,7 @@ impl BackgroundTypeChatTheme {
 	pub fn new(theme_name: impl Into<String>) -> Self {
 		Self {
 			theme_name: theme_name.into(),
-			r#type: "chat_theme",
+			r#type: consts::background_type_chat_theme_type(),
 		}
 	}
 }
@@ -425,7 +427,7 @@ impl BackgroundTypeFill {
 		Self {
 			dark_theme_dimming: dark_theme_dimming.into(),
 			fill: fill.into(),
-			r#type: "fill",
+			r#type: consts::background_type_fill_type(),
 		}
 	}
 }
@@ -463,7 +465,7 @@ impl BackgroundTypePattern {
 			intensity: intensity.into(),
 			is_inverted: None,
 			is_moving: None,
-			r#type: "pattern",
+			r#type: consts::background_type_pattern_type(),
 		}
 	}
 	/** *Optional*. *True*, if the background fill must be applied only to the pattern itself. All other pixels are black in this case. For dark themes only
@@ -510,7 +512,7 @@ impl BackgroundTypeWallpaper {
 			document: document.into(),
 			is_blurred: None,
 			is_moving: None,
-			r#type: "wallpaper",
+			r#type: consts::background_type_wallpaper_type(),
 		}
 	}
 	/** *Optional*. *True*, if the wallpaper is downscaled to fit in a 450x450 square and then box-blurred with radius 12
@@ -615,7 +617,7 @@ pub struct BotCommandScopeAllChatAdministrators {
 impl BotCommandScopeAllChatAdministrators {
 	pub fn new() -> Self {
 		Self {
-			r#type: "all_chat_administrators",
+			r#type: consts::bot_command_scope_all_chat_administrators_type(),
 		}
 	}
 }
@@ -633,7 +635,7 @@ pub struct BotCommandScopeAllGroupChats {
 impl BotCommandScopeAllGroupChats {
 	pub fn new() -> Self {
 		Self {
-			r#type: "all_group_chats",
+			r#type: consts::bot_command_scope_all_group_chats_type(),
 		}
 	}
 }
@@ -651,7 +653,7 @@ pub struct BotCommandScopeAllPrivateChats {
 impl BotCommandScopeAllPrivateChats {
 	pub fn new() -> Self {
 		Self {
-			r#type: "all_private_chats",
+			r#type: consts::bot_command_scope_all_private_chats_type(),
 		}
 	}
 }
@@ -672,7 +674,7 @@ impl BotCommandScopeChat {
 	pub fn new(chat_id: impl Into<ChatId>) -> Self {
 		Self {
 			chat_id: chat_id.into(),
-			r#type: "chat",
+			r#type: consts::bot_command_scope_chat_type(),
 		}
 	}
 }
@@ -693,7 +695,7 @@ impl BotCommandScopeChatAdministrators {
 	pub fn new(chat_id: impl Into<ChatId>) -> Self {
 		Self {
 			chat_id: chat_id.into(),
-			r#type: "chat_administrators",
+			r#type: consts::bot_command_scope_chat_administrators_type(),
 		}
 	}
 }
@@ -716,7 +718,7 @@ impl BotCommandScopeChatMember {
 	pub fn new(chat_id: impl Into<ChatId>, user_id: impl Into<i64>) -> Self {
 		Self {
 			chat_id: chat_id.into(),
-			r#type: "chat_member",
+			r#type: consts::bot_command_scope_chat_member_type(),
 			user_id: user_id.into(),
 		}
 	}
@@ -735,7 +737,7 @@ pub struct BotCommandScopeDefault {
 impl BotCommandScopeDefault {
 	pub fn new() -> Self {
 		Self {
-			r#type: "default",
+			r#type: consts::bot_command_scope_default_type(),
 		}
 	}
 }
@@ -1278,7 +1280,7 @@ pub struct ChatBoostSourceGiftCode {
 impl ChatBoostSourceGiftCode {
 	pub fn new(user: impl Into<User>) -> Self {
 		Self {
-			source: "gift_code",
+			source: consts::chat_boost_source_gift_code_source(),
 			user: user.into(),
 		}
 	}
@@ -1312,7 +1314,7 @@ impl ChatBoostSourceGiveaway {
 			giveaway_message_id: giveaway_message_id.into(),
 			is_unclaimed: None,
 			prize_star_count: None,
-			source: "giveaway",
+			source: consts::chat_boost_source_giveaway_source(),
 			user: None,
 		}
 	}
@@ -1349,7 +1351,7 @@ pub struct ChatBoostSourcePremium {
 impl ChatBoostSourcePremium {
 	pub fn new(user: impl Into<User>) -> Self {
 		Self {
-			source: "premium",
+			source: consts::chat_boost_source_premium_source(),
 			user: user.into(),
 		}
 	}
@@ -2008,7 +2010,7 @@ impl ChatMemberAdministrator {
 			can_restrict_members: can_restrict_members,
 			custom_title: None,
 			is_anonymous: is_anonymous,
-			status: "administrator",
+			status: consts::chat_member_administrator_status(),
 			user: user.into(),
 		}
 	}
@@ -2056,7 +2058,7 @@ pub struct ChatMemberBanned {
 impl ChatMemberBanned {
 	pub fn new(until_date: impl Into<i64>, user: impl Into<User>) -> Self {
 		Self {
-			status: "kicked",
+			status: consts::chat_member_banned_status(),
 			until_date: until_date.into(),
 			user: user.into(),
 		}
@@ -2078,7 +2080,7 @@ pub struct ChatMemberLeft {
 impl ChatMemberLeft {
 	pub fn new(user: impl Into<User>) -> Self {
 		Self {
-			status: "left",
+			status: consts::chat_member_left_status(),
 			user: user.into(),
 		}
 	}
@@ -2104,7 +2106,7 @@ pub struct ChatMemberMember {
 impl ChatMemberMember {
 	pub fn new(user: impl Into<User>) -> Self {
 		Self {
-			status: "member",
+			status: consts::chat_member_member_status(),
 			until_date: None,
 			user: user.into(),
 		}
@@ -2140,7 +2142,7 @@ impl ChatMemberOwner {
 		Self {
 			custom_title: None,
 			is_anonymous: is_anonymous,
-			status: "creator",
+			status: consts::chat_member_owner_status(),
 			user: user.into(),
 		}
 	}
@@ -2213,7 +2215,7 @@ impl ChatMemberRestricted {
 			can_send_videos: can_send_videos,
 			can_send_voice_notes: can_send_voice_notes,
 			is_member: is_member,
-			status: "restricted",
+			status: consts::chat_member_restricted_status(),
 			until_date: until_date.into(),
 			user: user.into(),
 		}
@@ -3880,7 +3882,7 @@ impl InlineQueryResultArticle {
 			thumbnail_url: None,
 			thumbnail_width: None,
 			title: title.into(),
-			r#type: "article",
+			r#type: consts::inline_query_result_article_type(),
 			url: None,
 		}
 	}
@@ -3965,7 +3967,7 @@ impl InlineQueryResultAudio {
 			performer: None,
 			reply_markup: None,
 			title: title.into(),
-			r#type: "audio",
+			r#type: consts::inline_query_result_audio_type(),
 		}
 	}
 	/** *Optional*. Audio duration in seconds*/
@@ -4051,7 +4053,7 @@ impl InlineQueryResultCachedAudio {
 			input_message_content: None,
 			parse_mode: None,
 			reply_markup: None,
-			r#type: "audio",
+			r#type: consts::inline_query_result_cached_audio_type(),
 		}
 	}
 	/** *Optional*. Caption, 0-1024 characters after entities parsing
@@ -4133,7 +4135,7 @@ impl InlineQueryResultCachedDocument {
 			parse_mode: None,
 			reply_markup: None,
 			title: title.into(),
-			r#type: "document",
+			r#type: consts::inline_query_result_cached_document_type(),
 		}
 	}
 	/** *Optional*. Caption of the document to be sent, 0-1024 characters after entities parsing
@@ -4220,7 +4222,7 @@ impl InlineQueryResultCachedGif {
 			reply_markup: None,
 			show_caption_above_media: None,
 			title: None,
-			r#type: "gif",
+			r#type: consts::inline_query_result_cached_gif_type(),
 		}
 	}
 	/** *Optional*. Caption of the GIF file to be sent, 0-1024 characters after entities parsing
@@ -4312,7 +4314,7 @@ impl InlineQueryResultCachedMpeg4Gif {
 			reply_markup: None,
 			show_caption_above_media: None,
 			title: None,
-			r#type: "mpeg4_gif",
+			r#type: consts::inline_query_result_cached_mpeg4_gif_type(),
 		}
 	}
 	/** *Optional*. Caption of the MPEG-4 file to be sent, 0-1024 characters after entities parsing
@@ -4407,7 +4409,7 @@ impl InlineQueryResultCachedPhoto {
 			reply_markup: None,
 			show_caption_above_media: None,
 			title: None,
-			r#type: "photo",
+			r#type: consts::inline_query_result_cached_photo_type(),
 		}
 	}
 	/** *Optional*. Caption of the photo to be sent, 0-1024 characters after entities parsing
@@ -4486,7 +4488,7 @@ impl InlineQueryResultCachedSticker {
 			input_message_content: None,
 			reply_markup: None,
 			sticker_file_id: sticker_file_id.into(),
-			r#type: "sticker",
+			r#type: consts::inline_query_result_cached_sticker_type(),
 		}
 	}
 	/** *Optional*. Content of the message to be sent instead of the sticker*/
@@ -4549,7 +4551,7 @@ impl InlineQueryResultCachedVideo {
 			reply_markup: None,
 			show_caption_above_media: None,
 			title: title.into(),
-			r#type: "video",
+			r#type: consts::inline_query_result_cached_video_type(),
 			video_file_id: video_file_id.into(),
 		}
 	}
@@ -4638,7 +4640,7 @@ impl InlineQueryResultCachedVoice {
 			parse_mode: None,
 			reply_markup: None,
 			title: title.into(),
-			r#type: "voice",
+			r#type: consts::inline_query_result_cached_voice_type(),
 			voice_file_id: voice_file_id.into(),
 		}
 	}
@@ -4720,7 +4722,7 @@ impl InlineQueryResultContact {
 			thumbnail_height: None,
 			thumbnail_url: None,
 			thumbnail_width: None,
-			r#type: "contact",
+			r#type: consts::inline_query_result_contact_type(),
 			vcard: None,
 		}
 	}
@@ -4820,7 +4822,7 @@ impl InlineQueryResultDocument {
 			thumbnail_url: None,
 			thumbnail_width: None,
 			title: title.into(),
-			r#type: "document",
+			r#type: consts::inline_query_result_document_type(),
 		}
 	}
 	/** *Optional*. Caption of the document to be sent, 0-1024 characters after entities parsing
@@ -4901,7 +4903,7 @@ impl InlineQueryResultGame {
 			game_short_name: game_short_name.into(),
 			id: id.into(),
 			reply_markup: None,
-			r#type: "game",
+			r#type: consts::inline_query_result_game_type(),
 		}
 	}
 	/** *Optional*. [Inline keyboard](https://core.telegram.org/bots/features#inline-keyboards) attached to the message*/
@@ -4974,7 +4976,7 @@ impl InlineQueryResultGif {
 			thumbnail_mime_type: None,
 			thumbnail_url: thumbnail_url.into(),
 			title: None,
-			r#type: "gif",
+			r#type: consts::inline_query_result_gif_type(),
 		}
 	}
 	/** *Optional*. Caption of the GIF file to be sent, 0-1024 characters after entities parsing
@@ -5097,7 +5099,7 @@ impl InlineQueryResultLocation {
 			thumbnail_url: None,
 			thumbnail_width: None,
 			title: title.into(),
-			r#type: "location",
+			r#type: consts::inline_query_result_location_type(),
 		}
 	}
 	/** *Optional*. For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.*/
@@ -5210,7 +5212,7 @@ impl InlineQueryResultMpeg4Gif {
 			thumbnail_mime_type: None,
 			thumbnail_url: thumbnail_url.into(),
 			title: None,
-			r#type: "mpeg4_gif",
+			r#type: consts::inline_query_result_mpeg4_gif_type(),
 		}
 	}
 	/** *Optional*. Caption of the MPEG-4 file to be sent, 0-1024 characters after entities parsing
@@ -5336,7 +5338,7 @@ impl InlineQueryResultPhoto {
 			show_caption_above_media: None,
 			thumbnail_url: thumbnail_url.into(),
 			title: None,
-			r#type: "photo",
+			r#type: consts::inline_query_result_photo_type(),
 		}
 	}
 	/** *Optional*. Caption of the photo to be sent, 0-1024 characters after entities parsing
@@ -5455,7 +5457,7 @@ impl InlineQueryResultVenue {
 			thumbnail_url: None,
 			thumbnail_width: None,
 			title: title.into(),
-			r#type: "venue",
+			r#type: consts::inline_query_result_venue_type(),
 		}
 	}
 	/** *Optional*. Foursquare identifier of the venue if known*/
@@ -5568,7 +5570,7 @@ impl InlineQueryResultVideo {
 			show_caption_above_media: None,
 			thumbnail_url: thumbnail_url.into(),
 			title: title.into(),
-			r#type: "video",
+			r#type: consts::inline_query_result_video_type(),
 			video_duration: None,
 			video_height: None,
 			video_url: video_url.into(),
@@ -5677,7 +5679,7 @@ impl InlineQueryResultVoice {
 			parse_mode: None,
 			reply_markup: None,
 			title: title.into(),
-			r#type: "voice",
+			r#type: consts::inline_query_result_voice_type(),
 			voice_duration: None,
 			voice_url: voice_url.into(),
 		}
@@ -6088,7 +6090,7 @@ impl InputMediaAnimation {
 			parse_mode: None,
 			show_caption_above_media: None,
 			thumbnail: None,
-			r#type: "animation",
+			r#type: consts::input_media_animation_type(),
 			width: None,
 		}
 	}
@@ -6188,7 +6190,7 @@ impl InputMediaAudio {
 			performer: None,
 			thumbnail: None,
 			title: None,
-			r#type: "audio",
+			r#type: consts::input_media_audio_type(),
 		}
 	}
 	/** *Optional*. Caption of the audio to be sent, 0-1024 characters after entities parsing
@@ -6271,7 +6273,7 @@ impl InputMediaDocument {
 			media: media.into(),
 			parse_mode: None,
 			thumbnail: None,
-			r#type: "document",
+			r#type: consts::input_media_document_type(),
 		}
 	}
 	/** *Optional*. Caption of the document to be sent, 0-1024 characters after entities parsing
@@ -6344,7 +6346,7 @@ impl InputMediaPhoto {
 			media: media.into(),
 			parse_mode: None,
 			show_caption_above_media: None,
-			r#type: "photo",
+			r#type: consts::input_media_photo_type(),
 		}
 	}
 	/** *Optional*. Caption of the photo to be sent, 0-1024 characters after entities parsing
@@ -6437,7 +6439,7 @@ impl InputMediaVideo {
 			start_timestamp: None,
 			supports_streaming: None,
 			thumbnail: None,
-			r#type: "video",
+			r#type: consts::input_media_video_type(),
 			width: None,
 		}
 	}
@@ -6557,7 +6559,7 @@ impl InputPaidMediaPhoto {
 	pub fn new(media: impl Into<Asset>) -> Self {
 		Self {
 			media: media.into(),
-			r#type: "photo",
+			r#type: consts::input_paid_media_photo_type(),
 		}
 	}
 }
@@ -6601,7 +6603,7 @@ impl InputPaidMediaVideo {
 			start_timestamp: None,
 			supports_streaming: None,
 			thumbnail: None,
-			r#type: "video",
+			r#type: consts::input_paid_media_video_type(),
 			width: None,
 		}
 	}
@@ -7377,7 +7379,7 @@ pub struct MenuButtonCommands {
 impl MenuButtonCommands {
 	pub fn new() -> Self {
 		Self {
-			r#type: "commands",
+			r#type: consts::menu_button_commands_type(),
 		}
 	}
 }
@@ -7394,7 +7396,7 @@ pub struct MenuButtonDefault {
 impl MenuButtonDefault {
 	pub fn new() -> Self {
 		Self {
-			r#type: "default",
+			r#type: consts::menu_button_default_type(),
 		}
 	}
 }
@@ -7416,7 +7418,7 @@ impl MenuButtonWebApp {
 	pub fn new(text: impl Into<String>, web_app: impl Into<WebAppInfo>) -> Self {
 		Self {
 			text: text.into(),
-			r#type: "web_app",
+			r#type: consts::menu_button_web_app_type(),
 			web_app: web_app.into(),
 		}
 	}
@@ -7499,7 +7501,7 @@ impl MessageOriginChannel {
 			chat: chat.into(),
 			date: date.into(),
 			message_id: message_id.into(),
-			r#type: "channel",
+			r#type: consts::message_origin_channel_type(),
 		}
 	}
 	/** *Optional*. Signature of the original post author*/
@@ -7534,7 +7536,7 @@ impl MessageOriginChat {
 			author_signature: None,
 			date: date.into(),
 			sender_chat: sender_chat.into(),
-			r#type: "chat",
+			r#type: consts::message_origin_chat_type(),
 		}
 	}
 	/** *Optional*. For messages originally sent by an anonymous chat administrator, original message author signature*/
@@ -7563,7 +7565,7 @@ impl MessageOriginHiddenUser {
 		Self {
 			date: date.into(),
 			sender_user_name: sender_user_name.into(),
-			r#type: "hidden_user",
+			r#type: consts::message_origin_hidden_user_type(),
 		}
 	}
 }
@@ -7587,7 +7589,7 @@ impl MessageOriginUser {
 		Self {
 			date: date.into(),
 			sender_user: sender_user.into(),
-			r#type: "user",
+			r#type: consts::message_origin_user_type(),
 		}
 	}
 }
@@ -7788,7 +7790,7 @@ impl PaidMediaPhoto {
 	pub fn new(photo: impl Into<Vec<PhotoSize>>) -> Self {
 		Self {
 			photo: photo.into(),
-			r#type: "photo",
+			r#type: consts::paid_media_photo_type(),
 		}
 	}
 	pub fn add_photo(mut self, photo: impl Into<PhotoSize>) -> Self {
@@ -7821,7 +7823,7 @@ impl PaidMediaPreview {
 		Self {
 			duration: None,
 			height: None,
-			r#type: "preview",
+			r#type: consts::paid_media_preview_type(),
 			width: None,
 		}
 	}
@@ -7876,7 +7878,7 @@ pub struct PaidMediaVideo {
 impl PaidMediaVideo {
 	pub fn new(video: impl Into<Video>) -> Self {
 		Self {
-			r#type: "video",
+			r#type: consts::paid_media_video_type(),
 			video: video.into(),
 		}
 	}
@@ -7960,7 +7962,7 @@ impl PassportElementErrorDataField {
 			data_hash: data_hash.into(),
 			field_name: field_name.into(),
 			message: message.into(),
-			source: "data",
+			source: consts::passport_element_error_data_field_source(),
 			r#type: r#type.into(),
 		}
 	}
@@ -7988,7 +7990,7 @@ impl PassportElementErrorFile {
 		Self {
 			file_hash: file_hash.into(),
 			message: message.into(),
-			source: "file",
+			source: consts::passport_element_error_file_source(),
 			r#type: r#type.into(),
 		}
 	}
@@ -8019,7 +8021,7 @@ impl PassportElementErrorFiles {
 		Self {
 			file_hashes: file_hashes.into(),
 			message: message.into(),
-			source: "files",
+			source: consts::passport_element_error_files_source(),
 			r#type: r#type.into(),
 		}
 	}
@@ -8051,7 +8053,7 @@ impl PassportElementErrorFrontSide {
 		Self {
 			file_hash: file_hash.into(),
 			message: message.into(),
-			source: "front_side",
+			source: consts::passport_element_error_front_side_source(),
 			r#type: r#type.into(),
 		}
 	}
@@ -8079,7 +8081,7 @@ impl PassportElementErrorReverseSide {
 		Self {
 			file_hash: file_hash.into(),
 			message: message.into(),
-			source: "reverse_side",
+			source: consts::passport_element_error_reverse_side_source(),
 			r#type: r#type.into(),
 		}
 	}
@@ -8107,7 +8109,7 @@ impl PassportElementErrorSelfie {
 		Self {
 			file_hash: file_hash.into(),
 			message: message.into(),
-			source: "selfie",
+			source: consts::passport_element_error_selfie_source(),
 			r#type: r#type.into(),
 		}
 	}
@@ -8135,7 +8137,7 @@ impl PassportElementErrorTranslationFile {
 		Self {
 			file_hash: file_hash.into(),
 			message: message.into(),
-			source: "translation_file",
+			source: consts::passport_element_error_translation_file_source(),
 			r#type: r#type.into(),
 		}
 	}
@@ -8166,7 +8168,7 @@ impl PassportElementErrorTranslationFiles {
 		Self {
 			file_hashes: file_hashes.into(),
 			message: message.into(),
-			source: "translation_files",
+			source: consts::passport_element_error_translation_files_source(),
 			r#type: r#type.into(),
 		}
 	}
@@ -8197,7 +8199,7 @@ impl PassportElementErrorUnspecified {
 		Self {
 			element_hash: element_hash.into(),
 			message: message.into(),
-			source: "unspecified",
+			source: consts::passport_element_error_unspecified_source(),
 			r#type: r#type.into(),
 		}
 	}
@@ -8587,7 +8589,7 @@ impl ReactionTypeCustomEmoji {
 	pub fn new(custom_emoji_id: impl Into<String>) -> Self {
 		Self {
 			custom_emoji_id: custom_emoji_id.into(),
-			r#type: "custom_emoji",
+			r#type: consts::reaction_type_custom_emoji_type(),
 		}
 	}
 }
@@ -8608,7 +8610,7 @@ impl ReactionTypeEmoji {
 	pub fn new(emoji: impl Into<String>) -> Self {
 		Self {
 			emoji: emoji.into(),
-			r#type: "emoji",
+			r#type: consts::reaction_type_emoji_type(),
 		}
 	}
 }
@@ -8625,7 +8627,7 @@ pub struct ReactionTypePaid {
 impl ReactionTypePaid {
 	pub fn new() -> Self {
 		Self {
-			r#type: "paid",
+			r#type: consts::reaction_type_paid_type(),
 		}
 	}
 }
@@ -8921,7 +8923,7 @@ pub struct RevenueWithdrawalStateFailed {
 impl RevenueWithdrawalStateFailed {
 	pub fn new() -> Self {
 		Self {
-			r#type: "failed",
+			r#type: consts::revenue_withdrawal_state_failed_type(),
 		}
 	}
 }
@@ -8939,7 +8941,7 @@ pub struct RevenueWithdrawalStatePending {
 impl RevenueWithdrawalStatePending {
 	pub fn new() -> Self {
 		Self {
-			r#type: "pending",
+			r#type: consts::revenue_withdrawal_state_pending_type(),
 		}
 	}
 }
@@ -8962,7 +8964,7 @@ impl RevenueWithdrawalStateSucceeded {
 	pub fn new(date: impl Into<i64>, url: impl Into<String>) -> Self {
 		Self {
 			date: date.into(),
-			r#type: "succeeded",
+			r#type: consts::revenue_withdrawal_state_succeeded_type(),
 			url: url.into(),
 		}
 	}
@@ -9606,7 +9608,7 @@ impl TransactionPartnerAffiliateProgram {
 		Self {
 			commission_per_mille: commission_per_mille.into(),
 			sponsor_user: None,
-			r#type: "affiliate_program",
+			r#type: consts::transaction_partner_affiliate_program_type(),
 		}
 	}
 	/** *Optional*. Information about the bot that sponsored the affiliate program*/
@@ -9638,7 +9640,7 @@ impl TransactionPartnerChat {
 		Self {
 			chat: chat.into(),
 			gift: None,
-			r#type: "chat",
+			r#type: consts::transaction_partner_chat_type(),
 		}
 	}
 	/** *Optional*. The gift sent to the chat by the bot*/
@@ -9666,7 +9668,7 @@ pub struct TransactionPartnerFragment {
 impl TransactionPartnerFragment {
 	pub fn new() -> Self {
 		Self {
-			r#type: "fragment",
+			r#type: consts::transaction_partner_fragment_type(),
 			withdrawal_state: None,
 		}
 	}
@@ -9690,7 +9692,7 @@ pub struct TransactionPartnerOther {
 impl TransactionPartnerOther {
 	pub fn new() -> Self {
 		Self {
-			r#type: "other",
+			r#type: consts::transaction_partner_other_type(),
 		}
 	}
 }
@@ -9708,7 +9710,7 @@ pub struct TransactionPartnerTelegramAds {
 impl TransactionPartnerTelegramAds {
 	pub fn new() -> Self {
 		Self {
-			r#type: "telegram_ads",
+			r#type: consts::transaction_partner_telegram_ads_type(),
 		}
 	}
 }
@@ -9729,7 +9731,7 @@ impl TransactionPartnerTelegramApi {
 	pub fn new(request_count: impl Into<i64>) -> Self {
 		Self {
 			request_count: request_count.into(),
-			r#type: "telegram_api",
+			r#type: consts::transaction_partner_telegram_api_type(),
 		}
 	}
 }
@@ -9771,7 +9773,7 @@ impl TransactionPartnerUser {
 			paid_media: Vec::new(),
 			paid_media_payload: None,
 			subscription_period: None,
-			r#type: "user",
+			r#type: consts::transaction_partner_user_type(),
 			user: user.into(),
 		}
 	}
