@@ -8,8 +8,9 @@ fn custom_debug() {
 	struct X {
 		pub string: String,
 		pub string_opt: Option<String>,
+		pub string_vec: Vec<String>,
 	}
-	let x = X { string: String::new(), string_opt: None };
+	let x = X { string: String::new(), string_opt: None, string_vec: Vec::new(), };
 	println!("{x:?}");
 }
 

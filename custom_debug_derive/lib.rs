@@ -50,7 +50,7 @@ fn generate_debug_builder_call(binding: &BindingInfo) -> TokenStream {
 		}
 		else if segments.first().is_some_and(|seg| seg.ident.to_string() == "Vec") {
 			return quote! {
-				if !#name.is_empty() { debug_builder.field(#name, #format); }
+				if !#format.is_empty() { debug_builder.field(#name, #format); }
 			}
 		}
 	}
