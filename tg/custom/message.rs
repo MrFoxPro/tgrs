@@ -7,6 +7,9 @@ mod original_message {
 	use serde_with::apply;
 	use crate::*;
 
+	#[cfg(feature = "custom-debug")]
+	use custom_debug_derive::Debug;
+
 /**This object represents a message.
 
 https://core.telegram.org/bots/api/#message*/
