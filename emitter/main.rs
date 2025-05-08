@@ -732,7 +732,11 @@ fn print_entities(registry: Registry, out: &mut IndentedWriter<impl Write>) {
 					if entity.name == "MaybeInaccessibleMessage" && vartypename == "Message" {
 						vartypename = format!("Box<{}>", vartypename);
 					}
-					if entity.name == "ChatMember" {
+					else if entity.name == "Media" {
+						let discriminant_name = varname.replace("InputMedia", "");
+						writeln!(out, r#"#[serde(rename = "{}")]"#, discriminant_name.to_lowercase());
+					}
+					else if entity.name == "ChatMember" {
 						match varname.as_str() {
 							"Banned" => { writeln!(out, r#"#[serde(rename = "kicked")]"#); }
 							"Owner"  => { writeln!(out, r#"#[serde(rename = "creator")]"#); }

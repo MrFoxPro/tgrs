@@ -7347,9 +7347,13 @@ pub enum MaybeInaccessibleMessage {
 #[cfg_attr(feature = "serde-all", derive(Deserialize))]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum Media {
+	#[serde(rename = "audio")]
 	InputMediaAudio(InputMediaAudio),
+	#[serde(rename = "document")]
 	InputMediaDocument(InputMediaDocument),
+	#[serde(rename = "photo")]
 	InputMediaPhoto(InputMediaPhoto),
+	#[serde(rename = "video")]
 	InputMediaVideo(InputMediaVideo),
 }
 /**This object describes the bot's menu button in a private chat. It should be one of
