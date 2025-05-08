@@ -62,9 +62,9 @@ impl Clone for InputFileInner {
 impl fmt::Debug for InputFileInner {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
 		match self {
-			Self::Bytes(_) => writeln!(f, "InputFile::Bytes(<data>)"),
-			Self::Stream(_) => writeln!(f, "InputFile::Stream(<stream>)"),
-			Self::Empty => writeln!(f, "InputFile::Empty"),
+			Self::Bytes(_) => write!(f, "InputFile::Bytes(<data>)"),
+			Self::Stream(_) => write!(f, "InputFile::Stream(<stream>)"),
+			Self::Empty => write!(f, "InputFile::Empty"),
 		}
 	}
 }
